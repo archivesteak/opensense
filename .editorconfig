@@ -1,0 +1,24 @@
+root = true
+
+[*]
+indent_style = space
+end_of_line = crlf
+insert_final_newline = true
+charset = utf-8
+
+[*.{cs,xaml}]
+indent_size = 4
+
+[*.{csproj,props,targets,json,xml,manifest,nsi,nsh}]
+indent_size = 2
+
+[*.cs]
+csharp_style_namespace_declarations = file_scoped:warning
+csharp_prefer_braces = when_multiline:silent
+dotnet_sort_system_directives_first = true
+# [GenerateShape] only serves PolyType-based formatters; the pipe uses StreamJsonRpc's System.Text.Json formatter.
+dotnet_diagnostic.StreamJsonRpc0008.severity = none
+
+# Test method names use underscores to read as sentences.
+[tests/**.cs]
+dotnet_diagnostic.CA1707.severity = none

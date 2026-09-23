@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Management" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="StreamJsonRpc" />
+    <PackageReference Include="Microsoft.Windows.CsWin32" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="OpenSense.Core.Tests" />
+  </ItemGroup>
+
+  <!-- Signed modules from https://github.com/namazso/PawnIO.Modules (LGPL-2.1), release 0.2.11. -->
+  <ItemGroup>
+    <EmbeddedResource Include="Monitoring\PawnIO\*.bin" LogicalName="PawnIO.%(Filename)%(Extension)" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,224 @@
+<Page
+    x:Class="OpenSense.App.Views.FansPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:OpenSense.App.Controls"
+    xmlns:helpers="using:OpenSense.App.Helpers"
+    xmlns:local="using:OpenSense.App.Views"
+    xmlns:toolkit="using:CommunityToolkit.WinUI.Controls"
+    xmlns:ui="using:CommunityToolkit.WinUI"
+    xmlns:vm="using:OpenSense.App.ViewModels"
+    NavigationCacheMode="Required">
+
+    <ScrollViewer>
+        <StackPanel
+            MaxWidth="{StaticResource PageMaxWidth}"
+            Padding="{StaticResource PagePadding}"
+            Spacing="16">
+            <TextBlock Style="{StaticResource PageTitleStyle}" Text="Fans" />
+
+            <Border Style="{StaticResource CardStyle}">
+                <StackPanel Spacing="10">
+                    <toolkit:Segmented
+                        HorizontalAlignment="Stretch"
+                        IsEnabled="{x:Bind Fans.HasFans, Mode=OneWay}"
+                        SelectedIndex="{x:Bind Fans.ModeIndex, Mode=TwoWay}">
+                        <toolkit:SegmentedItem Content="Auto" />
+                        <toolkit:SegmentedItem Content="Max" />
+                        <toolkit:SegmentedItem Content="Custom" />
+                        <toolkit:SegmentedItem Content="Curve" />
+                    </toolkit:Segmented>
+                    <TextBlock Style="{StaticResource CaptionMutedStyle}" Text="{x:Bind Fans.ModeDescription, Mode=OneWay}" />
+                </StackPanel>
+            </Border>
+
+            <ItemsControl ItemsSource="{x:Bind Monitor.Fans}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <controls:TileGrid MinColumnWidth="260" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:FanReadingViewModel">
+                        <Border Style="{StaticResource CardStyle}">
+                            <StackPanel Spacing="12">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="{x:Bind Name}" />
+                                    <TextBlock Style="{StaticResource CaptionMutedStyle}" Text="{x:Bind BehaviorText, Mode=OneWay}" />
+                                </StackPanel>
+                                <controls:FanRotor
+                                    Height="200"
+                                    Duty="{x:Bind local:FansPage.DutyValue(Duty), Mode=OneWay}"
+                                    Rpm="{x:Bind local:FansPage.RpmValue(Rpm), Mode=OneWay}" />
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock HorizontalAlignment="Center">
+                                        <Run
+                                            FontFamily="Segoe UI Variable Display"
+                                            FontSize="32"
+                                            FontWeight="SemiBold"
+                                            Text="{x:Bind helpers:Units.RpmNumber(Rpm), Mode=OneWay}" />
+                                        <Run Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text=" rpm" />
+                                    </TextBlock>
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        Style="{StaticResource CaptionMutedStyle}"
+                                        Text="{x:Bind local:FansPage.DutyLabel(DutyText), Mode=OneWay}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <InfoBar
+                IsClosable="False"
+                IsOpen="{x:Bind Fans.IsLocked, Mode=OneWay}"
+                Visibility="{x:Bind Fans.IsLocked, Mode=OneWay}"
+                Message="{x:Bind Fans.LockReason, Mode=OneWay}"
+                Severity="Informational" />
+
+            <!-- Custom: fixed speed per fan -->
+            <ItemsControl ItemsSource="{x:Bind Fans.ManualFans}" Visibility="{x:Bind Fans.IsCustom, Mode=OneWay}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <controls:TileGrid MinColumnWidth="340" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:ManualFanViewModel">
+                        <Border Style="{StaticResource CardStyle}">
+                            <StackPanel Spacing="12">
+                                <Grid>
+                                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind Name}" />
+                                    <ToggleSwitch
+                                        MinWidth="0"
+                                        HorizontalAlignment="Right"
+                                        IsOn="{x:Bind Auto, Mode=TwoWay}"
+                                        OffContent="Manual"
+                                        OnContent="Automatic" />
+                                </Grid>
+                                <TextBlock
+                                    Opacity="{x:Bind local:FansPage.ManualOpacity(IsManual), Mode=OneWay}"
+                                    Style="{StaticResource BigNumberStyle}"
+                                    Text="{x:Bind PercentText, Mode=OneWay}" />
+                                <Slider
+                                    Header="Fan speed"
+                                    IsEnabled="{x:Bind IsManual, Mode=OneWay}"
+                                    Maximum="100"
+                                    Minimum="0"
+                                    StepFrequency="5"
+                                    TickFrequency="10"
+                                    TickPlacement="Outside"
+                                    Value="{x:Bind Percent, Mode=TwoWay}" />
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <!-- Curve: temperature → speed per fan -->
+            <ItemsControl ItemsSource="{x:Bind Fans.CurveFans}" Visibility="{x:Bind Fans.IsCurve, Mode=OneWay}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Spacing="16" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:CurveFanViewModel">
+                        <Border Style="{StaticResource CardStyle}">
+                            <StackPanel Spacing="12">
+                                <Grid ColumnSpacing="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource SubtitleTextBlockStyle}"
+                                        Text="{x:Bind Name}" />
+                                    <ComboBox
+                                        Grid.Column="1"
+                                        MinWidth="180"
+                                        ItemsSource="{x:Bind vm:CurveFanViewModel.Sources}"
+                                        SelectedIndex="{x:Bind SourceIndex, Mode=TwoWay}"
+                                        ToolTipService.ToolTip="Which temperature drives this fan" />
+                                    <DropDownButton Grid.Column="2" Content="Presets">
+                                        <DropDownButton.Flyout>
+                                            <MenuFlyout Placement="Bottom">
+                                                <MenuFlyoutItem
+                                                    Command="{x:Bind ApplyPresetCommand}"
+                                                    CommandParameter="Silent"
+                                                    Text="Silent" />
+                                                <MenuFlyoutItem
+                                                    Command="{x:Bind ApplyPresetCommand}"
+                                                    CommandParameter="Balanced"
+                                                    Text="Balanced" />
+                                                <MenuFlyoutItem
+                                                    Command="{x:Bind ApplyPresetCommand}"
+                                                    CommandParameter="Performance"
+                                                    Text="Performance" />
+                                            </MenuFlyout>
+                                        </DropDownButton.Flyout>
+                                    </DropDownButton>
+                                    <Button
+                                        Grid.Column="3"
+                                        Command="{x:Bind CopyToOthersCommand}"
+                                        ToolTipService.ToolTip="Use this curve for the other fans too">
+                                        <FontIcon FontSize="14" Glyph="&#xE8C8;" />
+                                    </Button>
+                                </Grid>
+                                <controls:FanCurveEditor
+                                    Height="300"
+                                    Curve="{x:Bind Curve, Mode=TwoWay}"
+                                    LivePercent="{x:Bind LivePercent, Mode=OneWay}"
+                                    LiveTemperature="{x:Bind LiveTemperature, Mode=OneWay}"
+                                    UseFahrenheit="{x:Bind UseFahrenheit, Mode=OneWay}" />
+                                <TextBlock Style="{StaticResource CaptionMutedStyle}" Text="Drag points to shape the curve · double-click to add a point · right-click to remove one · arrow keys fine-tune the selected point" TextWrapping="Wrap" />
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="Safety and response" />
+            <toolkit:SettingsCard Description="In Custom and Curve modes, fans go to full speed if either chip reaches this temperature." Header="Emergency temperature" HeaderIcon="{ui:FontIcon Glyph=&#xE7BA;}">
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                    <TextBlock VerticalAlignment="Center" Text="{x:Bind local:FansPage.TemperatureLabel(Fans.EmergencyTemperature, Monitor.UseFahrenheit), Mode=OneWay}" />
+                    <Slider
+                        Width="200"
+                        Maximum="100"
+                        Minimum="80"
+                        StepFrequency="1"
+                        Value="{x:Bind Fans.EmergencyTemperature, Mode=TwoWay}" />
+                </StackPanel>
+            </toolkit:SettingsCard>
+            <toolkit:SettingsCard Description="The lowest speed OpenSense will ask for in Custom and Curve modes." Header="Minimum fan speed" HeaderIcon="{ui:FontIcon Glyph=&#xEC4A;}">
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                    <TextBlock VerticalAlignment="Center" Text="{x:Bind local:FansPage.PercentLabel(Fans.MinimumPercent), Mode=OneWay}" />
+                    <Slider
+                        Width="200"
+                        Maximum="60"
+                        Minimum="0"
+                        StepFrequency="5"
+                        Value="{x:Bind Fans.MinimumPercent, Mode=TwoWay}" />
+                </StackPanel>
+            </toolkit:SettingsCard>
+            <toolkit:SettingsCard Description="How far the temperature must fall before a curve slows the fans down. Higher values stop the fans from hunting." Header="Slow-down delay" HeaderIcon="{ui:FontIcon Glyph=&#xE916;}">
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                    <TextBlock VerticalAlignment="Center" Text="{x:Bind local:FansPage.DegreesLabel(Fans.Hysteresis), Mode=OneWay}" />
+                    <Slider
+                        Width="200"
+                        Maximum="10"
+                        Minimum="0"
+                        StepFrequency="1"
+                        Value="{x:Bind Fans.Hysteresis, Mode=TwoWay}" />
+                </StackPanel>
+            </toolkit:SettingsCard>
+            <toolkit:SettingsCard Description="When the OpenSense service stops (or a portable copy exits), the laptop's own fan control takes over again." Header="Hand fans back when OpenSense stops" HeaderIcon="{ui:FontIcon Glyph=&#xE7E8;}">
+                <ToggleSwitch IsOn="{x:Bind Fans.RestoreAutoOnExit, Mode=TwoWay}" />
+            </toolkit:SettingsCard>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

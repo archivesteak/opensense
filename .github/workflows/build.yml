@@ -1,0 +1,124 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  # Named OpenSense so the portable zip extracts into an OpenSense folder.
+  PUBLISH_DIR: artifacts\publish\OpenSense
+  # PawnIO driver setup, bundled into the installer (its licence allows unmodified redistribution).
+  PAWNIO_URL: https://github.com/namazso/PawnIO.Setup/releases/download/2.2.0/PawnIO_setup.exe
+  PAWNIO_SHA256: 1F519A22E47187F70A1379A48CA604981C4FCF694F4E65B734AAA74A9FBA3032
+
+jobs:
+  build:
+    name: Build, test and package
+    runs-on: windows-2025
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+
+      - name: Version
+        id: version
+        run: |
+          # A v1.2.3 tag sets the version; otherwise Directory.Build.props does.
+          $version = if ($env:GITHUB_REF_TYPE -eq 'tag') { $env:GITHUB_REF_NAME.TrimStart('v') }
+                     else { dotnet msbuild src/OpenSense.Core -getProperty:Version }
+          "value=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Test
+        run: dotnet test --project tests/OpenSense.Core.Tests -c Release
+
+      - name: Publish
+        run: |
+          $PSNativeCommandUseErrorActionPreference = $true
+          $publishArgs = '-c', 'Release', '-r', 'win-x64', '--self-contained', '-p:PublishReadyToRun=true',
+                         '-p:Version=${{ steps.version.outputs.value }}', '-o', $env:PUBLISH_DIR
+          dotnet publish src/OpenSense.App @publishArgs
+          dotnet publish src/OpenSense.Service @publishArgs
+
+      - name: Download PawnIO setup
+        run: |
+          Invoke-WebRequest $env:PAWNIO_URL -OutFile artifacts\PawnIO_setup.exe
+          $hash = (Get-FileHash artifacts\PawnIO_setup.exe -Algorithm SHA256).Hash
+          if ($hash -ne $env:PAWNIO_SHA256) { throw "PawnIO setup hash mismatch: $hash" }
+
+      - name: List installed files for the uninstaller
+        run: |
+          # The uninstaller removes exactly these (deepest folders first), never the whole install folder.
+          $publish = (Resolve-Path $env:PUBLISH_DIR).Path
+          $relative = { param($item) [IO.Path]::GetRelativePath($publish, $item.FullName).Replace('$', '$$') }
+          $lines = @(Get-ChildItem $publish -File -Recurse | ForEach-Object { "  Delete /REBOOTOK `"`$INSTDIR\$(& $relative $_)`"" }) +
+                   @(Get-ChildItem $publish -Directory -Recurse | Sort-Object { $_.FullName.Length } -Descending |
+                       ForEach-Object { "  RMDir /REBOOTOK `"`$INSTDIR\$(& $relative $_)`"" })
+          Set-Content artifacts\uninstall-files.nsh $lines -Encoding utf8BOM
+
+      - name: Install NSIS
+        run: choco install nsis --version=3.12.0 --no-progress -y
+
+      - name: Build installer
+        run: |
+          $version = '${{ steps.version.outputs.value }}'
+          & "${env:ProgramFiles(x86)}\NSIS\makensis.exe" /V2 `
+            "/DVERSION=$version" `
+            "/DPUBLISH_DIR=$((Resolve-Path $env:PUBLISH_DIR).Path)" `
+            "/DUNINSTALL_LIST=$((Resolve-Path artifacts\uninstall-files.nsh).Path)" `
+            "/DPAWNIO_SETUP=$((Resolve-Path artifacts\PawnIO_setup.exe).Path)" `
+            "/DOUTPUT=$PWD\artifacts\OpenSense-$version-Setup-x64.exe" `
+            installer\OpenSense.nsi
+
+      - name: Portable zip
+        run: |
+          # The published app as is, inside an OpenSense folder. Without the service it runs elevated and
+          # owns the firmware itself; settings live in %ProgramData%\OpenSense and %APPDATA%\OpenSense.
+          [IO.Compression.ZipFile]::CreateFromDirectory((Resolve-Path $env:PUBLISH_DIR).Path,
+            "$PWD\artifacts\OpenSense-${{ steps.version.outputs.value }}-Portable-x64.zip", 'Optimal', $true)
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: OpenSense-${{ steps.version.outputs.value }}-x64
+          path: |
+            artifacts/OpenSense-*-Setup-x64.exe
+            artifacts/OpenSense-*-Portable-x64.zip
+          if-no-files-found: error
+
+  release:
+    name: Publish release
+    if: github.ref_type == 'tag'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh release create "$GITHUB_REF_NAME" dist/*.exe dist/*.zip
+          --repo "$GITHUB_REPOSITORY"
+          --title "OpenSense ${GITHUB_REF_NAME#v}"
+          --generate-notes

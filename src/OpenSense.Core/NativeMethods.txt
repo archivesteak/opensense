@@ -1,0 +1,39 @@
+// Performance counters (CPU / GPU load)
+PdhOpenQuery
+PdhAddEnglishCounter
+PdhCollectQueryData
+PdhGetFormattedCounterValue
+PdhGetFormattedCounterArray
+PdhCloseQuery
+PDH_MORE_DATA
+
+// GPU enumeration
+CreateDXGIFactory1
+IDXGIFactory1
+IDXGIAdapter1
+DXGI_ERROR_NOT_FOUND
+DXGI_ADAPTER_FLAG
+
+// Power source
+GetSystemPowerStatus
+
+// Firmware tables (Acer SMBIOS structures)
+GetSystemFirmwareTable
+
+// Sticky keys
+SystemParametersInfo
+STICKYKEYS
+
+// Power plans
+PowerEnumerate
+PowerReadFriendlyName
+PowerGetActiveScheme
+PowerSetActiveScheme
+LocalFree
+
+// Restart after a GPU mode switch
+InitiateShutdown
+OpenProcessToken
+LookupPrivilegeValue
+AdjustTokenPrivileges
+SE_SHUTDOWN_NAME

@@ -1,0 +1,24 @@
+// Window sizing
+GetDpiForWindow
+
+// Keep WinUI's built-in strings (loaded from .mui files) in the app's UI language
+SetProcessPreferredUILanguages
+MUI_LANGUAGE_NAME
+
+// Portable update errors (before any window exists)
+MessageBox
+
+// The NitroSense key (raw input to a message-only window)
+RegisterClassEx
+UnregisterClass
+CreateWindowEx
+DestroyWindow
+DefWindowProc
+GetModuleHandle
+RegisterRawInputDevices
+GetRawInputData
+RAWINPUT
+RI_KEY_BREAK
+RI_KEY_E0
+WM_INPUT
+RID_DEVICE_INFO_TYPE
