@@ -34,6 +34,7 @@ Download the latest version from [**Releases**](https://github.com/archivesteak/
 
 - **`OpenSense-<version>-Setup-x64.exe`**: the installer. It includes everything OpenSense needs and keeps itself up to date.
 - **`OpenSense-<version>-Portable-x64.zip`**: no installation. It asks for administrator rights and controls the laptop only while it's open.
+  It doesn't include the PawnIO driver, so until you install it separately from [PawnIO's releases](https://github.com/namazso/PawnIO.Setup/releases/latest), the CPU temperature comes from the laptop's firmware, which is less exact.
 
 > [!NOTE]
 > Turn off NitroSense (or uninstall it) before using OpenSense, otherwise the two will fight over the fans.
