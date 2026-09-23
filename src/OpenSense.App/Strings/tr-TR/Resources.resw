@@ -1,0 +1,1075 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Nav_Dashboard.Content" xml:space="preserve">
+    <value>Pano</value>
+    <comment>Navigation menu item: the overview page.</comment>
+  </data>
+  <data name="Nav_Fans.Content" xml:space="preserve">
+    <value>Fanlar</value>
+    <comment>Navigation menu item: fan control page.</comment>
+  </data>
+  <data name="Nav_Lighting.Content" xml:space="preserve">
+    <value>Aydınlatma</value>
+    <comment>Navigation menu item: the RGB keyboard lighting page.</comment>
+  </data>
+  <data name="Nav_System.Content" xml:space="preserve">
+    <value>Klavye ve ekran</value>
+    <comment>Navigation menu item: keyboard, display, GPU and power settings.</comment>
+  </data>
+  <data name="Startup_Connecting.Text" xml:space="preserve">
+    <value>Dizüstü bilgisayara bağlanılıyor…</value>
+    <comment>Shown while the app starts.</comment>
+  </data>
+  <data name="Problem_RestartElevated.Content" xml:space="preserve">
+    <value>Yönetici olarak yeniden başlat</value>
+    <comment>Button.</comment>
+  </data>
+  <data name="Problem_StartService.Content" xml:space="preserve">
+    <value>Hizmeti başlat</value>
+    <comment>Button: starts the OpenSense background service.</comment>
+  </data>
+  <data name="Problem_NeedsElevation_Title" xml:space="preserve">
+    <value>Yönetici hakları gerekiyor</value>
+  </data>
+  <data name="Problem_NeedsElevation_Message" xml:space="preserve">
+    <value>Bu taşınabilir kopya, dizüstü bilgisayarın fan ve aydınlatma denetimleriyle doğrudan iletişim kurar ve bunun için yönetici hakları gerekir. Yönetici olarak yeniden başlatın veya bu haklar olmadan çalışması için OpenSense'i yükleyin.</value>
+  </data>
+  <data name="Problem_ServiceUnavailable_Title" xml:space="preserve">
+    <value>OpenSense hizmeti çalışmıyor</value>
+  </data>
+  <data name="Problem_ServiceUnavailable_Message" xml:space="preserve">
+    <value>OpenSense, dizüstü bilgisayarı durdurulmuş olan bir arka plan hizmeti aracılığıyla denetler. Hizmeti başlatın (Windows izin ister) veya sürekli durursa OpenSense'i yeniden yükleyin.</value>
+  </data>
+  <data name="Problem_Unsupported_Title" xml:space="preserve">
+    <value>Acer oyun üretici yazılımı bulunamadı</value>
+  </data>
+  <data name="Problem_Unsupported_Message" xml:space="preserve">
+    <value>Bu bilgisayar Acer'ın oyun WMI arabirimini (AcerGamingFunction) sunmuyor. OpenSense, Acer Nitro ve Predator dizüstü bilgisayarları destekler.</value>
+    <comment>Keep 'AcerGamingFunction' as is.</comment>
+  </data>
+  <data name="Problem_Failed_Title" xml:space="preserve">
+    <value>OpenSense başlatılamadı</value>
+  </data>
+  <data name="Problem_Failed_Message" xml:space="preserve">
+    <value>Beklenmeyen bir hata oluştu. Ayrıntılar günlük klasöründe.</value>
+  </data>
+  <data name="Session_VersionMismatch" xml:space="preserve">
+    <value>OpenSense hizmeti farklı bir sürüm ({0}). Güncellemek için OpenSense'i yeniden yükleyin.</value>
+    <comment>{0} = a version number.</comment>
+  </data>
+  <data name="Notice_Rebuilt_Title" xml:space="preserve">
+    <value>Özellikler güncellendi</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_Rebuilt_Message" xml:space="preserve">
+    <value>OpenSense, fan denetimini yeni ayarlarla yeniden başlattı.</value>
+  </data>
+  <data name="Notice_Service_Title" xml:space="preserve">
+    <value>Hizmet</value>
+    <comment>Banner title: about the OpenSense background service.</comment>
+  </data>
+  <data name="Notice_Reconnected" xml:space="preserve">
+    <value>OpenSense hizmetine yeniden bağlanıldı.</value>
+  </data>
+  <data name="Notice_Disconnected" xml:space="preserve">
+    <value>OpenSense hizmetiyle bağlantı kesildi. Yeniden bağlanılıyor…</value>
+  </data>
+  <data name="Notice_ServiceStartFailed" xml:space="preserve">
+    <value>OpenSense hizmeti başlatılamadı. Ayrıntılar %ProgramData%\OpenSense\logs konumundaki hizmet günlüğünde.</value>
+    <comment>Keep the folder path as is.</comment>
+  </data>
+  <data name="Notice_FanControl_Title" xml:space="preserve">
+    <value>Fan denetimi</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_Keyboard_Title" xml:space="preserve">
+    <value>Klavye</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_Display_Title" xml:space="preserve">
+    <value>Ekran</value>
+    <comment>Banner title: the laptop screen.</comment>
+  </data>
+  <data name="Notice_FirmwareAccessDenied" xml:space="preserve">
+    <value>Acer üretici yazılımı arabirimine erişmek için yönetici hakları gerekir.</value>
+  </data>
+  <data name="Notice_ControlLoopError" xml:space="preserve">
+    <value>Fan denetiminde bir hata oluştu: {0}</value>
+    <comment>{0} = a technical error message (not translated).</comment>
+  </data>
+  <data name="Notice_OperatingModeRejected" xml:space="preserve">
+    <value>Üretici yazılımı çalışma modu değişikliğini reddetti ({0}).</value>
+    <comment>{0} = an operating mode name, e.g. Turbo.</comment>
+  </data>
+  <data name="Notice_CoolBoostRejected" xml:space="preserve">
+    <value>Üretici yazılımı CoolBoost değişikliğini reddetti.</value>
+    <comment>CoolBoost is an Acer feature name: keep it.</comment>
+  </data>
+  <data name="Notice_FansHandedBack" xml:space="preserve">
+    <value>CPU sıcaklığı kullanılamıyor, bu nedenle fanlar Otomatik moduna döndürüldü.</value>
+    <comment>Auto = the automatic fan mode, as in FanMode_Auto.</comment>
+  </data>
+  <data name="Notice_LightingRejected" xml:space="preserve">
+    <value>Klavye aydınlatma değişikliğini reddetti.</value>
+  </data>
+  <data name="Notice_BacklightTimeoutRejected" xml:space="preserve">
+    <value>Klavye arka ışık zaman aşımı değişikliğini reddetti.</value>
+  </data>
+  <data name="Notice_WindowsKeyRejected" xml:space="preserve">
+    <value>Üretici yazılımı Windows tuşu değişikliğini reddetti.</value>
+  </data>
+  <data name="Notice_LcdOverdriveRejected" xml:space="preserve">
+    <value>Ekran overdrive değişikliğini reddetti.</value>
+    <comment>Overdrive = LCD overdrive, a screen setting that speeds up pixel response.</comment>
+  </data>
+  <data name="Notice_PowerPlan_Title" xml:space="preserve">
+    <value>Güç planı</value>
+    <comment>Banner title: a Windows power plan.</comment>
+  </data>
+  <data name="Notice_PowerPlanFailed" xml:space="preserve">
+    <value>Windows "{0}" planına geçmedi.</value>
+    <comment>{0} = a Windows power plan name. Use your language's quotation marks.</comment>
+  </data>
+  <data name="Notice_GpuMode_Title" xml:space="preserve">
+    <value>GPU modu</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_GpuModeRejected" xml:space="preserve">
+    <value>Üretici yazılımı GPU modu değişikliğini reddetti.</value>
+  </data>
+  <data name="Notice_Autostart_Title" xml:space="preserve">
+    <value>Windows ile başlat</value>
+    <comment>Banner title, same as Settings_StartWithWindows.Header.</comment>
+  </data>
+  <data name="Notice_AutostartFailed" xml:space="preserve">
+    <value>Başlangıç girdisi güncellenemedi: {0}</value>
+    <comment>{0} = a technical error message.</comment>
+  </data>
+  <data name="Notice_Diagnostics_Title" xml:space="preserve">
+    <value>Tanılama</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_DiagnosticsCopied" xml:space="preserve">
+    <value>Panoya kopyalandı.</value>
+  </data>
+  <data name="Notice_Updates_Title" xml:space="preserve">
+    <value>Güncelleştirmeler</value>
+    <comment>Banner title: app updates.</comment>
+  </data>
+  <data name="GpuSwitch_DiscreteTitle" xml:space="preserve">
+    <value>Yalnızca ayrı GPU'ya geçilsin mi?</value>
+    <comment>Dialog title. Discrete GPU = the separate NVIDIA graphics chip.</comment>
+  </data>
+  <data name="GpuSwitch_HybridTitle" xml:space="preserve">
+    <value>Hibrit grafiğe geçilsin mi?</value>
+    <comment>Dialog title.</comment>
+  </data>
+  <data name="GpuSwitch_DiscreteMessage" xml:space="preserve">
+    <value>NVIDIA GPU, en iyi oyun performansı için ekranı doğrudan sürer; bunun bedeli pil ömrüdür. Bunu uygulamak için Windows'un yeniden başlatılması gerekir.</value>
+  </data>
+  <data name="GpuSwitch_HybridMessage" xml:space="preserve">
+    <value>Tümleşik GPU ekranı sürer ve ayrı GPU yalnızca gerektiğinde açılır; böylece pil tasarrufu sağlanır. Bunu uygulamak için Windows'un yeniden başlatılması gerekir.</value>
+  </data>
+  <data name="GpuSwitch_RestartNow" xml:space="preserve">
+    <value>Şimdi yeniden başlat</value>
+    <comment>Dialog button: restart Windows now.</comment>
+  </data>
+  <data name="GpuSwitch_RestartLater" xml:space="preserve">
+    <value>Daha sonra yeniden başlat</value>
+    <comment>Dialog button.</comment>
+  </data>
+  <data name="GpuSwitch_Cancel" xml:space="preserve">
+    <value>İptal</value>
+    <comment>Dialog button.</comment>
+  </data>
+  <data name="Chip_Cpu" xml:space="preserve">
+    <value>CPU</value>
+    <comment>The processor. Short: used in labels like 'CPU 45°'.</comment>
+  </data>
+  <data name="Chip_Gpu" xml:space="preserve">
+    <value>GPU</value>
+    <comment>The graphics chip. Short: used in labels like 'GPU 45°'.</comment>
+  </data>
+  <data name="Fan_Cpu" xml:space="preserve">
+    <value>CPU fanı</value>
+  </data>
+  <data name="Fan_Gpu" xml:space="preserve">
+    <value>GPU fanı</value>
+  </data>
+  <data name="FanMode_Auto" xml:space="preserve">
+    <value>Otomatik</value>
+    <comment>Fan mode: the laptop's firmware controls the fans. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Max" xml:space="preserve">
+    <value>Maks.</value>
+    <comment>Fan mode: all fans at full speed. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Custom" xml:space="preserve">
+    <value>Özel</value>
+    <comment>Fan mode: a fixed speed chosen for each fan. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Curve" xml:space="preserve">
+    <value>Eğri</value>
+    <comment>Fan mode: fan speed follows a temperature curve. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Auto_Description" xml:space="preserve">
+    <value>Fanları dizüstü bilgisayarın üretici yazılımı yönetir.</value>
+  </data>
+  <data name="FanMode_Max_Description" xml:space="preserve">
+    <value>Tüm fanlar tam hızda.</value>
+  </data>
+  <data name="FanMode_Custom_Description" xml:space="preserve">
+    <value>Her fan için sabit hız.</value>
+  </data>
+  <data name="FanMode_Curve_Description" xml:space="preserve">
+    <value>OpenSense sıcaklık eğrilerinizi izler.</value>
+  </data>
+  <data name="FanBehavior_Auto" xml:space="preserve">
+    <value>Otomatik (üretici yazılımı)</value>
+    <comment>What a fan is doing right now: controlled by the laptop's firmware.</comment>
+  </data>
+  <data name="FanBehavior_Max" xml:space="preserve">
+    <value>Tam hız</value>
+    <comment>What a fan is doing right now.</comment>
+  </data>
+  <data name="FanBehavior_Emergency" xml:space="preserve">
+    <value>Acil durum tam hızı</value>
+    <comment>What a fan is doing right now: forced to full speed because the temperature is too high.</comment>
+  </data>
+  <data name="FanBehavior_Curve" xml:space="preserve">
+    <value>Eğriyi izliyor</value>
+    <comment>What a fan is doing right now: following the temperature curve.</comment>
+  </data>
+  <data name="FanBehavior_Fixed" xml:space="preserve">
+    <value>Sabit hız</value>
+    <comment>What a fan is doing right now.</comment>
+  </data>
+  <data name="FanLock_QuietMode" xml:space="preserve">
+    <value>Sessiz modu fanları Otomatik modunda tutar.</value>
+    <comment>Quiet = OperatingMode_Quiet; Auto = FanMode_Auto.</comment>
+  </data>
+  <data name="OperatingMode_Eco" xml:space="preserve">
+    <value>Eco</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Quiet" xml:space="preserve">
+    <value>Sessiz</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Balanced" xml:space="preserve">
+    <value>Dengeli</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Performance" xml:space="preserve">
+    <value>Performans</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Turbo" xml:space="preserve">
+    <value>Turbo</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Eco_Description" xml:space="preserve">
+    <value>En uzun pil ömrü.</value>
+  </data>
+  <data name="OperatingMode_Quiet_Description" xml:space="preserve">
+    <value>En düşük gürültü. Fanlar Otomatik modunda kalır.</value>
+    <comment>Auto = FanMode_Auto.</comment>
+  </data>
+  <data name="OperatingMode_Balanced_Description" xml:space="preserve">
+    <value>Günlük kullanım için performans.</value>
+  </data>
+  <data name="OperatingMode_Performance_Description" xml:space="preserve">
+    <value>Daha yüksek güç sınırları. AC güç gerektirir.</value>
+  </data>
+  <data name="OperatingMode_Turbo_Description" xml:space="preserve">
+    <value>En yüksek güç ve soğutma. AC güç gerektirir.</value>
+  </data>
+  <data name="OperatingMode_BatteryNote" xml:space="preserve">
+    <value>Pil gücündeyken, şarj cihazını takana kadar {0} ve {1} modları {2} gibi çalışır.</value>
+    <comment>{0}, {1}, {2} = operating mode names (Performance, Turbo, Balanced).</comment>
+  </data>
+  <data name="PowerSource_PluggedIn" xml:space="preserve">
+    <value>Prize takılı</value>
+    <comment>Power source: the charger is connected.</comment>
+  </data>
+  <data name="PowerSource_Battery" xml:space="preserve">
+    <value>Pil gücü</value>
+    <comment>Power source.</comment>
+  </data>
+  <data name="Gpu_Idle" xml:space="preserve">
+    <value>Boşta</value>
+    <comment>Shown instead of the GPU temperature while the graphics chip is powered down. Short.</comment>
+  </data>
+  <data name="Unit_Rpm" xml:space="preserve">
+    <value>dev/dk</value>
+    <comment>Unit: revolutions per minute (fan speed). Use your language's usual abbreviation.</comment>
+  </data>
+  <data name="Unit_RpmValue" xml:space="preserve">
+    <value>{0} dev/dk</value>
+    <comment>{0} = a fan speed number. Same unit as Unit_Rpm.</comment>
+  </data>
+  <data name="Unit_Seconds" xml:space="preserve">
+    <value>{0} sn</value>
+    <comment>{0} = a number of seconds, e.g. 0.5. Use the usual abbreviation for seconds.</comment>
+  </data>
+  <data name="ListSeparator" xml:space="preserve">
+    <value>, </value>
+    <comment>Separates items in a list inside a sentence, e.g. 'Quiet, Balanced, Performance'. Keep the trailing space if your language uses one.</comment>
+  </data>
+  <data name="Dashboard_Title.Text" xml:space="preserve">
+    <value>Pano</value>
+    <comment>Page title, same as Nav_Dashboard.Content.</comment>
+  </data>
+  <data name="Dashboard_Failsafe.Title" xml:space="preserve">
+    <value>Fanlar üretici yazılımına bırakıldı</value>
+    <comment>Warning banner title.</comment>
+  </data>
+  <data name="Dashboard_Failsafe.Message" xml:space="preserve">
+    <value>CPU sıcaklığı artık bildirilmiyor; bu nedenle, yeniden bildirilene kadar dizüstü bilgisayar fanlarını kendisi denetliyor.</value>
+  </data>
+  <data name="Dashboard_CpuTemperature.Text" xml:space="preserve">
+    <value>CPU sıcaklığı</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_GpuTemperature.Text" xml:space="preserve">
+    <value>GPU sıcaklığı</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_CpuFan.Text" xml:space="preserve">
+    <value>CPU fanı</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_GpuFan.Text" xml:space="preserve">
+    <value>GPU fanı</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_LoadDetail" xml:space="preserve">
+    <value>{0} yük · {1}</value>
+    <comment>Under a temperature: {0} = usage percentage (e.g. 45%), {1} = the chip's model name.</comment>
+  </data>
+  <data name="Dashboard_AsleepDetail" xml:space="preserve">
+    <value>Uykuda · {0}</value>
+    <comment>Under the GPU temperature while the graphics chip is powered down: {0} = its model name.</comment>
+  </data>
+  <data name="Dashboard_RpmDetail" xml:space="preserve">
+    <value>dev/dk · {0} görev döngüsü</value>
+    <comment>Under a fan speed number: rpm = revolutions per minute (as Unit_Rpm); {0} = the fan's duty cycle as a percentage.</comment>
+  </data>
+  <data name="Dashboard_Cooling.Text" xml:space="preserve">
+    <value>Soğutma</value>
+    <comment>Card title.</comment>
+  </data>
+  <data name="Dashboard_CoolBoost.Text" xml:space="preserve">
+    <value>Otomatik modunun fanları daha hızlı döndürmesini sağlar.</value>
+    <comment>Describes CoolBoost (an Acer feature name shown above it). Auto = FanMode_Auto.</comment>
+  </data>
+  <data name="Dashboard_OpenFans.Content" xml:space="preserve">
+    <value>Özel hızlar ve eğriler</value>
+    <comment>Link to the Fans page.</comment>
+  </data>
+  <data name="Dashboard_Performance.Text" xml:space="preserve">
+    <value>Performans</value>
+    <comment>Card title.</comment>
+  </data>
+  <data name="Dashboard_PowerPlan.Header" xml:space="preserve">
+    <value>Windows güç planı</value>
+    <comment>Label above a list of Windows power plans.</comment>
+  </data>
+  <data name="Dashboard_PowerSource.Text" xml:space="preserve">
+    <value>Güç kaynağı</value>
+    <comment>Caption above 'Plugged in' or 'On battery'.</comment>
+  </data>
+  <data name="Dashboard_SystemTemperature.Text" xml:space="preserve">
+    <value>Sistem sıcaklığı</value>
+    <comment>Caption: the laptop's internal temperature.</comment>
+  </data>
+  <data name="Fans_Title.Text" xml:space="preserve">
+    <value>Fanlar</value>
+    <comment>Page title.</comment>
+  </data>
+  <data name="Fans_DutyLabel" xml:space="preserve">
+    <value>{0} görev döngüsü</value>
+    <comment>{0} = the fan's duty cycle as a percentage.</comment>
+  </data>
+  <data name="Fans_AutoToggle.OnContent" xml:space="preserve">
+    <value>Otomatik</value>
+    <comment>Switch label when on: the firmware controls this fan.</comment>
+  </data>
+  <data name="Fans_AutoToggle.OffContent" xml:space="preserve">
+    <value>El ile</value>
+    <comment>Switch label when off: the speed below is used.</comment>
+  </data>
+  <data name="Fans_FanSpeed.Header" xml:space="preserve">
+    <value>Fan hızı</value>
+    <comment>Slider label.</comment>
+  </data>
+  <data name="Fans_Source.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Bu fanı hangi sıcaklığın yönlendirdiği</value>
+    <comment>Tooltip.</comment>
+  </data>
+  <data name="CurveSource_Cpu" xml:space="preserve">
+    <value>CPU sıcaklığı</value>
+    <comment>Which temperature a fan curve follows.</comment>
+  </data>
+  <data name="CurveSource_Gpu" xml:space="preserve">
+    <value>GPU sıcaklığı</value>
+    <comment>Which temperature a fan curve follows.</comment>
+  </data>
+  <data name="CurveSource_Hottest" xml:space="preserve">
+    <value>İkisinden yüksek olanı</value>
+    <comment>Which temperature a fan curve follows: the higher of the CPU and GPU temperatures.</comment>
+  </data>
+  <data name="Fans_Presets.Content" xml:space="preserve">
+    <value>Ön ayarlar</value>
+    <comment>Button that opens a list of ready-made fan curves.</comment>
+  </data>
+  <data name="Fans_PresetSilent.Text" xml:space="preserve">
+    <value>Sessiz</value>
+    <comment>Fan curve preset name.</comment>
+  </data>
+  <data name="Fans_PresetBalanced.Text" xml:space="preserve">
+    <value>Dengeli</value>
+    <comment>Fan curve preset name.</comment>
+  </data>
+  <data name="Fans_PresetPerformance.Text" xml:space="preserve">
+    <value>Performans</value>
+    <comment>Fan curve preset name.</comment>
+  </data>
+  <data name="Fans_CopyCurve.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Bu eğriyi diğer fanlar için de kullan</value>
+    <comment>Tooltip.</comment>
+  </data>
+  <data name="Fans_CurveHelp.Text" xml:space="preserve">
+    <value>Eğriyi şekillendirmek için noktaları sürükleyin · nokta eklemek için çift tıklayın · kaldırmak için sağ tıklayın · ok tuşları seçili noktaya ince ayar yapar</value>
+    <comment>Help under the curve editor.</comment>
+  </data>
+  <data name="CurveEditor_Now" xml:space="preserve">
+    <value>Şimdi {0} · {1}</value>
+    <comment>Label on the curve editor: {0} = the current temperature, {1} = the current fan speed percentage.</comment>
+  </data>
+  <data name="Fans_Safety.Text" xml:space="preserve">
+    <value>Güvenlik ve yanıt</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Fans_Emergency.Header" xml:space="preserve">
+    <value>Acil durum sıcaklığı</value>
+  </data>
+  <data name="Fans_Emergency.Description" xml:space="preserve">
+    <value>Özel ve Eğri modlarında, yongalardan biri bu sıcaklığa ulaşırsa fanlar tam hıza geçer.</value>
+    <comment>Custom, Curve = FanMode_Custom, FanMode_Curve.</comment>
+  </data>
+  <data name="Fans_MinimumSpeed.Header" xml:space="preserve">
+    <value>En düşük fan hızı</value>
+  </data>
+  <data name="Fans_MinimumSpeed.Description" xml:space="preserve">
+    <value>OpenSense'in Özel ve Eğri modlarında isteyeceği en düşük hız.</value>
+  </data>
+  <data name="Fans_SlowDown.Header" xml:space="preserve">
+    <value>Yavaşlama gecikmesi</value>
+    <comment>How many degrees the temperature must fall before the fans slow down (hysteresis).</comment>
+  </data>
+  <data name="Fans_SlowDown.Description" xml:space="preserve">
+    <value>Bir eğrinin fanları yavaşlatmasından önce sıcaklığın ne kadar düşmesi gerektiği. Daha yüksek değerler fanların sürekli hızlanıp yavaşlamasını önler.</value>
+    <comment>'Hunting' = the fans speeding up and slowing down over and over.</comment>
+  </data>
+  <data name="Fans_HandBack.Header" xml:space="preserve">
+    <value>OpenSense durduğunda fanları geri ver</value>
+  </data>
+  <data name="Fans_HandBack.Description" xml:space="preserve">
+    <value>OpenSense hizmeti durduğunda (veya taşınabilir kopya kapandığında), dizüstü bilgisayarın kendi fan denetimi yeniden devreye girer.</value>
+  </data>
+  <data name="Lighting_Title.Text" xml:space="preserve">
+    <value>Aydınlatma</value>
+    <comment>Page title: RGB keyboard lighting.</comment>
+  </data>
+  <data name="Lighting_Static.Content" xml:space="preserve">
+    <value>Sabit renkler</value>
+    <comment>Lighting mode: one fixed colour per keyboard zone.</comment>
+  </data>
+  <data name="Lighting_Effect.Content" xml:space="preserve">
+    <value>Efekt</value>
+    <comment>Lighting mode: an animated effect.</comment>
+  </data>
+  <data name="Lighting_Zone" xml:space="preserve">
+    <value>Bölge {0}</value>
+    <comment>A keyboard lighting zone: {0} = its number.</comment>
+  </data>
+  <data name="Lighting_ZoneColor.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Renk seçin</value>
+    <comment>Tooltip.</comment>
+  </data>
+  <data name="Lighting_AllZones.Text" xml:space="preserve">
+    <value>Tüm bölgeler için tek renk</value>
+  </data>
+  <data name="Lighting_Speed.Header" xml:space="preserve">
+    <value>Hız</value>
+    <comment>Slider label: animation speed.</comment>
+  </data>
+  <data name="Lighting_Direction.Text" xml:space="preserve">
+    <value>Yön</value>
+    <comment>Label: animation direction.</comment>
+  </data>
+  <data name="Lighting_EffectColor.Text" xml:space="preserve">
+    <value>Efekt rengi</value>
+  </data>
+  <data name="Lighting_AnyColor.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Herhangi bir renk</value>
+    <comment>Tooltip of a button that opens a colour picker.</comment>
+  </data>
+  <data name="Effect_Breathing" xml:space="preserve">
+    <value>Nefes</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Neon" xml:space="preserve">
+    <value>Neon</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Wave" xml:space="preserve">
+    <value>Dalga</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Shifting" xml:space="preserve">
+    <value>Kayma</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Zoom" xml:space="preserve">
+    <value>Yakınlaştırma</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Breathing_Description" xml:space="preserve">
+    <value>Renk yavaşça yanıp söner.</value>
+  </data>
+  <data name="Effect_Neon_Description" xml:space="preserve">
+    <value>Gökkuşağının renkleri arasında döner.</value>
+  </data>
+  <data name="Effect_Wave_Description" xml:space="preserve">
+    <value>Bir renk dalgası tuşların üzerinden geçer.</value>
+  </data>
+  <data name="Effect_Shifting_Description" xml:space="preserve">
+    <value>Bir renk bloğu klavyenin üzerinde ilerler.</value>
+  </data>
+  <data name="Effect_Zoom_Description" xml:space="preserve">
+    <value>Renk merkezden dışa doğru yayılır.</value>
+  </data>
+  <data name="Direction_Left" xml:space="preserve">
+    <value>Sol</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Direction_Right" xml:space="preserve">
+    <value>Sağ</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Direction_Up" xml:space="preserve">
+    <value>Yukarı</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Direction_Down" xml:space="preserve">
+    <value>Aşağı</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Brightness_Off" xml:space="preserve">
+    <value>Kapalı</value>
+    <comment>Keyboard backlight brightness: off. Short: shown next to 25%, 50%...</comment>
+  </data>
+  <data name="System_Title.Text" xml:space="preserve">
+    <value>Klavye ve ekran</value>
+    <comment>Page title, same as Nav_System.Content.</comment>
+  </data>
+  <data name="System_Keyboard.Text" xml:space="preserve">
+    <value>Klavye</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="System_BacklightAutoOff.Header" xml:space="preserve">
+    <value>Arka ışığı otomatik kapatma</value>
+    <comment>Keyboard backlight setting.</comment>
+  </data>
+  <data name="System_BacklightAutoOff.Description" xml:space="preserve">
+    <value>30 saniye boyunca yazılmadığında klavye arka ışığını kapatır.</value>
+  </data>
+  <data name="System_WindowsKey.Header" xml:space="preserve">
+    <value>Windows ve Menü tuşları</value>
+    <comment>The Windows logo key and the Menu (application) key.</comment>
+  </data>
+  <data name="System_WindowsKey.Description" xml:space="preserve">
+    <value>Windows ve Menü tuşlarının oyunları kesmesini önlemek için kapatın.</value>
+  </data>
+  <data name="System_StickyKeys.Header" xml:space="preserve">
+    <value>Yapışkan Tuşlar</value>
+    <comment>The Windows accessibility feature: use its official Windows name in your language.</comment>
+  </data>
+  <data name="System_StickyKeys.Description" xml:space="preserve">
+    <value>Değiştirici tuşlar bıraktıktan sonra da basılı kalır; açmak veya kapatmak için Shift tuşuna beş kez basın.</value>
+  </data>
+  <data name="System_Display.Text" xml:space="preserve">
+    <value>Ekran</value>
+    <comment>Section title: the laptop screen.</comment>
+  </data>
+  <data name="System_LcdOverdrive.Header" xml:space="preserve">
+    <value>LCD overdrive</value>
+    <comment>Screen setting that speeds up pixel response.</comment>
+  </data>
+  <data name="System_LcdOverdrive.Description" xml:space="preserve">
+    <value>Dizüstü bilgisayarın yerleşik ekranı için (harici monitörler için değil): oyunlarda daha az hareket bulanıklığı için daha hızlı piksel yanıtı. En iyi, ekranın en yüksek yenileme hızında çalışır; hareketli nesnelerin arkasında hale görürseniz kapatın.</value>
+  </data>
+  <data name="System_Graphics.Text" xml:space="preserve">
+    <value>Grafik</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="System_GpuMode.Header" xml:space="preserve">
+    <value>GPU modu</value>
+    <comment>Setting: hybrid or discrete graphics.</comment>
+  </data>
+  <data name="System_GpuMode.Description" xml:space="preserve">
+    <value>Hibrit, ekran için tümleşik GPU'yu kullanarak pil tasarrufu sağlar. Ayrı, en iyi oyun performansı için NVIDIA GPU'yu doğrudan bağlar. Yeniden başlattıktan sonra uygulanır.</value>
+    <comment>Hybrid, Discrete = System_GpuHybrid, System_GpuDiscrete.</comment>
+  </data>
+  <data name="System_GpuHybrid.Content" xml:space="preserve">
+    <value>Hibrit</value>
+    <comment>GPU mode: both graphics chips (NVIDIA Optimus). Short: a segmented button.</comment>
+  </data>
+  <data name="System_GpuDiscrete.Content" xml:space="preserve">
+    <value>Ayrı</value>
+    <comment>GPU mode: only the NVIDIA graphics chip. Short: a segmented button.</comment>
+  </data>
+  <data name="System_GpuRestart.Title" xml:space="preserve">
+    <value>GPU modunu değiştirmek için yeniden başlatın</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="System_GpuRestart.Message" xml:space="preserve">
+    <value>Yeni GPU modu, Windows yeniden başlatıldıktan sonra etkinleşir.</value>
+  </data>
+  <data name="System_RestartNow.Content" xml:space="preserve">
+    <value>Şimdi yeniden başlat</value>
+    <comment>Button: restart Windows now.</comment>
+  </data>
+  <data name="System_Power.Text" xml:space="preserve">
+    <value>Güç</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="System_PowerPlan.Header" xml:space="preserve">
+    <value>Güç planı</value>
+    <comment>Windows power plan setting.</comment>
+  </data>
+  <data name="System_PowerPlan.Description" xml:space="preserve">
+    <value>Kullanılan Windows güç planı.</value>
+  </data>
+  <data name="Settings_Title.Text" xml:space="preserve">
+    <value>Ayarlar</value>
+    <comment>Page title.</comment>
+  </data>
+  <data name="Settings_Startup.Text" xml:space="preserve">
+    <value>Başlangıç</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_StartWithWindows.Header" xml:space="preserve">
+    <value>Windows ile başlat</value>
+  </data>
+  <data name="Settings_StartWithWindows.Description" xml:space="preserve">
+    <value>Oturum açtığınızda OpenSense'i bildirim alanında açar. Fan denetimi buna bağlı değildir.</value>
+    <comment>Notification area = the Windows system tray.</comment>
+  </data>
+  <data name="Settings_NitroSenseKey.Header" xml:space="preserve">
+    <value>NitroSense tuşuyla aç</value>
+    <comment>NitroSense is Acer's app; the laptop has a key for it. Keep the name.</comment>
+  </data>
+  <data name="Settings_NitroSenseKey.Description" xml:space="preserve">
+    <value>Klavyedeki NitroSense tuşu, NitroSense'i açtığı gibi OpenSense'i açar. OpenSense bildirim alanındayken çalışır.</value>
+  </data>
+  <data name="Settings_StartMinimized.Header" xml:space="preserve">
+    <value>Bildirim alanına simge durumunda başlat</value>
+  </data>
+  <data name="Settings_CloseToTray.Header" xml:space="preserve">
+    <value>Pencere kapatıldığında çalışmaya devam et</value>
+  </data>
+  <data name="Settings_CloseToTray.Description" xml:space="preserve">
+    <value>Pencereyi kapatmak bildirim alanı simgesini korur. Simgenin menüsünden çıkın.</value>
+  </data>
+  <data name="Settings_Appearance.Text" xml:space="preserve">
+    <value>Görünüm</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_Language.Header" xml:space="preserve">
+    <value>Dil</value>
+    <comment>Setting: the app's language.</comment>
+  </data>
+  <data name="Language_System" xml:space="preserve">
+    <value>Sistem ayarını kullan</value>
+    <comment>First entry in the language list: follow the Windows language.</comment>
+  </data>
+  <data name="Settings_LanguageRestart.Title" xml:space="preserve">
+    <value>Dili değiştirmek için yeniden başlatın</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Settings_LanguageRestart.Message" xml:space="preserve">
+    <value>OpenSense yeni dili yeniden başlatıldıktan sonra gösterir.</value>
+  </data>
+  <data name="Settings_LanguageRestartNow.Content" xml:space="preserve">
+    <value>Şimdi yeniden başlat</value>
+    <comment>Button: restart OpenSense now.</comment>
+  </data>
+  <data name="Settings_Theme.Header" xml:space="preserve">
+    <value>Tema</value>
+    <comment>Setting: light or dark colours.</comment>
+  </data>
+  <data name="Theme_System" xml:space="preserve">
+    <value>Sistem ayarını kullan</value>
+    <comment>Theme choice: follow Windows.</comment>
+  </data>
+  <data name="Theme_Light" xml:space="preserve">
+    <value>Açık</value>
+    <comment>Theme choice.</comment>
+  </data>
+  <data name="Theme_Dark" xml:space="preserve">
+    <value>Koyu</value>
+    <comment>Theme choice.</comment>
+  </data>
+  <data name="Settings_Fahrenheit.Header" xml:space="preserve">
+    <value>Sıcaklıkları Fahrenhayt olarak göster</value>
+  </data>
+  <data name="Settings_Interval.Header" xml:space="preserve">
+    <value>Güncelleştirme aralığı</value>
+    <comment>Setting: how often sensors are read.</comment>
+  </data>
+  <data name="Settings_Interval.Description" xml:space="preserve">
+    <value>Bu bilgisayardaki herkes için sensörlerin ne sıklıkta okunacağı ve fan eğrilerinin ne sıklıkta güncelleneceği.</value>
+  </data>
+  <data name="Settings_Laptop.Text" xml:space="preserve">
+    <value>Dizüstü bilgisayarınız</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_UnknownModel" xml:space="preserve">
+    <value>Acer dizüstü bilgisayar</value>
+    <comment>Shown when the laptop's model name is unknown.</comment>
+  </data>
+  <data name="Settings_Bios" xml:space="preserve">
+    <value>BIOS {0}</value>
+    <comment>{0} = the BIOS version.</comment>
+  </data>
+  <data name="Settings_BiosUnknown" xml:space="preserve">
+    <value>BIOS sürümü bilinmiyor</value>
+  </data>
+  <data name="Settings_Sensors.Header" xml:space="preserve">
+    <value>Sıcaklık sensörleri</value>
+  </data>
+  <data name="Settings_SensorSources" xml:space="preserve">
+    <value>CPU: {0}
+GPU: {1}</value>
+    <comment>Two lines: {0}, {1} = where each temperature comes from (Sensor_* texts).</comment>
+  </data>
+  <data name="Sensor_IntelPackage" xml:space="preserve">
+    <value>Intel paket sensörü (TjMax {0} °C)</value>
+    <comment>The Intel CPU's own temperature sensor. {0} = a temperature. Keep 'TjMax'.</comment>
+  </data>
+  <data name="Sensor_AmdTctl" xml:space="preserve">
+    <value>AMD Tctl sensörü</value>
+    <comment>The AMD CPU's own temperature sensor. Keep 'Tctl'.</comment>
+  </data>
+  <data name="Sensor_NvidiaDriver" xml:space="preserve">
+    <value>NVIDIA sürücüsü</value>
+    <comment>Temperature read from the NVIDIA graphics driver.</comment>
+  </data>
+  <data name="Sensor_EmbeddedController" xml:space="preserve">
+    <value>Gömülü denetleyici</value>
+    <comment>The laptop's embedded controller (EC) chip, which also reports temperatures.</comment>
+  </data>
+  <data name="Sensor_EmbeddedControllerBecause" xml:space="preserve">
+    <value>Gömülü denetleyici ({0})</value>
+    <comment>{0} = why the chip's own sensor isn't used (one of the SensorProblem_* texts).</comment>
+  </data>
+  <data name="SensorProblem_NotX86Cpu" xml:space="preserve">
+    <value>x86 CPU değil</value>
+    <comment>Reason in parentheses after 'Embedded controller': starts lowercase in English.</comment>
+  </data>
+  <data name="SensorProblem_UnsupportedCpuVendor" xml:space="preserve">
+    <value>desteklenmeyen CPU üreticisi {0}</value>
+    <comment>Reason in parentheses. {0} = a CPU vendor code such as 'GenuineIntel'.</comment>
+  </data>
+  <data name="SensorProblem_NoPackageSensor" xml:space="preserve">
+    <value>bu Intel CPU'da paket sıcaklık sensörü yok</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_ImplausibleTjMax" xml:space="preserve">
+    <value>CPU, {0} °C gibi akla yatkın olmayan bir TjMax bildirdi</value>
+    <comment>Reason in parentheses. Keep 'TjMax'. {0} = a number.</comment>
+  </data>
+  <data name="SensorProblem_NoReading" xml:space="preserve">
+    <value>sensör yanıt vermedi</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_PciLockUnavailable" xml:space="preserve">
+    <value>paylaşılan PCI kilidi açılamadı: {0}</value>
+    <comment>Reason in parentheses. {0} = a technical error message.</comment>
+  </data>
+  <data name="SensorProblem_NoNvidiaDriver" xml:space="preserve">
+    <value>NVIDIA sürücüsü bulunamadı</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_NvmlTooOld" xml:space="preserve">
+    <value>NVIDIA sürücüsü çok eski</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_PawnIONotInstalled" xml:space="preserve">
+    <value>PawnIO yüklü değil</value>
+    <comment>Reason in parentheses. PawnIO is a driver's name: keep it.</comment>
+  </data>
+  <data name="SensorProblem_PawnIOUnavailable" xml:space="preserve">
+    <value>PawnIO açılamadı ({0})</value>
+    <comment>Reason in parentheses. {0} = an error code.</comment>
+  </data>
+  <data name="SensorProblem_PawnIOModuleRefused" xml:space="preserve">
+    <value>PawnIO bir modülü reddetti ({0})</value>
+    <comment>Reason in parentheses. {0} = a module name and an error code.</comment>
+  </data>
+  <data name="Settings_GetPawnIO.Content" xml:space="preserve">
+    <value>Kesin CPU değerleri için PawnIO'yu edinin</value>
+    <comment>Link. PawnIO is a driver's name: keep it.</comment>
+  </data>
+  <data name="Settings_OperatingModes.Header" xml:space="preserve">
+    <value>Çalışma modları</value>
+    <comment>Setting: use Acer's operating modes (Eco, Quiet, Balanced...).</comment>
+  </data>
+  <data name="Settings_OperatingModes_Supported" xml:space="preserve">
+    <value>{0}; Acer'ın yazılımı bu modelde bunları bu şekilde sunar. {1}</value>
+    <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
+  </data>
+  <data name="Settings_OperatingModes_Unused" xml:space="preserve">
+    <value>Üretici yazılımınız {0} modlarını listeliyor, ancak Acer'ın yazılımı bu modelde bunları kullanmıyor ve hiçbir şeyi değiştirmeyebilirler. {1}</value>
+    <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
+  </data>
+  <data name="Settings_OperatingModes_CoolBoost" xml:space="preserve">
+    <value>Bunlar kapalıyken CoolBoost kullanılabilir.</value>
+    <comment>They = the operating modes.</comment>
+  </data>
+  <data name="Settings_OperatingModes_Default" xml:space="preserve">
+    <value>Bunlar kapalıyken dizüstü bilgisayar varsayılan modunda kalır.</value>
+    <comment>They = the operating modes.</comment>
+  </data>
+  <data name="Settings_Updates.Text" xml:space="preserve">
+    <value>Güncelleştirmeler</value>
+    <comment>Section title: app updates.</comment>
+  </data>
+  <data name="Settings_CheckNow.Content" xml:space="preserve">
+    <value>Şimdi denetle</value>
+    <comment>Button: check for updates now.</comment>
+  </data>
+  <data name="Settings_AutoUpdate.Header" xml:space="preserve">
+    <value>Güncelleştirmeleri otomatik olarak denetle</value>
+  </data>
+  <data name="Settings_AutoUpdate.Description" xml:space="preserve">
+    <value>Günde bir kez, projenin GitHub sürümlerinden. İndirilenler yüklenmeden önce GitHub'ın yayımladığı SHA-256 sağlama toplamıyla karşılaştırılır.</value>
+  </data>
+  <data name="Settings_Troubleshooting.Text" xml:space="preserve">
+    <value>Sorun giderme</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_Diagnostics.Header" xml:space="preserve">
+    <value>Tanılama</value>
+  </data>
+  <data name="Settings_Diagnostics.Description" xml:space="preserve">
+    <value>Özellik algılamasından gelen işlenmemiş üretici yazılımı yanıtları. Bir sorun veya yeni bir model bildirirken bunları ekleyin.</value>
+    <comment>The copied diagnostics stay in English for the developers.</comment>
+  </data>
+  <data name="Settings_Copy.Content" xml:space="preserve">
+    <value>Kopyala</value>
+    <comment>Button: copy the diagnostics to the clipboard.</comment>
+  </data>
+  <data name="Settings_ServiceLogs.Content" xml:space="preserve">
+    <value>Hizmet günlükleri</value>
+    <comment>Button: opens the background service's log folder.</comment>
+  </data>
+  <data name="Settings_AppLogs.Content" xml:space="preserve">
+    <value>Uygulama günlükleri</value>
+    <comment>Button: opens the app's log folder.</comment>
+  </data>
+  <data name="Settings_About.Text" xml:space="preserve">
+    <value>Hakkında</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_AboutOpenSense.Description" xml:space="preserve">
+    <value>Acer Nitro ve Predator dizüstü bilgisayarlar için açık kaynaklı fan, performans ve aydınlatma denetimi.</value>
+  </data>
+  <data name="Settings_Version" xml:space="preserve">
+    <value>Sürüm {0}</value>
+    <comment>{0} = a version number.</comment>
+  </data>
+  <data name="Settings_Mode_Portable" xml:space="preserve">
+    <value>Taşınabilir kopya: yönetici olarak çalışır ve açık olduğu sürece dizüstü bilgisayarı kendisi denetler.</value>
+  </data>
+  <data name="Settings_Mode_Installed" xml:space="preserve">
+    <value>Yüklü: OpenSense hizmeti, bu pencere açık olsun ya da olmasın dizüstü bilgisayarı başlangıçtan itibaren denetler.</value>
+  </data>
+  <data name="Settings_Trademarks.Text" xml:space="preserve">
+    <value>OpenSense bağımsız bir projedir; Acer ile bağlantılı değildir ve Acer tarafından onaylanmamıştır. Acer, Nitro, Predator ve NitroSense, Acer Inc.'in ticari markalarıdır. GNU General Public License v3.0 veya sonraki bir sürümü altında yayımlanmıştır.</value>
+    <comment>Legal notice: translate faithfully and keep the names.</comment>
+  </data>
+  <data name="Update_Install.Content" xml:space="preserve">
+    <value>Şimdi güncelleştir</value>
+    <comment>Button: download and install the update.</comment>
+  </data>
+  <data name="Update_WhatsNew.Content" xml:space="preserve">
+    <value>Yenilikler</value>
+    <comment>Link to the release notes.</comment>
+  </data>
+  <data name="Update_Skip.Content" xml:space="preserve">
+    <value>Bu sürümü atla</value>
+    <comment>Link.</comment>
+  </data>
+  <data name="Update_BannerTitle" xml:space="preserve">
+    <value>OpenSense {0} kullanılabilir</value>
+    <comment>{0} = a version number.</comment>
+  </data>
+  <data name="Update_Downloading" xml:space="preserve">
+    <value>İndiriliyor… {0}</value>
+    <comment>{0} = progress as a percentage.</comment>
+  </data>
+  <data name="Update_NoAsset" xml:space="preserve">
+    <value>Bu sürümde bu kopya için bir indirme yok; sürüm sayfasına bakın.</value>
+  </data>
+  <data name="Update_InstallerHint" xml:space="preserve">
+    <value>Yüklemek ve OpenSense'i yeniden açmak için "Şimdi güncelleştir"e tıklayın (Windows izin ister).</value>
+    <comment>'Update now' = Update_Install.Content.</comment>
+  </data>
+  <data name="Update_PortableHint" xml:space="preserve">
+    <value>Bu taşınabilir kopyayı değiştirip yeniden açmak için "Şimdi güncelleştir"e tıklayın.</value>
+    <comment>'Update now' = Update_Install.Content.</comment>
+  </data>
+  <data name="Update_Checking" xml:space="preserve">
+    <value>Güncelleştirmeler denetleniyor…</value>
+  </data>
+  <data name="Update_UpToDate" xml:space="preserve">
+    <value>Güncel. {0}</value>
+    <comment>{0} = Update_LastChecked or Update_NotChecked.</comment>
+  </data>
+  <data name="Update_Latest" xml:space="preserve">
+    <value>{0} en son sürüm.</value>
+    <comment>{0} = 'OpenSense' and a version number.</comment>
+  </data>
+  <data name="Update_Skipped" xml:space="preserve">
+    <value>{0} sürümü atlandı. {1}</value>
+    <comment>{0} = a version number; {1} = Update_LastChecked or Update_NotChecked.</comment>
+  </data>
+  <data name="Update_Available" xml:space="preserve">
+    <value>{0} sürümü kullanılabilir. {1}</value>
+    <comment>{0} = a version number; {1} = Update_LastChecked or Update_NotChecked.</comment>
+  </data>
+  <data name="Update_LastChecked" xml:space="preserve">
+    <value>Son denetim: {0}.</value>
+    <comment>{0} = a date and time.</comment>
+  </data>
+  <data name="Update_NotChecked" xml:space="preserve">
+    <value>Henüz denetlenmedi.</value>
+  </data>
+  <data name="Update_OpenToUpdate" xml:space="preserve">
+    <value>Güncelleştirmek için OpenSense'i açın.</value>
+    <comment>Notification balloon.</comment>
+  </data>
+  <data name="Update_CheckFailed" xml:space="preserve">
+    <value>Güncelleştirmeler denetlenemedi: {0}</value>
+    <comment>{0} = a technical error message.</comment>
+  </data>
+  <data name="Update_Cancelled" xml:space="preserve">
+    <value>Güncelleştirme iptal edildi.</value>
+  </data>
+  <data name="Update_Failed" xml:space="preserve">
+    <value>Güncelleştirme başarısız oldu: {0}</value>
+    <comment>{0} = the reason, possibly a technical error message.</comment>
+  </data>
+  <data name="Update_NoDigest" xml:space="preserve">
+    <value>GitHub bu indirme için SHA-256 sağlama toplamı yayımlamadı, bu nedenle doğrulanamıyor.</value>
+  </data>
+  <data name="Update_DigestMismatch" xml:space="preserve">
+    <value>İndirilen dosya, GitHub'ın yayımladığı SHA-256 sağlama toplamıyla eşleşmiyor.</value>
+  </data>
+  <data name="Update_NoExecutable" xml:space="preserve">
+    <value>Taşınabilir güncelleştirme OpenSense.exe dosyasını içermiyor.</value>
+  </data>
+  <data name="Update_OldCopyRunning" xml:space="preserve">
+    <value>Çalışan OpenSense kapanmadı.</value>
+  </data>
+  <data name="PortableUpdate_Caption" xml:space="preserve">
+    <value>OpenSense güncelleştirmesi</value>
+    <comment>Message box title.</comment>
+  </data>
+  <data name="PortableUpdate_Failed" xml:space="preserve">
+    <value>OpenSense güncelleştirilemedi, bu nedenle önceki sürüm korundu.
+
+{0}
+
+Ayrıntılar: {1}</value>
+    <comment>{0} = the reason; {1} = a log file path.</comment>
+  </data>
+  <data name="Tray_Open" xml:space="preserve">
+    <value>OpenSense'i aç</value>
+    <comment>Menu item of the notification area icon.</comment>
+  </data>
+  <data name="Tray_FanMode" xml:space="preserve">
+    <value>Fan modu</value>
+    <comment>Submenu of the notification area icon.</comment>
+  </data>
+  <data name="Tray_OperatingMode" xml:space="preserve">
+    <value>Çalışma modu</value>
+    <comment>Submenu of the notification area icon.</comment>
+  </data>
+  <data name="Tray_Exit" xml:space="preserve">
+    <value>Çıkış</value>
+    <comment>Menu item: quit OpenSense.</comment>
+  </data>
+</root>

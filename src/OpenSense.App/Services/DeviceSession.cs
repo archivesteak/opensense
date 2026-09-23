@@ -2,6 +2,7 @@ using System.ServiceProcess;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
+using OpenSense.App.Localization;
 using OpenSense.Core.Control;
 using OpenSense.Core.Engine;
 using OpenSense.Core.Hardware;
@@ -81,7 +82,8 @@ public sealed partial class DeviceSession : IDisposable
     /// <summary>Connected to the OpenSense service.</summary>
     public bool UsesService => _connection is not null;
 
-    public string DeviceName => _snapshot.DeviceName;
+    /// <summary>The laptop's model name, if the firmware reports one.</summary>
+    public string? DeviceName => _snapshot.DeviceName;
 
     public string? BiosVersion => _snapshot.BiosVersion;
 
@@ -117,7 +119,7 @@ public sealed partial class DeviceSession : IDisposable
 
     public event Action<Telemetry>? TelemetryUpdated;
 
-    public event Action<EngineNotice>? Notice;
+    public event Action<ControlNotice>? Notice;
 
     /// <summary>The snapshot was replaced; views should reload from it.</summary>
     public event Action<SessionChange>? Changed;
@@ -293,7 +295,7 @@ public sealed partial class DeviceSession : IDisposable
         TelemetryUpdated?.Invoke(telemetry);
     }
 
-    private void OnNotice(object? sender, EngineNotice notice) => Notice?.Invoke(notice);
+    private void OnNotice(object? sender, ControlNotice notice) => Notice?.Invoke(notice);
 
     private void OnRebuilt(object? sender, EngineSnapshot snapshot)
     {
@@ -346,8 +348,7 @@ public sealed partial class DeviceSession : IDisposable
     {
         if (snapshot.ProtocolVersion != OpenSensePipe.ProtocolVersion)
         {
-            throw new InvalidOperationException(
-                $"The OpenSense service is a different version ({snapshot.EngineVersion}). Reinstall OpenSense to update it.");
+            throw new InvalidOperationException(Strings.Format("Session_VersionMismatch", snapshot.EngineVersion));
         }
         lock (_gate)
             _snapshot = snapshot;

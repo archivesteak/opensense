@@ -3,10 +3,13 @@ using System.Diagnostics;
 using System.ServiceProcess;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
+using OpenSense.App.Localization;
 using OpenSense.App.Services;
 using OpenSense.App.Startup;
 using OpenSense.Core.Hardware;
 using OpenSense.Core.Ipc;
+using OpenSense.Core.Settings;
+using Windows.Win32.UI.WindowsAndMessaging;
 
 namespace OpenSense.App;
 
@@ -14,6 +17,7 @@ public static class Program
 {
     private const int ErrorCancelled = 1223; // the user declined the UAC prompt
     private static readonly TimeSpan ServiceStartTimeout = TimeSpan.FromSeconds(30);
+    private static readonly TimeSpan RestartTimeout = TimeSpan.FromSeconds(30);
 
     [STAThread]
     private static int Main(string[] args)
@@ -35,6 +39,10 @@ public static class Program
                 return ApplyUpdate(options);
         }
 
+        // Restarting (to change the language): let the old copy finish handing over first.
+        if (options.WaitForProcess is { } pid)
+            WaitForExit(pid);
+
         // Already running? Bring it forward.
         if (SingleInstance.SignalExisting())
             return 0;
@@ -48,7 +56,7 @@ public static class Program
         if (instance is null)
             return 0;
 
-        UseEnglishUi();
+        ApplyLanguage();
         WinRT.ComWrappersSupport.InitializeComWrappers();
         Application.Start(callbackParams =>
         {
@@ -58,16 +66,19 @@ public static class Program
         return 0;
     }
 
-    /// <summary>
-    /// OpenSense ships in English only for now. WinUI loads its built-in strings (toggle labels,
-    /// dialog buttons, the colour picker) from .mui resources by the process's preferred UI
-    /// languages, so set those to match rather than mixing languages on screen.
-    /// </summary>
-    private static unsafe void UseEnglishUi()
+    /// <summary>The user's language choice, before anything loads a string.</summary>
+    private static void ApplyLanguage() => AppLanguage.Apply(new SettingsStore<UserSettings>(SettingsPaths.User).Load().Ui.Language);
+
+    private static void WaitForExit(int pid)
     {
-        fixed (char* languages = "en-US\0\0")
+        try
         {
-            Windows.Win32.PInvoke.SetProcessPreferredUILanguages(Windows.Win32.PInvoke.MUI_LANGUAGE_NAME, languages, null);
+            using var old = Process.GetProcessById(pid);
+            old.WaitForExit(RestartTimeout);
+        }
+        catch (ArgumentException)
+        {
+            // already gone
         }
     }
 
@@ -98,6 +109,7 @@ public static class Program
 
     private static int ApplyUpdate(LaunchOptions options)
     {
+        ApplyLanguage();
         var logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "OpenSense", "logs", "update.log");
         Directory.CreateDirectory(Path.GetDirectoryName(logPath)!);
         void Log(string message) => File.AppendAllText(logPath, $"{DateTime.Now:O} {message}{Environment.NewLine}");
@@ -109,9 +121,10 @@ public static class Program
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or System.TimeoutException)
         {
             Log(ex.ToString());
-            Windows.Win32.PInvoke.MessageBox(default,
-                $"OpenSense could not be updated, so the previous version was kept.\n\n{ex.Message}\n\nDetails: {logPath}",
-                "OpenSense update", Windows.Win32.UI.WindowsAndMessaging.MESSAGEBOX_STYLE.MB_ICONWARNING);
+            var style = MESSAGEBOX_STYLE.MB_ICONWARNING;
+            if (AppLanguage.IsRightToLeft)
+                style |= MESSAGEBOX_STYLE.MB_RTLREADING | MESSAGEBOX_STYLE.MB_RIGHT;
+            Windows.Win32.PInvoke.MessageBox(default, Strings.Format("PortableUpdate_Failed", ex.Message, logPath), Strings.Get("PortableUpdate_Caption"), style);
             return 1;
         }
     }

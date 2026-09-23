@@ -35,7 +35,7 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
 
     private EngineState _state = EngineState.Starting;
     private string? _error;
-    private string _deviceName = "";
+    private string? _deviceName;
     private string? _biosVersion;
     private DeviceCapabilities _detected = DeviceCapabilities.None;
     private DeviceCapabilities _capabilities = DeviceCapabilities.None;
@@ -55,7 +55,7 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
 
     public event EventHandler<Telemetry>? TelemetryUpdated;
 
-    public event EventHandler<EngineNotice>? NoticeRaised;
+    public event EventHandler<ControlNotice>? NoticeRaised;
 
     public event EventHandler<EngineSnapshot>? Rebuilt;
 
@@ -78,10 +78,10 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
                 return;
             }
 
-            _deviceName = _machine.Model ?? "Acer laptop";
+            _deviceName = _machine.Model;
             _biosVersion = _machine.BiosVersion;
             _detected = CapabilityProbe.Probe(device, _machine.ReadHints(), _machine.ReadSmbios());
-            LogDetected(_deviceName, _detected.Diagnostics);
+            LogDetected(_deviceName ?? "Unknown model", _detected.Diagnostics);
             _capabilities = Current.Overrides.Apply(_detected);
 
             _firmware = FirmwareState.Read(device, _capabilities);
@@ -217,7 +217,7 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
         Firmware = _firmware,
         Keyboard = _keyboardAtStart,
         Settings = Current,
-        TemperatureSources = new TemperatureSources(_sensors.CpuStatus, _sensors.GpuStatus, _sensors.PawnIOMissing),
+        TemperatureSources = new TemperatureSources(_sensors.CpuStatus, _sensors.GpuStatus),
         Latest = _controller?.Latest,
     };
 
@@ -229,23 +229,23 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
             Interval = TimeSpan.FromMilliseconds(Math.Clamp(settings.PollIntervalMs, 250, 5000)),
         };
         _controller.TelemetryUpdated += OnTelemetry;
-        _controller.Notice += OnControlNotice;
+        _controller.Notice += OnNotice;
         _controller.Start();
 
         _keyboard = new KeyboardService(_controller, _capabilities.Keyboard);
-        _keyboard.Notice += OnKeyboardNotice;
+        _keyboard.Notice += OnNotice;
         _ = _keyboard.ApplyAsync(settings.Keyboard);
     }
 
     private void StopControl()
     {
         if (_keyboard is { } keyboard)
-            keyboard.Notice -= OnKeyboardNotice;
+            keyboard.Notice -= OnNotice;
         _keyboard = null;
         if (_controller is { } controller)
         {
             controller.TelemetryUpdated -= OnTelemetry;
-            controller.Notice -= OnControlNotice;
+            controller.Notice -= OnNotice;
             controller.Dispose(); // hands the fans back to the firmware if configured
         }
         _controller = null;
@@ -253,14 +253,10 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
 
     private void OnTelemetry(Telemetry telemetry) => TelemetryUpdated?.Invoke(this, telemetry);
 
-    private void OnControlNotice(ControlNotice notice) => Notify("Fan control", notice.Message, notice.Important);
-
-    private void OnKeyboardNotice(string message) => Notify("Keyboard", message, important: false);
-
-    private void Notify(string title, string message, bool important)
+    private void OnNotice(ControlNotice notice)
     {
-        LogNotice(title, message);
-        NoticeRaised?.Invoke(this, new EngineNotice(title, message, important));
+        LogNotice(notice.Kind, notice.OperatingMode, notice.Detail);
+        NoticeRaised?.Invoke(this, notice);
     }
 
     private void AdoptFirmwareState()
@@ -334,7 +330,7 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
     private partial void LogUnsupported();
 
     [LoggerMessage(Level = LogLevel.Information, Message = "Temperature sources: CPU {Cpu}; GPU {Gpu}")]
-    private partial void LogSensors(string cpu, string gpu);
+    private partial void LogSensors(SensorStatus cpu, SensorStatus gpu);
 
     [LoggerMessage(Level = LogLevel.Error, Message = "Engine failed to start")]
     private partial void LogStartFailed(Exception ex);
@@ -345,8 +341,8 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
     [LoggerMessage(Level = LogLevel.Information, Message = "GPU mode {Mode} requested, accepted: {Accepted}")]
     private partial void LogGpuMode(GpuMode mode, bool accepted);
 
-    [LoggerMessage(Level = LogLevel.Warning, Message = "{Title}: {Message}")]
-    private partial void LogNotice(string title, string message);
+    [LoggerMessage(Level = LogLevel.Warning, Message = "Notice {Kind} {Mode} {Detail}")]
+    private partial void LogNotice(NoticeKind kind, OperatingMode? mode, string? detail);
 
     [LoggerMessage(Level = LogLevel.Error, Message = "Could not save settings to {Path}")]
     private partial void LogSaveFailed(Exception ex, string path);

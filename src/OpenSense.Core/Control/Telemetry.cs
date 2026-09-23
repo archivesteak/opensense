@@ -3,6 +3,13 @@ using OpenSense.Core.Monitoring;
 
 namespace OpenSense.Core.Control;
 
+/// <summary>Why manual fan control is unavailable.</summary>
+public enum FanLock
+{
+    /// <summary>The Quiet operating mode keeps the fans on Auto.</summary>
+    QuietMode,
+}
+
 /// <param name="Duty">Duty (%) the firmware reports it is driving the fan at, in any mode.</param>
 /// <param name="CommandedPercent">Duty OpenSense last commanded (Custom / Curve only).</param>
 public sealed record FanTelemetry(FanId Id, int? Rpm, int? Duty, FanBehavior Behavior, int? CommandedPercent);
@@ -28,7 +35,7 @@ public sealed record Telemetry
     public FanControlMode EffectiveMode { get; init; }
 
     /// <summary>Why manual fan control is currently unavailable, if it is.</summary>
-    public string? FanLockReason { get; init; }
+    public FanLock? FanLock { get; init; }
 
     public OperatingMode? OperatingMode { get; init; }
     public bool? CoolBoost { get; init; }

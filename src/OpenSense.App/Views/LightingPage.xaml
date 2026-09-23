@@ -29,7 +29,7 @@
             MaxWidth="{StaticResource PageMaxWidth}"
             Padding="{StaticResource PagePadding}"
             Spacing="16">
-            <TextBlock Style="{StaticResource PageTitleStyle}" Text="Lighting" />
+            <TextBlock x:Uid="Lighting_Title" Style="{StaticResource PageTitleStyle}" />
 
             <!-- Preview + brightness -->
             <Border Padding="24" Style="{StaticResource CardStyle}">
@@ -56,12 +56,12 @@
             <toolkit:Segmented
                 HorizontalAlignment="Stretch"
                 SelectedIndex="{x:Bind ViewModel.ModeIndex, Mode=TwoWay}">
-                <toolkit:SegmentedItem Content="Static colours">
+                <toolkit:SegmentedItem x:Uid="Lighting_Static">
                     <toolkit:SegmentedItem.Icon>
                         <FontIcon Glyph="&#xE790;" />
                     </toolkit:SegmentedItem.Icon>
                 </toolkit:SegmentedItem>
-                <toolkit:SegmentedItem Content="Effect">
+                <toolkit:SegmentedItem x:Uid="Lighting_Effect">
                     <toolkit:SegmentedItem.Icon>
                         <FontIcon Glyph="&#xE945;" />
                     </toolkit:SegmentedItem.Icon>
@@ -95,11 +95,11 @@
                                             OnContent="" />
                                     </Grid>
                                     <Button
+                                        x:Uid="Lighting_ZoneColor"
                                         Height="44"
                                         HorizontalAlignment="Stretch"
                                         CornerRadius="8"
-                                        IsEnabled="{x:Bind On, Mode=OneWay}"
-                                        ToolTipService.ToolTip="Choose a colour">
+                                        IsEnabled="{x:Bind On, Mode=OneWay}">
                                         <Button.Background>
                                             <SolidColorBrush Color="{x:Bind Color, Mode=OneWay}" />
                                         </Button.Background>
@@ -123,7 +123,7 @@
 
                 <Border Style="{StaticResource CardStyle}">
                     <StackPanel Spacing="10">
-                        <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="One colour for every zone" />
+                        <TextBlock x:Uid="Lighting_AllZones" Style="{StaticResource BodyStrongTextBlockStyle}" />
                         <ItemsRepeater ItemTemplate="{StaticResource SwatchTemplate}" ItemsSource="{x:Bind vm:LightingViewModel.Swatches}" Tag="all">
                             <ItemsRepeater.Layout>
                                 <StackLayout Orientation="Horizontal" Spacing="10" />
@@ -155,7 +155,7 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Slider
-                                Header="Speed"
+                                x:Uid="Lighting_Speed"
                                 Maximum="9"
                                 Minimum="1"
                                 StepFrequency="1"
@@ -166,7 +166,7 @@
                                 Grid.Column="1"
                                 Spacing="6"
                                 Visibility="{x:Bind ViewModel.EffectUsesDirection, Mode=OneWay}">
-                                <TextBlock Text="Direction" />
+                                <TextBlock x:Uid="Lighting_Direction" />
                                 <toolkit:Segmented
                                     HorizontalAlignment="Stretch"
                                     ItemsSource="{x:Bind vm:LightingViewModel.Directions}"
@@ -178,7 +178,7 @@
 
                 <Border Style="{StaticResource CardStyle}" Visibility="{x:Bind ViewModel.EffectUsesColor, Mode=OneWay}">
                     <StackPanel Spacing="10">
-                        <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="Effect colour" />
+                        <TextBlock x:Uid="Lighting_EffectColor" Style="{StaticResource BodyStrongTextBlockStyle}" />
                         <StackPanel Orientation="Horizontal" Spacing="10">
                             <ItemsRepeater ItemTemplate="{StaticResource SwatchTemplate}" ItemsSource="{x:Bind vm:LightingViewModel.Swatches}" Tag="effect">
                                 <ItemsRepeater.Layout>
@@ -186,11 +186,11 @@
                                 </ItemsRepeater.Layout>
                             </ItemsRepeater>
                             <Button
+                                x:Uid="Lighting_AnyColor"
                                 Width="30"
                                 Height="30"
                                 Padding="0"
-                                CornerRadius="15"
-                                ToolTipService.ToolTip="Any colour">
+                                CornerRadius="15">
                                 <FontIcon FontSize="12" Glyph="&#xE710;" />
                                 <Button.Flyout>
                                     <Flyout>

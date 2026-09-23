@@ -15,19 +15,15 @@
             MaxWidth="{StaticResource PageMaxWidth}"
             Padding="{StaticResource PagePadding}"
             Spacing="16">
-            <TextBlock Style="{StaticResource PageTitleStyle}" Text="Fans" />
+            <TextBlock x:Uid="Fans_Title" Style="{StaticResource PageTitleStyle}" />
 
             <Border Style="{StaticResource CardStyle}">
                 <StackPanel Spacing="10">
                     <toolkit:Segmented
                         HorizontalAlignment="Stretch"
                         IsEnabled="{x:Bind Fans.HasFans, Mode=OneWay}"
-                        SelectedIndex="{x:Bind Fans.ModeIndex, Mode=TwoWay}">
-                        <toolkit:SegmentedItem Content="Auto" />
-                        <toolkit:SegmentedItem Content="Max" />
-                        <toolkit:SegmentedItem Content="Custom" />
-                        <toolkit:SegmentedItem Content="Curve" />
-                    </toolkit:Segmented>
+                        ItemsSource="{x:Bind vm:FanControlViewModel.ModeNames}"
+                        SelectedIndex="{x:Bind Fans.ModeIndex, Mode=TwoWay}" />
                     <TextBlock Style="{StaticResource CaptionMutedStyle}" Text="{x:Bind Fans.ModeDescription, Mode=OneWay}" />
                 </StackPanel>
             </Border>
@@ -57,7 +53,7 @@
                                             FontSize="32"
                                             FontWeight="SemiBold"
                                             Text="{x:Bind helpers:Units.RpmNumber(Rpm), Mode=OneWay}" />
-                                        <Run Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text=" rpm" />
+                                        <Run Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind helpers:Units.RpmSuffix}" />
                                     </TextBlock>
                                     <TextBlock
                                         HorizontalAlignment="Center"
@@ -91,18 +87,17 @@
                                 <Grid>
                                     <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind Name}" />
                                     <ToggleSwitch
+                                        x:Uid="Fans_AutoToggle"
                                         MinWidth="0"
                                         HorizontalAlignment="Right"
-                                        IsOn="{x:Bind Auto, Mode=TwoWay}"
-                                        OffContent="Manual"
-                                        OnContent="Automatic" />
+                                        IsOn="{x:Bind Auto, Mode=TwoWay}" />
                                 </Grid>
                                 <TextBlock
                                     Opacity="{x:Bind local:FansPage.ManualOpacity(IsManual), Mode=OneWay}"
                                     Style="{StaticResource BigNumberStyle}"
                                     Text="{x:Bind PercentText, Mode=OneWay}" />
                                 <Slider
-                                    Header="Fan speed"
+                                    x:Uid="Fans_FanSpeed"
                                     IsEnabled="{x:Bind IsManual, Mode=OneWay}"
                                     Maximum="100"
                                     Minimum="0"
@@ -139,33 +134,33 @@
                                         Style="{StaticResource SubtitleTextBlockStyle}"
                                         Text="{x:Bind Name}" />
                                     <ComboBox
+                                        x:Uid="Fans_Source"
                                         Grid.Column="1"
                                         MinWidth="180"
                                         ItemsSource="{x:Bind vm:CurveFanViewModel.Sources}"
-                                        SelectedIndex="{x:Bind SourceIndex, Mode=TwoWay}"
-                                        ToolTipService.ToolTip="Which temperature drives this fan" />
-                                    <DropDownButton Grid.Column="2" Content="Presets">
+                                        SelectedIndex="{x:Bind SourceIndex, Mode=TwoWay}" />
+                                    <DropDownButton x:Uid="Fans_Presets" Grid.Column="2">
                                         <DropDownButton.Flyout>
                                             <MenuFlyout Placement="Bottom">
                                                 <MenuFlyoutItem
+                                                    x:Uid="Fans_PresetSilent"
                                                     Command="{x:Bind ApplyPresetCommand}"
-                                                    CommandParameter="Silent"
-                                                    Text="Silent" />
+                                                    CommandParameter="Silent" />
                                                 <MenuFlyoutItem
+                                                    x:Uid="Fans_PresetBalanced"
                                                     Command="{x:Bind ApplyPresetCommand}"
-                                                    CommandParameter="Balanced"
-                                                    Text="Balanced" />
+                                                    CommandParameter="Balanced" />
                                                 <MenuFlyoutItem
+                                                    x:Uid="Fans_PresetPerformance"
                                                     Command="{x:Bind ApplyPresetCommand}"
-                                                    CommandParameter="Performance"
-                                                    Text="Performance" />
+                                                    CommandParameter="Performance" />
                                             </MenuFlyout>
                                         </DropDownButton.Flyout>
                                     </DropDownButton>
                                     <Button
+                                        x:Uid="Fans_CopyCurve"
                                         Grid.Column="3"
-                                        Command="{x:Bind CopyToOthersCommand}"
-                                        ToolTipService.ToolTip="Use this curve for the other fans too">
+                                        Command="{x:Bind CopyToOthersCommand}">
                                         <FontIcon FontSize="14" Glyph="&#xE8C8;" />
                                     </Button>
                                 </Grid>
@@ -175,15 +170,15 @@
                                     LivePercent="{x:Bind LivePercent, Mode=OneWay}"
                                     LiveTemperature="{x:Bind LiveTemperature, Mode=OneWay}"
                                     UseFahrenheit="{x:Bind UseFahrenheit, Mode=OneWay}" />
-                                <TextBlock Style="{StaticResource CaptionMutedStyle}" Text="Drag points to shape the curve · double-click to add a point · right-click to remove one · arrow keys fine-tune the selected point" TextWrapping="Wrap" />
+                                <TextBlock x:Uid="Fans_CurveHelp" Style="{StaticResource CaptionMutedStyle}" TextWrapping="Wrap" />
                             </StackPanel>
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
-            <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="Safety and response" />
-            <toolkit:SettingsCard Description="In Custom and Curve modes, fans go to full speed if either chip reaches this temperature." Header="Emergency temperature" HeaderIcon="{ui:FontIcon Glyph=&#xE7BA;}">
+            <TextBlock x:Uid="Fans_Safety" Style="{StaticResource SectionHeaderStyle}" />
+            <toolkit:SettingsCard x:Uid="Fans_Emergency" HeaderIcon="{ui:FontIcon Glyph=&#xE7BA;}">
                 <StackPanel Orientation="Horizontal" Spacing="12">
                     <TextBlock VerticalAlignment="Center" Text="{x:Bind local:FansPage.TemperatureLabel(Fans.EmergencyTemperature, Monitor.UseFahrenheit), Mode=OneWay}" />
                     <Slider
@@ -194,7 +189,7 @@
                         Value="{x:Bind Fans.EmergencyTemperature, Mode=TwoWay}" />
                 </StackPanel>
             </toolkit:SettingsCard>
-            <toolkit:SettingsCard Description="The lowest speed OpenSense will ask for in Custom and Curve modes." Header="Minimum fan speed" HeaderIcon="{ui:FontIcon Glyph=&#xEC4A;}">
+            <toolkit:SettingsCard x:Uid="Fans_MinimumSpeed" HeaderIcon="{ui:FontIcon Glyph=&#xEC4A;}">
                 <StackPanel Orientation="Horizontal" Spacing="12">
                     <TextBlock VerticalAlignment="Center" Text="{x:Bind local:FansPage.PercentLabel(Fans.MinimumPercent), Mode=OneWay}" />
                     <Slider
@@ -205,7 +200,7 @@
                         Value="{x:Bind Fans.MinimumPercent, Mode=TwoWay}" />
                 </StackPanel>
             </toolkit:SettingsCard>
-            <toolkit:SettingsCard Description="How far the temperature must fall before a curve slows the fans down. Higher values stop the fans from hunting." Header="Slow-down delay" HeaderIcon="{ui:FontIcon Glyph=&#xE916;}">
+            <toolkit:SettingsCard x:Uid="Fans_SlowDown" HeaderIcon="{ui:FontIcon Glyph=&#xE916;}">
                 <StackPanel Orientation="Horizontal" Spacing="12">
                     <TextBlock VerticalAlignment="Center" Text="{x:Bind local:FansPage.DegreesLabel(Fans.Hysteresis), Mode=OneWay}" />
                     <Slider
@@ -216,7 +211,7 @@
                         Value="{x:Bind Fans.Hysteresis, Mode=TwoWay}" />
                 </StackPanel>
             </toolkit:SettingsCard>
-            <toolkit:SettingsCard Description="When the OpenSense service stops (or a portable copy exits), the laptop's own fan control takes over again." Header="Hand fans back when OpenSense stops" HeaderIcon="{ui:FontIcon Glyph=&#xE7E8;}">
+            <toolkit:SettingsCard x:Uid="Fans_HandBack" HeaderIcon="{ui:FontIcon Glyph=&#xE7E8;}">
                 <ToggleSwitch IsOn="{x:Bind Fans.RestoreAutoOnExit, Mode=TwoWay}" />
             </toolkit:SettingsCard>
         </StackPanel>

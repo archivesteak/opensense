@@ -19,40 +19,31 @@ public enum TemperatureOrigin
 /// </summary>
 public sealed class DirectSensors : IDisposable
 {
-    public static DirectSensors None { get; } = new(null, null, "Not used", "Not used", pawnIOMissing: false);
+    public static DirectSensors None { get; } = new(null, null, SensorStatus.NotUsed, SensorStatus.NotUsed);
 
-    private DirectSensors(ITemperatureSensor? cpu, ITemperatureSensor? gpu, string cpuStatus, string gpuStatus, bool pawnIOMissing)
+    private DirectSensors(ITemperatureSensor? cpu, ITemperatureSensor? gpu, SensorStatus cpuStatus, SensorStatus gpuStatus)
     {
         Cpu = cpu;
         Gpu = gpu;
         CpuStatus = cpuStatus;
         GpuStatus = gpuStatus;
-        PawnIOMissing = pawnIOMissing;
     }
 
     public ITemperatureSensor? Cpu { get; }
     public ITemperatureSensor? Gpu { get; }
 
-    /// <summary>One line on where CPU temperatures come from, and why when it is the fallback.</summary>
-    public string CpuStatus { get; }
+    /// <summary>Where CPU temperatures come from, and why when it is the fallback.</summary>
+    public SensorStatus CpuStatus { get; }
 
-    public string GpuStatus { get; }
-
-    /// <summary>The CPU sensor is unavailable because the PawnIO driver is not installed.</summary>
-    public bool PawnIOMissing { get; }
+    public SensorStatus GpuStatus { get; }
 
     /// <summary>Opens both sensors. Needs an elevated process for the CPU sensor.</summary>
     public static DirectSensors Open()
     {
-        string? cpuProblem = null, gpuProblem = null;
-        var cpu = CpuTemperatureSensor.TryOpen(message => cpuProblem = message);
-        var gpu = NvmlGpuSensor.TryOpen(message => gpuProblem = message);
-        return new DirectSensors(
-            cpu,
-            gpu,
-            cpu?.Description ?? $"Embedded controller ({cpuProblem})",
-            gpu?.Description ?? $"Embedded controller ({gpuProblem})",
-            pawnIOMissing: cpu is null && cpuProblem == PawnIOModule.NotInstalledMessage);
+        SensorStatus? cpuFailure = null, gpuFailure = null;
+        var cpu = CpuTemperatureSensor.TryOpen((problem, detail) => cpuFailure = SensorStatus.Failed(problem, detail));
+        var gpu = NvmlGpuSensor.TryOpen((problem, detail) => gpuFailure = SensorStatus.Failed(problem, detail));
+        return new DirectSensors(cpu, gpu, cpu?.Status ?? cpuFailure ?? SensorStatus.NotUsed, gpu?.Status ?? gpuFailure ?? SensorStatus.NotUsed);
     }
 
     public void Dispose()

@@ -1,0 +1,1075 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Nav_Dashboard.Content" xml:space="preserve">
+    <value>儀表板</value>
+    <comment>Navigation menu item: the overview page.</comment>
+  </data>
+  <data name="Nav_Fans.Content" xml:space="preserve">
+    <value>風扇</value>
+    <comment>Navigation menu item: fan control page.</comment>
+  </data>
+  <data name="Nav_Lighting.Content" xml:space="preserve">
+    <value>燈光</value>
+    <comment>Navigation menu item: the RGB keyboard lighting page.</comment>
+  </data>
+  <data name="Nav_System.Content" xml:space="preserve">
+    <value>鍵盤與螢幕</value>
+    <comment>Navigation menu item: keyboard, display, GPU and power settings.</comment>
+  </data>
+  <data name="Startup_Connecting.Text" xml:space="preserve">
+    <value>正在連線到筆記型電腦…</value>
+    <comment>Shown while the app starts.</comment>
+  </data>
+  <data name="Problem_RestartElevated.Content" xml:space="preserve">
+    <value>以系統管理員身分重新啟動</value>
+    <comment>Button.</comment>
+  </data>
+  <data name="Problem_StartService.Content" xml:space="preserve">
+    <value>啟動服務</value>
+    <comment>Button: starts the OpenSense background service.</comment>
+  </data>
+  <data name="Problem_NeedsElevation_Title" xml:space="preserve">
+    <value>需要系統管理員權限</value>
+  </data>
+  <data name="Problem_NeedsElevation_Message" xml:space="preserve">
+    <value>此可攜式版本會直接與筆記型電腦的風扇與燈光控制項通訊，因此需要系統管理員權限。請以系統管理員身分重新啟動，或安裝 OpenSense 以便在不需要這些權限的情況下執行。</value>
+  </data>
+  <data name="Problem_ServiceUnavailable_Title" xml:space="preserve">
+    <value>OpenSense 服務未在執行</value>
+  </data>
+  <data name="Problem_ServiceUnavailable_Message" xml:space="preserve">
+    <value>OpenSense 透過背景服務控制筆記型電腦，但該服務已停止。請啟動它（Windows 會要求權限）；如果它一直停止，請重新安裝 OpenSense。</value>
+  </data>
+  <data name="Problem_Unsupported_Title" xml:space="preserve">
+    <value>找不到 Acer 遊戲韌體</value>
+  </data>
+  <data name="Problem_Unsupported_Message" xml:space="preserve">
+    <value>此電腦未提供 Acer 的遊戲 WMI 介面 (AcerGamingFunction)。OpenSense 支援 Acer Nitro 與 Predator 筆記型電腦。</value>
+    <comment>Keep 'AcerGamingFunction' as is.</comment>
+  </data>
+  <data name="Problem_Failed_Title" xml:space="preserve">
+    <value>無法啟動 OpenSense</value>
+  </data>
+  <data name="Problem_Failed_Message" xml:space="preserve">
+    <value>發生未預期的錯誤。記錄檔資料夾中有詳細資料。</value>
+  </data>
+  <data name="Session_VersionMismatch" xml:space="preserve">
+    <value>OpenSense 服務的版本不同（{0}）。請重新安裝 OpenSense 以進行更新。</value>
+    <comment>{0} = a version number.</comment>
+  </data>
+  <data name="Notice_Rebuilt_Title" xml:space="preserve">
+    <value>功能已更新</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_Rebuilt_Message" xml:space="preserve">
+    <value>OpenSense 已使用新設定重新啟動風扇控制。</value>
+  </data>
+  <data name="Notice_Service_Title" xml:space="preserve">
+    <value>服務</value>
+    <comment>Banner title: about the OpenSense background service.</comment>
+  </data>
+  <data name="Notice_Reconnected" xml:space="preserve">
+    <value>已重新連線到 OpenSense 服務。</value>
+  </data>
+  <data name="Notice_Disconnected" xml:space="preserve">
+    <value>與 OpenSense 服務的連線已中斷。正在重新連線…</value>
+  </data>
+  <data name="Notice_ServiceStartFailed" xml:space="preserve">
+    <value>OpenSense 服務未啟動。%ProgramData%\OpenSense\logs 中的服務記錄檔有詳細資料。</value>
+    <comment>Keep the folder path as is.</comment>
+  </data>
+  <data name="Notice_FanControl_Title" xml:space="preserve">
+    <value>風扇控制</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_Keyboard_Title" xml:space="preserve">
+    <value>鍵盤</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_Display_Title" xml:space="preserve">
+    <value>螢幕</value>
+    <comment>Banner title: the laptop screen.</comment>
+  </data>
+  <data name="Notice_FirmwareAccessDenied" xml:space="preserve">
+    <value>存取 Acer 韌體介面需要系統管理員權限。</value>
+  </data>
+  <data name="Notice_ControlLoopError" xml:space="preserve">
+    <value>風扇控制發生錯誤：{0}</value>
+    <comment>{0} = a technical error message (not translated).</comment>
+  </data>
+  <data name="Notice_OperatingModeRejected" xml:space="preserve">
+    <value>韌體拒絕了作業模式變更（{0}）。</value>
+    <comment>{0} = an operating mode name, e.g. Turbo.</comment>
+  </data>
+  <data name="Notice_CoolBoostRejected" xml:space="preserve">
+    <value>韌體拒絕了 CoolBoost 變更。</value>
+    <comment>CoolBoost is an Acer feature name: keep it.</comment>
+  </data>
+  <data name="Notice_FansHandedBack" xml:space="preserve">
+    <value>無法取得 CPU 溫度，因此風扇已恢復為「自動」。</value>
+    <comment>Auto = the automatic fan mode, as in FanMode_Auto.</comment>
+  </data>
+  <data name="Notice_LightingRejected" xml:space="preserve">
+    <value>鍵盤拒絕了燈光變更。</value>
+  </data>
+  <data name="Notice_BacklightTimeoutRejected" xml:space="preserve">
+    <value>鍵盤拒絕了背光逾時變更。</value>
+  </data>
+  <data name="Notice_WindowsKeyRejected" xml:space="preserve">
+    <value>韌體拒絕了 Windows 鍵變更。</value>
+  </data>
+  <data name="Notice_LcdOverdriveRejected" xml:space="preserve">
+    <value>螢幕拒絕了 Overdrive 變更。</value>
+    <comment>Overdrive = LCD overdrive, a screen setting that speeds up pixel response.</comment>
+  </data>
+  <data name="Notice_PowerPlan_Title" xml:space="preserve">
+    <value>電源計劃</value>
+    <comment>Banner title: a Windows power plan.</comment>
+  </data>
+  <data name="Notice_PowerPlanFailed" xml:space="preserve">
+    <value>Windows 未切換到「{0}」。</value>
+    <comment>{0} = a Windows power plan name. Use your language's quotation marks.</comment>
+  </data>
+  <data name="Notice_GpuMode_Title" xml:space="preserve">
+    <value>GPU 模式</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_GpuModeRejected" xml:space="preserve">
+    <value>韌體拒絕了 GPU 模式變更。</value>
+  </data>
+  <data name="Notice_Autostart_Title" xml:space="preserve">
+    <value>隨 Windows 啟動</value>
+    <comment>Banner title, same as Settings_StartWithWindows.Header.</comment>
+  </data>
+  <data name="Notice_AutostartFailed" xml:space="preserve">
+    <value>無法更新啟動項目：{0}</value>
+    <comment>{0} = a technical error message.</comment>
+  </data>
+  <data name="Notice_Diagnostics_Title" xml:space="preserve">
+    <value>診斷</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_DiagnosticsCopied" xml:space="preserve">
+    <value>已複製到剪貼簿。</value>
+  </data>
+  <data name="Notice_Updates_Title" xml:space="preserve">
+    <value>更新</value>
+    <comment>Banner title: app updates.</comment>
+  </data>
+  <data name="GpuSwitch_DiscreteTitle" xml:space="preserve">
+    <value>只使用獨立 GPU？</value>
+    <comment>Dialog title. Discrete GPU = the separate NVIDIA graphics chip.</comment>
+  </data>
+  <data name="GpuSwitch_HybridTitle" xml:space="preserve">
+    <value>切換為混合式顯示？</value>
+    <comment>Dialog title.</comment>
+  </data>
+  <data name="GpuSwitch_DiscreteMessage" xml:space="preserve">
+    <value>NVIDIA GPU 將直接驅動螢幕，以獲得最佳遊戲效能，但會縮短電池使用時間。必須重新啟動 Windows 才能套用此變更。</value>
+  </data>
+  <data name="GpuSwitch_HybridMessage" xml:space="preserve">
+    <value>整合式 GPU 將驅動螢幕，獨立 GPU 只在需要時開啟，以節省電池電力。必須重新啟動 Windows 才能套用此變更。</value>
+  </data>
+  <data name="GpuSwitch_RestartNow" xml:space="preserve">
+    <value>立即重新啟動</value>
+    <comment>Dialog button: restart Windows now.</comment>
+  </data>
+  <data name="GpuSwitch_RestartLater" xml:space="preserve">
+    <value>稍後重新啟動</value>
+    <comment>Dialog button.</comment>
+  </data>
+  <data name="GpuSwitch_Cancel" xml:space="preserve">
+    <value>取消</value>
+    <comment>Dialog button.</comment>
+  </data>
+  <data name="Chip_Cpu" xml:space="preserve">
+    <value>CPU</value>
+    <comment>The processor. Short: used in labels like 'CPU 45°'.</comment>
+  </data>
+  <data name="Chip_Gpu" xml:space="preserve">
+    <value>GPU</value>
+    <comment>The graphics chip. Short: used in labels like 'GPU 45°'.</comment>
+  </data>
+  <data name="Fan_Cpu" xml:space="preserve">
+    <value>CPU 風扇</value>
+  </data>
+  <data name="Fan_Gpu" xml:space="preserve">
+    <value>GPU 風扇</value>
+  </data>
+  <data name="FanMode_Auto" xml:space="preserve">
+    <value>自動</value>
+    <comment>Fan mode: the laptop's firmware controls the fans. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Max" xml:space="preserve">
+    <value>最大</value>
+    <comment>Fan mode: all fans at full speed. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Custom" xml:space="preserve">
+    <value>自訂</value>
+    <comment>Fan mode: a fixed speed chosen for each fan. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Curve" xml:space="preserve">
+    <value>曲線</value>
+    <comment>Fan mode: fan speed follows a temperature curve. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Auto_Description" xml:space="preserve">
+    <value>由筆記型電腦的韌體管理風扇。</value>
+  </data>
+  <data name="FanMode_Max_Description" xml:space="preserve">
+    <value>所有風扇全速運轉。</value>
+  </data>
+  <data name="FanMode_Custom_Description" xml:space="preserve">
+    <value>為每個風扇設定固定轉速。</value>
+  </data>
+  <data name="FanMode_Curve_Description" xml:space="preserve">
+    <value>OpenSense 會依照您的溫度曲線運作。</value>
+  </data>
+  <data name="FanBehavior_Auto" xml:space="preserve">
+    <value>自動（韌體）</value>
+    <comment>What a fan is doing right now: controlled by the laptop's firmware.</comment>
+  </data>
+  <data name="FanBehavior_Max" xml:space="preserve">
+    <value>全速</value>
+    <comment>What a fan is doing right now.</comment>
+  </data>
+  <data name="FanBehavior_Emergency" xml:space="preserve">
+    <value>緊急全速</value>
+    <comment>What a fan is doing right now: forced to full speed because the temperature is too high.</comment>
+  </data>
+  <data name="FanBehavior_Curve" xml:space="preserve">
+    <value>依照曲線</value>
+    <comment>What a fan is doing right now: following the temperature curve.</comment>
+  </data>
+  <data name="FanBehavior_Fixed" xml:space="preserve">
+    <value>固定轉速</value>
+    <comment>What a fan is doing right now.</comment>
+  </data>
+  <data name="FanLock_QuietMode" xml:space="preserve">
+    <value>「安靜」模式會讓風扇保持「自動」。</value>
+    <comment>Quiet = OperatingMode_Quiet; Auto = FanMode_Auto.</comment>
+  </data>
+  <data name="OperatingMode_Eco" xml:space="preserve">
+    <value>節能</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Quiet" xml:space="preserve">
+    <value>安靜</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Balanced" xml:space="preserve">
+    <value>平衡</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Performance" xml:space="preserve">
+    <value>效能</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Turbo" xml:space="preserve">
+    <value>極速</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Eco_Description" xml:space="preserve">
+    <value>最長的電池使用時間。</value>
+  </data>
+  <data name="OperatingMode_Quiet_Description" xml:space="preserve">
+    <value>噪音最低。風扇保持「自動」。</value>
+    <comment>Auto = FanMode_Auto.</comment>
+  </data>
+  <data name="OperatingMode_Balanced_Description" xml:space="preserve">
+    <value>日常使用的效能。</value>
+  </data>
+  <data name="OperatingMode_Performance_Description" xml:space="preserve">
+    <value>更高的功率限制。需要連接電源。</value>
+  </data>
+  <data name="OperatingMode_Turbo_Description" xml:space="preserve">
+    <value>最大功率與散熱。需要連接電源。</value>
+  </data>
+  <data name="OperatingMode_BatteryNote" xml:space="preserve">
+    <value>使用電池時，「{0}」與「{1}」會以「{2}」模式執行，直到您接上電源。</value>
+    <comment>{0}, {1}, {2} = operating mode names (Performance, Turbo, Balanced).</comment>
+  </data>
+  <data name="PowerSource_PluggedIn" xml:space="preserve">
+    <value>已接上電源</value>
+    <comment>Power source: the charger is connected.</comment>
+  </data>
+  <data name="PowerSource_Battery" xml:space="preserve">
+    <value>使用電池</value>
+    <comment>Power source.</comment>
+  </data>
+  <data name="Gpu_Idle" xml:space="preserve">
+    <value>閒置</value>
+    <comment>Shown instead of the GPU temperature while the graphics chip is powered down. Short.</comment>
+  </data>
+  <data name="Unit_Rpm" xml:space="preserve">
+    <value>轉/分</value>
+    <comment>Unit: revolutions per minute (fan speed). Use your language's usual abbreviation.</comment>
+  </data>
+  <data name="Unit_RpmValue" xml:space="preserve">
+    <value>{0} 轉/分</value>
+    <comment>{0} = a fan speed number. Same unit as Unit_Rpm.</comment>
+  </data>
+  <data name="Unit_Seconds" xml:space="preserve">
+    <value>{0} 秒</value>
+    <comment>{0} = a number of seconds, e.g. 0.5. Use the usual abbreviation for seconds.</comment>
+  </data>
+  <data name="ListSeparator" xml:space="preserve">
+    <value>、</value>
+    <comment>Separates items in a list inside a sentence, e.g. 'Quiet, Balanced, Performance'. Keep the trailing space if your language uses one.</comment>
+  </data>
+  <data name="Dashboard_Title.Text" xml:space="preserve">
+    <value>儀表板</value>
+    <comment>Page title, same as Nav_Dashboard.Content.</comment>
+  </data>
+  <data name="Dashboard_Failsafe.Title" xml:space="preserve">
+    <value>風扇已交還給韌體</value>
+    <comment>Warning banner title.</comment>
+  </data>
+  <data name="Dashboard_Failsafe.Message" xml:space="preserve">
+    <value>已不再回報 CPU 溫度，因此在恢復回報之前，筆記型電腦會自行控制風扇。</value>
+  </data>
+  <data name="Dashboard_CpuTemperature.Text" xml:space="preserve">
+    <value>CPU 溫度</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_GpuTemperature.Text" xml:space="preserve">
+    <value>GPU 溫度</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_CpuFan.Text" xml:space="preserve">
+    <value>CPU 風扇</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_GpuFan.Text" xml:space="preserve">
+    <value>GPU 風扇</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_LoadDetail" xml:space="preserve">
+    <value>負載 {0} · {1}</value>
+    <comment>Under a temperature: {0} = usage percentage (e.g. 45%), {1} = the chip's model name.</comment>
+  </data>
+  <data name="Dashboard_AsleepDetail" xml:space="preserve">
+    <value>休眠中 · {0}</value>
+    <comment>Under the GPU temperature while the graphics chip is powered down: {0} = its model name.</comment>
+  </data>
+  <data name="Dashboard_RpmDetail" xml:space="preserve">
+    <value>轉/分 · 工作週期 {0}</value>
+    <comment>Under a fan speed number: rpm = revolutions per minute (as Unit_Rpm); {0} = the fan's duty cycle as a percentage.</comment>
+  </data>
+  <data name="Dashboard_Cooling.Text" xml:space="preserve">
+    <value>散熱</value>
+    <comment>Card title.</comment>
+  </data>
+  <data name="Dashboard_CoolBoost.Text" xml:space="preserve">
+    <value>讓「自動」模式可以使風扇轉得更快。</value>
+    <comment>Describes CoolBoost (an Acer feature name shown above it). Auto = FanMode_Auto.</comment>
+  </data>
+  <data name="Dashboard_OpenFans.Content" xml:space="preserve">
+    <value>自訂轉速與曲線</value>
+    <comment>Link to the Fans page.</comment>
+  </data>
+  <data name="Dashboard_Performance.Text" xml:space="preserve">
+    <value>效能</value>
+    <comment>Card title.</comment>
+  </data>
+  <data name="Dashboard_PowerPlan.Header" xml:space="preserve">
+    <value>Windows 電源計劃</value>
+    <comment>Label above a list of Windows power plans.</comment>
+  </data>
+  <data name="Dashboard_PowerSource.Text" xml:space="preserve">
+    <value>電源</value>
+    <comment>Caption above 'Plugged in' or 'On battery'.</comment>
+  </data>
+  <data name="Dashboard_SystemTemperature.Text" xml:space="preserve">
+    <value>系統溫度</value>
+    <comment>Caption: the laptop's internal temperature.</comment>
+  </data>
+  <data name="Fans_Title.Text" xml:space="preserve">
+    <value>風扇</value>
+    <comment>Page title.</comment>
+  </data>
+  <data name="Fans_DutyLabel" xml:space="preserve">
+    <value>工作週期 {0}</value>
+    <comment>{0} = the fan's duty cycle as a percentage.</comment>
+  </data>
+  <data name="Fans_AutoToggle.OnContent" xml:space="preserve">
+    <value>自動</value>
+    <comment>Switch label when on: the firmware controls this fan.</comment>
+  </data>
+  <data name="Fans_AutoToggle.OffContent" xml:space="preserve">
+    <value>手動</value>
+    <comment>Switch label when off: the speed below is used.</comment>
+  </data>
+  <data name="Fans_FanSpeed.Header" xml:space="preserve">
+    <value>風扇轉速</value>
+    <comment>Slider label.</comment>
+  </data>
+  <data name="Fans_Source.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>驅動此風扇的溫度</value>
+    <comment>Tooltip.</comment>
+  </data>
+  <data name="CurveSource_Cpu" xml:space="preserve">
+    <value>CPU 溫度</value>
+    <comment>Which temperature a fan curve follows.</comment>
+  </data>
+  <data name="CurveSource_Gpu" xml:space="preserve">
+    <value>GPU 溫度</value>
+    <comment>Which temperature a fan curve follows.</comment>
+  </data>
+  <data name="CurveSource_Hottest" xml:space="preserve">
+    <value>兩者中較高者</value>
+    <comment>Which temperature a fan curve follows: the higher of the CPU and GPU temperatures.</comment>
+  </data>
+  <data name="Fans_Presets.Content" xml:space="preserve">
+    <value>預設組</value>
+    <comment>Button that opens a list of ready-made fan curves.</comment>
+  </data>
+  <data name="Fans_PresetSilent.Text" xml:space="preserve">
+    <value>靜音</value>
+    <comment>Fan curve preset name.</comment>
+  </data>
+  <data name="Fans_PresetBalanced.Text" xml:space="preserve">
+    <value>平衡</value>
+    <comment>Fan curve preset name.</comment>
+  </data>
+  <data name="Fans_PresetPerformance.Text" xml:space="preserve">
+    <value>效能</value>
+    <comment>Fan curve preset name.</comment>
+  </data>
+  <data name="Fans_CopyCurve.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>將此曲線也用於其他風扇</value>
+    <comment>Tooltip.</comment>
+  </data>
+  <data name="Fans_CurveHelp.Text" xml:space="preserve">
+    <value>拖曳點以調整曲線 · 按兩下以新增點 · 按一下滑鼠右鍵以移除點 · 使用方向鍵微調選取的點</value>
+    <comment>Help under the curve editor.</comment>
+  </data>
+  <data name="CurveEditor_Now" xml:space="preserve">
+    <value>目前 {0} · {1}</value>
+    <comment>Label on the curve editor: {0} = the current temperature, {1} = the current fan speed percentage.</comment>
+  </data>
+  <data name="Fans_Safety.Text" xml:space="preserve">
+    <value>安全與回應</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Fans_Emergency.Header" xml:space="preserve">
+    <value>緊急溫度</value>
+  </data>
+  <data name="Fans_Emergency.Description" xml:space="preserve">
+    <value>在「自訂」與「曲線」模式下，如果任一晶片達到此溫度，風扇會全速運轉。</value>
+    <comment>Custom, Curve = FanMode_Custom, FanMode_Curve.</comment>
+  </data>
+  <data name="Fans_MinimumSpeed.Header" xml:space="preserve">
+    <value>最低風扇轉速</value>
+  </data>
+  <data name="Fans_MinimumSpeed.Description" xml:space="preserve">
+    <value>OpenSense 在「自訂」與「曲線」模式下要求的最低轉速。</value>
+  </data>
+  <data name="Fans_SlowDown.Header" xml:space="preserve">
+    <value>降速延遲</value>
+    <comment>How many degrees the temperature must fall before the fans slow down (hysteresis).</comment>
+  </data>
+  <data name="Fans_SlowDown.Description" xml:space="preserve">
+    <value>溫度需要下降多少，曲線才會降低風扇轉速。值越高，越能避免風扇反覆加速與減速。</value>
+    <comment>'Hunting' = the fans speeding up and slowing down over and over.</comment>
+  </data>
+  <data name="Fans_HandBack.Header" xml:space="preserve">
+    <value>OpenSense 停止時交還風扇</value>
+  </data>
+  <data name="Fans_HandBack.Description" xml:space="preserve">
+    <value>當 OpenSense 服務停止（或可攜式版本結束）時，由筆記型電腦本身的風扇控制重新接手。</value>
+  </data>
+  <data name="Lighting_Title.Text" xml:space="preserve">
+    <value>燈光</value>
+    <comment>Page title: RGB keyboard lighting.</comment>
+  </data>
+  <data name="Lighting_Static.Content" xml:space="preserve">
+    <value>靜態色彩</value>
+    <comment>Lighting mode: one fixed colour per keyboard zone.</comment>
+  </data>
+  <data name="Lighting_Effect.Content" xml:space="preserve">
+    <value>效果</value>
+    <comment>Lighting mode: an animated effect.</comment>
+  </data>
+  <data name="Lighting_Zone" xml:space="preserve">
+    <value>區域 {0}</value>
+    <comment>A keyboard lighting zone: {0} = its number.</comment>
+  </data>
+  <data name="Lighting_ZoneColor.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>選擇色彩</value>
+    <comment>Tooltip.</comment>
+  </data>
+  <data name="Lighting_AllZones.Text" xml:space="preserve">
+    <value>所有區域使用同一色彩</value>
+  </data>
+  <data name="Lighting_Speed.Header" xml:space="preserve">
+    <value>速度</value>
+    <comment>Slider label: animation speed.</comment>
+  </data>
+  <data name="Lighting_Direction.Text" xml:space="preserve">
+    <value>方向</value>
+    <comment>Label: animation direction.</comment>
+  </data>
+  <data name="Lighting_EffectColor.Text" xml:space="preserve">
+    <value>效果色彩</value>
+  </data>
+  <data name="Lighting_AnyColor.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>任意色彩</value>
+    <comment>Tooltip of a button that opens a colour picker.</comment>
+  </data>
+  <data name="Effect_Breathing" xml:space="preserve">
+    <value>呼吸</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Neon" xml:space="preserve">
+    <value>霓虹</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Wave" xml:space="preserve">
+    <value>波浪</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Shifting" xml:space="preserve">
+    <value>移動</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Zoom" xml:space="preserve">
+    <value>縮放</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Breathing_Description" xml:space="preserve">
+    <value>色彩漸亮漸暗。</value>
+  </data>
+  <data name="Effect_Neon_Description" xml:space="preserve">
+    <value>在彩虹的各種色彩之間循環。</value>
+  </data>
+  <data name="Effect_Wave_Description" xml:space="preserve">
+    <value>一道色彩波浪掃過按鍵。</value>
+  </data>
+  <data name="Effect_Shifting_Description" xml:space="preserve">
+    <value>一個色塊在鍵盤上移動。</value>
+  </data>
+  <data name="Effect_Zoom_Description" xml:space="preserve">
+    <value>色彩從中心向外擴散。</value>
+  </data>
+  <data name="Direction_Left" xml:space="preserve">
+    <value>向左</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Direction_Right" xml:space="preserve">
+    <value>向右</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Direction_Up" xml:space="preserve">
+    <value>向上</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Direction_Down" xml:space="preserve">
+    <value>向下</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Brightness_Off" xml:space="preserve">
+    <value>關</value>
+    <comment>Keyboard backlight brightness: off. Short: shown next to 25%, 50%...</comment>
+  </data>
+  <data name="System_Title.Text" xml:space="preserve">
+    <value>鍵盤與螢幕</value>
+    <comment>Page title, same as Nav_System.Content.</comment>
+  </data>
+  <data name="System_Keyboard.Text" xml:space="preserve">
+    <value>鍵盤</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="System_BacklightAutoOff.Header" xml:space="preserve">
+    <value>自動關閉背光</value>
+    <comment>Keyboard backlight setting.</comment>
+  </data>
+  <data name="System_BacklightAutoOff.Description" xml:space="preserve">
+    <value>30 秒未輸入時關閉鍵盤背光。</value>
+  </data>
+  <data name="System_WindowsKey.Header" xml:space="preserve">
+    <value>Windows 鍵與功能表鍵</value>
+    <comment>The Windows logo key and the Menu (application) key.</comment>
+  </data>
+  <data name="System_WindowsKey.Description" xml:space="preserve">
+    <value>關閉後，Windows 鍵與功能表鍵就不會中斷遊戲。</value>
+  </data>
+  <data name="System_StickyKeys.Header" xml:space="preserve">
+    <value>相黏鍵</value>
+    <comment>The Windows accessibility feature: use its official Windows name in your language.</comment>
+  </data>
+  <data name="System_StickyKeys.Description" xml:space="preserve">
+    <value>放開輔助按鍵後仍會保持按下狀態；按 Shift 鍵五次即可開啟或關閉。</value>
+  </data>
+  <data name="System_Display.Text" xml:space="preserve">
+    <value>螢幕</value>
+    <comment>Section title: the laptop screen.</comment>
+  </data>
+  <data name="System_LcdOverdrive.Header" xml:space="preserve">
+    <value>LCD Overdrive</value>
+    <comment>Screen setting that speeds up pixel response.</comment>
+  </data>
+  <data name="System_LcdOverdrive.Description" xml:space="preserve">
+    <value>適用於筆記型電腦的內建螢幕（不適用於外接螢幕）：更快的像素回應速度，減少遊戲中的動態模糊。在螢幕的最高重新整理頻率下效果最佳；如果在移動的物體後方看到光暈，請將其關閉。</value>
+  </data>
+  <data name="System_Graphics.Text" xml:space="preserve">
+    <value>顯示卡</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="System_GpuMode.Header" xml:space="preserve">
+    <value>GPU 模式</value>
+    <comment>Setting: hybrid or discrete graphics.</comment>
+  </data>
+  <data name="System_GpuMode.Description" xml:space="preserve">
+    <value>「混合式」使用整合式 GPU 驅動螢幕，以節省電池電力。「獨立」直接連接 NVIDIA GPU，以獲得最佳遊戲效能。重新啟動後生效。</value>
+    <comment>Hybrid, Discrete = System_GpuHybrid, System_GpuDiscrete.</comment>
+  </data>
+  <data name="System_GpuHybrid.Content" xml:space="preserve">
+    <value>混合式</value>
+    <comment>GPU mode: both graphics chips (NVIDIA Optimus). Short: a segmented button.</comment>
+  </data>
+  <data name="System_GpuDiscrete.Content" xml:space="preserve">
+    <value>獨立</value>
+    <comment>GPU mode: only the NVIDIA graphics chip. Short: a segmented button.</comment>
+  </data>
+  <data name="System_GpuRestart.Title" xml:space="preserve">
+    <value>重新啟動以切換 GPU 模式</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="System_GpuRestart.Message" xml:space="preserve">
+    <value>新的 GPU 模式會在 Windows 重新啟動後生效。</value>
+  </data>
+  <data name="System_RestartNow.Content" xml:space="preserve">
+    <value>立即重新啟動</value>
+    <comment>Button: restart Windows now.</comment>
+  </data>
+  <data name="System_Power.Text" xml:space="preserve">
+    <value>電源</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="System_PowerPlan.Header" xml:space="preserve">
+    <value>電源計劃</value>
+    <comment>Windows power plan setting.</comment>
+  </data>
+  <data name="System_PowerPlan.Description" xml:space="preserve">
+    <value>目前使用的 Windows 電源計劃。</value>
+  </data>
+  <data name="Settings_Title.Text" xml:space="preserve">
+    <value>設定</value>
+    <comment>Page title.</comment>
+  </data>
+  <data name="Settings_Startup.Text" xml:space="preserve">
+    <value>啟動</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_StartWithWindows.Header" xml:space="preserve">
+    <value>隨 Windows 啟動</value>
+  </data>
+  <data name="Settings_StartWithWindows.Description" xml:space="preserve">
+    <value>登入時在通知區域中開啟 OpenSense。風扇控制並不依賴此項。</value>
+    <comment>Notification area = the Windows system tray.</comment>
+  </data>
+  <data name="Settings_NitroSenseKey.Header" xml:space="preserve">
+    <value>使用 NitroSense 鍵開啟</value>
+    <comment>NitroSense is Acer's app; the laptop has a key for it. Keep the name.</comment>
+  </data>
+  <data name="Settings_NitroSenseKey.Description" xml:space="preserve">
+    <value>鍵盤上的 NitroSense 鍵會開啟 OpenSense，就像它以前開啟 NitroSense 一樣。OpenSense 位於通知區域時有效。</value>
+  </data>
+  <data name="Settings_StartMinimized.Header" xml:space="preserve">
+    <value>啟動時最小化到通知區域</value>
+  </data>
+  <data name="Settings_CloseToTray.Header" xml:space="preserve">
+    <value>關閉視窗後繼續執行</value>
+  </data>
+  <data name="Settings_CloseToTray.Description" xml:space="preserve">
+    <value>關閉視窗後，圖示仍會保留在通知區域中。可從其功能表結束。</value>
+  </data>
+  <data name="Settings_Appearance.Text" xml:space="preserve">
+    <value>外觀</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_Language.Header" xml:space="preserve">
+    <value>語言</value>
+    <comment>Setting: the app's language.</comment>
+  </data>
+  <data name="Language_System" xml:space="preserve">
+    <value>使用系統設定</value>
+    <comment>First entry in the language list: follow the Windows language.</comment>
+  </data>
+  <data name="Settings_LanguageRestart.Title" xml:space="preserve">
+    <value>重新啟動以變更語言</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Settings_LanguageRestart.Message" xml:space="preserve">
+    <value>OpenSense 會在重新啟動後顯示新的語言。</value>
+  </data>
+  <data name="Settings_LanguageRestartNow.Content" xml:space="preserve">
+    <value>立即重新啟動</value>
+    <comment>Button: restart OpenSense now.</comment>
+  </data>
+  <data name="Settings_Theme.Header" xml:space="preserve">
+    <value>佈景主題</value>
+    <comment>Setting: light or dark colours.</comment>
+  </data>
+  <data name="Theme_System" xml:space="preserve">
+    <value>使用系統設定</value>
+    <comment>Theme choice: follow Windows.</comment>
+  </data>
+  <data name="Theme_Light" xml:space="preserve">
+    <value>淺色</value>
+    <comment>Theme choice.</comment>
+  </data>
+  <data name="Theme_Dark" xml:space="preserve">
+    <value>深色</value>
+    <comment>Theme choice.</comment>
+  </data>
+  <data name="Settings_Fahrenheit.Header" xml:space="preserve">
+    <value>以華氏顯示溫度</value>
+  </data>
+  <data name="Settings_Interval.Header" xml:space="preserve">
+    <value>更新間隔</value>
+    <comment>Setting: how often sensors are read.</comment>
+  </data>
+  <data name="Settings_Interval.Description" xml:space="preserve">
+    <value>讀取感應器及更新風扇曲線的頻率，適用於此電腦上的所有使用者。</value>
+  </data>
+  <data name="Settings_Laptop.Text" xml:space="preserve">
+    <value>您的筆記型電腦</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_UnknownModel" xml:space="preserve">
+    <value>Acer 筆記型電腦</value>
+    <comment>Shown when the laptop's model name is unknown.</comment>
+  </data>
+  <data name="Settings_Bios" xml:space="preserve">
+    <value>BIOS {0}</value>
+    <comment>{0} = the BIOS version.</comment>
+  </data>
+  <data name="Settings_BiosUnknown" xml:space="preserve">
+    <value>BIOS 版本不明</value>
+  </data>
+  <data name="Settings_Sensors.Header" xml:space="preserve">
+    <value>溫度感應器</value>
+  </data>
+  <data name="Settings_SensorSources" xml:space="preserve">
+    <value>CPU：{0}
+GPU：{1}</value>
+    <comment>Two lines: {0}, {1} = where each temperature comes from (Sensor_* texts).</comment>
+  </data>
+  <data name="Sensor_IntelPackage" xml:space="preserve">
+    <value>Intel 封裝感應器 (TjMax {0} °C)</value>
+    <comment>The Intel CPU's own temperature sensor. {0} = a temperature. Keep 'TjMax'.</comment>
+  </data>
+  <data name="Sensor_AmdTctl" xml:space="preserve">
+    <value>AMD Tctl 感應器</value>
+    <comment>The AMD CPU's own temperature sensor. Keep 'Tctl'.</comment>
+  </data>
+  <data name="Sensor_NvidiaDriver" xml:space="preserve">
+    <value>NVIDIA 驅動程式</value>
+    <comment>Temperature read from the NVIDIA graphics driver.</comment>
+  </data>
+  <data name="Sensor_EmbeddedController" xml:space="preserve">
+    <value>嵌入式控制器</value>
+    <comment>The laptop's embedded controller (EC) chip, which also reports temperatures.</comment>
+  </data>
+  <data name="Sensor_EmbeddedControllerBecause" xml:space="preserve">
+    <value>嵌入式控制器（{0}）</value>
+    <comment>{0} = why the chip's own sensor isn't used (one of the SensorProblem_* texts).</comment>
+  </data>
+  <data name="SensorProblem_NotX86Cpu" xml:space="preserve">
+    <value>不是 x86 CPU</value>
+    <comment>Reason in parentheses after 'Embedded controller': starts lowercase in English.</comment>
+  </data>
+  <data name="SensorProblem_UnsupportedCpuVendor" xml:space="preserve">
+    <value>不支援的 CPU 廠商 {0}</value>
+    <comment>Reason in parentheses. {0} = a CPU vendor code such as 'GenuineIntel'.</comment>
+  </data>
+  <data name="SensorProblem_NoPackageSensor" xml:space="preserve">
+    <value>此 Intel CPU 沒有封裝溫度感應器</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_ImplausibleTjMax" xml:space="preserve">
+    <value>CPU 回報了不合理的 TjMax：{0} °C</value>
+    <comment>Reason in parentheses. Keep 'TjMax'. {0} = a number.</comment>
+  </data>
+  <data name="SensorProblem_NoReading" xml:space="preserve">
+    <value>感應器沒有回應</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_PciLockUnavailable" xml:space="preserve">
+    <value>無法開啟共用的 PCI 鎖定：{0}</value>
+    <comment>Reason in parentheses. {0} = a technical error message.</comment>
+  </data>
+  <data name="SensorProblem_NoNvidiaDriver" xml:space="preserve">
+    <value>找不到 NVIDIA 驅動程式</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_NvmlTooOld" xml:space="preserve">
+    <value>NVIDIA 驅動程式版本太舊</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_PawnIONotInstalled" xml:space="preserve">
+    <value>未安裝 PawnIO</value>
+    <comment>Reason in parentheses. PawnIO is a driver's name: keep it.</comment>
+  </data>
+  <data name="SensorProblem_PawnIOUnavailable" xml:space="preserve">
+    <value>無法開啟 PawnIO ({0})</value>
+    <comment>Reason in parentheses. {0} = an error code.</comment>
+  </data>
+  <data name="SensorProblem_PawnIOModuleRefused" xml:space="preserve">
+    <value>PawnIO 拒絕了一個模組 ({0})</value>
+    <comment>Reason in parentheses. {0} = a module name and an error code.</comment>
+  </data>
+  <data name="Settings_GetPawnIO.Content" xml:space="preserve">
+    <value>取得 PawnIO 以準確讀取 CPU 溫度</value>
+    <comment>Link. PawnIO is a driver's name: keep it.</comment>
+  </data>
+  <data name="Settings_OperatingModes.Header" xml:space="preserve">
+    <value>作業模式</value>
+    <comment>Setting: use Acer's operating modes (Eco, Quiet, Balanced...).</comment>
+  </data>
+  <data name="Settings_OperatingModes_Supported" xml:space="preserve">
+    <value>{0}，與 Acer 軟體在此機型上提供的相同。{1}</value>
+    <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
+  </data>
+  <data name="Settings_OperatingModes_Unused" xml:space="preserve">
+    <value>您的韌體列出了 {0}，但 Acer 軟體在此機型上並未使用，這些模式可能沒有任何作用。{1}</value>
+    <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
+  </data>
+  <data name="Settings_OperatingModes_CoolBoost" xml:space="preserve">
+    <value>關閉這些模式時，可以使用 CoolBoost。</value>
+    <comment>They = the operating modes.</comment>
+  </data>
+  <data name="Settings_OperatingModes_Default" xml:space="preserve">
+    <value>關閉這些模式時，筆記型電腦會保持在預設模式。</value>
+    <comment>They = the operating modes.</comment>
+  </data>
+  <data name="Settings_Updates.Text" xml:space="preserve">
+    <value>更新</value>
+    <comment>Section title: app updates.</comment>
+  </data>
+  <data name="Settings_CheckNow.Content" xml:space="preserve">
+    <value>立即檢查</value>
+    <comment>Button: check for updates now.</comment>
+  </data>
+  <data name="Settings_AutoUpdate.Header" xml:space="preserve">
+    <value>自動檢查更新</value>
+  </data>
+  <data name="Settings_AutoUpdate.Description" xml:space="preserve">
+    <value>每天一次，從專案的 GitHub 發行版本檢查。下載的檔案在安裝前會與 GitHub 發佈的 SHA-256 總和檢查碼進行比對。</value>
+  </data>
+  <data name="Settings_Troubleshooting.Text" xml:space="preserve">
+    <value>疑難排解</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_Diagnostics.Header" xml:space="preserve">
+    <value>診斷</value>
+  </data>
+  <data name="Settings_Diagnostics.Description" xml:space="preserve">
+    <value>功能偵測時韌體傳回的原始回應。回報問題或新機型時請附上這些資訊。</value>
+    <comment>The copied diagnostics stay in English for the developers.</comment>
+  </data>
+  <data name="Settings_Copy.Content" xml:space="preserve">
+    <value>複製</value>
+    <comment>Button: copy the diagnostics to the clipboard.</comment>
+  </data>
+  <data name="Settings_ServiceLogs.Content" xml:space="preserve">
+    <value>服務記錄檔</value>
+    <comment>Button: opens the background service's log folder.</comment>
+  </data>
+  <data name="Settings_AppLogs.Content" xml:space="preserve">
+    <value>應用程式記錄檔</value>
+    <comment>Button: opens the app's log folder.</comment>
+  </data>
+  <data name="Settings_About.Text" xml:space="preserve">
+    <value>關於</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_AboutOpenSense.Description" xml:space="preserve">
+    <value>適用於 Acer Nitro 與 Predator 筆記型電腦的開放原始碼風扇、效能與燈光控制。</value>
+  </data>
+  <data name="Settings_Version" xml:space="preserve">
+    <value>版本 {0}</value>
+    <comment>{0} = a version number.</comment>
+  </data>
+  <data name="Settings_Mode_Portable" xml:space="preserve">
+    <value>可攜式版本：以系統管理員身分執行，並在開啟期間自行控制筆記型電腦。</value>
+  </data>
+  <data name="Settings_Mode_Installed" xml:space="preserve">
+    <value>已安裝：無論此視窗是否開啟，OpenSense 服務都會從啟動時起控制筆記型電腦。</value>
+  </data>
+  <data name="Settings_Trademarks.Text" xml:space="preserve">
+    <value>OpenSense 是一個獨立專案，與 Acer 沒有關聯，也未獲得 Acer 認可。Acer、Nitro、Predator 與 NitroSense 是 Acer Inc. 的商標。依據 GNU General Public License v3.0 或更新版本發行。</value>
+    <comment>Legal notice: translate faithfully and keep the names.</comment>
+  </data>
+  <data name="Update_Install.Content" xml:space="preserve">
+    <value>立即更新</value>
+    <comment>Button: download and install the update.</comment>
+  </data>
+  <data name="Update_WhatsNew.Content" xml:space="preserve">
+    <value>新功能</value>
+    <comment>Link to the release notes.</comment>
+  </data>
+  <data name="Update_Skip.Content" xml:space="preserve">
+    <value>略過此版本</value>
+    <comment>Link.</comment>
+  </data>
+  <data name="Update_BannerTitle" xml:space="preserve">
+    <value>OpenSense {0} 已推出</value>
+    <comment>{0} = a version number.</comment>
+  </data>
+  <data name="Update_Downloading" xml:space="preserve">
+    <value>正在下載… {0}</value>
+    <comment>{0} = progress as a percentage.</comment>
+  </data>
+  <data name="Update_NoAsset" xml:space="preserve">
+    <value>此發行版本沒有適用於此複本的下載；請參閱發行版本頁面。</value>
+  </data>
+  <data name="Update_InstallerHint" xml:space="preserve">
+    <value>按一下「立即更新」以安裝更新並重新開啟 OpenSense（Windows 會要求權限）。</value>
+    <comment>'Update now' = Update_Install.Content.</comment>
+  </data>
+  <data name="Update_PortableHint" xml:space="preserve">
+    <value>按一下「立即更新」以取代此可攜式版本並重新開啟。</value>
+    <comment>'Update now' = Update_Install.Content.</comment>
+  </data>
+  <data name="Update_Checking" xml:space="preserve">
+    <value>正在檢查更新…</value>
+  </data>
+  <data name="Update_UpToDate" xml:space="preserve">
+    <value>已是最新狀態。{0}</value>
+    <comment>{0} = Update_LastChecked or Update_NotChecked.</comment>
+  </data>
+  <data name="Update_Latest" xml:space="preserve">
+    <value>{0} 是最新版本。</value>
+    <comment>{0} = 'OpenSense' and a version number.</comment>
+  </data>
+  <data name="Update_Skipped" xml:space="preserve">
+    <value>已略過版本 {0}。{1}</value>
+    <comment>{0} = a version number; {1} = Update_LastChecked or Update_NotChecked.</comment>
+  </data>
+  <data name="Update_Available" xml:space="preserve">
+    <value>版本 {0} 已推出。{1}</value>
+    <comment>{0} = a version number; {1} = Update_LastChecked or Update_NotChecked.</comment>
+  </data>
+  <data name="Update_LastChecked" xml:space="preserve">
+    <value>上次檢查時間：{0}。</value>
+    <comment>{0} = a date and time.</comment>
+  </data>
+  <data name="Update_NotChecked" xml:space="preserve">
+    <value>尚未檢查。</value>
+  </data>
+  <data name="Update_OpenToUpdate" xml:space="preserve">
+    <value>開啟 OpenSense 以進行更新。</value>
+    <comment>Notification balloon.</comment>
+  </data>
+  <data name="Update_CheckFailed" xml:space="preserve">
+    <value>無法檢查更新：{0}</value>
+    <comment>{0} = a technical error message.</comment>
+  </data>
+  <data name="Update_Cancelled" xml:space="preserve">
+    <value>已取消更新。</value>
+  </data>
+  <data name="Update_Failed" xml:space="preserve">
+    <value>更新失敗：{0}</value>
+    <comment>{0} = the reason, possibly a technical error message.</comment>
+  </data>
+  <data name="Update_NoDigest" xml:space="preserve">
+    <value>GitHub 未發佈此下載檔案的 SHA-256 總和檢查碼，因此無法驗證。</value>
+  </data>
+  <data name="Update_DigestMismatch" xml:space="preserve">
+    <value>下載的檔案與 GitHub 發佈的 SHA-256 總和檢查碼不符。</value>
+  </data>
+  <data name="Update_NoExecutable" xml:space="preserve">
+    <value>可攜式更新中不包含 OpenSense.exe。</value>
+  </data>
+  <data name="Update_OldCopyRunning" xml:space="preserve">
+    <value>正在執行的 OpenSense 沒有關閉。</value>
+  </data>
+  <data name="PortableUpdate_Caption" xml:space="preserve">
+    <value>OpenSense 更新</value>
+    <comment>Message box title.</comment>
+  </data>
+  <data name="PortableUpdate_Failed" xml:space="preserve">
+    <value>無法更新 OpenSense，已保留先前的版本。
+
+{0}
+
+詳細資料：{1}</value>
+    <comment>{0} = the reason; {1} = a log file path.</comment>
+  </data>
+  <data name="Tray_Open" xml:space="preserve">
+    <value>開啟 OpenSense</value>
+    <comment>Menu item of the notification area icon.</comment>
+  </data>
+  <data name="Tray_FanMode" xml:space="preserve">
+    <value>風扇模式</value>
+    <comment>Submenu of the notification area icon.</comment>
+  </data>
+  <data name="Tray_OperatingMode" xml:space="preserve">
+    <value>作業模式</value>
+    <comment>Submenu of the notification area icon.</comment>
+  </data>
+  <data name="Tray_Exit" xml:space="preserve">
+    <value>結束</value>
+    <comment>Menu item: quit OpenSense.</comment>
+  </data>
+</root>

@@ -1,0 +1,1075 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Nav_Dashboard.Content" xml:space="preserve">
+    <value>Painel</value>
+    <comment>Navigation menu item: the overview page.</comment>
+  </data>
+  <data name="Nav_Fans.Content" xml:space="preserve">
+    <value>Ventoinhas</value>
+    <comment>Navigation menu item: fan control page.</comment>
+  </data>
+  <data name="Nav_Lighting.Content" xml:space="preserve">
+    <value>Iluminação</value>
+    <comment>Navigation menu item: the RGB keyboard lighting page.</comment>
+  </data>
+  <data name="Nav_System.Content" xml:space="preserve">
+    <value>Teclado e tela</value>
+    <comment>Navigation menu item: keyboard, display, GPU and power settings.</comment>
+  </data>
+  <data name="Startup_Connecting.Text" xml:space="preserve">
+    <value>Conectando ao notebook…</value>
+    <comment>Shown while the app starts.</comment>
+  </data>
+  <data name="Problem_RestartElevated.Content" xml:space="preserve">
+    <value>Reiniciar como administrador</value>
+    <comment>Button.</comment>
+  </data>
+  <data name="Problem_StartService.Content" xml:space="preserve">
+    <value>Iniciar o serviço</value>
+    <comment>Button: starts the OpenSense background service.</comment>
+  </data>
+  <data name="Problem_NeedsElevation_Title" xml:space="preserve">
+    <value>Direitos de administrador necessários</value>
+  </data>
+  <data name="Problem_NeedsElevation_Message" xml:space="preserve">
+    <value>Esta cópia portátil se comunica diretamente com os controles das ventoinhas e da iluminação do notebook, o que exige direitos de administrador. Reinicie-a como administrador ou instale o OpenSense para executá-lo sem eles.</value>
+  </data>
+  <data name="Problem_ServiceUnavailable_Title" xml:space="preserve">
+    <value>O serviço do OpenSense não está em execução</value>
+  </data>
+  <data name="Problem_ServiceUnavailable_Message" xml:space="preserve">
+    <value>O OpenSense controla o notebook por meio de um serviço em segundo plano, que está parado. Inicie-o (o Windows pedirá permissão) ou reinstale o OpenSense se ele continuar parando.</value>
+  </data>
+  <data name="Problem_Unsupported_Title" xml:space="preserve">
+    <value>Nenhum firmware para jogos da Acer encontrado</value>
+  </data>
+  <data name="Problem_Unsupported_Message" xml:space="preserve">
+    <value>Este PC não oferece a interface WMI para jogos da Acer (AcerGamingFunction). O OpenSense é compatível com notebooks Acer Nitro e Predator.</value>
+    <comment>Keep 'AcerGamingFunction' as is.</comment>
+  </data>
+  <data name="Problem_Failed_Title" xml:space="preserve">
+    <value>Não foi possível iniciar o OpenSense</value>
+  </data>
+  <data name="Problem_Failed_Message" xml:space="preserve">
+    <value>Ocorreu um erro inesperado. A pasta de logs tem os detalhes.</value>
+  </data>
+  <data name="Session_VersionMismatch" xml:space="preserve">
+    <value>O serviço do OpenSense é de outra versão ({0}). Reinstale o OpenSense para atualizá-lo.</value>
+    <comment>{0} = a version number.</comment>
+  </data>
+  <data name="Notice_Rebuilt_Title" xml:space="preserve">
+    <value>Recursos atualizados</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_Rebuilt_Message" xml:space="preserve">
+    <value>O OpenSense reiniciou o controle das ventoinhas com as novas configurações.</value>
+  </data>
+  <data name="Notice_Service_Title" xml:space="preserve">
+    <value>Serviço</value>
+    <comment>Banner title: about the OpenSense background service.</comment>
+  </data>
+  <data name="Notice_Reconnected" xml:space="preserve">
+    <value>Reconectado ao serviço do OpenSense.</value>
+  </data>
+  <data name="Notice_Disconnected" xml:space="preserve">
+    <value>A conexão com o serviço do OpenSense foi perdida. Reconectando…</value>
+  </data>
+  <data name="Notice_ServiceStartFailed" xml:space="preserve">
+    <value>O serviço do OpenSense não foi iniciado. O log do serviço em %ProgramData%\OpenSense\logs tem os detalhes.</value>
+    <comment>Keep the folder path as is.</comment>
+  </data>
+  <data name="Notice_FanControl_Title" xml:space="preserve">
+    <value>Controle das ventoinhas</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_Keyboard_Title" xml:space="preserve">
+    <value>Teclado</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_Display_Title" xml:space="preserve">
+    <value>Tela</value>
+    <comment>Banner title: the laptop screen.</comment>
+  </data>
+  <data name="Notice_FirmwareAccessDenied" xml:space="preserve">
+    <value>São necessários direitos de administrador para acessar a interface do firmware da Acer.</value>
+  </data>
+  <data name="Notice_ControlLoopError" xml:space="preserve">
+    <value>O controle das ventoinhas encontrou um erro: {0}</value>
+    <comment>{0} = a technical error message (not translated).</comment>
+  </data>
+  <data name="Notice_OperatingModeRejected" xml:space="preserve">
+    <value>O firmware recusou a mudança de modo de operação ({0}).</value>
+    <comment>{0} = an operating mode name, e.g. Turbo.</comment>
+  </data>
+  <data name="Notice_CoolBoostRejected" xml:space="preserve">
+    <value>O firmware recusou a alteração do CoolBoost.</value>
+    <comment>CoolBoost is an Acer feature name: keep it.</comment>
+  </data>
+  <data name="Notice_FansHandedBack" xml:space="preserve">
+    <value>A temperatura da CPU não está disponível, então as ventoinhas voltaram para Auto.</value>
+    <comment>Auto = the automatic fan mode, as in FanMode_Auto.</comment>
+  </data>
+  <data name="Notice_LightingRejected" xml:space="preserve">
+    <value>O teclado recusou a alteração da iluminação.</value>
+  </data>
+  <data name="Notice_BacklightTimeoutRejected" xml:space="preserve">
+    <value>O teclado recusou a alteração do tempo limite da luz de fundo.</value>
+  </data>
+  <data name="Notice_WindowsKeyRejected" xml:space="preserve">
+    <value>O firmware recusou a alteração da tecla Windows.</value>
+  </data>
+  <data name="Notice_LcdOverdriveRejected" xml:space="preserve">
+    <value>A tela recusou a alteração do overdrive.</value>
+    <comment>Overdrive = LCD overdrive, a screen setting that speeds up pixel response.</comment>
+  </data>
+  <data name="Notice_PowerPlan_Title" xml:space="preserve">
+    <value>Plano de energia</value>
+    <comment>Banner title: a Windows power plan.</comment>
+  </data>
+  <data name="Notice_PowerPlanFailed" xml:space="preserve">
+    <value>O Windows não mudou para "{0}".</value>
+    <comment>{0} = a Windows power plan name. Use your language's quotation marks.</comment>
+  </data>
+  <data name="Notice_GpuMode_Title" xml:space="preserve">
+    <value>Modo da GPU</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_GpuModeRejected" xml:space="preserve">
+    <value>O firmware recusou a mudança do modo da GPU.</value>
+  </data>
+  <data name="Notice_Autostart_Title" xml:space="preserve">
+    <value>Iniciar com o Windows</value>
+    <comment>Banner title, same as Settings_StartWithWindows.Header.</comment>
+  </data>
+  <data name="Notice_AutostartFailed" xml:space="preserve">
+    <value>Não foi possível atualizar a entrada de inicialização: {0}</value>
+    <comment>{0} = a technical error message.</comment>
+  </data>
+  <data name="Notice_Diagnostics_Title" xml:space="preserve">
+    <value>Diagnóstico</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_DiagnosticsCopied" xml:space="preserve">
+    <value>Copiado para a área de transferência.</value>
+  </data>
+  <data name="Notice_Updates_Title" xml:space="preserve">
+    <value>Atualizações</value>
+    <comment>Banner title: app updates.</comment>
+  </data>
+  <data name="GpuSwitch_DiscreteTitle" xml:space="preserve">
+    <value>Usar somente a GPU dedicada?</value>
+    <comment>Dialog title. Discrete GPU = the separate NVIDIA graphics chip.</comment>
+  </data>
+  <data name="GpuSwitch_HybridTitle" xml:space="preserve">
+    <value>Mudar para gráficos híbridos?</value>
+    <comment>Dialog title.</comment>
+  </data>
+  <data name="GpuSwitch_DiscreteMessage" xml:space="preserve">
+    <value>A GPU NVIDIA controlará a tela diretamente para o melhor desempenho em jogos, com menor duração da bateria. O Windows precisa reiniciar para aplicar isso.</value>
+  </data>
+  <data name="GpuSwitch_HybridMessage" xml:space="preserve">
+    <value>A GPU integrada controlará a tela e a GPU dedicada só será ligada quando necessário, economizando bateria. O Windows precisa reiniciar para aplicar isso.</value>
+  </data>
+  <data name="GpuSwitch_RestartNow" xml:space="preserve">
+    <value>Reiniciar agora</value>
+    <comment>Dialog button: restart Windows now.</comment>
+  </data>
+  <data name="GpuSwitch_RestartLater" xml:space="preserve">
+    <value>Reiniciar mais tarde</value>
+    <comment>Dialog button.</comment>
+  </data>
+  <data name="GpuSwitch_Cancel" xml:space="preserve">
+    <value>Cancelar</value>
+    <comment>Dialog button.</comment>
+  </data>
+  <data name="Chip_Cpu" xml:space="preserve">
+    <value>CPU</value>
+    <comment>The processor. Short: used in labels like 'CPU 45°'.</comment>
+  </data>
+  <data name="Chip_Gpu" xml:space="preserve">
+    <value>GPU</value>
+    <comment>The graphics chip. Short: used in labels like 'GPU 45°'.</comment>
+  </data>
+  <data name="Fan_Cpu" xml:space="preserve">
+    <value>Ventoinha da CPU</value>
+  </data>
+  <data name="Fan_Gpu" xml:space="preserve">
+    <value>Ventoinha da GPU</value>
+  </data>
+  <data name="FanMode_Auto" xml:space="preserve">
+    <value>Auto</value>
+    <comment>Fan mode: the laptop's firmware controls the fans. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Max" xml:space="preserve">
+    <value>Máx.</value>
+    <comment>Fan mode: all fans at full speed. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Custom" xml:space="preserve">
+    <value>Manual</value>
+    <comment>Fan mode: a fixed speed chosen for each fan. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Curve" xml:space="preserve">
+    <value>Curva</value>
+    <comment>Fan mode: fan speed follows a temperature curve. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Auto_Description" xml:space="preserve">
+    <value>O firmware do notebook gerencia as ventoinhas.</value>
+  </data>
+  <data name="FanMode_Max_Description" xml:space="preserve">
+    <value>Todas as ventoinhas na velocidade máxima.</value>
+  </data>
+  <data name="FanMode_Custom_Description" xml:space="preserve">
+    <value>Velocidade fixa para cada ventoinha.</value>
+  </data>
+  <data name="FanMode_Curve_Description" xml:space="preserve">
+    <value>O OpenSense segue suas curvas de temperatura.</value>
+  </data>
+  <data name="FanBehavior_Auto" xml:space="preserve">
+    <value>Auto (firmware)</value>
+    <comment>What a fan is doing right now: controlled by the laptop's firmware.</comment>
+  </data>
+  <data name="FanBehavior_Max" xml:space="preserve">
+    <value>Velocidade máxima</value>
+    <comment>What a fan is doing right now.</comment>
+  </data>
+  <data name="FanBehavior_Emergency" xml:space="preserve">
+    <value>Velocidade máxima de emergência</value>
+    <comment>What a fan is doing right now: forced to full speed because the temperature is too high.</comment>
+  </data>
+  <data name="FanBehavior_Curve" xml:space="preserve">
+    <value>Seguindo a curva</value>
+    <comment>What a fan is doing right now: following the temperature curve.</comment>
+  </data>
+  <data name="FanBehavior_Fixed" xml:space="preserve">
+    <value>Velocidade fixa</value>
+    <comment>What a fan is doing right now.</comment>
+  </data>
+  <data name="FanLock_QuietMode" xml:space="preserve">
+    <value>O modo Silencioso mantém as ventoinhas em Auto.</value>
+    <comment>Quiet = OperatingMode_Quiet; Auto = FanMode_Auto.</comment>
+  </data>
+  <data name="OperatingMode_Eco" xml:space="preserve">
+    <value>Eco</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Quiet" xml:space="preserve">
+    <value>Silencioso</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Balanced" xml:space="preserve">
+    <value>Equilibrado</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Performance" xml:space="preserve">
+    <value>Desempenho</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Turbo" xml:space="preserve">
+    <value>Turbo</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Eco_Description" xml:space="preserve">
+    <value>Maior duração da bateria.</value>
+  </data>
+  <data name="OperatingMode_Quiet_Description" xml:space="preserve">
+    <value>Menor ruído. As ventoinhas ficam em Auto.</value>
+    <comment>Auto = FanMode_Auto.</comment>
+  </data>
+  <data name="OperatingMode_Balanced_Description" xml:space="preserve">
+    <value>Desempenho para o dia a dia.</value>
+  </data>
+  <data name="OperatingMode_Performance_Description" xml:space="preserve">
+    <value>Limites de energia mais altos. Requer alimentação na tomada.</value>
+  </data>
+  <data name="OperatingMode_Turbo_Description" xml:space="preserve">
+    <value>Potência e resfriamento máximos. Requer alimentação na tomada.</value>
+  </data>
+  <data name="OperatingMode_BatteryNote" xml:space="preserve">
+    <value>Na bateria, {0} e {1} funcionam como {2} até você conectar o carregador.</value>
+    <comment>{0}, {1}, {2} = operating mode names (Performance, Turbo, Balanced).</comment>
+  </data>
+  <data name="PowerSource_PluggedIn" xml:space="preserve">
+    <value>Na tomada</value>
+    <comment>Power source: the charger is connected.</comment>
+  </data>
+  <data name="PowerSource_Battery" xml:space="preserve">
+    <value>Na bateria</value>
+    <comment>Power source.</comment>
+  </data>
+  <data name="Gpu_Idle" xml:space="preserve">
+    <value>Inativa</value>
+    <comment>Shown instead of the GPU temperature while the graphics chip is powered down. Short.</comment>
+  </data>
+  <data name="Unit_Rpm" xml:space="preserve">
+    <value>RPM</value>
+    <comment>Unit: revolutions per minute (fan speed). Use your language's usual abbreviation.</comment>
+  </data>
+  <data name="Unit_RpmValue" xml:space="preserve">
+    <value>{0} RPM</value>
+    <comment>{0} = a fan speed number. Same unit as Unit_Rpm.</comment>
+  </data>
+  <data name="Unit_Seconds" xml:space="preserve">
+    <value>{0} s</value>
+    <comment>{0} = a number of seconds, e.g. 0.5. Use the usual abbreviation for seconds.</comment>
+  </data>
+  <data name="ListSeparator" xml:space="preserve">
+    <value>, </value>
+    <comment>Separates items in a list inside a sentence, e.g. 'Quiet, Balanced, Performance'. Keep the trailing space if your language uses one.</comment>
+  </data>
+  <data name="Dashboard_Title.Text" xml:space="preserve">
+    <value>Painel</value>
+    <comment>Page title, same as Nav_Dashboard.Content.</comment>
+  </data>
+  <data name="Dashboard_Failsafe.Title" xml:space="preserve">
+    <value>Ventoinhas devolvidas ao firmware</value>
+    <comment>Warning banner title.</comment>
+  </data>
+  <data name="Dashboard_Failsafe.Message" xml:space="preserve">
+    <value>A temperatura da CPU deixou de ser informada, então o notebook está controlando as próprias ventoinhas até que ela volte.</value>
+  </data>
+  <data name="Dashboard_CpuTemperature.Text" xml:space="preserve">
+    <value>Temperatura da CPU</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_GpuTemperature.Text" xml:space="preserve">
+    <value>Temperatura da GPU</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_CpuFan.Text" xml:space="preserve">
+    <value>Ventoinha da CPU</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_GpuFan.Text" xml:space="preserve">
+    <value>Ventoinha da GPU</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_LoadDetail" xml:space="preserve">
+    <value>Uso de {0} · {1}</value>
+    <comment>Under a temperature: {0} = usage percentage (e.g. 45%), {1} = the chip's model name.</comment>
+  </data>
+  <data name="Dashboard_AsleepDetail" xml:space="preserve">
+    <value>Em suspensão · {0}</value>
+    <comment>Under the GPU temperature while the graphics chip is powered down: {0} = its model name.</comment>
+  </data>
+  <data name="Dashboard_RpmDetail" xml:space="preserve">
+    <value>RPM · ciclo de trabalho de {0}</value>
+    <comment>Under a fan speed number: rpm = revolutions per minute (as Unit_Rpm); {0} = the fan's duty cycle as a percentage.</comment>
+  </data>
+  <data name="Dashboard_Cooling.Text" xml:space="preserve">
+    <value>Resfriamento</value>
+    <comment>Card title.</comment>
+  </data>
+  <data name="Dashboard_CoolBoost.Text" xml:space="preserve">
+    <value>Permite que o modo Auto gire as ventoinhas mais rápido.</value>
+    <comment>Describes CoolBoost (an Acer feature name shown above it). Auto = FanMode_Auto.</comment>
+  </data>
+  <data name="Dashboard_OpenFans.Content" xml:space="preserve">
+    <value>Velocidades e curvas personalizadas</value>
+    <comment>Link to the Fans page.</comment>
+  </data>
+  <data name="Dashboard_Performance.Text" xml:space="preserve">
+    <value>Desempenho</value>
+    <comment>Card title.</comment>
+  </data>
+  <data name="Dashboard_PowerPlan.Header" xml:space="preserve">
+    <value>Plano de energia do Windows</value>
+    <comment>Label above a list of Windows power plans.</comment>
+  </data>
+  <data name="Dashboard_PowerSource.Text" xml:space="preserve">
+    <value>Fonte de energia</value>
+    <comment>Caption above 'Plugged in' or 'On battery'.</comment>
+  </data>
+  <data name="Dashboard_SystemTemperature.Text" xml:space="preserve">
+    <value>Temperatura do sistema</value>
+    <comment>Caption: the laptop's internal temperature.</comment>
+  </data>
+  <data name="Fans_Title.Text" xml:space="preserve">
+    <value>Ventoinhas</value>
+    <comment>Page title.</comment>
+  </data>
+  <data name="Fans_DutyLabel" xml:space="preserve">
+    <value>Ciclo de trabalho de {0}</value>
+    <comment>{0} = the fan's duty cycle as a percentage.</comment>
+  </data>
+  <data name="Fans_AutoToggle.OnContent" xml:space="preserve">
+    <value>Automático</value>
+    <comment>Switch label when on: the firmware controls this fan.</comment>
+  </data>
+  <data name="Fans_AutoToggle.OffContent" xml:space="preserve">
+    <value>Manual</value>
+    <comment>Switch label when off: the speed below is used.</comment>
+  </data>
+  <data name="Fans_FanSpeed.Header" xml:space="preserve">
+    <value>Velocidade da ventoinha</value>
+    <comment>Slider label.</comment>
+  </data>
+  <data name="Fans_Source.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Qual temperatura controla esta ventoinha</value>
+    <comment>Tooltip.</comment>
+  </data>
+  <data name="CurveSource_Cpu" xml:space="preserve">
+    <value>Temperatura da CPU</value>
+    <comment>Which temperature a fan curve follows.</comment>
+  </data>
+  <data name="CurveSource_Gpu" xml:space="preserve">
+    <value>Temperatura da GPU</value>
+    <comment>Which temperature a fan curve follows.</comment>
+  </data>
+  <data name="CurveSource_Hottest" xml:space="preserve">
+    <value>A mais alta das duas</value>
+    <comment>Which temperature a fan curve follows: the higher of the CPU and GPU temperatures.</comment>
+  </data>
+  <data name="Fans_Presets.Content" xml:space="preserve">
+    <value>Predefinições</value>
+    <comment>Button that opens a list of ready-made fan curves.</comment>
+  </data>
+  <data name="Fans_PresetSilent.Text" xml:space="preserve">
+    <value>Silencioso</value>
+    <comment>Fan curve preset name.</comment>
+  </data>
+  <data name="Fans_PresetBalanced.Text" xml:space="preserve">
+    <value>Equilibrado</value>
+    <comment>Fan curve preset name.</comment>
+  </data>
+  <data name="Fans_PresetPerformance.Text" xml:space="preserve">
+    <value>Desempenho</value>
+    <comment>Fan curve preset name.</comment>
+  </data>
+  <data name="Fans_CopyCurve.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Usar esta curva também nas outras ventoinhas</value>
+    <comment>Tooltip.</comment>
+  </data>
+  <data name="Fans_CurveHelp.Text" xml:space="preserve">
+    <value>Arraste os pontos para moldar a curva · clique duas vezes para adicionar um ponto · clique com o botão direito para remover · as teclas de direção ajustam o ponto selecionado</value>
+    <comment>Help under the curve editor.</comment>
+  </data>
+  <data name="CurveEditor_Now" xml:space="preserve">
+    <value>Agora {0} · {1}</value>
+    <comment>Label on the curve editor: {0} = the current temperature, {1} = the current fan speed percentage.</comment>
+  </data>
+  <data name="Fans_Safety.Text" xml:space="preserve">
+    <value>Segurança e resposta</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Fans_Emergency.Header" xml:space="preserve">
+    <value>Temperatura de emergência</value>
+  </data>
+  <data name="Fans_Emergency.Description" xml:space="preserve">
+    <value>Nos modos Manual e Curva, as ventoinhas vão para a velocidade máxima se qualquer um dos chips atingir esta temperatura.</value>
+    <comment>Custom, Curve = FanMode_Custom, FanMode_Curve.</comment>
+  </data>
+  <data name="Fans_MinimumSpeed.Header" xml:space="preserve">
+    <value>Velocidade mínima da ventoinha</value>
+  </data>
+  <data name="Fans_MinimumSpeed.Description" xml:space="preserve">
+    <value>A menor velocidade que o OpenSense pedirá nos modos Manual e Curva.</value>
+  </data>
+  <data name="Fans_SlowDown.Header" xml:space="preserve">
+    <value>Margem para desacelerar</value>
+    <comment>How many degrees the temperature must fall before the fans slow down (hysteresis).</comment>
+  </data>
+  <data name="Fans_SlowDown.Description" xml:space="preserve">
+    <value>Quanto a temperatura precisa cair antes que uma curva desacelere as ventoinhas. Valores mais altos evitam que as ventoinhas acelerem e desacelerem sem parar.</value>
+    <comment>'Hunting' = the fans speeding up and slowing down over and over.</comment>
+  </data>
+  <data name="Fans_HandBack.Header" xml:space="preserve">
+    <value>Devolver as ventoinhas quando o OpenSense parar</value>
+  </data>
+  <data name="Fans_HandBack.Description" xml:space="preserve">
+    <value>Quando o serviço do OpenSense para (ou uma cópia portátil é fechada), o controle de ventoinhas do próprio notebook volta a assumir.</value>
+  </data>
+  <data name="Lighting_Title.Text" xml:space="preserve">
+    <value>Iluminação</value>
+    <comment>Page title: RGB keyboard lighting.</comment>
+  </data>
+  <data name="Lighting_Static.Content" xml:space="preserve">
+    <value>Cores fixas</value>
+    <comment>Lighting mode: one fixed colour per keyboard zone.</comment>
+  </data>
+  <data name="Lighting_Effect.Content" xml:space="preserve">
+    <value>Efeito</value>
+    <comment>Lighting mode: an animated effect.</comment>
+  </data>
+  <data name="Lighting_Zone" xml:space="preserve">
+    <value>Zona {0}</value>
+    <comment>A keyboard lighting zone: {0} = its number.</comment>
+  </data>
+  <data name="Lighting_ZoneColor.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Escolher uma cor</value>
+    <comment>Tooltip.</comment>
+  </data>
+  <data name="Lighting_AllZones.Text" xml:space="preserve">
+    <value>Uma cor para todas as zonas</value>
+  </data>
+  <data name="Lighting_Speed.Header" xml:space="preserve">
+    <value>Velocidade</value>
+    <comment>Slider label: animation speed.</comment>
+  </data>
+  <data name="Lighting_Direction.Text" xml:space="preserve">
+    <value>Direção</value>
+    <comment>Label: animation direction.</comment>
+  </data>
+  <data name="Lighting_EffectColor.Text" xml:space="preserve">
+    <value>Cor do efeito</value>
+  </data>
+  <data name="Lighting_AnyColor.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Qualquer cor</value>
+    <comment>Tooltip of a button that opens a colour picker.</comment>
+  </data>
+  <data name="Effect_Breathing" xml:space="preserve">
+    <value>Respiração</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Neon" xml:space="preserve">
+    <value>Neon</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Wave" xml:space="preserve">
+    <value>Onda</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Shifting" xml:space="preserve">
+    <value>Deslocamento</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Zoom" xml:space="preserve">
+    <value>Zoom</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Breathing_Description" xml:space="preserve">
+    <value>A cor acende e apaga suavemente.</value>
+  </data>
+  <data name="Effect_Neon_Description" xml:space="preserve">
+    <value>Passa pelas cores do arco-íris.</value>
+  </data>
+  <data name="Effect_Wave_Description" xml:space="preserve">
+    <value>Uma onda de cor percorre as teclas.</value>
+  </data>
+  <data name="Effect_Shifting_Description" xml:space="preserve">
+    <value>Um bloco de cor atravessa o teclado.</value>
+  </data>
+  <data name="Effect_Zoom_Description" xml:space="preserve">
+    <value>A cor se expande a partir do centro.</value>
+  </data>
+  <data name="Direction_Left" xml:space="preserve">
+    <value>Esquerda</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Direction_Right" xml:space="preserve">
+    <value>Direita</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Direction_Up" xml:space="preserve">
+    <value>Cima</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Direction_Down" xml:space="preserve">
+    <value>Baixo</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Brightness_Off" xml:space="preserve">
+    <value>Desligada</value>
+    <comment>Keyboard backlight brightness: off. Short: shown next to 25%, 50%...</comment>
+  </data>
+  <data name="System_Title.Text" xml:space="preserve">
+    <value>Teclado e tela</value>
+    <comment>Page title, same as Nav_System.Content.</comment>
+  </data>
+  <data name="System_Keyboard.Text" xml:space="preserve">
+    <value>Teclado</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="System_BacklightAutoOff.Header" xml:space="preserve">
+    <value>Desligar a luz de fundo automaticamente</value>
+    <comment>Keyboard backlight setting.</comment>
+  </data>
+  <data name="System_BacklightAutoOff.Description" xml:space="preserve">
+    <value>Desliga a luz de fundo do teclado após 30 segundos sem digitação.</value>
+  </data>
+  <data name="System_WindowsKey.Header" xml:space="preserve">
+    <value>Teclas Windows e Menu</value>
+    <comment>The Windows logo key and the Menu (application) key.</comment>
+  </data>
+  <data name="System_WindowsKey.Description" xml:space="preserve">
+    <value>Desative para impedir que as teclas Windows e Menu interrompam os jogos.</value>
+  </data>
+  <data name="System_StickyKeys.Header" xml:space="preserve">
+    <value>Teclas de Aderência</value>
+    <comment>The Windows accessibility feature: use its official Windows name in your language.</comment>
+  </data>
+  <data name="System_StickyKeys.Description" xml:space="preserve">
+    <value>As teclas modificadoras continuam pressionadas depois que você as solta; pressione Shift cinco vezes para ativar ou desativar.</value>
+  </data>
+  <data name="System_Display.Text" xml:space="preserve">
+    <value>Tela</value>
+    <comment>Section title: the laptop screen.</comment>
+  </data>
+  <data name="System_LcdOverdrive.Header" xml:space="preserve">
+    <value>Overdrive da tela LCD</value>
+    <comment>Screen setting that speeds up pixel response.</comment>
+  </data>
+  <data name="System_LcdOverdrive.Description" xml:space="preserve">
+    <value>Para a tela integrada do notebook (não monitores externos): resposta mais rápida dos pixels e menos desfoque de movimento nos jogos. Funciona melhor na taxa de atualização mais alta da tela; desative se aparecerem halos atrás de objetos em movimento.</value>
+  </data>
+  <data name="System_Graphics.Text" xml:space="preserve">
+    <value>Gráficos</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="System_GpuMode.Header" xml:space="preserve">
+    <value>Modo da GPU</value>
+    <comment>Setting: hybrid or discrete graphics.</comment>
+  </data>
+  <data name="System_GpuMode.Description" xml:space="preserve">
+    <value>Híbrido economiza bateria usando a GPU integrada para a tela. Dedicada conecta a GPU NVIDIA diretamente para o melhor desempenho em jogos. Vale após reiniciar.</value>
+    <comment>Hybrid, Discrete = System_GpuHybrid, System_GpuDiscrete.</comment>
+  </data>
+  <data name="System_GpuHybrid.Content" xml:space="preserve">
+    <value>Híbrido</value>
+    <comment>GPU mode: both graphics chips (NVIDIA Optimus). Short: a segmented button.</comment>
+  </data>
+  <data name="System_GpuDiscrete.Content" xml:space="preserve">
+    <value>Dedicada</value>
+    <comment>GPU mode: only the NVIDIA graphics chip. Short: a segmented button.</comment>
+  </data>
+  <data name="System_GpuRestart.Title" xml:space="preserve">
+    <value>Reinicie para mudar o modo da GPU</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="System_GpuRestart.Message" xml:space="preserve">
+    <value>O novo modo da GPU passa a valer depois que o Windows reiniciar.</value>
+  </data>
+  <data name="System_RestartNow.Content" xml:space="preserve">
+    <value>Reiniciar agora</value>
+    <comment>Button: restart Windows now.</comment>
+  </data>
+  <data name="System_Power.Text" xml:space="preserve">
+    <value>Energia</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="System_PowerPlan.Header" xml:space="preserve">
+    <value>Plano de energia</value>
+    <comment>Windows power plan setting.</comment>
+  </data>
+  <data name="System_PowerPlan.Description" xml:space="preserve">
+    <value>O plano de energia do Windows em uso.</value>
+  </data>
+  <data name="Settings_Title.Text" xml:space="preserve">
+    <value>Configurações</value>
+    <comment>Page title.</comment>
+  </data>
+  <data name="Settings_Startup.Text" xml:space="preserve">
+    <value>Inicialização</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_StartWithWindows.Header" xml:space="preserve">
+    <value>Iniciar com o Windows</value>
+  </data>
+  <data name="Settings_StartWithWindows.Description" xml:space="preserve">
+    <value>Abre o OpenSense na área de notificação quando você entra. O controle das ventoinhas não depende disso.</value>
+    <comment>Notification area = the Windows system tray.</comment>
+  </data>
+  <data name="Settings_NitroSenseKey.Header" xml:space="preserve">
+    <value>Abrir com a tecla NitroSense</value>
+    <comment>NitroSense is Acer's app; the laptop has a key for it. Keep the name.</comment>
+  </data>
+  <data name="Settings_NitroSenseKey.Description" xml:space="preserve">
+    <value>A tecla NitroSense do teclado abre o OpenSense, como abria o NitroSense. Funciona enquanto o OpenSense está na área de notificação.</value>
+  </data>
+  <data name="Settings_StartMinimized.Header" xml:space="preserve">
+    <value>Iniciar minimizado na área de notificação</value>
+  </data>
+  <data name="Settings_CloseToTray.Header" xml:space="preserve">
+    <value>Continuar em execução quando a janela for fechada</value>
+  </data>
+  <data name="Settings_CloseToTray.Description" xml:space="preserve">
+    <value>Ao fechar a janela, o ícone continua na área de notificação. Saia pelo menu dele.</value>
+  </data>
+  <data name="Settings_Appearance.Text" xml:space="preserve">
+    <value>Aparência</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_Language.Header" xml:space="preserve">
+    <value>Idioma</value>
+    <comment>Setting: the app's language.</comment>
+  </data>
+  <data name="Language_System" xml:space="preserve">
+    <value>Usar configuração do sistema</value>
+    <comment>First entry in the language list: follow the Windows language.</comment>
+  </data>
+  <data name="Settings_LanguageRestart.Title" xml:space="preserve">
+    <value>Reinicie para mudar o idioma</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Settings_LanguageRestart.Message" xml:space="preserve">
+    <value>O OpenSense mostrará o novo idioma depois de reiniciar.</value>
+  </data>
+  <data name="Settings_LanguageRestartNow.Content" xml:space="preserve">
+    <value>Reiniciar agora</value>
+    <comment>Button: restart OpenSense now.</comment>
+  </data>
+  <data name="Settings_Theme.Header" xml:space="preserve">
+    <value>Tema</value>
+    <comment>Setting: light or dark colours.</comment>
+  </data>
+  <data name="Theme_System" xml:space="preserve">
+    <value>Usar configuração do sistema</value>
+    <comment>Theme choice: follow Windows.</comment>
+  </data>
+  <data name="Theme_Light" xml:space="preserve">
+    <value>Claro</value>
+    <comment>Theme choice.</comment>
+  </data>
+  <data name="Theme_Dark" xml:space="preserve">
+    <value>Escuro</value>
+    <comment>Theme choice.</comment>
+  </data>
+  <data name="Settings_Fahrenheit.Header" xml:space="preserve">
+    <value>Mostrar temperaturas em Fahrenheit</value>
+  </data>
+  <data name="Settings_Interval.Header" xml:space="preserve">
+    <value>Intervalo de atualização</value>
+    <comment>Setting: how often sensors are read.</comment>
+  </data>
+  <data name="Settings_Interval.Description" xml:space="preserve">
+    <value>Com que frequência os sensores são lidos e as curvas das ventoinhas são atualizadas, para todos neste PC.</value>
+  </data>
+  <data name="Settings_Laptop.Text" xml:space="preserve">
+    <value>Seu notebook</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_UnknownModel" xml:space="preserve">
+    <value>Notebook Acer</value>
+    <comment>Shown when the laptop's model name is unknown.</comment>
+  </data>
+  <data name="Settings_Bios" xml:space="preserve">
+    <value>BIOS {0}</value>
+    <comment>{0} = the BIOS version.</comment>
+  </data>
+  <data name="Settings_BiosUnknown" xml:space="preserve">
+    <value>Versão do BIOS desconhecida</value>
+  </data>
+  <data name="Settings_Sensors.Header" xml:space="preserve">
+    <value>Sensores de temperatura</value>
+  </data>
+  <data name="Settings_SensorSources" xml:space="preserve">
+    <value>CPU: {0}
+GPU: {1}</value>
+    <comment>Two lines: {0}, {1} = where each temperature comes from (Sensor_* texts).</comment>
+  </data>
+  <data name="Sensor_IntelPackage" xml:space="preserve">
+    <value>Sensor de pacote Intel (TjMax {0} °C)</value>
+    <comment>The Intel CPU's own temperature sensor. {0} = a temperature. Keep 'TjMax'.</comment>
+  </data>
+  <data name="Sensor_AmdTctl" xml:space="preserve">
+    <value>Sensor Tctl da AMD</value>
+    <comment>The AMD CPU's own temperature sensor. Keep 'Tctl'.</comment>
+  </data>
+  <data name="Sensor_NvidiaDriver" xml:space="preserve">
+    <value>Driver da NVIDIA</value>
+    <comment>Temperature read from the NVIDIA graphics driver.</comment>
+  </data>
+  <data name="Sensor_EmbeddedController" xml:space="preserve">
+    <value>Controlador embutido</value>
+    <comment>The laptop's embedded controller (EC) chip, which also reports temperatures.</comment>
+  </data>
+  <data name="Sensor_EmbeddedControllerBecause" xml:space="preserve">
+    <value>Controlador embutido ({0})</value>
+    <comment>{0} = why the chip's own sensor isn't used (one of the SensorProblem_* texts).</comment>
+  </data>
+  <data name="SensorProblem_NotX86Cpu" xml:space="preserve">
+    <value>a CPU não é x86</value>
+    <comment>Reason in parentheses after 'Embedded controller': starts lowercase in English.</comment>
+  </data>
+  <data name="SensorProblem_UnsupportedCpuVendor" xml:space="preserve">
+    <value>fabricante de CPU sem suporte: {0}</value>
+    <comment>Reason in parentheses. {0} = a CPU vendor code such as 'GenuineIntel'.</comment>
+  </data>
+  <data name="SensorProblem_NoPackageSensor" xml:space="preserve">
+    <value>esta CPU Intel não tem sensor de temperatura de pacote</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_ImplausibleTjMax" xml:space="preserve">
+    <value>a CPU informou um TjMax improvável de {0} °C</value>
+    <comment>Reason in parentheses. Keep 'TjMax'. {0} = a number.</comment>
+  </data>
+  <data name="SensorProblem_NoReading" xml:space="preserve">
+    <value>o sensor não respondeu</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_PciLockUnavailable" xml:space="preserve">
+    <value>não foi possível abrir o bloqueio PCI compartilhado: {0}</value>
+    <comment>Reason in parentheses. {0} = a technical error message.</comment>
+  </data>
+  <data name="SensorProblem_NoNvidiaDriver" xml:space="preserve">
+    <value>nenhum driver da NVIDIA encontrado</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_NvmlTooOld" xml:space="preserve">
+    <value>o driver da NVIDIA é antigo demais</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_PawnIONotInstalled" xml:space="preserve">
+    <value>o PawnIO não está instalado</value>
+    <comment>Reason in parentheses. PawnIO is a driver's name: keep it.</comment>
+  </data>
+  <data name="SensorProblem_PawnIOUnavailable" xml:space="preserve">
+    <value>não foi possível abrir o PawnIO ({0})</value>
+    <comment>Reason in parentheses. {0} = an error code.</comment>
+  </data>
+  <data name="SensorProblem_PawnIOModuleRefused" xml:space="preserve">
+    <value>o PawnIO recusou um módulo ({0})</value>
+    <comment>Reason in parentheses. {0} = a module name and an error code.</comment>
+  </data>
+  <data name="Settings_GetPawnIO.Content" xml:space="preserve">
+    <value>Obter o PawnIO para leituras exatas da CPU</value>
+    <comment>Link. PawnIO is a driver's name: keep it.</comment>
+  </data>
+  <data name="Settings_OperatingModes.Header" xml:space="preserve">
+    <value>Modos de operação</value>
+    <comment>Setting: use Acer's operating modes (Eco, Quiet, Balanced...).</comment>
+  </data>
+  <data name="Settings_OperatingModes_Supported" xml:space="preserve">
+    <value>{0}, como o software da Acer os oferece neste modelo. {1}</value>
+    <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
+  </data>
+  <data name="Settings_OperatingModes_Unused" xml:space="preserve">
+    <value>Seu firmware lista {0}, mas o software da Acer não os usa neste modelo e eles podem não mudar nada. {1}</value>
+    <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
+  </data>
+  <data name="Settings_OperatingModes_CoolBoost" xml:space="preserve">
+    <value>O CoolBoost fica disponível enquanto eles estiverem desativados.</value>
+    <comment>They = the operating modes.</comment>
+  </data>
+  <data name="Settings_OperatingModes_Default" xml:space="preserve">
+    <value>Enquanto eles estiverem desativados, o notebook fica no modo padrão.</value>
+    <comment>They = the operating modes.</comment>
+  </data>
+  <data name="Settings_Updates.Text" xml:space="preserve">
+    <value>Atualizações</value>
+    <comment>Section title: app updates.</comment>
+  </data>
+  <data name="Settings_CheckNow.Content" xml:space="preserve">
+    <value>Verificar agora</value>
+    <comment>Button: check for updates now.</comment>
+  </data>
+  <data name="Settings_AutoUpdate.Header" xml:space="preserve">
+    <value>Verificar atualizações automaticamente</value>
+  </data>
+  <data name="Settings_AutoUpdate.Description" xml:space="preserve">
+    <value>Uma vez por dia, nas versões do projeto no GitHub. Os downloads são conferidos com a soma de verificação SHA-256 publicada pelo GitHub antes de serem instalados.</value>
+  </data>
+  <data name="Settings_Troubleshooting.Text" xml:space="preserve">
+    <value>Solução de problemas</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_Diagnostics.Header" xml:space="preserve">
+    <value>Diagnóstico</value>
+  </data>
+  <data name="Settings_Diagnostics.Description" xml:space="preserve">
+    <value>Respostas brutas do firmware na detecção de recursos. Inclua-as ao relatar um problema ou um novo modelo.</value>
+    <comment>The copied diagnostics stay in English for the developers.</comment>
+  </data>
+  <data name="Settings_Copy.Content" xml:space="preserve">
+    <value>Copiar</value>
+    <comment>Button: copy the diagnostics to the clipboard.</comment>
+  </data>
+  <data name="Settings_ServiceLogs.Content" xml:space="preserve">
+    <value>Logs do serviço</value>
+    <comment>Button: opens the background service's log folder.</comment>
+  </data>
+  <data name="Settings_AppLogs.Content" xml:space="preserve">
+    <value>Logs do aplicativo</value>
+    <comment>Button: opens the app's log folder.</comment>
+  </data>
+  <data name="Settings_About.Text" xml:space="preserve">
+    <value>Sobre</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_AboutOpenSense.Description" xml:space="preserve">
+    <value>Controle de código aberto de ventoinhas, desempenho e iluminação para notebooks Acer Nitro e Predator.</value>
+  </data>
+  <data name="Settings_Version" xml:space="preserve">
+    <value>Versão {0}</value>
+    <comment>{0} = a version number.</comment>
+  </data>
+  <data name="Settings_Mode_Portable" xml:space="preserve">
+    <value>Cópia portátil: é executada como administrador e controla o notebook diretamente enquanto está aberta.</value>
+  </data>
+  <data name="Settings_Mode_Installed" xml:space="preserve">
+    <value>Instalado: o serviço do OpenSense controla o notebook desde a inicialização, com esta janela aberta ou não.</value>
+  </data>
+  <data name="Settings_Trademarks.Text" xml:space="preserve">
+    <value>O OpenSense é um projeto independente e não é afiliado à Acer nem endossado por ela. Acer, Nitro, Predator e NitroSense são marcas comerciais da Acer Inc. Lançado sob a GNU General Public License v3.0 ou posterior.</value>
+    <comment>Legal notice: translate faithfully and keep the names.</comment>
+  </data>
+  <data name="Update_Install.Content" xml:space="preserve">
+    <value>Atualizar agora</value>
+    <comment>Button: download and install the update.</comment>
+  </data>
+  <data name="Update_WhatsNew.Content" xml:space="preserve">
+    <value>Novidades</value>
+    <comment>Link to the release notes.</comment>
+  </data>
+  <data name="Update_Skip.Content" xml:space="preserve">
+    <value>Ignorar esta versão</value>
+    <comment>Link.</comment>
+  </data>
+  <data name="Update_BannerTitle" xml:space="preserve">
+    <value>OpenSense {0} está disponível</value>
+    <comment>{0} = a version number.</comment>
+  </data>
+  <data name="Update_Downloading" xml:space="preserve">
+    <value>Baixando… {0}</value>
+    <comment>{0} = progress as a percentage.</comment>
+  </data>
+  <data name="Update_NoAsset" xml:space="preserve">
+    <value>Esta versão não tem download para esta cópia; veja a página da versão.</value>
+  </data>
+  <data name="Update_InstallerHint" xml:space="preserve">
+    <value>Clique em "Atualizar agora" para instalar e reabrir o OpenSense (o Windows pedirá permissão).</value>
+    <comment>'Update now' = Update_Install.Content.</comment>
+  </data>
+  <data name="Update_PortableHint" xml:space="preserve">
+    <value>Clique em "Atualizar agora" para substituir esta cópia portátil e reabri-la.</value>
+    <comment>'Update now' = Update_Install.Content.</comment>
+  </data>
+  <data name="Update_Checking" xml:space="preserve">
+    <value>Verificando atualizações…</value>
+  </data>
+  <data name="Update_UpToDate" xml:space="preserve">
+    <value>Atualizado. {0}</value>
+    <comment>{0} = Update_LastChecked or Update_NotChecked.</comment>
+  </data>
+  <data name="Update_Latest" xml:space="preserve">
+    <value>{0} é a versão mais recente.</value>
+    <comment>{0} = 'OpenSense' and a version number.</comment>
+  </data>
+  <data name="Update_Skipped" xml:space="preserve">
+    <value>Versão {0} ignorada. {1}</value>
+    <comment>{0} = a version number; {1} = Update_LastChecked or Update_NotChecked.</comment>
+  </data>
+  <data name="Update_Available" xml:space="preserve">
+    <value>A versão {0} está disponível. {1}</value>
+    <comment>{0} = a version number; {1} = Update_LastChecked or Update_NotChecked.</comment>
+  </data>
+  <data name="Update_LastChecked" xml:space="preserve">
+    <value>Última verificação: {0}.</value>
+    <comment>{0} = a date and time.</comment>
+  </data>
+  <data name="Update_NotChecked" xml:space="preserve">
+    <value>Ainda não verificado.</value>
+  </data>
+  <data name="Update_OpenToUpdate" xml:space="preserve">
+    <value>Abra o OpenSense para atualizar.</value>
+    <comment>Notification balloon.</comment>
+  </data>
+  <data name="Update_CheckFailed" xml:space="preserve">
+    <value>Não foi possível verificar atualizações: {0}</value>
+    <comment>{0} = a technical error message.</comment>
+  </data>
+  <data name="Update_Cancelled" xml:space="preserve">
+    <value>A atualização foi cancelada.</value>
+  </data>
+  <data name="Update_Failed" xml:space="preserve">
+    <value>Falha na atualização: {0}</value>
+    <comment>{0} = the reason, possibly a technical error message.</comment>
+  </data>
+  <data name="Update_NoDigest" xml:space="preserve">
+    <value>O GitHub não publicou nenhuma soma de verificação SHA-256 para o download, então ele não pode ser verificado.</value>
+  </data>
+  <data name="Update_DigestMismatch" xml:space="preserve">
+    <value>O download não corresponde à soma de verificação SHA-256 publicada pelo GitHub.</value>
+  </data>
+  <data name="Update_NoExecutable" xml:space="preserve">
+    <value>A atualização portátil não contém o OpenSense.exe.</value>
+  </data>
+  <data name="Update_OldCopyRunning" xml:space="preserve">
+    <value>O OpenSense em execução não foi fechado.</value>
+  </data>
+  <data name="PortableUpdate_Caption" xml:space="preserve">
+    <value>Atualização do OpenSense</value>
+    <comment>Message box title.</comment>
+  </data>
+  <data name="PortableUpdate_Failed" xml:space="preserve">
+    <value>Não foi possível atualizar o OpenSense, então a versão anterior foi mantida.
+
+{0}
+
+Detalhes: {1}</value>
+    <comment>{0} = the reason; {1} = a log file path.</comment>
+  </data>
+  <data name="Tray_Open" xml:space="preserve">
+    <value>Abrir o OpenSense</value>
+    <comment>Menu item of the notification area icon.</comment>
+  </data>
+  <data name="Tray_FanMode" xml:space="preserve">
+    <value>Modo das ventoinhas</value>
+    <comment>Submenu of the notification area icon.</comment>
+  </data>
+  <data name="Tray_OperatingMode" xml:space="preserve">
+    <value>Modo de operação</value>
+    <comment>Submenu of the notification area icon.</comment>
+  </data>
+  <data name="Tray_Exit" xml:space="preserve">
+    <value>Sair</value>
+    <comment>Menu item: quit OpenSense.</comment>
+  </data>
+</root>

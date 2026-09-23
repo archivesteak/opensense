@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Controls;
+using OpenSense.App.Localization;
 using OpenSense.App.Services;
 
 namespace OpenSense.App.ViewModels;
@@ -40,18 +41,18 @@ public sealed partial class ShellViewModel(
 
     public string ProblemTitle => State switch
     {
-        SessionState.NeedsElevation => "Administrator rights needed",
-        SessionState.ServiceUnavailable => "The OpenSense service isn't running",
-        SessionState.Unsupported => "No Acer gaming firmware found",
-        _ => "OpenSense could not start",
+        SessionState.NeedsElevation => Strings.Get("Problem_NeedsElevation_Title"),
+        SessionState.ServiceUnavailable => Strings.Get("Problem_ServiceUnavailable_Title"),
+        SessionState.Unsupported => Strings.Get("Problem_Unsupported_Title"),
+        _ => Strings.Get("Problem_Failed_Title"),
     };
 
     public string ProblemMessage => State switch
     {
-        SessionState.NeedsElevation => "This portable copy talks to the laptop's fan and lighting controls directly, which needs administrator rights. Restart it as administrator, or install OpenSense to run without them.",
-        SessionState.ServiceUnavailable => "OpenSense controls the laptop through a background service, which is stopped. Start it (Windows asks for permission), or reinstall OpenSense if it keeps stopping.",
-        SessionState.Unsupported => "This PC does not expose Acer's gaming WMI interface (AcerGamingFunction). OpenSense supports Acer Nitro and Predator laptops.",
-        _ => session.Error ?? "An unexpected error occurred. The log folder has details.",
+        SessionState.NeedsElevation => Strings.Get("Problem_NeedsElevation_Message"),
+        SessionState.ServiceUnavailable => Strings.Get("Problem_ServiceUnavailable_Message"),
+        SessionState.Unsupported => Strings.Get("Problem_Unsupported_Message"),
+        _ => session.Error ?? Strings.Get("Problem_Failed_Message"),
     };
 
     public ObservableCollection<Notice> Notices => notifications.Notices;
@@ -76,19 +77,23 @@ public sealed partial class ShellViewModel(
         if (_subscribed)
             return;
         _subscribed = true;
-        session.Notice += notice => notifications.Show(notice.Title, notice.Message, InfoBarSeverity.Warning, notice.Important);
+        session.Notice += notice =>
+        {
+            var (title, message) = Names.Notice(notice);
+            notifications.Show(title, message, InfoBarSeverity.Warning, notice.Important);
+        };
         session.Changed += change => dispatcher.TryEnqueue(() =>
         {
             AttachAll();
             if (change == SessionChange.Rebuilt)
-                notifications.Show("Capabilities updated", "OpenSense restarted fan control with the new settings.", InfoBarSeverity.Informational);
+                notifications.Show(Strings.Get("Notice_Rebuilt_Title"), Strings.Get("Notice_Rebuilt_Message"), InfoBarSeverity.Informational);
         });
         session.ConnectionChanged += connected =>
         {
             if (connected)
-                notifications.Show("Service", "Reconnected to the OpenSense service.", InfoBarSeverity.Success);
+                notifications.Show(Strings.Get("Notice_Service_Title"), Strings.Get("Notice_Reconnected"), InfoBarSeverity.Success);
             else
-                notifications.Show("Service", "Lost the connection to the OpenSense service. Reconnecting…", InfoBarSeverity.Warning);
+                notifications.Show(Strings.Get("Notice_Service_Title"), Strings.Get("Notice_Disconnected"), InfoBarSeverity.Warning);
         };
     }
 
@@ -111,7 +116,7 @@ public sealed partial class ShellViewModel(
         var started = await Task.Run(() => Program.TryRunElevated("--start-service", wait: true));
         if (!started)
         {
-            notifications.Show("Service", "The OpenSense service did not start. The service log in %ProgramData%\\OpenSense\\logs has details.", InfoBarSeverity.Error);
+            notifications.Show(Strings.Get("Notice_Service_Title"), Strings.Get("Notice_ServiceStartFailed"), InfoBarSeverity.Error);
             return;
         }
         await InitializeAsync();

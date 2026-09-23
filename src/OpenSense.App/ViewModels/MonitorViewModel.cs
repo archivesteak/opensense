@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Dispatching;
 using OpenSense.App.Helpers;
+using OpenSense.App.Localization;
 using OpenSense.App.Services;
 using OpenSense.Core.Control;
 using OpenSense.Core.Hardware;
@@ -21,13 +22,13 @@ public sealed partial class FanReadingViewModel(FanId id, string name) : Observa
     public partial int? Duty { get; set; }
 
     [ObservableProperty]
-    public partial string BehaviorText { get; set; } = "Auto";
+    public partial string BehaviorText { get; set; } = Strings.Get("FanBehavior_Auto");
 
     public HistoryBuffer RpmHistory { get; } = new(MonitorViewModel.HistoryLength);
 
     public string RpmText => Units.Rpm(Rpm);
 
-    public string DutyText => Duty is { } d ? $"{d}%" : "--";
+    public string DutyText => Units.Percent(Duty);
 
     partial void OnRpmChanged(int? value) => OnPropertyChanged(nameof(RpmText));
 
@@ -114,10 +115,10 @@ public sealed partial class MonitorViewModel : ObservableObject
     public partial FanReadingViewModel? GpuFan { get; set; }
 
     [ObservableProperty]
-    public partial string CpuName { get; set; } = "CPU";
+    public partial string CpuName { get; set; } = Names.Chip(FanId.Cpu);
 
     [ObservableProperty]
-    public partial string GpuName { get; set; } = "GPU";
+    public partial string GpuName { get; set; } = Names.Chip(FanId.Gpu);
 
     public double? Hottest => Latest?.Hottest;
 
@@ -128,7 +129,7 @@ public sealed partial class MonitorViewModel : ObservableObject
 
     public string CpuTemperatureText => Units.Temperature(CpuTemperature, UseFahrenheit);
 
-    public string GpuTemperatureText => GpuAsleep ? "Idle" : Units.Temperature(GpuTemperature, UseFahrenheit);
+    public string GpuTemperatureText => GpuAsleep ? Strings.Get("Gpu_Idle") : Units.Temperature(GpuTemperature, UseFahrenheit);
 
     public string SystemTemperatureText => Units.Temperature(SystemTemperature, UseFahrenheit);
 
@@ -152,13 +153,13 @@ public sealed partial class MonitorViewModel : ObservableObject
         var caps = _session.Capabilities;
         Fans.Clear();
         foreach (var fan in caps.Fans)
-            Fans.Add(new FanReadingViewModel(fan.Id, fan.Name + " fan"));
+            Fans.Add(new FanReadingViewModel(fan.Id, Names.Fan(fan.Id)));
         CpuFan = Fans.FirstOrDefault(f => f.Id == FanId.Cpu);
         GpuFan = Fans.FirstOrDefault(f => f.Id == FanId.Gpu);
         HasGpu = caps.Has(SensorId.GpuTemperature) || caps.Has(SensorId.GpuFanSpeed);
         HasSystemTemperature = caps.Has(SensorId.SystemTemperature);
-        CpuName = _session.CpuName ?? "CPU";
-        GpuName = _session.GpuName ?? "GPU";
+        CpuName = _session.CpuName ?? Names.Chip(FanId.Cpu);
+        GpuName = _session.GpuName ?? Names.Chip(FanId.Gpu);
         if (_session.Latest is { } latest)
             Apply(latest);
     }
@@ -187,11 +188,11 @@ public sealed partial class MonitorViewModel : ObservableObject
             fan.Duty = reading?.Duty;
             fan.BehaviorText = (reading?.Behavior, t.EffectiveMode) switch
             {
-                (FanBehavior.Max, _) when t.Emergency => "Emergency full speed",
-                (FanBehavior.Max, _) => "Full speed",
-                (FanBehavior.Custom, FanControlMode.Curve) => "Following curve",
-                (FanBehavior.Custom, _) => "Fixed speed",
-                _ => "Auto (firmware)",
+                (FanBehavior.Max, _) when t.Emergency => Strings.Get("FanBehavior_Emergency"),
+                (FanBehavior.Max, _) => Strings.Get("FanBehavior_Max"),
+                (FanBehavior.Custom, FanControlMode.Curve) => Strings.Get("FanBehavior_Curve"),
+                (FanBehavior.Custom, _) => Strings.Get("FanBehavior_Fixed"),
+                _ => Strings.Get("FanBehavior_Auto"),
             };
             fan.RpmHistory.Add(reading?.Rpm);
         }

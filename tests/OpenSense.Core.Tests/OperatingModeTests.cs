@@ -63,6 +63,6 @@ public sealed class OperatingModeTests
         service.Tick();
 
         Assert.Equal(OperatingMode.Balanced, firmware.Mode);
-        Assert.Null(service.Latest!.FanLockReason); // no Quiet-style fan lock either
+        Assert.Null(service.Latest!.FanLock); // no Quiet-style fan lock either
     }
 }

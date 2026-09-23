@@ -2,6 +2,7 @@
     x:Class="OpenSense.App.Views.SettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:loc="using:OpenSense.App.Localization"
     xmlns:local="using:OpenSense.App.Views"
     xmlns:toolkit="using:CommunityToolkit.WinUI.Controls"
     xmlns:ui="using:CommunityToolkit.WinUI"
@@ -13,74 +14,84 @@
             MaxWidth="{StaticResource PageMaxWidth}"
             Padding="{StaticResource PagePadding}"
             Spacing="4">
-            <TextBlock Style="{StaticResource PageTitleStyle}" Text="Settings" />
+            <TextBlock x:Uid="Settings_Title" Style="{StaticResource PageTitleStyle}" />
 
-            <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="Startup" />
-            <toolkit:SettingsCard
-                Description="Opens OpenSense in the notification area when you sign in. Fan control does not depend on it."
-                Header="Start with Windows"
-                HeaderIcon="{ui:FontIcon Glyph=&#xE7E8;}">
+            <TextBlock x:Uid="Settings_Startup" Style="{StaticResource SectionHeaderStyle}" />
+            <toolkit:SettingsCard x:Uid="Settings_StartWithWindows" HeaderIcon="{ui:FontIcon Glyph=&#xE7E8;}">
                 <ToggleSwitch IsOn="{x:Bind ViewModel.StartWithWindows, Mode=TwoWay}" />
             </toolkit:SettingsCard>
-            <toolkit:SettingsCard
-                Description="The NitroSense key on the keyboard opens OpenSense, as it opened NitroSense. Works while OpenSense is in the notification area."
-                Header="Open with the NitroSense key"
-                HeaderIcon="{ui:FontIcon Glyph=&#xE92E;}">
+            <toolkit:SettingsCard x:Uid="Settings_NitroSenseKey" HeaderIcon="{ui:FontIcon Glyph=&#xE92E;}">
                 <ToggleSwitch IsOn="{x:Bind ViewModel.OpenWithNitroSenseKey, Mode=TwoWay}" />
             </toolkit:SettingsCard>
-            <toolkit:SettingsCard Header="Start minimized to the notification area" HeaderIcon="{ui:FontIcon Glyph=&#xE921;}">
+            <toolkit:SettingsCard x:Uid="Settings_StartMinimized" HeaderIcon="{ui:FontIcon Glyph=&#xE921;}">
                 <ToggleSwitch IsOn="{x:Bind ViewModel.StartMinimized, Mode=TwoWay}" />
             </toolkit:SettingsCard>
-            <toolkit:SettingsCard
-                Description="Closing the window keeps the notification area icon. Exit from its menu."
-                Header="Keep running when the window is closed"
-                HeaderIcon="{ui:FontIcon Glyph=&#xE8BB;}">
+            <toolkit:SettingsCard x:Uid="Settings_CloseToTray" HeaderIcon="{ui:FontIcon Glyph=&#xE8BB;}">
                 <ToggleSwitch IsOn="{x:Bind ViewModel.CloseToTray, Mode=TwoWay}" />
             </toolkit:SettingsCard>
 
-            <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="Appearance" />
-            <toolkit:SettingsCard Header="Theme" HeaderIcon="{ui:FontIcon Glyph=&#xE790;}">
+            <TextBlock x:Uid="Settings_Appearance" Style="{StaticResource SectionHeaderStyle}" />
+            <toolkit:SettingsCard x:Uid="Settings_Language" HeaderIcon="{ui:FontIcon Glyph=&#xF2B7;}">
+                <ComboBox
+                    MinWidth="200"
+                    ItemsSource="{x:Bind vm:SettingsViewModel.Languages}"
+                    SelectedIndex="{x:Bind ViewModel.LanguageIndex, Mode=TwoWay}">
+                    <ComboBox.ItemTemplate>
+                        <!-- Each name in its own language, so the right font and glyph forms are used. -->
+                        <DataTemplate x:DataType="loc:LanguageOption">
+                            <TextBlock Language="{x:Bind local:SettingsPage.TextLanguage(Tag)}" Text="{x:Bind NativeName}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </toolkit:SettingsCard>
+            <InfoBar
+                x:Uid="Settings_LanguageRestart"
+                IsClosable="False"
+                IsOpen="{x:Bind ViewModel.LanguageRestartNeeded, Mode=OneWay}"
+                Severity="Informational">
+                <InfoBar.ActionButton>
+                    <Button x:Uid="Settings_LanguageRestartNow" Command="{x:Bind ViewModel.RestartCommand}" />
+                </InfoBar.ActionButton>
+            </InfoBar>
+            <toolkit:SettingsCard x:Uid="Settings_Theme" HeaderIcon="{ui:FontIcon Glyph=&#xE790;}">
                 <ComboBox
                     MinWidth="200"
                     ItemsSource="{x:Bind vm:SettingsViewModel.ThemeNames}"
                     SelectedIndex="{x:Bind ViewModel.ThemeIndex, Mode=TwoWay}" />
             </toolkit:SettingsCard>
-            <toolkit:SettingsCard Header="Show temperatures in Fahrenheit" HeaderIcon="{ui:FontIcon Glyph=&#xE9CA;}">
+            <toolkit:SettingsCard x:Uid="Settings_Fahrenheit" HeaderIcon="{ui:FontIcon Glyph=&#xE9CA;}">
                 <ToggleSwitch IsOn="{x:Bind ViewModel.UseFahrenheit, Mode=TwoWay}" />
             </toolkit:SettingsCard>
-            <toolkit:SettingsCard
-                Description="How often sensors are read and fan curves are updated, for everyone on this PC."
-                Header="Update interval"
-                HeaderIcon="{ui:FontIcon Glyph=&#xE916;}">
+            <toolkit:SettingsCard x:Uid="Settings_Interval" HeaderIcon="{ui:FontIcon Glyph=&#xE916;}">
                 <ComboBox
                     MinWidth="120"
                     ItemsSource="{x:Bind vm:SettingsViewModel.IntervalNames}"
                     SelectedIndex="{x:Bind ViewModel.IntervalIndex, Mode=TwoWay}" />
             </toolkit:SettingsCard>
 
-            <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="Your laptop" />
+            <TextBlock x:Uid="Settings_Laptop" Style="{StaticResource SectionHeaderStyle}" />
             <toolkit:SettingsCard
                 Description="{x:Bind ViewModel.BiosVersion, Mode=OneWay}"
                 Header="{x:Bind ViewModel.LaptopModel, Mode=OneWay}"
                 HeaderIcon="{ui:FontIcon Glyph=&#xE7F8;}" />
             <toolkit:SettingsCard
+                x:Uid="Settings_Sensors"
                 Description="{x:Bind ViewModel.TemperatureSources, Mode=OneWay}"
-                Header="Temperature sensors"
                 HeaderIcon="{ui:FontIcon Glyph=&#xE9CA;}">
                 <HyperlinkButton
-                    Content="Get PawnIO for exact CPU readings"
+                    x:Uid="Settings_GetPawnIO"
                     NavigateUri="https://pawnio.eu/"
                     Visibility="{x:Bind ViewModel.PawnIOMissing, Mode=OneWay}" />
             </toolkit:SettingsCard>
             <toolkit:SettingsCard
+                x:Uid="Settings_OperatingModes"
                 Description="{x:Bind ViewModel.OperatingModesDescription, Mode=OneWay}"
-                Header="Operating modes"
                 HeaderIcon="{ui:FontIcon Glyph=&#xE7BA;}"
                 Visibility="{x:Bind ViewModel.OperatingModesSwitchAvailable, Mode=OneWay}">
                 <ToggleSwitch IsOn="{x:Bind ViewModel.OperatingModesOn, Mode=TwoWay}" />
             </toolkit:SettingsCard>
 
-            <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="Updates" />
+            <TextBlock x:Uid="Settings_Updates" Style="{StaticResource SectionHeaderStyle}" />
             <toolkit:SettingsCard
                 Description="{x:Bind Updates.Status, Mode=OneWay}"
                 Header="{x:Bind Updates.CurrentVersionText}"
@@ -91,38 +102,32 @@
                         Height="20"
                         IsActive="{x:Bind Updates.IsChecking, Mode=OneWay}" />
                     <Button
+                        x:Uid="Update_Install"
                         Command="{x:Bind Updates.InstallCommand}"
-                        Content="Update now"
                         Style="{StaticResource AccentButtonStyle}"
                         Visibility="{x:Bind Updates.HasUpdate, Mode=OneWay}" />
-                    <Button Command="{x:Bind Updates.CheckNowCommand}" Content="Check now" />
+                    <Button x:Uid="Settings_CheckNow" Command="{x:Bind Updates.CheckNowCommand}" />
                 </StackPanel>
             </toolkit:SettingsCard>
-            <toolkit:SettingsCard
-                Description="Once a day, from the project's GitHub releases. Downloads are checked against the SHA-256 checksum GitHub publishes before they are installed."
-                Header="Check for updates automatically"
-                HeaderIcon="{ui:FontIcon Glyph=&#xE823;}">
+            <toolkit:SettingsCard x:Uid="Settings_AutoUpdate" HeaderIcon="{ui:FontIcon Glyph=&#xE823;}">
                 <ToggleSwitch IsOn="{x:Bind Updates.CheckAutomatically, Mode=TwoWay}" />
             </toolkit:SettingsCard>
 
-            <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="Troubleshooting" />
-            <toolkit:SettingsCard
-                Description="Raw firmware answers from the capability probe. Include them when reporting a problem or a new model."
-                Header="Diagnostics"
-                HeaderIcon="{ui:FontIcon Glyph=&#xE9D9;}">
+            <TextBlock x:Uid="Settings_Troubleshooting" Style="{StaticResource SectionHeaderStyle}" />
+            <toolkit:SettingsCard x:Uid="Settings_Diagnostics" HeaderIcon="{ui:FontIcon Glyph=&#xE9D9;}">
                 <StackPanel Orientation="Horizontal" Spacing="8">
-                    <Button Command="{x:Bind ViewModel.CopyDiagnosticsCommand}" Content="Copy" />
+                    <Button x:Uid="Settings_Copy" Command="{x:Bind ViewModel.CopyDiagnosticsCommand}" />
                     <Button
+                        x:Uid="Settings_ServiceLogs"
                         Command="{x:Bind ViewModel.OpenServiceLogsCommand}"
-                        Content="Service logs"
                         Visibility="{x:Bind ViewModel.HasServiceLogs, Mode=OneWay}" />
-                    <Button Command="{x:Bind ViewModel.OpenAppLogsCommand}" Content="App logs" />
+                    <Button x:Uid="Settings_AppLogs" Command="{x:Bind ViewModel.OpenAppLogsCommand}" />
                 </StackPanel>
             </toolkit:SettingsCard>
 
-            <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="About" />
+            <TextBlock x:Uid="Settings_About" Style="{StaticResource SectionHeaderStyle}" />
             <toolkit:SettingsExpander
-                Description="Open-source fan, performance and lighting control for Acer Nitro and Predator laptops."
+                x:Uid="Settings_AboutOpenSense"
                 Header="OpenSense"
                 HeaderIcon="{ui:BitmapIcon Source=ms-appx:///Assets/OpenSense.png}">
                 <TextBlock
@@ -138,8 +143,8 @@
                     </toolkit:SettingsCard>
                     <toolkit:SettingsCard ContentAlignment="Left">
                         <TextBlock
+                            x:Uid="Settings_Trademarks"
                             Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                            Text="OpenSense is an independent project and is not affiliated with or endorsed by Acer. Acer, Nitro, Predator and NitroSense are trademarks of Acer Inc. Released under the GNU General Public License v3.0 or later."
                             TextWrapping="Wrap" />
                     </toolkit:SettingsCard>
                 </toolkit:SettingsExpander.Items>

@@ -1,0 +1,1075 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Nav_Dashboard.Content" xml:space="preserve">
+    <value>داشبورد</value>
+    <comment>Navigation menu item: the overview page.</comment>
+  </data>
+  <data name="Nav_Fans.Content" xml:space="preserve">
+    <value>فن‌ها</value>
+    <comment>Navigation menu item: fan control page.</comment>
+  </data>
+  <data name="Nav_Lighting.Content" xml:space="preserve">
+    <value>نورپردازی</value>
+    <comment>Navigation menu item: the RGB keyboard lighting page.</comment>
+  </data>
+  <data name="Nav_System.Content" xml:space="preserve">
+    <value>صفحه‌کلید و نمایشگر</value>
+    <comment>Navigation menu item: keyboard, display, GPU and power settings.</comment>
+  </data>
+  <data name="Startup_Connecting.Text" xml:space="preserve">
+    <value>در حال اتصال به لپ‌تاپ…</value>
+    <comment>Shown while the app starts.</comment>
+  </data>
+  <data name="Problem_RestartElevated.Content" xml:space="preserve">
+    <value>راه‌اندازی مجدد به‌عنوان سرپرست</value>
+    <comment>Button.</comment>
+  </data>
+  <data name="Problem_StartService.Content" xml:space="preserve">
+    <value>شروع سرویس</value>
+    <comment>Button: starts the OpenSense background service.</comment>
+  </data>
+  <data name="Problem_NeedsElevation_Title" xml:space="preserve">
+    <value>حقوق سرپرست لازم است</value>
+  </data>
+  <data name="Problem_NeedsElevation_Message" xml:space="preserve">
+    <value>این نسخهٔ قابل‌حمل مستقیماً با کنترل‌های فن و نورپردازی لپ‌تاپ ارتباط برقرار می‌کند و به همین دلیل به حقوق سرپرست نیاز دارد. آن را به‌عنوان سرپرست دوباره راه‌اندازی کنید یا OpenSense را نصب کنید تا بدون این حقوق اجرا شود.</value>
+  </data>
+  <data name="Problem_ServiceUnavailable_Title" xml:space="preserve">
+    <value>سرویس OpenSense در حال اجرا نیست</value>
+  </data>
+  <data name="Problem_ServiceUnavailable_Message" xml:space="preserve">
+    <value>OpenSense لپ‌تاپ را از طریق یک سرویس پس‌زمینه کنترل می‌کند که اکنون متوقف است. آن را شروع کنید (Windows اجازه می‌خواهد) یا اگر مدام متوقف می‌شود، OpenSense را دوباره نصب کنید.</value>
+  </data>
+  <data name="Problem_Unsupported_Title" xml:space="preserve">
+    <value>سفت‌افزار بازی Acer پیدا نشد</value>
+  </data>
+  <data name="Problem_Unsupported_Message" xml:space="preserve">
+    <value>این رایانه رابط WMI بازی Acer (AcerGamingFunction) را ارائه نمی‌کند. OpenSense از لپ‌تاپ‌های Acer Nitro و Predator پشتیبانی می‌کند.</value>
+    <comment>Keep 'AcerGamingFunction' as is.</comment>
+  </data>
+  <data name="Problem_Failed_Title" xml:space="preserve">
+    <value>OpenSense شروع نشد</value>
+  </data>
+  <data name="Problem_Failed_Message" xml:space="preserve">
+    <value>خطای غیرمنتظره‌ای رخ داد. جزئیات در پوشهٔ گزارش‌ها موجود است.</value>
+  </data>
+  <data name="Session_VersionMismatch" xml:space="preserve">
+    <value>سرویس OpenSense نسخهٔ دیگری دارد ({0}). برای به‌روزرسانی آن، OpenSense را دوباره نصب کنید.</value>
+    <comment>{0} = a version number.</comment>
+  </data>
+  <data name="Notice_Rebuilt_Title" xml:space="preserve">
+    <value>قابلیت‌ها به‌روز شد</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_Rebuilt_Message" xml:space="preserve">
+    <value>OpenSense کنترل فن را با تنظیمات جدید دوباره راه‌اندازی کرد.</value>
+  </data>
+  <data name="Notice_Service_Title" xml:space="preserve">
+    <value>سرویس</value>
+    <comment>Banner title: about the OpenSense background service.</comment>
+  </data>
+  <data name="Notice_Reconnected" xml:space="preserve">
+    <value>دوباره به سرویس OpenSense متصل شد.</value>
+  </data>
+  <data name="Notice_Disconnected" xml:space="preserve">
+    <value>اتصال به سرویس OpenSense قطع شد. در حال اتصال مجدد…</value>
+  </data>
+  <data name="Notice_ServiceStartFailed" xml:space="preserve">
+    <value>سرویس OpenSense شروع نشد. جزئیات در گزارش سرویس در %ProgramData%\OpenSense\logs موجود است.</value>
+    <comment>Keep the folder path as is.</comment>
+  </data>
+  <data name="Notice_FanControl_Title" xml:space="preserve">
+    <value>کنترل فن</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_Keyboard_Title" xml:space="preserve">
+    <value>صفحه‌کلید</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_Display_Title" xml:space="preserve">
+    <value>نمایشگر</value>
+    <comment>Banner title: the laptop screen.</comment>
+  </data>
+  <data name="Notice_FirmwareAccessDenied" xml:space="preserve">
+    <value>برای دسترسی به رابط سفت‌افزار Acer به حقوق سرپرست نیاز است.</value>
+  </data>
+  <data name="Notice_ControlLoopError" xml:space="preserve">
+    <value>در کنترل فن خطایی رخ داد: {0}</value>
+    <comment>{0} = a technical error message (not translated).</comment>
+  </data>
+  <data name="Notice_OperatingModeRejected" xml:space="preserve">
+    <value>سفت‌افزار تغییر حالت کاری را رد کرد ({0}).</value>
+    <comment>{0} = an operating mode name, e.g. Turbo.</comment>
+  </data>
+  <data name="Notice_CoolBoostRejected" xml:space="preserve">
+    <value>سفت‌افزار تغییر CoolBoost را رد کرد.</value>
+    <comment>CoolBoost is an Acer feature name: keep it.</comment>
+  </data>
+  <data name="Notice_FansHandedBack" xml:space="preserve">
+    <value>دمای CPU در دسترس نیست، بنابراین فن‌ها به «خودکار» برگردانده شدند.</value>
+    <comment>Auto = the automatic fan mode, as in FanMode_Auto.</comment>
+  </data>
+  <data name="Notice_LightingRejected" xml:space="preserve">
+    <value>صفحه‌کلید تغییر نورپردازی را رد کرد.</value>
+  </data>
+  <data name="Notice_BacklightTimeoutRejected" xml:space="preserve">
+    <value>صفحه‌کلید تغییر زمان خاموش شدن نور پس‌زمینه را رد کرد.</value>
+  </data>
+  <data name="Notice_WindowsKeyRejected" xml:space="preserve">
+    <value>سفت‌افزار تغییر کلید Windows را رد کرد.</value>
+  </data>
+  <data name="Notice_LcdOverdriveRejected" xml:space="preserve">
+    <value>نمایشگر تغییر overdrive را رد کرد.</value>
+    <comment>Overdrive = LCD overdrive, a screen setting that speeds up pixel response.</comment>
+  </data>
+  <data name="Notice_PowerPlan_Title" xml:space="preserve">
+    <value>طرح انرژی</value>
+    <comment>Banner title: a Windows power plan.</comment>
+  </data>
+  <data name="Notice_PowerPlanFailed" xml:space="preserve">
+    <value>Windows به «{0}» تغییر نکرد.</value>
+    <comment>{0} = a Windows power plan name. Use your language's quotation marks.</comment>
+  </data>
+  <data name="Notice_GpuMode_Title" xml:space="preserve">
+    <value>حالت GPU</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_GpuModeRejected" xml:space="preserve">
+    <value>سفت‌افزار تغییر حالت GPU را رد کرد.</value>
+  </data>
+  <data name="Notice_Autostart_Title" xml:space="preserve">
+    <value>شروع همراه با Windows</value>
+    <comment>Banner title, same as Settings_StartWithWindows.Header.</comment>
+  </data>
+  <data name="Notice_AutostartFailed" xml:space="preserve">
+    <value>ورودی راه‌اندازی به‌روزرسانی نشد: {0}</value>
+    <comment>{0} = a technical error message.</comment>
+  </data>
+  <data name="Notice_Diagnostics_Title" xml:space="preserve">
+    <value>تشخیص</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_DiagnosticsCopied" xml:space="preserve">
+    <value>در بریده‌دان کپی شد.</value>
+  </data>
+  <data name="Notice_Updates_Title" xml:space="preserve">
+    <value>به‌روزرسانی‌ها</value>
+    <comment>Banner title: app updates.</comment>
+  </data>
+  <data name="GpuSwitch_DiscreteTitle" xml:space="preserve">
+    <value>فقط از GPU مجزا استفاده شود؟</value>
+    <comment>Dialog title. Discrete GPU = the separate NVIDIA graphics chip.</comment>
+  </data>
+  <data name="GpuSwitch_HybridTitle" xml:space="preserve">
+    <value>به گرافیک ترکیبی تغییر داده شود؟</value>
+    <comment>Dialog title.</comment>
+  </data>
+  <data name="GpuSwitch_DiscreteMessage" xml:space="preserve">
+    <value>GPU شرکت NVIDIA برای بهترین عملکرد در بازی‌ها مستقیماً نمایشگر را اداره می‌کند، اما عمر باتری کمتر می‌شود. برای اعمال این تغییر، Windows باید دوباره راه‌اندازی شود.</value>
+  </data>
+  <data name="GpuSwitch_HybridMessage" xml:space="preserve">
+    <value>GPU مجتمع نمایشگر را اداره می‌کند و GPU مجزا فقط در صورت نیاز روشن می‌شود و باتری را حفظ می‌کند. برای اعمال این تغییر، Windows باید دوباره راه‌اندازی شود.</value>
+  </data>
+  <data name="GpuSwitch_RestartNow" xml:space="preserve">
+    <value>اکنون راه‌اندازی مجدد شود</value>
+    <comment>Dialog button: restart Windows now.</comment>
+  </data>
+  <data name="GpuSwitch_RestartLater" xml:space="preserve">
+    <value>بعداً راه‌اندازی مجدد شود</value>
+    <comment>Dialog button.</comment>
+  </data>
+  <data name="GpuSwitch_Cancel" xml:space="preserve">
+    <value>لغو</value>
+    <comment>Dialog button.</comment>
+  </data>
+  <data name="Chip_Cpu" xml:space="preserve">
+    <value>CPU</value>
+    <comment>The processor. Short: used in labels like 'CPU 45°'.</comment>
+  </data>
+  <data name="Chip_Gpu" xml:space="preserve">
+    <value>GPU</value>
+    <comment>The graphics chip. Short: used in labels like 'GPU 45°'.</comment>
+  </data>
+  <data name="Fan_Cpu" xml:space="preserve">
+    <value>فن CPU</value>
+  </data>
+  <data name="Fan_Gpu" xml:space="preserve">
+    <value>فن GPU</value>
+  </data>
+  <data name="FanMode_Auto" xml:space="preserve">
+    <value>خودکار</value>
+    <comment>Fan mode: the laptop's firmware controls the fans. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Max" xml:space="preserve">
+    <value>حداکثر</value>
+    <comment>Fan mode: all fans at full speed. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Custom" xml:space="preserve">
+    <value>سفارشی</value>
+    <comment>Fan mode: a fixed speed chosen for each fan. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Curve" xml:space="preserve">
+    <value>منحنی</value>
+    <comment>Fan mode: fan speed follows a temperature curve. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Auto_Description" xml:space="preserve">
+    <value>سفت‌افزار لپ‌تاپ فن‌ها را مدیریت می‌کند.</value>
+  </data>
+  <data name="FanMode_Max_Description" xml:space="preserve">
+    <value>همهٔ فن‌ها با حداکثر سرعت.</value>
+  </data>
+  <data name="FanMode_Custom_Description" xml:space="preserve">
+    <value>سرعت ثابت برای هر فن.</value>
+  </data>
+  <data name="FanMode_Curve_Description" xml:space="preserve">
+    <value>OpenSense از منحنی‌های دمای شما پیروی می‌کند.</value>
+  </data>
+  <data name="FanBehavior_Auto" xml:space="preserve">
+    <value>خودکار (سفت‌افزار)</value>
+    <comment>What a fan is doing right now: controlled by the laptop's firmware.</comment>
+  </data>
+  <data name="FanBehavior_Max" xml:space="preserve">
+    <value>حداکثر سرعت</value>
+    <comment>What a fan is doing right now.</comment>
+  </data>
+  <data name="FanBehavior_Emergency" xml:space="preserve">
+    <value>حداکثر سرعت اضطراری</value>
+    <comment>What a fan is doing right now: forced to full speed because the temperature is too high.</comment>
+  </data>
+  <data name="FanBehavior_Curve" xml:space="preserve">
+    <value>پیروی از منحنی</value>
+    <comment>What a fan is doing right now: following the temperature curve.</comment>
+  </data>
+  <data name="FanBehavior_Fixed" xml:space="preserve">
+    <value>سرعت ثابت</value>
+    <comment>What a fan is doing right now.</comment>
+  </data>
+  <data name="FanLock_QuietMode" xml:space="preserve">
+    <value>حالت «بی‌صدا» فن‌ها را روی «خودکار» نگه می‌دارد.</value>
+    <comment>Quiet = OperatingMode_Quiet; Auto = FanMode_Auto.</comment>
+  </data>
+  <data name="OperatingMode_Eco" xml:space="preserve">
+    <value>اقتصادی</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Quiet" xml:space="preserve">
+    <value>بی‌صدا</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Balanced" xml:space="preserve">
+    <value>متعادل</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Performance" xml:space="preserve">
+    <value>عملکرد</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Turbo" xml:space="preserve">
+    <value>توربو</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Eco_Description" xml:space="preserve">
+    <value>بیشترین عمر باتری.</value>
+  </data>
+  <data name="OperatingMode_Quiet_Description" xml:space="preserve">
+    <value>کمترین صدا. فن‌ها روی «خودکار» می‌مانند.</value>
+    <comment>Auto = FanMode_Auto.</comment>
+  </data>
+  <data name="OperatingMode_Balanced_Description" xml:space="preserve">
+    <value>عملکرد برای استفادهٔ روزمره.</value>
+  </data>
+  <data name="OperatingMode_Performance_Description" xml:space="preserve">
+    <value>محدودیت‌های توان بالاتر. به برق AC نیاز دارد.</value>
+  </data>
+  <data name="OperatingMode_Turbo_Description" xml:space="preserve">
+    <value>حداکثر توان و خنک‌سازی. به برق AC نیاز دارد.</value>
+  </data>
+  <data name="OperatingMode_BatteryNote" xml:space="preserve">
+    <value>هنگام کار با باتری، «{0}» و «{1}» تا زمانی که شارژر را وصل کنید مانند «{2}» کار می‌کنند.</value>
+    <comment>{0}, {1}, {2} = operating mode names (Performance, Turbo, Balanced).</comment>
+  </data>
+  <data name="PowerSource_PluggedIn" xml:space="preserve">
+    <value>متصل به برق</value>
+    <comment>Power source: the charger is connected.</comment>
+  </data>
+  <data name="PowerSource_Battery" xml:space="preserve">
+    <value>با باتری</value>
+    <comment>Power source.</comment>
+  </data>
+  <data name="Gpu_Idle" xml:space="preserve">
+    <value>بیکار</value>
+    <comment>Shown instead of the GPU temperature while the graphics chip is powered down. Short.</comment>
+  </data>
+  <data name="Unit_Rpm" xml:space="preserve">
+    <value>دور در دقیقه</value>
+    <comment>Unit: revolutions per minute (fan speed). Use your language's usual abbreviation.</comment>
+  </data>
+  <data name="Unit_RpmValue" xml:space="preserve">
+    <value>{0} دور در دقیقه</value>
+    <comment>{0} = a fan speed number. Same unit as Unit_Rpm.</comment>
+  </data>
+  <data name="Unit_Seconds" xml:space="preserve">
+    <value>{0} ثانیه</value>
+    <comment>{0} = a number of seconds, e.g. 0.5. Use the usual abbreviation for seconds.</comment>
+  </data>
+  <data name="ListSeparator" xml:space="preserve">
+    <value>، </value>
+    <comment>Separates items in a list inside a sentence, e.g. 'Quiet, Balanced, Performance'. Keep the trailing space if your language uses one.</comment>
+  </data>
+  <data name="Dashboard_Title.Text" xml:space="preserve">
+    <value>داشبورد</value>
+    <comment>Page title, same as Nav_Dashboard.Content.</comment>
+  </data>
+  <data name="Dashboard_Failsafe.Title" xml:space="preserve">
+    <value>فن‌ها به سفت‌افزار برگردانده شدند</value>
+    <comment>Warning banner title.</comment>
+  </data>
+  <data name="Dashboard_Failsafe.Message" xml:space="preserve">
+    <value>دمای CPU دیگر گزارش نمی‌شود، بنابراین لپ‌تاپ تا زمان برگشتن آن، فن‌های خود را خودش کنترل می‌کند.</value>
+  </data>
+  <data name="Dashboard_CpuTemperature.Text" xml:space="preserve">
+    <value>دمای CPU</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_GpuTemperature.Text" xml:space="preserve">
+    <value>دمای GPU</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_CpuFan.Text" xml:space="preserve">
+    <value>فن CPU</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_GpuFan.Text" xml:space="preserve">
+    <value>فن GPU</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_LoadDetail" xml:space="preserve">
+    <value>بار {0} · {1}</value>
+    <comment>Under a temperature: {0} = usage percentage (e.g. 45%), {1} = the chip's model name.</comment>
+  </data>
+  <data name="Dashboard_AsleepDetail" xml:space="preserve">
+    <value>در حالت خواب · {0}</value>
+    <comment>Under the GPU temperature while the graphics chip is powered down: {0} = its model name.</comment>
+  </data>
+  <data name="Dashboard_RpmDetail" xml:space="preserve">
+    <value>دور در دقیقه · چرخهٔ کار {0}</value>
+    <comment>Under a fan speed number: rpm = revolutions per minute (as Unit_Rpm); {0} = the fan's duty cycle as a percentage.</comment>
+  </data>
+  <data name="Dashboard_Cooling.Text" xml:space="preserve">
+    <value>خنک‌سازی</value>
+    <comment>Card title.</comment>
+  </data>
+  <data name="Dashboard_CoolBoost.Text" xml:space="preserve">
+    <value>به حالت «خودکار» اجازه می‌دهد فن‌ها را سریع‌تر بچرخاند.</value>
+    <comment>Describes CoolBoost (an Acer feature name shown above it). Auto = FanMode_Auto.</comment>
+  </data>
+  <data name="Dashboard_OpenFans.Content" xml:space="preserve">
+    <value>سرعت‌ها و منحنی‌های سفارشی</value>
+    <comment>Link to the Fans page.</comment>
+  </data>
+  <data name="Dashboard_Performance.Text" xml:space="preserve">
+    <value>عملکرد</value>
+    <comment>Card title.</comment>
+  </data>
+  <data name="Dashboard_PowerPlan.Header" xml:space="preserve">
+    <value>طرح انرژی Windows</value>
+    <comment>Label above a list of Windows power plans.</comment>
+  </data>
+  <data name="Dashboard_PowerSource.Text" xml:space="preserve">
+    <value>منبع برق</value>
+    <comment>Caption above 'Plugged in' or 'On battery'.</comment>
+  </data>
+  <data name="Dashboard_SystemTemperature.Text" xml:space="preserve">
+    <value>دمای سیستم</value>
+    <comment>Caption: the laptop's internal temperature.</comment>
+  </data>
+  <data name="Fans_Title.Text" xml:space="preserve">
+    <value>فن‌ها</value>
+    <comment>Page title.</comment>
+  </data>
+  <data name="Fans_DutyLabel" xml:space="preserve">
+    <value>چرخهٔ کار {0}</value>
+    <comment>{0} = the fan's duty cycle as a percentage.</comment>
+  </data>
+  <data name="Fans_AutoToggle.OnContent" xml:space="preserve">
+    <value>خودکار</value>
+    <comment>Switch label when on: the firmware controls this fan.</comment>
+  </data>
+  <data name="Fans_AutoToggle.OffContent" xml:space="preserve">
+    <value>دستی</value>
+    <comment>Switch label when off: the speed below is used.</comment>
+  </data>
+  <data name="Fans_FanSpeed.Header" xml:space="preserve">
+    <value>سرعت فن</value>
+    <comment>Slider label.</comment>
+  </data>
+  <data name="Fans_Source.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>دمایی که این فن را کنترل می‌کند</value>
+    <comment>Tooltip.</comment>
+  </data>
+  <data name="CurveSource_Cpu" xml:space="preserve">
+    <value>دمای CPU</value>
+    <comment>Which temperature a fan curve follows.</comment>
+  </data>
+  <data name="CurveSource_Gpu" xml:space="preserve">
+    <value>دمای GPU</value>
+    <comment>Which temperature a fan curve follows.</comment>
+  </data>
+  <data name="CurveSource_Hottest" xml:space="preserve">
+    <value>بالاترینِ این دو</value>
+    <comment>Which temperature a fan curve follows: the higher of the CPU and GPU temperatures.</comment>
+  </data>
+  <data name="Fans_Presets.Content" xml:space="preserve">
+    <value>پیش‌تنظیم‌ها</value>
+    <comment>Button that opens a list of ready-made fan curves.</comment>
+  </data>
+  <data name="Fans_PresetSilent.Text" xml:space="preserve">
+    <value>بی‌صدا</value>
+    <comment>Fan curve preset name.</comment>
+  </data>
+  <data name="Fans_PresetBalanced.Text" xml:space="preserve">
+    <value>متعادل</value>
+    <comment>Fan curve preset name.</comment>
+  </data>
+  <data name="Fans_PresetPerformance.Text" xml:space="preserve">
+    <value>عملکرد</value>
+    <comment>Fan curve preset name.</comment>
+  </data>
+  <data name="Fans_CopyCurve.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>استفاده از این منحنی برای فن‌های دیگر هم</value>
+    <comment>Tooltip.</comment>
+  </data>
+  <data name="Fans_CurveHelp.Text" xml:space="preserve">
+    <value>برای شکل دادن به منحنی، نقطه‌ها را بکشید · برای افزودن نقطه دوبار کلیک کنید · برای حذف آن راست‌کلیک کنید · کلیدهای جهت‌نما نقطهٔ انتخاب‌شده را دقیق تنظیم می‌کنند</value>
+    <comment>Help under the curve editor.</comment>
+  </data>
+  <data name="CurveEditor_Now" xml:space="preserve">
+    <value>اکنون {0} · {1}</value>
+    <comment>Label on the curve editor: {0} = the current temperature, {1} = the current fan speed percentage.</comment>
+  </data>
+  <data name="Fans_Safety.Text" xml:space="preserve">
+    <value>ایمنی و پاسخ</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Fans_Emergency.Header" xml:space="preserve">
+    <value>دمای اضطراری</value>
+  </data>
+  <data name="Fans_Emergency.Description" xml:space="preserve">
+    <value>در حالت‌های «سفارشی» و «منحنی»، اگر هر یک از تراشه‌ها به این دما برسد، فن‌ها با حداکثر سرعت کار می‌کنند.</value>
+    <comment>Custom, Curve = FanMode_Custom, FanMode_Curve.</comment>
+  </data>
+  <data name="Fans_MinimumSpeed.Header" xml:space="preserve">
+    <value>حداقل سرعت فن</value>
+  </data>
+  <data name="Fans_MinimumSpeed.Description" xml:space="preserve">
+    <value>کمترین سرعتی که OpenSense در حالت‌های «سفارشی» و «منحنی» درخواست می‌کند.</value>
+  </data>
+  <data name="Fans_SlowDown.Header" xml:space="preserve">
+    <value>تأخیر کاهش سرعت</value>
+    <comment>How many degrees the temperature must fall before the fans slow down (hysteresis).</comment>
+  </data>
+  <data name="Fans_SlowDown.Description" xml:space="preserve">
+    <value>دما چقدر باید پایین بیاید تا منحنی سرعت فن‌ها را کم کند. مقدارهای بیشتر مانع از تند و کند شدن مداوم فن‌ها می‌شوند.</value>
+    <comment>'Hunting' = the fans speeding up and slowing down over and over.</comment>
+  </data>
+  <data name="Fans_HandBack.Header" xml:space="preserve">
+    <value>بازگرداندن فن‌ها هنگام توقف OpenSense</value>
+  </data>
+  <data name="Fans_HandBack.Description" xml:space="preserve">
+    <value>وقتی سرویس OpenSense متوقف شود (یا نسخهٔ قابل‌حمل بسته شود)، کنترل فن خود لپ‌تاپ دوباره کار را به دست می‌گیرد.</value>
+  </data>
+  <data name="Lighting_Title.Text" xml:space="preserve">
+    <value>نورپردازی</value>
+    <comment>Page title: RGB keyboard lighting.</comment>
+  </data>
+  <data name="Lighting_Static.Content" xml:space="preserve">
+    <value>رنگ‌های ثابت</value>
+    <comment>Lighting mode: one fixed colour per keyboard zone.</comment>
+  </data>
+  <data name="Lighting_Effect.Content" xml:space="preserve">
+    <value>جلوه</value>
+    <comment>Lighting mode: an animated effect.</comment>
+  </data>
+  <data name="Lighting_Zone" xml:space="preserve">
+    <value>ناحیهٔ {0}</value>
+    <comment>A keyboard lighting zone: {0} = its number.</comment>
+  </data>
+  <data name="Lighting_ZoneColor.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>انتخاب رنگ</value>
+    <comment>Tooltip.</comment>
+  </data>
+  <data name="Lighting_AllZones.Text" xml:space="preserve">
+    <value>یک رنگ برای همهٔ ناحیه‌ها</value>
+  </data>
+  <data name="Lighting_Speed.Header" xml:space="preserve">
+    <value>سرعت</value>
+    <comment>Slider label: animation speed.</comment>
+  </data>
+  <data name="Lighting_Direction.Text" xml:space="preserve">
+    <value>جهت</value>
+    <comment>Label: animation direction.</comment>
+  </data>
+  <data name="Lighting_EffectColor.Text" xml:space="preserve">
+    <value>رنگ جلوه</value>
+  </data>
+  <data name="Lighting_AnyColor.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>هر رنگی</value>
+    <comment>Tooltip of a button that opens a colour picker.</comment>
+  </data>
+  <data name="Effect_Breathing" xml:space="preserve">
+    <value>تنفس</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Neon" xml:space="preserve">
+    <value>نئون</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Wave" xml:space="preserve">
+    <value>موج</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Shifting" xml:space="preserve">
+    <value>جابه‌جایی</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Zoom" xml:space="preserve">
+    <value>بزرگ‌نمایی</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Breathing_Description" xml:space="preserve">
+    <value>رنگ به‌آرامی روشن و خاموش می‌شود.</value>
+  </data>
+  <data name="Effect_Neon_Description" xml:space="preserve">
+    <value>بین رنگ‌های رنگین‌کمان می‌چرخد.</value>
+  </data>
+  <data name="Effect_Wave_Description" xml:space="preserve">
+    <value>موجی از رنگ روی کلیدها حرکت می‌کند.</value>
+  </data>
+  <data name="Effect_Shifting_Description" xml:space="preserve">
+    <value>یک بلوک رنگی در سراسر صفحه‌کلید حرکت می‌کند.</value>
+  </data>
+  <data name="Effect_Zoom_Description" xml:space="preserve">
+    <value>رنگ از مرکز به بیرون گسترش می‌یابد.</value>
+  </data>
+  <data name="Direction_Left" xml:space="preserve">
+    <value>چپ</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Direction_Right" xml:space="preserve">
+    <value>راست</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Direction_Up" xml:space="preserve">
+    <value>بالا</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Direction_Down" xml:space="preserve">
+    <value>پایین</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Brightness_Off" xml:space="preserve">
+    <value>خاموش</value>
+    <comment>Keyboard backlight brightness: off. Short: shown next to 25%, 50%...</comment>
+  </data>
+  <data name="System_Title.Text" xml:space="preserve">
+    <value>صفحه‌کلید و نمایشگر</value>
+    <comment>Page title, same as Nav_System.Content.</comment>
+  </data>
+  <data name="System_Keyboard.Text" xml:space="preserve">
+    <value>صفحه‌کلید</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="System_BacklightAutoOff.Header" xml:space="preserve">
+    <value>خاموش شدن خودکار نور پس‌زمینه</value>
+    <comment>Keyboard backlight setting.</comment>
+  </data>
+  <data name="System_BacklightAutoOff.Description" xml:space="preserve">
+    <value>نور پس‌زمینهٔ صفحه‌کلید پس از ۳۰ ثانیه بدون تایپ خاموش شود.</value>
+  </data>
+  <data name="System_WindowsKey.Header" xml:space="preserve">
+    <value>کلیدهای Windows و منو</value>
+    <comment>The Windows logo key and the Menu (application) key.</comment>
+  </data>
+  <data name="System_WindowsKey.Description" xml:space="preserve">
+    <value>خاموش کنید تا کلیدهای Windows و منو بازی‌ها را قطع نکنند.</value>
+  </data>
+  <data name="System_StickyKeys.Header" xml:space="preserve">
+    <value>کلیدهای چسبان</value>
+    <comment>The Windows accessibility feature: use its official Windows name in your language.</comment>
+  </data>
+  <data name="System_StickyKeys.Description" xml:space="preserve">
+    <value>کلیدهای اصلاح‌کننده پس از رها کردن فشرده باقی می‌مانند؛ برای روشن یا خاموش کردن، کلید Shift را پنج بار فشار دهید.</value>
+  </data>
+  <data name="System_Display.Text" xml:space="preserve">
+    <value>نمایشگر</value>
+    <comment>Section title: the laptop screen.</comment>
+  </data>
+  <data name="System_LcdOverdrive.Header" xml:space="preserve">
+    <value>LCD overdrive</value>
+    <comment>Screen setting that speeds up pixel response.</comment>
+  </data>
+  <data name="System_LcdOverdrive.Description" xml:space="preserve">
+    <value>برای صفحهٔ داخلی لپ‌تاپ (نه نمایشگرهای خارجی): پاسخ سریع‌تر پیکسل‌ها برای تاری حرکتی کمتر در بازی‌ها. در بالاترین نرخ تازه‌سازی صفحه بهترین عملکرد را دارد؛ اگر پشت اشیای متحرک هاله می‌بینید، آن را خاموش کنید.</value>
+  </data>
+  <data name="System_Graphics.Text" xml:space="preserve">
+    <value>گرافیک</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="System_GpuMode.Header" xml:space="preserve">
+    <value>حالت GPU</value>
+    <comment>Setting: hybrid or discrete graphics.</comment>
+  </data>
+  <data name="System_GpuMode.Description" xml:space="preserve">
+    <value>«ترکیبی» با استفاده از GPU مجتمع برای نمایشگر، باتری را حفظ می‌کند. «مجزا» GPU شرکت NVIDIA را برای بهترین عملکرد در بازی‌ها مستقیماً وصل می‌کند. پس از راه‌اندازی مجدد اعمال می‌شود.</value>
+    <comment>Hybrid, Discrete = System_GpuHybrid, System_GpuDiscrete.</comment>
+  </data>
+  <data name="System_GpuHybrid.Content" xml:space="preserve">
+    <value>ترکیبی</value>
+    <comment>GPU mode: both graphics chips (NVIDIA Optimus). Short: a segmented button.</comment>
+  </data>
+  <data name="System_GpuDiscrete.Content" xml:space="preserve">
+    <value>مجزا</value>
+    <comment>GPU mode: only the NVIDIA graphics chip. Short: a segmented button.</comment>
+  </data>
+  <data name="System_GpuRestart.Title" xml:space="preserve">
+    <value>برای تغییر حالت GPU دوباره راه‌اندازی کنید</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="System_GpuRestart.Message" xml:space="preserve">
+    <value>حالت جدید GPU پس از راه‌اندازی مجدد Windows اعمال می‌شود.</value>
+  </data>
+  <data name="System_RestartNow.Content" xml:space="preserve">
+    <value>اکنون راه‌اندازی مجدد شود</value>
+    <comment>Button: restart Windows now.</comment>
+  </data>
+  <data name="System_Power.Text" xml:space="preserve">
+    <value>انرژی</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="System_PowerPlan.Header" xml:space="preserve">
+    <value>طرح انرژی</value>
+    <comment>Windows power plan setting.</comment>
+  </data>
+  <data name="System_PowerPlan.Description" xml:space="preserve">
+    <value>طرح انرژی Windows که در حال استفاده است.</value>
+  </data>
+  <data name="Settings_Title.Text" xml:space="preserve">
+    <value>تنظیمات</value>
+    <comment>Page title.</comment>
+  </data>
+  <data name="Settings_Startup.Text" xml:space="preserve">
+    <value>راه‌اندازی</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_StartWithWindows.Header" xml:space="preserve">
+    <value>شروع همراه با Windows</value>
+  </data>
+  <data name="Settings_StartWithWindows.Description" xml:space="preserve">
+    <value>هنگام ورود به سیستم، OpenSense را در ناحیهٔ اعلان باز می‌کند. کنترل فن به این تنظیم وابسته نیست.</value>
+    <comment>Notification area = the Windows system tray.</comment>
+  </data>
+  <data name="Settings_NitroSenseKey.Header" xml:space="preserve">
+    <value>باز کردن با کلید NitroSense</value>
+    <comment>NitroSense is Acer's app; the laptop has a key for it. Keep the name.</comment>
+  </data>
+  <data name="Settings_NitroSenseKey.Description" xml:space="preserve">
+    <value>کلید NitroSense روی صفحه‌کلید، OpenSense را باز می‌کند، همان‌طور که NitroSense را باز می‌کرد. وقتی OpenSense در ناحیهٔ اعلان است کار می‌کند.</value>
+  </data>
+  <data name="Settings_StartMinimized.Header" xml:space="preserve">
+    <value>شروع به‌صورت کوچک‌شده در ناحیهٔ اعلان</value>
+  </data>
+  <data name="Settings_CloseToTray.Header" xml:space="preserve">
+    <value>ادامهٔ اجرا پس از بستن پنجره</value>
+  </data>
+  <data name="Settings_CloseToTray.Description" xml:space="preserve">
+    <value>با بستن پنجره، نماد در ناحیهٔ اعلان باقی می‌ماند. از منوی آن خارج شوید.</value>
+  </data>
+  <data name="Settings_Appearance.Text" xml:space="preserve">
+    <value>ظاهر</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_Language.Header" xml:space="preserve">
+    <value>زبان</value>
+    <comment>Setting: the app's language.</comment>
+  </data>
+  <data name="Language_System" xml:space="preserve">
+    <value>استفاده از تنظیم سیستم</value>
+    <comment>First entry in the language list: follow the Windows language.</comment>
+  </data>
+  <data name="Settings_LanguageRestart.Title" xml:space="preserve">
+    <value>برای تغییر زبان دوباره راه‌اندازی کنید</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Settings_LanguageRestart.Message" xml:space="preserve">
+    <value>OpenSense پس از راه‌اندازی مجدد، زبان جدید را نشان می‌دهد.</value>
+  </data>
+  <data name="Settings_LanguageRestartNow.Content" xml:space="preserve">
+    <value>اکنون راه‌اندازی مجدد شود</value>
+    <comment>Button: restart OpenSense now.</comment>
+  </data>
+  <data name="Settings_Theme.Header" xml:space="preserve">
+    <value>زمینه</value>
+    <comment>Setting: light or dark colours.</comment>
+  </data>
+  <data name="Theme_System" xml:space="preserve">
+    <value>استفاده از تنظیم سیستم</value>
+    <comment>Theme choice: follow Windows.</comment>
+  </data>
+  <data name="Theme_Light" xml:space="preserve">
+    <value>روشن</value>
+    <comment>Theme choice.</comment>
+  </data>
+  <data name="Theme_Dark" xml:space="preserve">
+    <value>تیره</value>
+    <comment>Theme choice.</comment>
+  </data>
+  <data name="Settings_Fahrenheit.Header" xml:space="preserve">
+    <value>نمایش دما به فارنهایت</value>
+  </data>
+  <data name="Settings_Interval.Header" xml:space="preserve">
+    <value>فاصلهٔ به‌روزرسانی</value>
+    <comment>Setting: how often sensors are read.</comment>
+  </data>
+  <data name="Settings_Interval.Description" xml:space="preserve">
+    <value>هر چند وقت یک بار حسگرها خوانده و منحنی‌های فن به‌روز شوند؛ برای همهٔ کاربران این رایانه.</value>
+  </data>
+  <data name="Settings_Laptop.Text" xml:space="preserve">
+    <value>لپ‌تاپ شما</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_UnknownModel" xml:space="preserve">
+    <value>لپ‌تاپ Acer</value>
+    <comment>Shown when the laptop's model name is unknown.</comment>
+  </data>
+  <data name="Settings_Bios" xml:space="preserve">
+    <value>BIOS {0}</value>
+    <comment>{0} = the BIOS version.</comment>
+  </data>
+  <data name="Settings_BiosUnknown" xml:space="preserve">
+    <value>نسخهٔ BIOS نامشخص است</value>
+  </data>
+  <data name="Settings_Sensors.Header" xml:space="preserve">
+    <value>حسگرهای دما</value>
+  </data>
+  <data name="Settings_SensorSources" xml:space="preserve">
+    <value>CPU: {0}
+GPU: {1}</value>
+    <comment>Two lines: {0}, {1} = where each temperature comes from (Sensor_* texts).</comment>
+  </data>
+  <data name="Sensor_IntelPackage" xml:space="preserve">
+    <value>حسگر بستهٔ Intel (TjMax {0} °C)</value>
+    <comment>The Intel CPU's own temperature sensor. {0} = a temperature. Keep 'TjMax'.</comment>
+  </data>
+  <data name="Sensor_AmdTctl" xml:space="preserve">
+    <value>حسگر Tctl شرکت AMD</value>
+    <comment>The AMD CPU's own temperature sensor. Keep 'Tctl'.</comment>
+  </data>
+  <data name="Sensor_NvidiaDriver" xml:space="preserve">
+    <value>درایور NVIDIA</value>
+    <comment>Temperature read from the NVIDIA graphics driver.</comment>
+  </data>
+  <data name="Sensor_EmbeddedController" xml:space="preserve">
+    <value>کنترلر تعبیه‌شده</value>
+    <comment>The laptop's embedded controller (EC) chip, which also reports temperatures.</comment>
+  </data>
+  <data name="Sensor_EmbeddedControllerBecause" xml:space="preserve">
+    <value>کنترلر تعبیه‌شده ({0})</value>
+    <comment>{0} = why the chip's own sensor isn't used (one of the SensorProblem_* texts).</comment>
+  </data>
+  <data name="SensorProblem_NotX86Cpu" xml:space="preserve">
+    <value>CPU از نوع x86 نیست</value>
+    <comment>Reason in parentheses after 'Embedded controller': starts lowercase in English.</comment>
+  </data>
+  <data name="SensorProblem_UnsupportedCpuVendor" xml:space="preserve">
+    <value>سازندهٔ CPU پشتیبانی نمی‌شود: {0}</value>
+    <comment>Reason in parentheses. {0} = a CPU vendor code such as 'GenuineIntel'.</comment>
+  </data>
+  <data name="SensorProblem_NoPackageSensor" xml:space="preserve">
+    <value>این CPU شرکت Intel حسگر دمای بسته ندارد</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_ImplausibleTjMax" xml:space="preserve">
+    <value>CPU مقدار TjMax نامعقولی گزارش کرد: {0} °C</value>
+    <comment>Reason in parentheses. Keep 'TjMax'. {0} = a number.</comment>
+  </data>
+  <data name="SensorProblem_NoReading" xml:space="preserve">
+    <value>حسگر پاسخ نداد</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_PciLockUnavailable" xml:space="preserve">
+    <value>قفل مشترک PCI باز نشد: {0}</value>
+    <comment>Reason in parentheses. {0} = a technical error message.</comment>
+  </data>
+  <data name="SensorProblem_NoNvidiaDriver" xml:space="preserve">
+    <value>درایور NVIDIA پیدا نشد</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_NvmlTooOld" xml:space="preserve">
+    <value>درایور NVIDIA بیش از حد قدیمی است</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_PawnIONotInstalled" xml:space="preserve">
+    <value>PawnIO نصب نیست</value>
+    <comment>Reason in parentheses. PawnIO is a driver's name: keep it.</comment>
+  </data>
+  <data name="SensorProblem_PawnIOUnavailable" xml:space="preserve">
+    <value>PawnIO باز نشد ({0})</value>
+    <comment>Reason in parentheses. {0} = an error code.</comment>
+  </data>
+  <data name="SensorProblem_PawnIOModuleRefused" xml:space="preserve">
+    <value>PawnIO یک ماژول را رد کرد ({0})</value>
+    <comment>Reason in parentheses. {0} = a module name and an error code.</comment>
+  </data>
+  <data name="Settings_GetPawnIO.Content" xml:space="preserve">
+    <value>دریافت PawnIO برای خواندن دقیق CPU</value>
+    <comment>Link. PawnIO is a driver's name: keep it.</comment>
+  </data>
+  <data name="Settings_OperatingModes.Header" xml:space="preserve">
+    <value>حالت‌های کاری</value>
+    <comment>Setting: use Acer's operating modes (Eco, Quiet, Balanced...).</comment>
+  </data>
+  <data name="Settings_OperatingModes_Supported" xml:space="preserve">
+    <value>{0}، همان‌طور که نرم‌افزار Acer در این مدل ارائه می‌دهد. {1}</value>
+    <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
+  </data>
+  <data name="Settings_OperatingModes_Unused" xml:space="preserve">
+    <value>سفت‌افزار شما {0} را فهرست می‌کند، اما نرم‌افزار Acer در این مدل از آن‌ها استفاده نمی‌کند و ممکن است هیچ تغییری ایجاد نکنند. {1}</value>
+    <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
+  </data>
+  <data name="Settings_OperatingModes_CoolBoost" xml:space="preserve">
+    <value>وقتی خاموش هستند، CoolBoost در دسترس است.</value>
+    <comment>They = the operating modes.</comment>
+  </data>
+  <data name="Settings_OperatingModes_Default" xml:space="preserve">
+    <value>وقتی خاموش هستند، لپ‌تاپ در حالت پیش‌فرض خود می‌ماند.</value>
+    <comment>They = the operating modes.</comment>
+  </data>
+  <data name="Settings_Updates.Text" xml:space="preserve">
+    <value>به‌روزرسانی‌ها</value>
+    <comment>Section title: app updates.</comment>
+  </data>
+  <data name="Settings_CheckNow.Content" xml:space="preserve">
+    <value>اکنون بررسی شود</value>
+    <comment>Button: check for updates now.</comment>
+  </data>
+  <data name="Settings_AutoUpdate.Header" xml:space="preserve">
+    <value>بررسی خودکار به‌روزرسانی‌ها</value>
+  </data>
+  <data name="Settings_AutoUpdate.Description" xml:space="preserve">
+    <value>روزی یک بار، از انتشارهای پروژه در GitHub. فایل‌های بارگیری‌شده پیش از نصب با مجموع مقابله‌ای SHA-256 که GitHub منتشر می‌کند مقایسه می‌شوند.</value>
+  </data>
+  <data name="Settings_Troubleshooting.Text" xml:space="preserve">
+    <value>عیب‌یابی</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_Diagnostics.Header" xml:space="preserve">
+    <value>تشخیص</value>
+  </data>
+  <data name="Settings_Diagnostics.Description" xml:space="preserve">
+    <value>پاسخ‌های خام سفت‌افزار از تشخیص قابلیت‌ها. هنگام گزارش یک مشکل یا مدل جدید آن‌ها را ضمیمه کنید.</value>
+    <comment>The copied diagnostics stay in English for the developers.</comment>
+  </data>
+  <data name="Settings_Copy.Content" xml:space="preserve">
+    <value>کپی</value>
+    <comment>Button: copy the diagnostics to the clipboard.</comment>
+  </data>
+  <data name="Settings_ServiceLogs.Content" xml:space="preserve">
+    <value>گزارش‌های سرویس</value>
+    <comment>Button: opens the background service's log folder.</comment>
+  </data>
+  <data name="Settings_AppLogs.Content" xml:space="preserve">
+    <value>گزارش‌های برنامه</value>
+    <comment>Button: opens the app's log folder.</comment>
+  </data>
+  <data name="Settings_About.Text" xml:space="preserve">
+    <value>درباره</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_AboutOpenSense.Description" xml:space="preserve">
+    <value>کنترل متن‌باز فن، عملکرد و نورپردازی برای لپ‌تاپ‌های Acer Nitro و Predator.</value>
+  </data>
+  <data name="Settings_Version" xml:space="preserve">
+    <value>نسخهٔ {0}</value>
+    <comment>{0} = a version number.</comment>
+  </data>
+  <data name="Settings_Mode_Portable" xml:space="preserve">
+    <value>نسخهٔ قابل‌حمل: به‌عنوان سرپرست اجرا می‌شود و تا وقتی باز است خودش لپ‌تاپ را کنترل می‌کند.</value>
+  </data>
+  <data name="Settings_Mode_Installed" xml:space="preserve">
+    <value>نصب‌شده: سرویس OpenSense از زمان راه‌اندازی، لپ‌تاپ را کنترل می‌کند؛ چه این پنجره باز باشد چه نه.</value>
+  </data>
+  <data name="Settings_Trademarks.Text" xml:space="preserve">
+    <value>OpenSense یک پروژهٔ مستقل است و وابسته به Acer یا مورد تأیید آن نیست. Acer، Nitro، Predator و NitroSense علائم تجاری Acer Inc. هستند. تحت مجوز GNU General Public License v3.0 یا بالاتر منتشر شده است.</value>
+    <comment>Legal notice: translate faithfully and keep the names.</comment>
+  </data>
+  <data name="Update_Install.Content" xml:space="preserve">
+    <value>اکنون به‌روزرسانی شود</value>
+    <comment>Button: download and install the update.</comment>
+  </data>
+  <data name="Update_WhatsNew.Content" xml:space="preserve">
+    <value>موارد جدید</value>
+    <comment>Link to the release notes.</comment>
+  </data>
+  <data name="Update_Skip.Content" xml:space="preserve">
+    <value>رد کردن این نسخه</value>
+    <comment>Link.</comment>
+  </data>
+  <data name="Update_BannerTitle" xml:space="preserve">
+    <value>OpenSense {0} در دسترس است</value>
+    <comment>{0} = a version number.</comment>
+  </data>
+  <data name="Update_Downloading" xml:space="preserve">
+    <value>در حال بارگیری… {0}</value>
+    <comment>{0} = progress as a percentage.</comment>
+  </data>
+  <data name="Update_NoAsset" xml:space="preserve">
+    <value>این انتشار بارگیری‌ای برای این نسخه ندارد؛ صفحهٔ انتشار را ببینید.</value>
+  </data>
+  <data name="Update_InstallerHint" xml:space="preserve">
+    <value>روی «اکنون به‌روزرسانی شود» کلیک کنید تا نصب شود و OpenSense دوباره باز شود (Windows اجازه می‌خواهد).</value>
+    <comment>'Update now' = Update_Install.Content.</comment>
+  </data>
+  <data name="Update_PortableHint" xml:space="preserve">
+    <value>روی «اکنون به‌روزرسانی شود» کلیک کنید تا این نسخهٔ قابل‌حمل جایگزین و دوباره باز شود.</value>
+    <comment>'Update now' = Update_Install.Content.</comment>
+  </data>
+  <data name="Update_Checking" xml:space="preserve">
+    <value>در حال بررسی به‌روزرسانی‌ها…</value>
+  </data>
+  <data name="Update_UpToDate" xml:space="preserve">
+    <value>به‌روز است. {0}</value>
+    <comment>{0} = Update_LastChecked or Update_NotChecked.</comment>
+  </data>
+  <data name="Update_Latest" xml:space="preserve">
+    <value>{0} جدیدترین نسخه است.</value>
+    <comment>{0} = 'OpenSense' and a version number.</comment>
+  </data>
+  <data name="Update_Skipped" xml:space="preserve">
+    <value>نسخهٔ {0} رد شد. {1}</value>
+    <comment>{0} = a version number; {1} = Update_LastChecked or Update_NotChecked.</comment>
+  </data>
+  <data name="Update_Available" xml:space="preserve">
+    <value>نسخهٔ {0} در دسترس است. {1}</value>
+    <comment>{0} = a version number; {1} = Update_LastChecked or Update_NotChecked.</comment>
+  </data>
+  <data name="Update_LastChecked" xml:space="preserve">
+    <value>آخرین بررسی: {0}.</value>
+    <comment>{0} = a date and time.</comment>
+  </data>
+  <data name="Update_NotChecked" xml:space="preserve">
+    <value>هنوز بررسی نشده است.</value>
+  </data>
+  <data name="Update_OpenToUpdate" xml:space="preserve">
+    <value>برای به‌روزرسانی، OpenSense را باز کنید.</value>
+    <comment>Notification balloon.</comment>
+  </data>
+  <data name="Update_CheckFailed" xml:space="preserve">
+    <value>بررسی به‌روزرسانی‌ها ممکن نشد: {0}</value>
+    <comment>{0} = a technical error message.</comment>
+  </data>
+  <data name="Update_Cancelled" xml:space="preserve">
+    <value>به‌روزرسانی لغو شد.</value>
+  </data>
+  <data name="Update_Failed" xml:space="preserve">
+    <value>به‌روزرسانی ناموفق بود: {0}</value>
+    <comment>{0} = the reason, possibly a technical error message.</comment>
+  </data>
+  <data name="Update_NoDigest" xml:space="preserve">
+    <value>GitHub مجموع مقابله‌ای SHA-256 برای این بارگیری منتشر نکرده است، بنابراین تأیید آن ممکن نیست.</value>
+  </data>
+  <data name="Update_DigestMismatch" xml:space="preserve">
+    <value>فایل بارگیری‌شده با مجموع مقابله‌ای SHA-256 که GitHub منتشر کرده مطابقت ندارد.</value>
+  </data>
+  <data name="Update_NoExecutable" xml:space="preserve">
+    <value>به‌روزرسانی قابل‌حمل شامل OpenSense.exe نیست.</value>
+  </data>
+  <data name="Update_OldCopyRunning" xml:space="preserve">
+    <value>OpenSense در حال اجرا بسته نشد.</value>
+  </data>
+  <data name="PortableUpdate_Caption" xml:space="preserve">
+    <value>به‌روزرسانی OpenSense</value>
+    <comment>Message box title.</comment>
+  </data>
+  <data name="PortableUpdate_Failed" xml:space="preserve">
+    <value>OpenSense به‌روزرسانی نشد، بنابراین نسخهٔ قبلی حفظ شد.
+
+{0}
+
+جزئیات: {1}</value>
+    <comment>{0} = the reason; {1} = a log file path.</comment>
+  </data>
+  <data name="Tray_Open" xml:space="preserve">
+    <value>باز کردن OpenSense</value>
+    <comment>Menu item of the notification area icon.</comment>
+  </data>
+  <data name="Tray_FanMode" xml:space="preserve">
+    <value>حالت فن</value>
+    <comment>Submenu of the notification area icon.</comment>
+  </data>
+  <data name="Tray_OperatingMode" xml:space="preserve">
+    <value>حالت کاری</value>
+    <comment>Submenu of the notification area icon.</comment>
+  </data>
+  <data name="Tray_Exit" xml:space="preserve">
+    <value>خروج</value>
+    <comment>Menu item: quit OpenSense.</comment>
+  </data>
+</root>

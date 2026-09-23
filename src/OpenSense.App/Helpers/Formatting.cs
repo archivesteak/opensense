@@ -1,4 +1,5 @@
 using System.Globalization;
+using OpenSense.App.Localization;
 using Windows.UI;
 
 namespace OpenSense.App.Helpers;
@@ -13,14 +14,17 @@ public static class Units
     public static string TemperatureWithUnit(double celsius, bool fahrenheit) =>
         string.Create(CultureInfo.CurrentCulture, $"{ToDisplay(celsius, fahrenheit):0} °{(fahrenheit ? 'F' : 'C')}");
 
+    /// <summary>A percentage (0–100), rounded, as the user's format writes it: "45%", "45 %", "%45".</summary>
     public static string Percent(double? value) =>
-        value is { } v ? string.Create(CultureInfo.CurrentCulture, $"{v:0}%") : "--";
+        value is { } v ? (v / 100).ToString("P0", CultureInfo.CurrentCulture) : "--";
 
-    public static string Rpm(int? rpm) =>
-        rpm is { } r ? string.Create(CultureInfo.CurrentCulture, $"{r:N0} rpm") : "-- rpm";
+    public static string Rpm(int? rpm) => Strings.Format("Unit_RpmValue", RpmNumber(rpm));
 
     public static string RpmNumber(int? rpm) =>
         rpm is { } r ? r.ToString("N0", CultureInfo.CurrentCulture) : "--";
+
+    /// <summary>The unit after a fan speed number, with the space before it.</summary>
+    public static string RpmSuffix { get; } = " " + Strings.Get("Unit_Rpm");
 }
 
 /// <summary>Maps a temperature to the shared cool → warm → hot → critical colour scale.</summary>

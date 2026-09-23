@@ -1,0 +1,1075 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Nav_Dashboard.Content" xml:space="preserve">
+    <value>Tablou de bord</value>
+    <comment>Navigation menu item: the overview page.</comment>
+  </data>
+  <data name="Nav_Fans.Content" xml:space="preserve">
+    <value>Ventilatoare</value>
+    <comment>Navigation menu item: fan control page.</comment>
+  </data>
+  <data name="Nav_Lighting.Content" xml:space="preserve">
+    <value>Iluminare</value>
+    <comment>Navigation menu item: the RGB keyboard lighting page.</comment>
+  </data>
+  <data name="Nav_System.Content" xml:space="preserve">
+    <value>Tastatură și afișaj</value>
+    <comment>Navigation menu item: keyboard, display, GPU and power settings.</comment>
+  </data>
+  <data name="Startup_Connecting.Text" xml:space="preserve">
+    <value>Se conectează la laptop…</value>
+    <comment>Shown while the app starts.</comment>
+  </data>
+  <data name="Problem_RestartElevated.Content" xml:space="preserve">
+    <value>Repornire ca administrator</value>
+    <comment>Button.</comment>
+  </data>
+  <data name="Problem_StartService.Content" xml:space="preserve">
+    <value>Pornire serviciu</value>
+    <comment>Button: starts the OpenSense background service.</comment>
+  </data>
+  <data name="Problem_NeedsElevation_Title" xml:space="preserve">
+    <value>Sunt necesare drepturi de administrator</value>
+  </data>
+  <data name="Problem_NeedsElevation_Message" xml:space="preserve">
+    <value>Această copie portabilă comunică direct cu comenzile ventilatoarelor și ale iluminării laptopului, ceea ce necesită drepturi de administrator. Reporniți-o ca administrator sau instalați OpenSense pentru a o rula fără ele.</value>
+  </data>
+  <data name="Problem_ServiceUnavailable_Title" xml:space="preserve">
+    <value>Serviciul OpenSense nu rulează</value>
+  </data>
+  <data name="Problem_ServiceUnavailable_Message" xml:space="preserve">
+    <value>OpenSense controlează laptopul printr-un serviciu de fundal, care este oprit. Porniți-l (Windows cere permisiunea) sau reinstalați OpenSense dacă se tot oprește.</value>
+  </data>
+  <data name="Problem_Unsupported_Title" xml:space="preserve">
+    <value>Nu s-a găsit firmware Acer pentru jocuri</value>
+  </data>
+  <data name="Problem_Unsupported_Message" xml:space="preserve">
+    <value>Acest PC nu oferă interfața WMI Acer pentru jocuri (AcerGamingFunction). OpenSense acceptă laptopurile Acer Nitro și Predator.</value>
+    <comment>Keep 'AcerGamingFunction' as is.</comment>
+  </data>
+  <data name="Problem_Failed_Title" xml:space="preserve">
+    <value>OpenSense nu a putut porni</value>
+  </data>
+  <data name="Problem_Failed_Message" xml:space="preserve">
+    <value>A apărut o eroare neașteptată. Detaliile se află în folderul de jurnale.</value>
+  </data>
+  <data name="Session_VersionMismatch" xml:space="preserve">
+    <value>Serviciul OpenSense are o versiune diferită ({0}). Reinstalați OpenSense pentru a-l actualiza.</value>
+    <comment>{0} = a version number.</comment>
+  </data>
+  <data name="Notice_Rebuilt_Title" xml:space="preserve">
+    <value>Capabilități actualizate</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_Rebuilt_Message" xml:space="preserve">
+    <value>OpenSense a repornit controlul ventilatoarelor cu noile setări.</value>
+  </data>
+  <data name="Notice_Service_Title" xml:space="preserve">
+    <value>Serviciu</value>
+    <comment>Banner title: about the OpenSense background service.</comment>
+  </data>
+  <data name="Notice_Reconnected" xml:space="preserve">
+    <value>Reconectat la serviciul OpenSense.</value>
+  </data>
+  <data name="Notice_Disconnected" xml:space="preserve">
+    <value>Conexiunea cu serviciul OpenSense s-a pierdut. Se reconectează…</value>
+  </data>
+  <data name="Notice_ServiceStartFailed" xml:space="preserve">
+    <value>Serviciul OpenSense nu a pornit. Detaliile se află în jurnalul serviciului din %ProgramData%\OpenSense\logs.</value>
+    <comment>Keep the folder path as is.</comment>
+  </data>
+  <data name="Notice_FanControl_Title" xml:space="preserve">
+    <value>Controlul ventilatoarelor</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_Keyboard_Title" xml:space="preserve">
+    <value>Tastatură</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_Display_Title" xml:space="preserve">
+    <value>Afișaj</value>
+    <comment>Banner title: the laptop screen.</comment>
+  </data>
+  <data name="Notice_FirmwareAccessDenied" xml:space="preserve">
+    <value>Pentru a accesa interfața firmware-ului Acer sunt necesare drepturi de administrator.</value>
+  </data>
+  <data name="Notice_ControlLoopError" xml:space="preserve">
+    <value>Controlul ventilatoarelor a întâmpinat o eroare: {0}</value>
+    <comment>{0} = a technical error message (not translated).</comment>
+  </data>
+  <data name="Notice_OperatingModeRejected" xml:space="preserve">
+    <value>Firmware-ul a respins schimbarea modului de funcționare ({0}).</value>
+    <comment>{0} = an operating mode name, e.g. Turbo.</comment>
+  </data>
+  <data name="Notice_CoolBoostRejected" xml:space="preserve">
+    <value>Firmware-ul a respins modificarea CoolBoost.</value>
+    <comment>CoolBoost is an Acer feature name: keep it.</comment>
+  </data>
+  <data name="Notice_FansHandedBack" xml:space="preserve">
+    <value>Temperatura procesorului nu este disponibilă, așa că ventilatoarele au revenit la Auto.</value>
+    <comment>Auto = the automatic fan mode, as in FanMode_Auto.</comment>
+  </data>
+  <data name="Notice_LightingRejected" xml:space="preserve">
+    <value>Tastatura a respins modificarea iluminării.</value>
+  </data>
+  <data name="Notice_BacklightTimeoutRejected" xml:space="preserve">
+    <value>Tastatura a respins modificarea timpului de oprire a iluminării de fundal.</value>
+  </data>
+  <data name="Notice_WindowsKeyRejected" xml:space="preserve">
+    <value>Firmware-ul a respins modificarea tastei Windows.</value>
+  </data>
+  <data name="Notice_LcdOverdriveRejected" xml:space="preserve">
+    <value>Afișajul a respins modificarea overdrive.</value>
+    <comment>Overdrive = LCD overdrive, a screen setting that speeds up pixel response.</comment>
+  </data>
+  <data name="Notice_PowerPlan_Title" xml:space="preserve">
+    <value>Schemă de alimentare</value>
+    <comment>Banner title: a Windows power plan.</comment>
+  </data>
+  <data name="Notice_PowerPlanFailed" xml:space="preserve">
+    <value>Windows nu a comutat la „{0}”.</value>
+    <comment>{0} = a Windows power plan name. Use your language's quotation marks.</comment>
+  </data>
+  <data name="Notice_GpuMode_Title" xml:space="preserve">
+    <value>Mod GPU</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_GpuModeRejected" xml:space="preserve">
+    <value>Firmware-ul a respins schimbarea modului GPU.</value>
+  </data>
+  <data name="Notice_Autostart_Title" xml:space="preserve">
+    <value>Pornire odată cu Windows</value>
+    <comment>Banner title, same as Settings_StartWithWindows.Header.</comment>
+  </data>
+  <data name="Notice_AutostartFailed" xml:space="preserve">
+    <value>Intrarea de pornire nu a putut fi actualizată: {0}</value>
+    <comment>{0} = a technical error message.</comment>
+  </data>
+  <data name="Notice_Diagnostics_Title" xml:space="preserve">
+    <value>Diagnosticare</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_DiagnosticsCopied" xml:space="preserve">
+    <value>S-a copiat în clipboard.</value>
+  </data>
+  <data name="Notice_Updates_Title" xml:space="preserve">
+    <value>Actualizări</value>
+    <comment>Banner title: app updates.</comment>
+  </data>
+  <data name="GpuSwitch_DiscreteTitle" xml:space="preserve">
+    <value>Comutați doar la GPU-ul dedicat?</value>
+    <comment>Dialog title. Discrete GPU = the separate NVIDIA graphics chip.</comment>
+  </data>
+  <data name="GpuSwitch_HybridTitle" xml:space="preserve">
+    <value>Comutați la grafica hibridă?</value>
+    <comment>Dialog title.</comment>
+  </data>
+  <data name="GpuSwitch_DiscreteMessage" xml:space="preserve">
+    <value>GPU-ul NVIDIA va controla direct afișajul pentru cea mai bună performanță în jocuri, în detrimentul autonomiei bateriei. Windows trebuie repornit pentru a aplica modificarea.</value>
+  </data>
+  <data name="GpuSwitch_HybridMessage" xml:space="preserve">
+    <value>GPU-ul integrat va controla afișajul, iar GPU-ul dedicat va porni doar când este nevoie, economisind bateria. Windows trebuie repornit pentru a aplica modificarea.</value>
+  </data>
+  <data name="GpuSwitch_RestartNow" xml:space="preserve">
+    <value>Reporniți acum</value>
+    <comment>Dialog button: restart Windows now.</comment>
+  </data>
+  <data name="GpuSwitch_RestartLater" xml:space="preserve">
+    <value>Reporniți mai târziu</value>
+    <comment>Dialog button.</comment>
+  </data>
+  <data name="GpuSwitch_Cancel" xml:space="preserve">
+    <value>Anulare</value>
+    <comment>Dialog button.</comment>
+  </data>
+  <data name="Chip_Cpu" xml:space="preserve">
+    <value>CPU</value>
+    <comment>The processor. Short: used in labels like 'CPU 45°'.</comment>
+  </data>
+  <data name="Chip_Gpu" xml:space="preserve">
+    <value>GPU</value>
+    <comment>The graphics chip. Short: used in labels like 'GPU 45°'.</comment>
+  </data>
+  <data name="Fan_Cpu" xml:space="preserve">
+    <value>Ventilator CPU</value>
+  </data>
+  <data name="Fan_Gpu" xml:space="preserve">
+    <value>Ventilator GPU</value>
+  </data>
+  <data name="FanMode_Auto" xml:space="preserve">
+    <value>Auto</value>
+    <comment>Fan mode: the laptop's firmware controls the fans. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Max" xml:space="preserve">
+    <value>Max</value>
+    <comment>Fan mode: all fans at full speed. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Custom" xml:space="preserve">
+    <value>Manual</value>
+    <comment>Fan mode: a fixed speed chosen for each fan. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Curve" xml:space="preserve">
+    <value>Curbă</value>
+    <comment>Fan mode: fan speed follows a temperature curve. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Auto_Description" xml:space="preserve">
+    <value>Firmware-ul laptopului gestionează ventilatoarele.</value>
+  </data>
+  <data name="FanMode_Max_Description" xml:space="preserve">
+    <value>Toate ventilatoarele la viteză maximă.</value>
+  </data>
+  <data name="FanMode_Custom_Description" xml:space="preserve">
+    <value>Viteză fixă pentru fiecare ventilator.</value>
+  </data>
+  <data name="FanMode_Curve_Description" xml:space="preserve">
+    <value>OpenSense urmează curbele dvs. de temperatură.</value>
+  </data>
+  <data name="FanBehavior_Auto" xml:space="preserve">
+    <value>Auto (firmware)</value>
+    <comment>What a fan is doing right now: controlled by the laptop's firmware.</comment>
+  </data>
+  <data name="FanBehavior_Max" xml:space="preserve">
+    <value>Viteză maximă</value>
+    <comment>What a fan is doing right now.</comment>
+  </data>
+  <data name="FanBehavior_Emergency" xml:space="preserve">
+    <value>Viteză maximă de urgență</value>
+    <comment>What a fan is doing right now: forced to full speed because the temperature is too high.</comment>
+  </data>
+  <data name="FanBehavior_Curve" xml:space="preserve">
+    <value>Urmează curba</value>
+    <comment>What a fan is doing right now: following the temperature curve.</comment>
+  </data>
+  <data name="FanBehavior_Fixed" xml:space="preserve">
+    <value>Viteză fixă</value>
+    <comment>What a fan is doing right now.</comment>
+  </data>
+  <data name="FanLock_QuietMode" xml:space="preserve">
+    <value>Modul Silențios menține ventilatoarele pe Auto.</value>
+    <comment>Quiet = OperatingMode_Quiet; Auto = FanMode_Auto.</comment>
+  </data>
+  <data name="OperatingMode_Eco" xml:space="preserve">
+    <value>Eco</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Quiet" xml:space="preserve">
+    <value>Silențios</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Balanced" xml:space="preserve">
+    <value>Echilibrat</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Performance" xml:space="preserve">
+    <value>Performanță</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Turbo" xml:space="preserve">
+    <value>Turbo</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Eco_Description" xml:space="preserve">
+    <value>Cea mai lungă autonomie a bateriei.</value>
+  </data>
+  <data name="OperatingMode_Quiet_Description" xml:space="preserve">
+    <value>Cel mai redus zgomot. Ventilatoarele rămân pe Auto.</value>
+    <comment>Auto = FanMode_Auto.</comment>
+  </data>
+  <data name="OperatingMode_Balanced_Description" xml:space="preserve">
+    <value>Performanță pentru uzul zilnic.</value>
+  </data>
+  <data name="OperatingMode_Performance_Description" xml:space="preserve">
+    <value>Limite de putere mai mari. Necesită alimentare de la rețea.</value>
+  </data>
+  <data name="OperatingMode_Turbo_Description" xml:space="preserve">
+    <value>Putere și răcire maxime. Necesită alimentare de la rețea.</value>
+  </data>
+  <data name="OperatingMode_BatteryNote" xml:space="preserve">
+    <value>Pe baterie, {0} și {1} funcționează ca {2} până când conectați încărcătorul.</value>
+    <comment>{0}, {1}, {2} = operating mode names (Performance, Turbo, Balanced).</comment>
+  </data>
+  <data name="PowerSource_PluggedIn" xml:space="preserve">
+    <value>Conectat la priză</value>
+    <comment>Power source: the charger is connected.</comment>
+  </data>
+  <data name="PowerSource_Battery" xml:space="preserve">
+    <value>Pe baterie</value>
+    <comment>Power source.</comment>
+  </data>
+  <data name="Gpu_Idle" xml:space="preserve">
+    <value>Inactiv</value>
+    <comment>Shown instead of the GPU temperature while the graphics chip is powered down. Short.</comment>
+  </data>
+  <data name="Unit_Rpm" xml:space="preserve">
+    <value>rpm</value>
+    <comment>Unit: revolutions per minute (fan speed). Use your language's usual abbreviation.</comment>
+  </data>
+  <data name="Unit_RpmValue" xml:space="preserve">
+    <value>{0} rpm</value>
+    <comment>{0} = a fan speed number. Same unit as Unit_Rpm.</comment>
+  </data>
+  <data name="Unit_Seconds" xml:space="preserve">
+    <value>{0} s</value>
+    <comment>{0} = a number of seconds, e.g. 0.5. Use the usual abbreviation for seconds.</comment>
+  </data>
+  <data name="ListSeparator" xml:space="preserve">
+    <value>, </value>
+    <comment>Separates items in a list inside a sentence, e.g. 'Quiet, Balanced, Performance'. Keep the trailing space if your language uses one.</comment>
+  </data>
+  <data name="Dashboard_Title.Text" xml:space="preserve">
+    <value>Tablou de bord</value>
+    <comment>Page title, same as Nav_Dashboard.Content.</comment>
+  </data>
+  <data name="Dashboard_Failsafe.Title" xml:space="preserve">
+    <value>Ventilatoare predate firmware-ului</value>
+    <comment>Warning banner title.</comment>
+  </data>
+  <data name="Dashboard_Failsafe.Message" xml:space="preserve">
+    <value>Temperatura procesorului nu mai este raportată, așa că laptopul își controlează singur ventilatoarele până când aceasta revine.</value>
+  </data>
+  <data name="Dashboard_CpuTemperature.Text" xml:space="preserve">
+    <value>Temperatură CPU</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_GpuTemperature.Text" xml:space="preserve">
+    <value>Temperatură GPU</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_CpuFan.Text" xml:space="preserve">
+    <value>Ventilator CPU</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_GpuFan.Text" xml:space="preserve">
+    <value>Ventilator GPU</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_LoadDetail" xml:space="preserve">
+    <value>Încărcare {0} · {1}</value>
+    <comment>Under a temperature: {0} = usage percentage (e.g. 45%), {1} = the chip's model name.</comment>
+  </data>
+  <data name="Dashboard_AsleepDetail" xml:space="preserve">
+    <value>Inactiv · {0}</value>
+    <comment>Under the GPU temperature while the graphics chip is powered down: {0} = its model name.</comment>
+  </data>
+  <data name="Dashboard_RpmDetail" xml:space="preserve">
+    <value>rpm · factor de umplere {0}</value>
+    <comment>Under a fan speed number: rpm = revolutions per minute (as Unit_Rpm); {0} = the fan's duty cycle as a percentage.</comment>
+  </data>
+  <data name="Dashboard_Cooling.Text" xml:space="preserve">
+    <value>Răcire</value>
+    <comment>Card title.</comment>
+  </data>
+  <data name="Dashboard_CoolBoost.Text" xml:space="preserve">
+    <value>Permite modului Auto să rotească ventilatoarele mai repede.</value>
+    <comment>Describes CoolBoost (an Acer feature name shown above it). Auto = FanMode_Auto.</comment>
+  </data>
+  <data name="Dashboard_OpenFans.Content" xml:space="preserve">
+    <value>Viteze și curbe personalizate</value>
+    <comment>Link to the Fans page.</comment>
+  </data>
+  <data name="Dashboard_Performance.Text" xml:space="preserve">
+    <value>Performanță</value>
+    <comment>Card title.</comment>
+  </data>
+  <data name="Dashboard_PowerPlan.Header" xml:space="preserve">
+    <value>Schemă de alimentare Windows</value>
+    <comment>Label above a list of Windows power plans.</comment>
+  </data>
+  <data name="Dashboard_PowerSource.Text" xml:space="preserve">
+    <value>Sursă de alimentare</value>
+    <comment>Caption above 'Plugged in' or 'On battery'.</comment>
+  </data>
+  <data name="Dashboard_SystemTemperature.Text" xml:space="preserve">
+    <value>Temperatura sistemului</value>
+    <comment>Caption: the laptop's internal temperature.</comment>
+  </data>
+  <data name="Fans_Title.Text" xml:space="preserve">
+    <value>Ventilatoare</value>
+    <comment>Page title.</comment>
+  </data>
+  <data name="Fans_DutyLabel" xml:space="preserve">
+    <value>Factor de umplere {0}</value>
+    <comment>{0} = the fan's duty cycle as a percentage.</comment>
+  </data>
+  <data name="Fans_AutoToggle.OnContent" xml:space="preserve">
+    <value>Automat</value>
+    <comment>Switch label when on: the firmware controls this fan.</comment>
+  </data>
+  <data name="Fans_AutoToggle.OffContent" xml:space="preserve">
+    <value>Manual</value>
+    <comment>Switch label when off: the speed below is used.</comment>
+  </data>
+  <data name="Fans_FanSpeed.Header" xml:space="preserve">
+    <value>Viteza ventilatorului</value>
+    <comment>Slider label.</comment>
+  </data>
+  <data name="Fans_Source.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Ce temperatură controlează acest ventilator</value>
+    <comment>Tooltip.</comment>
+  </data>
+  <data name="CurveSource_Cpu" xml:space="preserve">
+    <value>Temperatură CPU</value>
+    <comment>Which temperature a fan curve follows.</comment>
+  </data>
+  <data name="CurveSource_Gpu" xml:space="preserve">
+    <value>Temperatură GPU</value>
+    <comment>Which temperature a fan curve follows.</comment>
+  </data>
+  <data name="CurveSource_Hottest" xml:space="preserve">
+    <value>Cea mai mare dintre ele</value>
+    <comment>Which temperature a fan curve follows: the higher of the CPU and GPU temperatures.</comment>
+  </data>
+  <data name="Fans_Presets.Content" xml:space="preserve">
+    <value>Presetări</value>
+    <comment>Button that opens a list of ready-made fan curves.</comment>
+  </data>
+  <data name="Fans_PresetSilent.Text" xml:space="preserve">
+    <value>Silențios</value>
+    <comment>Fan curve preset name.</comment>
+  </data>
+  <data name="Fans_PresetBalanced.Text" xml:space="preserve">
+    <value>Echilibrat</value>
+    <comment>Fan curve preset name.</comment>
+  </data>
+  <data name="Fans_PresetPerformance.Text" xml:space="preserve">
+    <value>Performanță</value>
+    <comment>Fan curve preset name.</comment>
+  </data>
+  <data name="Fans_CopyCurve.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Folosiți această curbă și pentru celelalte ventilatoare</value>
+    <comment>Tooltip.</comment>
+  </data>
+  <data name="Fans_CurveHelp.Text" xml:space="preserve">
+    <value>Trageți punctele pentru a modela curba · faceți dublu clic pentru a adăuga un punct · faceți clic dreapta pentru a elimina unul · tastele săgeți ajustează fin punctul selectat</value>
+    <comment>Help under the curve editor.</comment>
+  </data>
+  <data name="CurveEditor_Now" xml:space="preserve">
+    <value>Acum {0} · {1}</value>
+    <comment>Label on the curve editor: {0} = the current temperature, {1} = the current fan speed percentage.</comment>
+  </data>
+  <data name="Fans_Safety.Text" xml:space="preserve">
+    <value>Siguranță și răspuns</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Fans_Emergency.Header" xml:space="preserve">
+    <value>Temperatură de urgență</value>
+  </data>
+  <data name="Fans_Emergency.Description" xml:space="preserve">
+    <value>În modurile Manual și Curbă, ventilatoarele trec la viteză maximă dacă oricare dintre cipuri atinge această temperatură.</value>
+    <comment>Custom, Curve = FanMode_Custom, FanMode_Curve.</comment>
+  </data>
+  <data name="Fans_MinimumSpeed.Header" xml:space="preserve">
+    <value>Viteza minimă a ventilatorului</value>
+  </data>
+  <data name="Fans_MinimumSpeed.Description" xml:space="preserve">
+    <value>Cea mai mică viteză pe care o va cere OpenSense în modurile Manual și Curbă.</value>
+  </data>
+  <data name="Fans_SlowDown.Header" xml:space="preserve">
+    <value>Prag de încetinire</value>
+    <comment>How many degrees the temperature must fall before the fans slow down (hysteresis).</comment>
+  </data>
+  <data name="Fans_SlowDown.Description" xml:space="preserve">
+    <value>Cât trebuie să scadă temperatura înainte ca o curbă să încetinească ventilatoarele. Valorile mai mari împiedică ventilatoarele să accelereze și să încetinească încontinuu.</value>
+    <comment>'Hunting' = the fans speeding up and slowing down over and over.</comment>
+  </data>
+  <data name="Fans_HandBack.Header" xml:space="preserve">
+    <value>Predare ventilatoare la oprirea OpenSense</value>
+  </data>
+  <data name="Fans_HandBack.Description" xml:space="preserve">
+    <value>Când serviciul OpenSense se oprește (sau o copie portabilă se închide), controlul propriu al ventilatoarelor laptopului preia din nou comanda.</value>
+  </data>
+  <data name="Lighting_Title.Text" xml:space="preserve">
+    <value>Iluminare</value>
+    <comment>Page title: RGB keyboard lighting.</comment>
+  </data>
+  <data name="Lighting_Static.Content" xml:space="preserve">
+    <value>Culori fixe</value>
+    <comment>Lighting mode: one fixed colour per keyboard zone.</comment>
+  </data>
+  <data name="Lighting_Effect.Content" xml:space="preserve">
+    <value>Efect</value>
+    <comment>Lighting mode: an animated effect.</comment>
+  </data>
+  <data name="Lighting_Zone" xml:space="preserve">
+    <value>Zona {0}</value>
+    <comment>A keyboard lighting zone: {0} = its number.</comment>
+  </data>
+  <data name="Lighting_ZoneColor.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Alegeți o culoare</value>
+    <comment>Tooltip.</comment>
+  </data>
+  <data name="Lighting_AllZones.Text" xml:space="preserve">
+    <value>O singură culoare pentru toate zonele</value>
+  </data>
+  <data name="Lighting_Speed.Header" xml:space="preserve">
+    <value>Viteză</value>
+    <comment>Slider label: animation speed.</comment>
+  </data>
+  <data name="Lighting_Direction.Text" xml:space="preserve">
+    <value>Direcție</value>
+    <comment>Label: animation direction.</comment>
+  </data>
+  <data name="Lighting_EffectColor.Text" xml:space="preserve">
+    <value>Culoarea efectului</value>
+  </data>
+  <data name="Lighting_AnyColor.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Orice culoare</value>
+    <comment>Tooltip of a button that opens a colour picker.</comment>
+  </data>
+  <data name="Effect_Breathing" xml:space="preserve">
+    <value>Respirație</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Neon" xml:space="preserve">
+    <value>Neon</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Wave" xml:space="preserve">
+    <value>Val</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Shifting" xml:space="preserve">
+    <value>Deplasare</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Zoom" xml:space="preserve">
+    <value>Zoom</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Breathing_Description" xml:space="preserve">
+    <value>Culoarea se aprinde și se stinge treptat.</value>
+  </data>
+  <data name="Effect_Neon_Description" xml:space="preserve">
+    <value>Trece prin culorile curcubeului.</value>
+  </data>
+  <data name="Effect_Wave_Description" xml:space="preserve">
+    <value>Un val de culoare trece peste taste.</value>
+  </data>
+  <data name="Effect_Shifting_Description" xml:space="preserve">
+    <value>Un bloc de culoare traversează tastatura.</value>
+  </data>
+  <data name="Effect_Zoom_Description" xml:space="preserve">
+    <value>Culoarea se extinde din centru.</value>
+  </data>
+  <data name="Direction_Left" xml:space="preserve">
+    <value>Stânga</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Direction_Right" xml:space="preserve">
+    <value>Dreapta</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Direction_Up" xml:space="preserve">
+    <value>Sus</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Direction_Down" xml:space="preserve">
+    <value>Jos</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Brightness_Off" xml:space="preserve">
+    <value>Oprit</value>
+    <comment>Keyboard backlight brightness: off. Short: shown next to 25%, 50%...</comment>
+  </data>
+  <data name="System_Title.Text" xml:space="preserve">
+    <value>Tastatură și afișaj</value>
+    <comment>Page title, same as Nav_System.Content.</comment>
+  </data>
+  <data name="System_Keyboard.Text" xml:space="preserve">
+    <value>Tastatură</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="System_BacklightAutoOff.Header" xml:space="preserve">
+    <value>Oprire automată a iluminării de fundal</value>
+    <comment>Keyboard backlight setting.</comment>
+  </data>
+  <data name="System_BacklightAutoOff.Description" xml:space="preserve">
+    <value>Oprește iluminarea de fundal a tastaturii după 30 de secunde fără tastare.</value>
+  </data>
+  <data name="System_WindowsKey.Header" xml:space="preserve">
+    <value>Tastele Windows și Meniu</value>
+    <comment>The Windows logo key and the Menu (application) key.</comment>
+  </data>
+  <data name="System_WindowsKey.Description" xml:space="preserve">
+    <value>Dezactivați pentru ca tastele Windows și Meniu să nu întrerupă jocurile.</value>
+  </data>
+  <data name="System_StickyKeys.Header" xml:space="preserve">
+    <value>Taste adezive</value>
+    <comment>The Windows accessibility feature: use its official Windows name in your language.</comment>
+  </data>
+  <data name="System_StickyKeys.Description" xml:space="preserve">
+    <value>Tastele de modificare rămân apăsate după ce le eliberați; apăsați Shift de cinci ori pentru a activa sau dezactiva.</value>
+  </data>
+  <data name="System_Display.Text" xml:space="preserve">
+    <value>Afișaj</value>
+    <comment>Section title: the laptop screen.</comment>
+  </data>
+  <data name="System_LcdOverdrive.Header" xml:space="preserve">
+    <value>Overdrive LCD</value>
+    <comment>Screen setting that speeds up pixel response.</comment>
+  </data>
+  <data name="System_LcdOverdrive.Description" xml:space="preserve">
+    <value>Pentru ecranul încorporat al laptopului (nu pentru monitoarele externe): răspuns mai rapid al pixelilor și mai puțină neclaritate la mișcare în jocuri. Funcționează cel mai bine la cea mai mare rată de reîmprospătare a ecranului; dezactivați-l dacă vedeți halouri în urma obiectelor în mișcare.</value>
+  </data>
+  <data name="System_Graphics.Text" xml:space="preserve">
+    <value>Grafică</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="System_GpuMode.Header" xml:space="preserve">
+    <value>Mod GPU</value>
+    <comment>Setting: hybrid or discrete graphics.</comment>
+  </data>
+  <data name="System_GpuMode.Description" xml:space="preserve">
+    <value>Hibrid economisește bateria folosind GPU-ul integrat pentru afișaj. Dedicat conectează direct GPU-ul NVIDIA pentru cea mai bună performanță în jocuri. Se aplică după o repornire.</value>
+    <comment>Hybrid, Discrete = System_GpuHybrid, System_GpuDiscrete.</comment>
+  </data>
+  <data name="System_GpuHybrid.Content" xml:space="preserve">
+    <value>Hibrid</value>
+    <comment>GPU mode: both graphics chips (NVIDIA Optimus). Short: a segmented button.</comment>
+  </data>
+  <data name="System_GpuDiscrete.Content" xml:space="preserve">
+    <value>Dedicat</value>
+    <comment>GPU mode: only the NVIDIA graphics chip. Short: a segmented button.</comment>
+  </data>
+  <data name="System_GpuRestart.Title" xml:space="preserve">
+    <value>Reporniți pentru a schimba modul GPU</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="System_GpuRestart.Message" xml:space="preserve">
+    <value>Noul mod GPU intră în vigoare după repornirea Windows.</value>
+  </data>
+  <data name="System_RestartNow.Content" xml:space="preserve">
+    <value>Reporniți acum</value>
+    <comment>Button: restart Windows now.</comment>
+  </data>
+  <data name="System_Power.Text" xml:space="preserve">
+    <value>Alimentare</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="System_PowerPlan.Header" xml:space="preserve">
+    <value>Schemă de alimentare</value>
+    <comment>Windows power plan setting.</comment>
+  </data>
+  <data name="System_PowerPlan.Description" xml:space="preserve">
+    <value>Schema de alimentare Windows utilizată.</value>
+  </data>
+  <data name="Settings_Title.Text" xml:space="preserve">
+    <value>Setări</value>
+    <comment>Page title.</comment>
+  </data>
+  <data name="Settings_Startup.Text" xml:space="preserve">
+    <value>Pornire</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_StartWithWindows.Header" xml:space="preserve">
+    <value>Pornire odată cu Windows</value>
+  </data>
+  <data name="Settings_StartWithWindows.Description" xml:space="preserve">
+    <value>Deschide OpenSense în zona de notificare când vă conectați. Controlul ventilatoarelor nu depinde de aceasta.</value>
+    <comment>Notification area = the Windows system tray.</comment>
+  </data>
+  <data name="Settings_NitroSenseKey.Header" xml:space="preserve">
+    <value>Deschidere cu tasta NitroSense</value>
+    <comment>NitroSense is Acer's app; the laptop has a key for it. Keep the name.</comment>
+  </data>
+  <data name="Settings_NitroSenseKey.Description" xml:space="preserve">
+    <value>Tasta NitroSense de pe tastatură deschide OpenSense, așa cum deschidea NitroSense. Funcționează cât timp OpenSense se află în zona de notificare.</value>
+  </data>
+  <data name="Settings_StartMinimized.Header" xml:space="preserve">
+    <value>Pornire minimizată în zona de notificare</value>
+  </data>
+  <data name="Settings_CloseToTray.Header" xml:space="preserve">
+    <value>Continuare rulare după închiderea ferestrei</value>
+  </data>
+  <data name="Settings_CloseToTray.Description" xml:space="preserve">
+    <value>La închiderea ferestrei, pictograma rămâne în zona de notificare. Ieșiți din meniul ei.</value>
+  </data>
+  <data name="Settings_Appearance.Text" xml:space="preserve">
+    <value>Aspect</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_Language.Header" xml:space="preserve">
+    <value>Limbă</value>
+    <comment>Setting: the app's language.</comment>
+  </data>
+  <data name="Language_System" xml:space="preserve">
+    <value>Utilizare setare de sistem</value>
+    <comment>First entry in the language list: follow the Windows language.</comment>
+  </data>
+  <data name="Settings_LanguageRestart.Title" xml:space="preserve">
+    <value>Reporniți pentru a schimba limba</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Settings_LanguageRestart.Message" xml:space="preserve">
+    <value>OpenSense afișează noua limbă după repornire.</value>
+  </data>
+  <data name="Settings_LanguageRestartNow.Content" xml:space="preserve">
+    <value>Reporniți acum</value>
+    <comment>Button: restart OpenSense now.</comment>
+  </data>
+  <data name="Settings_Theme.Header" xml:space="preserve">
+    <value>Temă</value>
+    <comment>Setting: light or dark colours.</comment>
+  </data>
+  <data name="Theme_System" xml:space="preserve">
+    <value>Utilizare setare de sistem</value>
+    <comment>Theme choice: follow Windows.</comment>
+  </data>
+  <data name="Theme_Light" xml:space="preserve">
+    <value>Luminoasă</value>
+    <comment>Theme choice.</comment>
+  </data>
+  <data name="Theme_Dark" xml:space="preserve">
+    <value>Întunecată</value>
+    <comment>Theme choice.</comment>
+  </data>
+  <data name="Settings_Fahrenheit.Header" xml:space="preserve">
+    <value>Afișare temperaturi în Fahrenheit</value>
+  </data>
+  <data name="Settings_Interval.Header" xml:space="preserve">
+    <value>Interval de actualizare</value>
+    <comment>Setting: how often sensors are read.</comment>
+  </data>
+  <data name="Settings_Interval.Description" xml:space="preserve">
+    <value>Cât de des sunt citiți senzorii și actualizate curbele ventilatoarelor, pentru toți utilizatorii acestui PC.</value>
+  </data>
+  <data name="Settings_Laptop.Text" xml:space="preserve">
+    <value>Laptopul dvs.</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_UnknownModel" xml:space="preserve">
+    <value>Laptop Acer</value>
+    <comment>Shown when the laptop's model name is unknown.</comment>
+  </data>
+  <data name="Settings_Bios" xml:space="preserve">
+    <value>BIOS {0}</value>
+    <comment>{0} = the BIOS version.</comment>
+  </data>
+  <data name="Settings_BiosUnknown" xml:space="preserve">
+    <value>Versiune BIOS necunoscută</value>
+  </data>
+  <data name="Settings_Sensors.Header" xml:space="preserve">
+    <value>Senzori de temperatură</value>
+  </data>
+  <data name="Settings_SensorSources" xml:space="preserve">
+    <value>CPU: {0}
+GPU: {1}</value>
+    <comment>Two lines: {0}, {1} = where each temperature comes from (Sensor_* texts).</comment>
+  </data>
+  <data name="Sensor_IntelPackage" xml:space="preserve">
+    <value>Senzor de pachet Intel (TjMax {0} °C)</value>
+    <comment>The Intel CPU's own temperature sensor. {0} = a temperature. Keep 'TjMax'.</comment>
+  </data>
+  <data name="Sensor_AmdTctl" xml:space="preserve">
+    <value>Senzor Tctl AMD</value>
+    <comment>The AMD CPU's own temperature sensor. Keep 'Tctl'.</comment>
+  </data>
+  <data name="Sensor_NvidiaDriver" xml:space="preserve">
+    <value>Driver NVIDIA</value>
+    <comment>Temperature read from the NVIDIA graphics driver.</comment>
+  </data>
+  <data name="Sensor_EmbeddedController" xml:space="preserve">
+    <value>Controler încorporat</value>
+    <comment>The laptop's embedded controller (EC) chip, which also reports temperatures.</comment>
+  </data>
+  <data name="Sensor_EmbeddedControllerBecause" xml:space="preserve">
+    <value>Controler încorporat ({0})</value>
+    <comment>{0} = why the chip's own sensor isn't used (one of the SensorProblem_* texts).</comment>
+  </data>
+  <data name="SensorProblem_NotX86Cpu" xml:space="preserve">
+    <value>procesorul nu este x86</value>
+    <comment>Reason in parentheses after 'Embedded controller': starts lowercase in English.</comment>
+  </data>
+  <data name="SensorProblem_UnsupportedCpuVendor" xml:space="preserve">
+    <value>producător de procesor neacceptat: {0}</value>
+    <comment>Reason in parentheses. {0} = a CPU vendor code such as 'GenuineIntel'.</comment>
+  </data>
+  <data name="SensorProblem_NoPackageSensor" xml:space="preserve">
+    <value>acest procesor Intel nu are senzor de temperatură de pachet</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_ImplausibleTjMax" xml:space="preserve">
+    <value>procesorul a raportat un TjMax neverosimil de {0} °C</value>
+    <comment>Reason in parentheses. Keep 'TjMax'. {0} = a number.</comment>
+  </data>
+  <data name="SensorProblem_NoReading" xml:space="preserve">
+    <value>senzorul nu a răspuns</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_PciLockUnavailable" xml:space="preserve">
+    <value>blocarea PCI partajată nu a putut fi deschisă: {0}</value>
+    <comment>Reason in parentheses. {0} = a technical error message.</comment>
+  </data>
+  <data name="SensorProblem_NoNvidiaDriver" xml:space="preserve">
+    <value>nu s-a găsit niciun driver NVIDIA</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_NvmlTooOld" xml:space="preserve">
+    <value>driverul NVIDIA este prea vechi</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_PawnIONotInstalled" xml:space="preserve">
+    <value>PawnIO nu este instalat</value>
+    <comment>Reason in parentheses. PawnIO is a driver's name: keep it.</comment>
+  </data>
+  <data name="SensorProblem_PawnIOUnavailable" xml:space="preserve">
+    <value>PawnIO nu a putut fi deschis ({0})</value>
+    <comment>Reason in parentheses. {0} = an error code.</comment>
+  </data>
+  <data name="SensorProblem_PawnIOModuleRefused" xml:space="preserve">
+    <value>PawnIO a refuzat un modul ({0})</value>
+    <comment>Reason in parentheses. {0} = a module name and an error code.</comment>
+  </data>
+  <data name="Settings_GetPawnIO.Content" xml:space="preserve">
+    <value>Obțineți PawnIO pentru valori exacte ale procesorului</value>
+    <comment>Link. PawnIO is a driver's name: keep it.</comment>
+  </data>
+  <data name="Settings_OperatingModes.Header" xml:space="preserve">
+    <value>Moduri de funcționare</value>
+    <comment>Setting: use Acer's operating modes (Eco, Quiet, Balanced...).</comment>
+  </data>
+  <data name="Settings_OperatingModes_Supported" xml:space="preserve">
+    <value>{0}, așa cum le oferă software-ul Acer pe acest model. {1}</value>
+    <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
+  </data>
+  <data name="Settings_OperatingModes_Unused" xml:space="preserve">
+    <value>Firmware-ul dvs. listează {0}, dar software-ul Acer nu le folosește pe acest model și s-ar putea să nu schimbe nimic. {1}</value>
+    <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
+  </data>
+  <data name="Settings_OperatingModes_CoolBoost" xml:space="preserve">
+    <value>CoolBoost este disponibil cât timp acestea sunt dezactivate.</value>
+    <comment>They = the operating modes.</comment>
+  </data>
+  <data name="Settings_OperatingModes_Default" xml:space="preserve">
+    <value>Cât timp acestea sunt dezactivate, laptopul rămâne în modul implicit.</value>
+    <comment>They = the operating modes.</comment>
+  </data>
+  <data name="Settings_Updates.Text" xml:space="preserve">
+    <value>Actualizări</value>
+    <comment>Section title: app updates.</comment>
+  </data>
+  <data name="Settings_CheckNow.Content" xml:space="preserve">
+    <value>Verificați acum</value>
+    <comment>Button: check for updates now.</comment>
+  </data>
+  <data name="Settings_AutoUpdate.Header" xml:space="preserve">
+    <value>Căutare automată a actualizărilor</value>
+  </data>
+  <data name="Settings_AutoUpdate.Description" xml:space="preserve">
+    <value>O dată pe zi, din versiunile proiectului de pe GitHub. Înainte de instalare, descărcările sunt verificate cu suma de control SHA-256 publicată de GitHub.</value>
+  </data>
+  <data name="Settings_Troubleshooting.Text" xml:space="preserve">
+    <value>Depanare</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_Diagnostics.Header" xml:space="preserve">
+    <value>Diagnosticare</value>
+  </data>
+  <data name="Settings_Diagnostics.Description" xml:space="preserve">
+    <value>Răspunsuri brute ale firmware-ului din detectarea capabilităților. Includeți-le când raportați o problemă sau un model nou.</value>
+    <comment>The copied diagnostics stay in English for the developers.</comment>
+  </data>
+  <data name="Settings_Copy.Content" xml:space="preserve">
+    <value>Copiere</value>
+    <comment>Button: copy the diagnostics to the clipboard.</comment>
+  </data>
+  <data name="Settings_ServiceLogs.Content" xml:space="preserve">
+    <value>Jurnale serviciu</value>
+    <comment>Button: opens the background service's log folder.</comment>
+  </data>
+  <data name="Settings_AppLogs.Content" xml:space="preserve">
+    <value>Jurnale aplicație</value>
+    <comment>Button: opens the app's log folder.</comment>
+  </data>
+  <data name="Settings_About.Text" xml:space="preserve">
+    <value>Despre</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_AboutOpenSense.Description" xml:space="preserve">
+    <value>Control open-source al ventilatoarelor, performanței și iluminării pentru laptopurile Acer Nitro și Predator.</value>
+  </data>
+  <data name="Settings_Version" xml:space="preserve">
+    <value>Versiunea {0}</value>
+    <comment>{0} = a version number.</comment>
+  </data>
+  <data name="Settings_Mode_Portable" xml:space="preserve">
+    <value>Copie portabilă: rulează ca administrator și controlează direct laptopul cât timp este deschisă.</value>
+  </data>
+  <data name="Settings_Mode_Installed" xml:space="preserve">
+    <value>Instalat: serviciul OpenSense controlează laptopul de la pornire, indiferent dacă această fereastră este deschisă sau nu.</value>
+  </data>
+  <data name="Settings_Trademarks.Text" xml:space="preserve">
+    <value>OpenSense este un proiect independent și nu este afiliat cu Acer sau aprobat de Acer. Acer, Nitro, Predator și NitroSense sunt mărci comerciale ale Acer Inc. Lansat sub GNU General Public License v3.0 sau o versiune ulterioară.</value>
+    <comment>Legal notice: translate faithfully and keep the names.</comment>
+  </data>
+  <data name="Update_Install.Content" xml:space="preserve">
+    <value>Actualizați acum</value>
+    <comment>Button: download and install the update.</comment>
+  </data>
+  <data name="Update_WhatsNew.Content" xml:space="preserve">
+    <value>Noutăți</value>
+    <comment>Link to the release notes.</comment>
+  </data>
+  <data name="Update_Skip.Content" xml:space="preserve">
+    <value>Omiteți această versiune</value>
+    <comment>Link.</comment>
+  </data>
+  <data name="Update_BannerTitle" xml:space="preserve">
+    <value>OpenSense {0} este disponibil</value>
+    <comment>{0} = a version number.</comment>
+  </data>
+  <data name="Update_Downloading" xml:space="preserve">
+    <value>Se descarcă… {0}</value>
+    <comment>{0} = progress as a percentage.</comment>
+  </data>
+  <data name="Update_NoAsset" xml:space="preserve">
+    <value>Această versiune nu are o descărcare pentru această copie; consultați pagina versiunii.</value>
+  </data>
+  <data name="Update_InstallerHint" xml:space="preserve">
+    <value>Faceți clic pe „Actualizați acum” pentru a o instala și a redeschide OpenSense (Windows cere permisiunea).</value>
+    <comment>'Update now' = Update_Install.Content.</comment>
+  </data>
+  <data name="Update_PortableHint" xml:space="preserve">
+    <value>Faceți clic pe „Actualizați acum” pentru a înlocui această copie portabilă și a o redeschide.</value>
+    <comment>'Update now' = Update_Install.Content.</comment>
+  </data>
+  <data name="Update_Checking" xml:space="preserve">
+    <value>Se caută actualizări…</value>
+  </data>
+  <data name="Update_UpToDate" xml:space="preserve">
+    <value>Actualizat. {0}</value>
+    <comment>{0} = Update_LastChecked or Update_NotChecked.</comment>
+  </data>
+  <data name="Update_Latest" xml:space="preserve">
+    <value>{0} este cea mai recentă versiune.</value>
+    <comment>{0} = 'OpenSense' and a version number.</comment>
+  </data>
+  <data name="Update_Skipped" xml:space="preserve">
+    <value>Versiunea {0} a fost omisă. {1}</value>
+    <comment>{0} = a version number; {1} = Update_LastChecked or Update_NotChecked.</comment>
+  </data>
+  <data name="Update_Available" xml:space="preserve">
+    <value>Versiunea {0} este disponibilă. {1}</value>
+    <comment>{0} = a version number; {1} = Update_LastChecked or Update_NotChecked.</comment>
+  </data>
+  <data name="Update_LastChecked" xml:space="preserve">
+    <value>Ultima verificare: {0}.</value>
+    <comment>{0} = a date and time.</comment>
+  </data>
+  <data name="Update_NotChecked" xml:space="preserve">
+    <value>Nu s-a verificat încă.</value>
+  </data>
+  <data name="Update_OpenToUpdate" xml:space="preserve">
+    <value>Deschideți OpenSense pentru a actualiza.</value>
+    <comment>Notification balloon.</comment>
+  </data>
+  <data name="Update_CheckFailed" xml:space="preserve">
+    <value>Nu s-au putut căuta actualizări: {0}</value>
+    <comment>{0} = a technical error message.</comment>
+  </data>
+  <data name="Update_Cancelled" xml:space="preserve">
+    <value>Actualizarea a fost anulată.</value>
+  </data>
+  <data name="Update_Failed" xml:space="preserve">
+    <value>Actualizarea nu a reușit: {0}</value>
+    <comment>{0} = the reason, possibly a technical error message.</comment>
+  </data>
+  <data name="Update_NoDigest" xml:space="preserve">
+    <value>GitHub nu a publicat nicio sumă de control SHA-256 pentru descărcare, deci aceasta nu poate fi verificată.</value>
+  </data>
+  <data name="Update_DigestMismatch" xml:space="preserve">
+    <value>Descărcarea nu corespunde sumei de control SHA-256 publicate de GitHub.</value>
+  </data>
+  <data name="Update_NoExecutable" xml:space="preserve">
+    <value>Actualizarea portabilă nu conține OpenSense.exe.</value>
+  </data>
+  <data name="Update_OldCopyRunning" xml:space="preserve">
+    <value>OpenSense care rulează nu s-a închis.</value>
+  </data>
+  <data name="PortableUpdate_Caption" xml:space="preserve">
+    <value>Actualizare OpenSense</value>
+    <comment>Message box title.</comment>
+  </data>
+  <data name="PortableUpdate_Failed" xml:space="preserve">
+    <value>OpenSense nu a putut fi actualizat, așa că s-a păstrat versiunea anterioară.
+
+{0}
+
+Detalii: {1}</value>
+    <comment>{0} = the reason; {1} = a log file path.</comment>
+  </data>
+  <data name="Tray_Open" xml:space="preserve">
+    <value>Deschidere OpenSense</value>
+    <comment>Menu item of the notification area icon.</comment>
+  </data>
+  <data name="Tray_FanMode" xml:space="preserve">
+    <value>Mod ventilatoare</value>
+    <comment>Submenu of the notification area icon.</comment>
+  </data>
+  <data name="Tray_OperatingMode" xml:space="preserve">
+    <value>Mod de funcționare</value>
+    <comment>Submenu of the notification area icon.</comment>
+  </data>
+  <data name="Tray_Exit" xml:space="preserve">
+    <value>Ieșire</value>
+    <comment>Menu item: quit OpenSense.</comment>
+  </data>
+</root>

@@ -1,0 +1,1075 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Nav_Dashboard.Content" xml:space="preserve">
+    <value>डैशबोर्ड</value>
+    <comment>Navigation menu item: the overview page.</comment>
+  </data>
+  <data name="Nav_Fans.Content" xml:space="preserve">
+    <value>पंखे</value>
+    <comment>Navigation menu item: fan control page.</comment>
+  </data>
+  <data name="Nav_Lighting.Content" xml:space="preserve">
+    <value>लाइटिंग</value>
+    <comment>Navigation menu item: the RGB keyboard lighting page.</comment>
+  </data>
+  <data name="Nav_System.Content" xml:space="preserve">
+    <value>कीबोर्ड और डिस्प्ले</value>
+    <comment>Navigation menu item: keyboard, display, GPU and power settings.</comment>
+  </data>
+  <data name="Startup_Connecting.Text" xml:space="preserve">
+    <value>लैपटॉप से कनेक्ट हो रहा है…</value>
+    <comment>Shown while the app starts.</comment>
+  </data>
+  <data name="Problem_RestartElevated.Content" xml:space="preserve">
+    <value>व्यवस्थापक के रूप में पुनः प्रारंभ करें</value>
+    <comment>Button.</comment>
+  </data>
+  <data name="Problem_StartService.Content" xml:space="preserve">
+    <value>सेवा प्रारंभ करें</value>
+    <comment>Button: starts the OpenSense background service.</comment>
+  </data>
+  <data name="Problem_NeedsElevation_Title" xml:space="preserve">
+    <value>व्यवस्थापक अधिकार आवश्यक हैं</value>
+  </data>
+  <data name="Problem_NeedsElevation_Message" xml:space="preserve">
+    <value>यह पोर्टेबल प्रति लैपटॉप के पंखे और लाइटिंग नियंत्रणों से सीधे बात करती है, जिसके लिए व्यवस्थापक अधिकार आवश्यक हैं। इसे व्यवस्थापक के रूप में पुनः प्रारंभ करें, या इनके बिना चलाने के लिए OpenSense इंस्टॉल करें।</value>
+  </data>
+  <data name="Problem_ServiceUnavailable_Title" xml:space="preserve">
+    <value>OpenSense सेवा नहीं चल रही है</value>
+  </data>
+  <data name="Problem_ServiceUnavailable_Message" xml:space="preserve">
+    <value>OpenSense एक पृष्ठभूमि सेवा के माध्यम से लैपटॉप को नियंत्रित करता है, जो रुकी हुई है। इसे प्रारंभ करें (Windows अनुमति माँगेगा), या यदि यह बार-बार रुकती है तो OpenSense को पुनः इंस्टॉल करें।</value>
+  </data>
+  <data name="Problem_Unsupported_Title" xml:space="preserve">
+    <value>Acer का गेमिंग फ़र्मवेयर नहीं मिला</value>
+  </data>
+  <data name="Problem_Unsupported_Message" xml:space="preserve">
+    <value>यह PC Acer का गेमिंग WMI इंटरफ़ेस (AcerGamingFunction) उपलब्ध नहीं कराता। OpenSense, Acer Nitro और Predator लैपटॉप का समर्थन करता है।</value>
+    <comment>Keep 'AcerGamingFunction' as is.</comment>
+  </data>
+  <data name="Problem_Failed_Title" xml:space="preserve">
+    <value>OpenSense प्रारंभ नहीं हो सका</value>
+  </data>
+  <data name="Problem_Failed_Message" xml:space="preserve">
+    <value>एक अनपेक्षित त्रुटि हुई। विवरण लॉग फ़ोल्डर में है।</value>
+  </data>
+  <data name="Session_VersionMismatch" xml:space="preserve">
+    <value>OpenSense सेवा का संस्करण अलग है ({0})। इसे अपडेट करने के लिए OpenSense को पुनः इंस्टॉल करें।</value>
+    <comment>{0} = a version number.</comment>
+  </data>
+  <data name="Notice_Rebuilt_Title" xml:space="preserve">
+    <value>क्षमताएँ अपडेट की गईं</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_Rebuilt_Message" xml:space="preserve">
+    <value>OpenSense ने नई सेटिंग्स के साथ पंखा नियंत्रण पुनः प्रारंभ किया।</value>
+  </data>
+  <data name="Notice_Service_Title" xml:space="preserve">
+    <value>सेवा</value>
+    <comment>Banner title: about the OpenSense background service.</comment>
+  </data>
+  <data name="Notice_Reconnected" xml:space="preserve">
+    <value>OpenSense सेवा से फिर से कनेक्ट हो गया।</value>
+  </data>
+  <data name="Notice_Disconnected" xml:space="preserve">
+    <value>OpenSense सेवा से कनेक्शन टूट गया। फिर से कनेक्ट हो रहा है…</value>
+  </data>
+  <data name="Notice_ServiceStartFailed" xml:space="preserve">
+    <value>OpenSense सेवा प्रारंभ नहीं हुई। विवरण %ProgramData%\OpenSense\logs में सेवा लॉग में है।</value>
+    <comment>Keep the folder path as is.</comment>
+  </data>
+  <data name="Notice_FanControl_Title" xml:space="preserve">
+    <value>पंखा नियंत्रण</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_Keyboard_Title" xml:space="preserve">
+    <value>कीबोर्ड</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_Display_Title" xml:space="preserve">
+    <value>डिस्प्ले</value>
+    <comment>Banner title: the laptop screen.</comment>
+  </data>
+  <data name="Notice_FirmwareAccessDenied" xml:space="preserve">
+    <value>Acer फ़र्मवेयर इंटरफ़ेस तक पहुँचने के लिए व्यवस्थापक अधिकार आवश्यक हैं।</value>
+  </data>
+  <data name="Notice_ControlLoopError" xml:space="preserve">
+    <value>पंखा नियंत्रण में त्रुटि हुई: {0}</value>
+    <comment>{0} = a technical error message (not translated).</comment>
+  </data>
+  <data name="Notice_OperatingModeRejected" xml:space="preserve">
+    <value>फ़र्मवेयर ने ऑपरेटिंग मोड परिवर्तन अस्वीकार कर दिया ({0})।</value>
+    <comment>{0} = an operating mode name, e.g. Turbo.</comment>
+  </data>
+  <data name="Notice_CoolBoostRejected" xml:space="preserve">
+    <value>फ़र्मवेयर ने CoolBoost परिवर्तन अस्वीकार कर दिया।</value>
+    <comment>CoolBoost is an Acer feature name: keep it.</comment>
+  </data>
+  <data name="Notice_FansHandedBack" xml:space="preserve">
+    <value>CPU तापमान उपलब्ध नहीं है, इसलिए पंखों को वापस "स्वचालित" पर कर दिया गया।</value>
+    <comment>Auto = the automatic fan mode, as in FanMode_Auto.</comment>
+  </data>
+  <data name="Notice_LightingRejected" xml:space="preserve">
+    <value>कीबोर्ड ने लाइटिंग परिवर्तन अस्वीकार कर दिया।</value>
+  </data>
+  <data name="Notice_BacklightTimeoutRejected" xml:space="preserve">
+    <value>कीबोर्ड ने बैकलाइट टाइमआउट परिवर्तन अस्वीकार कर दिया।</value>
+  </data>
+  <data name="Notice_WindowsKeyRejected" xml:space="preserve">
+    <value>फ़र्मवेयर ने Windows कुंजी परिवर्तन अस्वीकार कर दिया।</value>
+  </data>
+  <data name="Notice_LcdOverdriveRejected" xml:space="preserve">
+    <value>डिस्प्ले ने overdrive परिवर्तन अस्वीकार कर दिया।</value>
+    <comment>Overdrive = LCD overdrive, a screen setting that speeds up pixel response.</comment>
+  </data>
+  <data name="Notice_PowerPlan_Title" xml:space="preserve">
+    <value>पावर योजना</value>
+    <comment>Banner title: a Windows power plan.</comment>
+  </data>
+  <data name="Notice_PowerPlanFailed" xml:space="preserve">
+    <value>Windows "{0}" पर स्विच नहीं हुआ।</value>
+    <comment>{0} = a Windows power plan name. Use your language's quotation marks.</comment>
+  </data>
+  <data name="Notice_GpuMode_Title" xml:space="preserve">
+    <value>GPU मोड</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_GpuModeRejected" xml:space="preserve">
+    <value>फ़र्मवेयर ने GPU मोड परिवर्तन अस्वीकार कर दिया।</value>
+  </data>
+  <data name="Notice_Autostart_Title" xml:space="preserve">
+    <value>Windows के साथ प्रारंभ करें</value>
+    <comment>Banner title, same as Settings_StartWithWindows.Header.</comment>
+  </data>
+  <data name="Notice_AutostartFailed" xml:space="preserve">
+    <value>स्टार्टअप प्रविष्टि अपडेट नहीं की जा सकी: {0}</value>
+    <comment>{0} = a technical error message.</comment>
+  </data>
+  <data name="Notice_Diagnostics_Title" xml:space="preserve">
+    <value>निदान</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_DiagnosticsCopied" xml:space="preserve">
+    <value>क्लिपबोर्ड पर कॉपी किया गया।</value>
+  </data>
+  <data name="Notice_Updates_Title" xml:space="preserve">
+    <value>अपडेट</value>
+    <comment>Banner title: app updates.</comment>
+  </data>
+  <data name="GpuSwitch_DiscreteTitle" xml:space="preserve">
+    <value>केवल अलग GPU का उपयोग करें?</value>
+    <comment>Dialog title. Discrete GPU = the separate NVIDIA graphics chip.</comment>
+  </data>
+  <data name="GpuSwitch_HybridTitle" xml:space="preserve">
+    <value>हाइब्रिड ग्राफ़िक्स पर स्विच करें?</value>
+    <comment>Dialog title.</comment>
+  </data>
+  <data name="GpuSwitch_DiscreteMessage" xml:space="preserve">
+    <value>सर्वश्रेष्ठ गेमिंग प्रदर्शन के लिए NVIDIA GPU सीधे डिस्प्ले चलाएगा, लेकिन बैटरी जीवन कम होगा। इसे लागू करने के लिए Windows को पुनः प्रारंभ करना होगा।</value>
+  </data>
+  <data name="GpuSwitch_HybridMessage" xml:space="preserve">
+    <value>एकीकृत GPU डिस्प्ले चलाएगा और अलग GPU केवल ज़रूरत पड़ने पर चालू होगा, जिससे बैटरी बचती है। इसे लागू करने के लिए Windows को पुनः प्रारंभ करना होगा।</value>
+  </data>
+  <data name="GpuSwitch_RestartNow" xml:space="preserve">
+    <value>अभी पुनः प्रारंभ करें</value>
+    <comment>Dialog button: restart Windows now.</comment>
+  </data>
+  <data name="GpuSwitch_RestartLater" xml:space="preserve">
+    <value>बाद में पुनः प्रारंभ करें</value>
+    <comment>Dialog button.</comment>
+  </data>
+  <data name="GpuSwitch_Cancel" xml:space="preserve">
+    <value>रद्द करें</value>
+    <comment>Dialog button.</comment>
+  </data>
+  <data name="Chip_Cpu" xml:space="preserve">
+    <value>CPU</value>
+    <comment>The processor. Short: used in labels like 'CPU 45°'.</comment>
+  </data>
+  <data name="Chip_Gpu" xml:space="preserve">
+    <value>GPU</value>
+    <comment>The graphics chip. Short: used in labels like 'GPU 45°'.</comment>
+  </data>
+  <data name="Fan_Cpu" xml:space="preserve">
+    <value>CPU पंखा</value>
+  </data>
+  <data name="Fan_Gpu" xml:space="preserve">
+    <value>GPU पंखा</value>
+  </data>
+  <data name="FanMode_Auto" xml:space="preserve">
+    <value>स्वचालित</value>
+    <comment>Fan mode: the laptop's firmware controls the fans. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Max" xml:space="preserve">
+    <value>अधिकतम</value>
+    <comment>Fan mode: all fans at full speed. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Custom" xml:space="preserve">
+    <value>कस्टम</value>
+    <comment>Fan mode: a fixed speed chosen for each fan. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Curve" xml:space="preserve">
+    <value>वक्र</value>
+    <comment>Fan mode: fan speed follows a temperature curve. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Auto_Description" xml:space="preserve">
+    <value>लैपटॉप का फ़र्मवेयर पंखों का प्रबंधन करता है।</value>
+  </data>
+  <data name="FanMode_Max_Description" xml:space="preserve">
+    <value>सभी पंखे पूरी गति पर।</value>
+  </data>
+  <data name="FanMode_Custom_Description" xml:space="preserve">
+    <value>हर पंखे के लिए निश्चित गति।</value>
+  </data>
+  <data name="FanMode_Curve_Description" xml:space="preserve">
+    <value>OpenSense आपके तापमान वक्रों का पालन करता है।</value>
+  </data>
+  <data name="FanBehavior_Auto" xml:space="preserve">
+    <value>स्वचालित (फ़र्मवेयर)</value>
+    <comment>What a fan is doing right now: controlled by the laptop's firmware.</comment>
+  </data>
+  <data name="FanBehavior_Max" xml:space="preserve">
+    <value>पूरी गति</value>
+    <comment>What a fan is doing right now.</comment>
+  </data>
+  <data name="FanBehavior_Emergency" xml:space="preserve">
+    <value>आपातकालीन पूरी गति</value>
+    <comment>What a fan is doing right now: forced to full speed because the temperature is too high.</comment>
+  </data>
+  <data name="FanBehavior_Curve" xml:space="preserve">
+    <value>वक्र का पालन कर रहा है</value>
+    <comment>What a fan is doing right now: following the temperature curve.</comment>
+  </data>
+  <data name="FanBehavior_Fixed" xml:space="preserve">
+    <value>निश्चित गति</value>
+    <comment>What a fan is doing right now.</comment>
+  </data>
+  <data name="FanLock_QuietMode" xml:space="preserve">
+    <value>"शांत" मोड पंखों को "स्वचालित" पर रखता है।</value>
+    <comment>Quiet = OperatingMode_Quiet; Auto = FanMode_Auto.</comment>
+  </data>
+  <data name="OperatingMode_Eco" xml:space="preserve">
+    <value>इको</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Quiet" xml:space="preserve">
+    <value>शांत</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Balanced" xml:space="preserve">
+    <value>संतुलित</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Performance" xml:space="preserve">
+    <value>प्रदर्शन</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Turbo" xml:space="preserve">
+    <value>टर्बो</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Eco_Description" xml:space="preserve">
+    <value>सबसे लंबा बैटरी जीवन।</value>
+  </data>
+  <data name="OperatingMode_Quiet_Description" xml:space="preserve">
+    <value>सबसे कम शोर। पंखे "स्वचालित" पर रहते हैं।</value>
+    <comment>Auto = FanMode_Auto.</comment>
+  </data>
+  <data name="OperatingMode_Balanced_Description" xml:space="preserve">
+    <value>रोज़मर्रा का प्रदर्शन।</value>
+  </data>
+  <data name="OperatingMode_Performance_Description" xml:space="preserve">
+    <value>उच्च पावर सीमाएँ। AC पावर आवश्यक है।</value>
+  </data>
+  <data name="OperatingMode_Turbo_Description" xml:space="preserve">
+    <value>अधिकतम पावर और कूलिंग। AC पावर आवश्यक है।</value>
+  </data>
+  <data name="OperatingMode_BatteryNote" xml:space="preserve">
+    <value>बैटरी पर, चार्जर लगाने तक "{0}" और "{1}", "{2}" की तरह चलते हैं।</value>
+    <comment>{0}, {1}, {2} = operating mode names (Performance, Turbo, Balanced).</comment>
+  </data>
+  <data name="PowerSource_PluggedIn" xml:space="preserve">
+    <value>प्लग इन है</value>
+    <comment>Power source: the charger is connected.</comment>
+  </data>
+  <data name="PowerSource_Battery" xml:space="preserve">
+    <value>बैटरी पर</value>
+    <comment>Power source.</comment>
+  </data>
+  <data name="Gpu_Idle" xml:space="preserve">
+    <value>निष्क्रिय</value>
+    <comment>Shown instead of the GPU temperature while the graphics chip is powered down. Short.</comment>
+  </data>
+  <data name="Unit_Rpm" xml:space="preserve">
+    <value>RPM</value>
+    <comment>Unit: revolutions per minute (fan speed). Use your language's usual abbreviation.</comment>
+  </data>
+  <data name="Unit_RpmValue" xml:space="preserve">
+    <value>{0} RPM</value>
+    <comment>{0} = a fan speed number. Same unit as Unit_Rpm.</comment>
+  </data>
+  <data name="Unit_Seconds" xml:space="preserve">
+    <value>{0} सेकंड</value>
+    <comment>{0} = a number of seconds, e.g. 0.5. Use the usual abbreviation for seconds.</comment>
+  </data>
+  <data name="ListSeparator" xml:space="preserve">
+    <value>, </value>
+    <comment>Separates items in a list inside a sentence, e.g. 'Quiet, Balanced, Performance'. Keep the trailing space if your language uses one.</comment>
+  </data>
+  <data name="Dashboard_Title.Text" xml:space="preserve">
+    <value>डैशबोर्ड</value>
+    <comment>Page title, same as Nav_Dashboard.Content.</comment>
+  </data>
+  <data name="Dashboard_Failsafe.Title" xml:space="preserve">
+    <value>पंखे फ़र्मवेयर को वापस सौंपे गए</value>
+    <comment>Warning banner title.</comment>
+  </data>
+  <data name="Dashboard_Failsafe.Message" xml:space="preserve">
+    <value>CPU तापमान की रिपोर्ट आनी बंद हो गई है, इसलिए जब तक यह फिर से न आए, लैपटॉप अपने पंखे खुद नियंत्रित कर रहा है।</value>
+  </data>
+  <data name="Dashboard_CpuTemperature.Text" xml:space="preserve">
+    <value>CPU तापमान</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_GpuTemperature.Text" xml:space="preserve">
+    <value>GPU तापमान</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_CpuFan.Text" xml:space="preserve">
+    <value>CPU पंखा</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_GpuFan.Text" xml:space="preserve">
+    <value>GPU पंखा</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_LoadDetail" xml:space="preserve">
+    <value>{0} लोड · {1}</value>
+    <comment>Under a temperature: {0} = usage percentage (e.g. 45%), {1} = the chip's model name.</comment>
+  </data>
+  <data name="Dashboard_AsleepDetail" xml:space="preserve">
+    <value>स्लीप में · {0}</value>
+    <comment>Under the GPU temperature while the graphics chip is powered down: {0} = its model name.</comment>
+  </data>
+  <data name="Dashboard_RpmDetail" xml:space="preserve">
+    <value>RPM · {0} ड्यूटी साइकल</value>
+    <comment>Under a fan speed number: rpm = revolutions per minute (as Unit_Rpm); {0} = the fan's duty cycle as a percentage.</comment>
+  </data>
+  <data name="Dashboard_Cooling.Text" xml:space="preserve">
+    <value>कूलिंग</value>
+    <comment>Card title.</comment>
+  </data>
+  <data name="Dashboard_CoolBoost.Text" xml:space="preserve">
+    <value>"स्वचालित" मोड को पंखे तेज़ी से घुमाने देता है।</value>
+    <comment>Describes CoolBoost (an Acer feature name shown above it). Auto = FanMode_Auto.</comment>
+  </data>
+  <data name="Dashboard_OpenFans.Content" xml:space="preserve">
+    <value>कस्टम गतियाँ और वक्र</value>
+    <comment>Link to the Fans page.</comment>
+  </data>
+  <data name="Dashboard_Performance.Text" xml:space="preserve">
+    <value>प्रदर्शन</value>
+    <comment>Card title.</comment>
+  </data>
+  <data name="Dashboard_PowerPlan.Header" xml:space="preserve">
+    <value>Windows पावर योजना</value>
+    <comment>Label above a list of Windows power plans.</comment>
+  </data>
+  <data name="Dashboard_PowerSource.Text" xml:space="preserve">
+    <value>पावर स्रोत</value>
+    <comment>Caption above 'Plugged in' or 'On battery'.</comment>
+  </data>
+  <data name="Dashboard_SystemTemperature.Text" xml:space="preserve">
+    <value>सिस्टम तापमान</value>
+    <comment>Caption: the laptop's internal temperature.</comment>
+  </data>
+  <data name="Fans_Title.Text" xml:space="preserve">
+    <value>पंखे</value>
+    <comment>Page title.</comment>
+  </data>
+  <data name="Fans_DutyLabel" xml:space="preserve">
+    <value>{0} ड्यूटी साइकल</value>
+    <comment>{0} = the fan's duty cycle as a percentage.</comment>
+  </data>
+  <data name="Fans_AutoToggle.OnContent" xml:space="preserve">
+    <value>स्वचालित</value>
+    <comment>Switch label when on: the firmware controls this fan.</comment>
+  </data>
+  <data name="Fans_AutoToggle.OffContent" xml:space="preserve">
+    <value>मैन्युअल</value>
+    <comment>Switch label when off: the speed below is used.</comment>
+  </data>
+  <data name="Fans_FanSpeed.Header" xml:space="preserve">
+    <value>पंखे की गति</value>
+    <comment>Slider label.</comment>
+  </data>
+  <data name="Fans_Source.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>कौन-सा तापमान इस पंखे को चलाता है</value>
+    <comment>Tooltip.</comment>
+  </data>
+  <data name="CurveSource_Cpu" xml:space="preserve">
+    <value>CPU तापमान</value>
+    <comment>Which temperature a fan curve follows.</comment>
+  </data>
+  <data name="CurveSource_Gpu" xml:space="preserve">
+    <value>GPU तापमान</value>
+    <comment>Which temperature a fan curve follows.</comment>
+  </data>
+  <data name="CurveSource_Hottest" xml:space="preserve">
+    <value>दोनों में से अधिक</value>
+    <comment>Which temperature a fan curve follows: the higher of the CPU and GPU temperatures.</comment>
+  </data>
+  <data name="Fans_Presets.Content" xml:space="preserve">
+    <value>प्रीसेट</value>
+    <comment>Button that opens a list of ready-made fan curves.</comment>
+  </data>
+  <data name="Fans_PresetSilent.Text" xml:space="preserve">
+    <value>शांत</value>
+    <comment>Fan curve preset name.</comment>
+  </data>
+  <data name="Fans_PresetBalanced.Text" xml:space="preserve">
+    <value>संतुलित</value>
+    <comment>Fan curve preset name.</comment>
+  </data>
+  <data name="Fans_PresetPerformance.Text" xml:space="preserve">
+    <value>प्रदर्शन</value>
+    <comment>Fan curve preset name.</comment>
+  </data>
+  <data name="Fans_CopyCurve.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>इस वक्र का उपयोग दूसरे पंखों के लिए भी करें</value>
+    <comment>Tooltip.</comment>
+  </data>
+  <data name="Fans_CurveHelp.Text" xml:space="preserve">
+    <value>वक्र को आकार देने के लिए बिंदुओं को खींचें · बिंदु जोड़ने के लिए डबल-क्लिक करें · हटाने के लिए राइट-क्लिक करें · तीर कुंजियाँ चयनित बिंदु को बारीकी से समायोजित करती हैं</value>
+    <comment>Help under the curve editor.</comment>
+  </data>
+  <data name="CurveEditor_Now" xml:space="preserve">
+    <value>अभी {0} · {1}</value>
+    <comment>Label on the curve editor: {0} = the current temperature, {1} = the current fan speed percentage.</comment>
+  </data>
+  <data name="Fans_Safety.Text" xml:space="preserve">
+    <value>सुरक्षा और प्रतिक्रिया</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Fans_Emergency.Header" xml:space="preserve">
+    <value>आपातकालीन तापमान</value>
+  </data>
+  <data name="Fans_Emergency.Description" xml:space="preserve">
+    <value>"कस्टम" और "वक्र" मोड में, यदि कोई भी चिप इस तापमान पर पहुँचती है तो पंखे पूरी गति पर चलने लगते हैं।</value>
+    <comment>Custom, Curve = FanMode_Custom, FanMode_Curve.</comment>
+  </data>
+  <data name="Fans_MinimumSpeed.Header" xml:space="preserve">
+    <value>न्यूनतम पंखा गति</value>
+  </data>
+  <data name="Fans_MinimumSpeed.Description" xml:space="preserve">
+    <value>"कस्टम" और "वक्र" मोड में OpenSense जो सबसे कम गति माँगेगा।</value>
+  </data>
+  <data name="Fans_SlowDown.Header" xml:space="preserve">
+    <value>धीमा करने में देरी</value>
+    <comment>How many degrees the temperature must fall before the fans slow down (hysteresis).</comment>
+  </data>
+  <data name="Fans_SlowDown.Description" xml:space="preserve">
+    <value>वक्र द्वारा पंखों को धीमा करने से पहले तापमान को कितना गिरना चाहिए। उच्च मान पंखों को बार-बार तेज़ और धीमा होने से रोकते हैं।</value>
+    <comment>'Hunting' = the fans speeding up and slowing down over and over.</comment>
+  </data>
+  <data name="Fans_HandBack.Header" xml:space="preserve">
+    <value>OpenSense रुकने पर पंखे वापस सौंपें</value>
+  </data>
+  <data name="Fans_HandBack.Description" xml:space="preserve">
+    <value>जब OpenSense सेवा रुकती है (या कोई पोर्टेबल प्रति बंद होती है), तो लैपटॉप का अपना पंखा नियंत्रण फिर से संभाल लेता है।</value>
+  </data>
+  <data name="Lighting_Title.Text" xml:space="preserve">
+    <value>लाइटिंग</value>
+    <comment>Page title: RGB keyboard lighting.</comment>
+  </data>
+  <data name="Lighting_Static.Content" xml:space="preserve">
+    <value>स्थिर रंग</value>
+    <comment>Lighting mode: one fixed colour per keyboard zone.</comment>
+  </data>
+  <data name="Lighting_Effect.Content" xml:space="preserve">
+    <value>प्रभाव</value>
+    <comment>Lighting mode: an animated effect.</comment>
+  </data>
+  <data name="Lighting_Zone" xml:space="preserve">
+    <value>ज़ोन {0}</value>
+    <comment>A keyboard lighting zone: {0} = its number.</comment>
+  </data>
+  <data name="Lighting_ZoneColor.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>रंग चुनें</value>
+    <comment>Tooltip.</comment>
+  </data>
+  <data name="Lighting_AllZones.Text" xml:space="preserve">
+    <value>सभी ज़ोन के लिए एक रंग</value>
+  </data>
+  <data name="Lighting_Speed.Header" xml:space="preserve">
+    <value>गति</value>
+    <comment>Slider label: animation speed.</comment>
+  </data>
+  <data name="Lighting_Direction.Text" xml:space="preserve">
+    <value>दिशा</value>
+    <comment>Label: animation direction.</comment>
+  </data>
+  <data name="Lighting_EffectColor.Text" xml:space="preserve">
+    <value>प्रभाव का रंग</value>
+  </data>
+  <data name="Lighting_AnyColor.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>कोई भी रंग</value>
+    <comment>Tooltip of a button that opens a colour picker.</comment>
+  </data>
+  <data name="Effect_Breathing" xml:space="preserve">
+    <value>श्वास</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Neon" xml:space="preserve">
+    <value>नियॉन</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Wave" xml:space="preserve">
+    <value>लहर</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Shifting" xml:space="preserve">
+    <value>खिसकना</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Zoom" xml:space="preserve">
+    <value>ज़ूम</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Breathing_Description" xml:space="preserve">
+    <value>रंग धीरे-धीरे मंद और तेज़ होता है।</value>
+  </data>
+  <data name="Effect_Neon_Description" xml:space="preserve">
+    <value>इंद्रधनुष के रंगों में घूमता है।</value>
+  </data>
+  <data name="Effect_Wave_Description" xml:space="preserve">
+    <value>रंग की एक लहर कुंजियों पर से गुज़रती है।</value>
+  </data>
+  <data name="Effect_Shifting_Description" xml:space="preserve">
+    <value>रंग का एक ब्लॉक कीबोर्ड पर चलता है।</value>
+  </data>
+  <data name="Effect_Zoom_Description" xml:space="preserve">
+    <value>रंग केंद्र से बाहर की ओर फैलता है।</value>
+  </data>
+  <data name="Direction_Left" xml:space="preserve">
+    <value>बाएँ</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Direction_Right" xml:space="preserve">
+    <value>दाएँ</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Direction_Up" xml:space="preserve">
+    <value>ऊपर</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Direction_Down" xml:space="preserve">
+    <value>नीचे</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Brightness_Off" xml:space="preserve">
+    <value>बंद</value>
+    <comment>Keyboard backlight brightness: off. Short: shown next to 25%, 50%...</comment>
+  </data>
+  <data name="System_Title.Text" xml:space="preserve">
+    <value>कीबोर्ड और डिस्प्ले</value>
+    <comment>Page title, same as Nav_System.Content.</comment>
+  </data>
+  <data name="System_Keyboard.Text" xml:space="preserve">
+    <value>कीबोर्ड</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="System_BacklightAutoOff.Header" xml:space="preserve">
+    <value>बैकलाइट स्वतः बंद</value>
+    <comment>Keyboard backlight setting.</comment>
+  </data>
+  <data name="System_BacklightAutoOff.Description" xml:space="preserve">
+    <value>30 सेकंड तक टाइप न करने पर कीबोर्ड बैकलाइट बंद करें।</value>
+  </data>
+  <data name="System_WindowsKey.Header" xml:space="preserve">
+    <value>Windows और मेनू कुंजियाँ</value>
+    <comment>The Windows logo key and the Menu (application) key.</comment>
+  </data>
+  <data name="System_WindowsKey.Description" xml:space="preserve">
+    <value>बंद करें ताकि Windows और मेनू कुंजियाँ गेम में बाधा न डालें।</value>
+  </data>
+  <data name="System_StickyKeys.Header" xml:space="preserve">
+    <value>स्टिकी कुंजियाँ</value>
+    <comment>The Windows accessibility feature: use its official Windows name in your language.</comment>
+  </data>
+  <data name="System_StickyKeys.Description" xml:space="preserve">
+    <value>संशोधक कुंजियाँ छोड़ने के बाद भी दबी रहती हैं; चालू या बंद करने के लिए Shift को पाँच बार दबाएँ।</value>
+  </data>
+  <data name="System_Display.Text" xml:space="preserve">
+    <value>डिस्प्ले</value>
+    <comment>Section title: the laptop screen.</comment>
+  </data>
+  <data name="System_LcdOverdrive.Header" xml:space="preserve">
+    <value>LCD overdrive</value>
+    <comment>Screen setting that speeds up pixel response.</comment>
+  </data>
+  <data name="System_LcdOverdrive.Description" xml:space="preserve">
+    <value>लैपटॉप की अंतर्निहित स्क्रीन के लिए (बाहरी मॉनिटर के लिए नहीं): गेम में कम मोशन ब्लर के लिए तेज़ पिक्सेल प्रतिक्रिया। स्क्रीन की उच्चतम रीफ़्रेश दर पर सबसे अच्छा काम करता है; यदि चलती वस्तुओं के पीछे प्रभामंडल दिखें तो इसे बंद करें।</value>
+  </data>
+  <data name="System_Graphics.Text" xml:space="preserve">
+    <value>ग्राफ़िक्स</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="System_GpuMode.Header" xml:space="preserve">
+    <value>GPU मोड</value>
+    <comment>Setting: hybrid or discrete graphics.</comment>
+  </data>
+  <data name="System_GpuMode.Description" xml:space="preserve">
+    <value>"हाइब्रिड" डिस्प्ले के लिए एकीकृत GPU का उपयोग करके बैटरी बचाता है। "अलग" सर्वश्रेष्ठ गेमिंग प्रदर्शन के लिए NVIDIA GPU को सीधे कनेक्ट करता है। पुनः प्रारंभ के बाद लागू होता है।</value>
+    <comment>Hybrid, Discrete = System_GpuHybrid, System_GpuDiscrete.</comment>
+  </data>
+  <data name="System_GpuHybrid.Content" xml:space="preserve">
+    <value>हाइब्रिड</value>
+    <comment>GPU mode: both graphics chips (NVIDIA Optimus). Short: a segmented button.</comment>
+  </data>
+  <data name="System_GpuDiscrete.Content" xml:space="preserve">
+    <value>अलग</value>
+    <comment>GPU mode: only the NVIDIA graphics chip. Short: a segmented button.</comment>
+  </data>
+  <data name="System_GpuRestart.Title" xml:space="preserve">
+    <value>GPU मोड बदलने के लिए पुनः प्रारंभ करें</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="System_GpuRestart.Message" xml:space="preserve">
+    <value>नया GPU मोड Windows के पुनः प्रारंभ होने के बाद लागू होगा।</value>
+  </data>
+  <data name="System_RestartNow.Content" xml:space="preserve">
+    <value>अभी पुनः प्रारंभ करें</value>
+    <comment>Button: restart Windows now.</comment>
+  </data>
+  <data name="System_Power.Text" xml:space="preserve">
+    <value>पावर</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="System_PowerPlan.Header" xml:space="preserve">
+    <value>पावर योजना</value>
+    <comment>Windows power plan setting.</comment>
+  </data>
+  <data name="System_PowerPlan.Description" xml:space="preserve">
+    <value>उपयोग में Windows पावर योजना।</value>
+  </data>
+  <data name="Settings_Title.Text" xml:space="preserve">
+    <value>सेटिंग्स</value>
+    <comment>Page title.</comment>
+  </data>
+  <data name="Settings_Startup.Text" xml:space="preserve">
+    <value>स्टार्टअप</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_StartWithWindows.Header" xml:space="preserve">
+    <value>Windows के साथ प्रारंभ करें</value>
+  </data>
+  <data name="Settings_StartWithWindows.Description" xml:space="preserve">
+    <value>साइन इन करने पर सूचना क्षेत्र में OpenSense खोलता है। पंखा नियंत्रण इस पर निर्भर नहीं है।</value>
+    <comment>Notification area = the Windows system tray.</comment>
+  </data>
+  <data name="Settings_NitroSenseKey.Header" xml:space="preserve">
+    <value>NitroSense कुंजी से खोलें</value>
+    <comment>NitroSense is Acer's app; the laptop has a key for it. Keep the name.</comment>
+  </data>
+  <data name="Settings_NitroSenseKey.Description" xml:space="preserve">
+    <value>कीबोर्ड की NitroSense कुंजी OpenSense खोलती है, जैसे वह NitroSense खोलती थी। जब OpenSense सूचना क्षेत्र में हो, तब काम करती है।</value>
+  </data>
+  <data name="Settings_StartMinimized.Header" xml:space="preserve">
+    <value>सूचना क्षेत्र में छोटा करके प्रारंभ करें</value>
+  </data>
+  <data name="Settings_CloseToTray.Header" xml:space="preserve">
+    <value>विंडो बंद होने पर चलता रहे</value>
+  </data>
+  <data name="Settings_CloseToTray.Description" xml:space="preserve">
+    <value>विंडो बंद करने पर सूचना क्षेत्र का आइकन बना रहता है। उसके मेनू से बाहर निकलें।</value>
+  </data>
+  <data name="Settings_Appearance.Text" xml:space="preserve">
+    <value>स्वरूप</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_Language.Header" xml:space="preserve">
+    <value>भाषा</value>
+    <comment>Setting: the app's language.</comment>
+  </data>
+  <data name="Language_System" xml:space="preserve">
+    <value>सिस्टम सेटिंग का उपयोग करें</value>
+    <comment>First entry in the language list: follow the Windows language.</comment>
+  </data>
+  <data name="Settings_LanguageRestart.Title" xml:space="preserve">
+    <value>भाषा बदलने के लिए पुनः प्रारंभ करें</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Settings_LanguageRestart.Message" xml:space="preserve">
+    <value>OpenSense पुनः प्रारंभ होने के बाद नई भाषा दिखाएगा।</value>
+  </data>
+  <data name="Settings_LanguageRestartNow.Content" xml:space="preserve">
+    <value>अभी पुनः प्रारंभ करें</value>
+    <comment>Button: restart OpenSense now.</comment>
+  </data>
+  <data name="Settings_Theme.Header" xml:space="preserve">
+    <value>थीम</value>
+    <comment>Setting: light or dark colours.</comment>
+  </data>
+  <data name="Theme_System" xml:space="preserve">
+    <value>सिस्टम सेटिंग का उपयोग करें</value>
+    <comment>Theme choice: follow Windows.</comment>
+  </data>
+  <data name="Theme_Light" xml:space="preserve">
+    <value>हल्की</value>
+    <comment>Theme choice.</comment>
+  </data>
+  <data name="Theme_Dark" xml:space="preserve">
+    <value>गहरी</value>
+    <comment>Theme choice.</comment>
+  </data>
+  <data name="Settings_Fahrenheit.Header" xml:space="preserve">
+    <value>तापमान फ़ारेनहाइट में दिखाएँ</value>
+  </data>
+  <data name="Settings_Interval.Header" xml:space="preserve">
+    <value>अपडेट अंतराल</value>
+    <comment>Setting: how often sensors are read.</comment>
+  </data>
+  <data name="Settings_Interval.Description" xml:space="preserve">
+    <value>सेंसर कितनी बार पढ़े जाएँ और पंखा वक्र कितनी बार अपडेट हों, इस PC के सभी उपयोगकर्ताओं के लिए।</value>
+  </data>
+  <data name="Settings_Laptop.Text" xml:space="preserve">
+    <value>आपका लैपटॉप</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_UnknownModel" xml:space="preserve">
+    <value>Acer लैपटॉप</value>
+    <comment>Shown when the laptop's model name is unknown.</comment>
+  </data>
+  <data name="Settings_Bios" xml:space="preserve">
+    <value>BIOS {0}</value>
+    <comment>{0} = the BIOS version.</comment>
+  </data>
+  <data name="Settings_BiosUnknown" xml:space="preserve">
+    <value>BIOS संस्करण अज्ञात है</value>
+  </data>
+  <data name="Settings_Sensors.Header" xml:space="preserve">
+    <value>तापमान सेंसर</value>
+  </data>
+  <data name="Settings_SensorSources" xml:space="preserve">
+    <value>CPU: {0}
+GPU: {1}</value>
+    <comment>Two lines: {0}, {1} = where each temperature comes from (Sensor_* texts).</comment>
+  </data>
+  <data name="Sensor_IntelPackage" xml:space="preserve">
+    <value>Intel पैकेज सेंसर (TjMax {0} °C)</value>
+    <comment>The Intel CPU's own temperature sensor. {0} = a temperature. Keep 'TjMax'.</comment>
+  </data>
+  <data name="Sensor_AmdTctl" xml:space="preserve">
+    <value>AMD Tctl सेंसर</value>
+    <comment>The AMD CPU's own temperature sensor. Keep 'Tctl'.</comment>
+  </data>
+  <data name="Sensor_NvidiaDriver" xml:space="preserve">
+    <value>NVIDIA ड्राइवर</value>
+    <comment>Temperature read from the NVIDIA graphics driver.</comment>
+  </data>
+  <data name="Sensor_EmbeddedController" xml:space="preserve">
+    <value>एम्बेडेड कंट्रोलर</value>
+    <comment>The laptop's embedded controller (EC) chip, which also reports temperatures.</comment>
+  </data>
+  <data name="Sensor_EmbeddedControllerBecause" xml:space="preserve">
+    <value>एम्बेडेड कंट्रोलर ({0})</value>
+    <comment>{0} = why the chip's own sensor isn't used (one of the SensorProblem_* texts).</comment>
+  </data>
+  <data name="SensorProblem_NotX86Cpu" xml:space="preserve">
+    <value>x86 CPU नहीं है</value>
+    <comment>Reason in parentheses after 'Embedded controller': starts lowercase in English.</comment>
+  </data>
+  <data name="SensorProblem_UnsupportedCpuVendor" xml:space="preserve">
+    <value>असमर्थित CPU विक्रेता {0}</value>
+    <comment>Reason in parentheses. {0} = a CPU vendor code such as 'GenuineIntel'.</comment>
+  </data>
+  <data name="SensorProblem_NoPackageSensor" xml:space="preserve">
+    <value>इस Intel CPU में पैकेज तापमान सेंसर नहीं है</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_ImplausibleTjMax" xml:space="preserve">
+    <value>CPU ने {0} °C का अविश्वसनीय TjMax बताया</value>
+    <comment>Reason in parentheses. Keep 'TjMax'. {0} = a number.</comment>
+  </data>
+  <data name="SensorProblem_NoReading" xml:space="preserve">
+    <value>सेंसर ने जवाब नहीं दिया</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_PciLockUnavailable" xml:space="preserve">
+    <value>साझा PCI लॉक नहीं खोला जा सका: {0}</value>
+    <comment>Reason in parentheses. {0} = a technical error message.</comment>
+  </data>
+  <data name="SensorProblem_NoNvidiaDriver" xml:space="preserve">
+    <value>कोई NVIDIA ड्राइवर नहीं मिला</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_NvmlTooOld" xml:space="preserve">
+    <value>NVIDIA ड्राइवर बहुत पुराना है</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_PawnIONotInstalled" xml:space="preserve">
+    <value>PawnIO इंस्टॉल नहीं है</value>
+    <comment>Reason in parentheses. PawnIO is a driver's name: keep it.</comment>
+  </data>
+  <data name="SensorProblem_PawnIOUnavailable" xml:space="preserve">
+    <value>PawnIO नहीं खोला जा सका ({0})</value>
+    <comment>Reason in parentheses. {0} = an error code.</comment>
+  </data>
+  <data name="SensorProblem_PawnIOModuleRefused" xml:space="preserve">
+    <value>PawnIO ने एक मॉड्यूल अस्वीकार कर दिया ({0})</value>
+    <comment>Reason in parentheses. {0} = a module name and an error code.</comment>
+  </data>
+  <data name="Settings_GetPawnIO.Content" xml:space="preserve">
+    <value>सटीक CPU रीडिंग के लिए PawnIO प्राप्त करें</value>
+    <comment>Link. PawnIO is a driver's name: keep it.</comment>
+  </data>
+  <data name="Settings_OperatingModes.Header" xml:space="preserve">
+    <value>ऑपरेटिंग मोड</value>
+    <comment>Setting: use Acer's operating modes (Eco, Quiet, Balanced...).</comment>
+  </data>
+  <data name="Settings_OperatingModes_Supported" xml:space="preserve">
+    <value>{0}, जैसा कि Acer का सॉफ़्टवेयर इस मॉडल पर देता है। {1}</value>
+    <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
+  </data>
+  <data name="Settings_OperatingModes_Unused" xml:space="preserve">
+    <value>आपका फ़र्मवेयर {0} सूचीबद्ध करता है, लेकिन Acer का सॉफ़्टवेयर इस मॉडल पर इनका उपयोग नहीं करता और हो सकता है कि इनसे कुछ न बदले। {1}</value>
+    <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
+  </data>
+  <data name="Settings_OperatingModes_CoolBoost" xml:space="preserve">
+    <value>इनके बंद रहने पर CoolBoost उपलब्ध है।</value>
+    <comment>They = the operating modes.</comment>
+  </data>
+  <data name="Settings_OperatingModes_Default" xml:space="preserve">
+    <value>इनके बंद रहने पर लैपटॉप अपने डिफ़ॉल्ट मोड में रहता है।</value>
+    <comment>They = the operating modes.</comment>
+  </data>
+  <data name="Settings_Updates.Text" xml:space="preserve">
+    <value>अपडेट</value>
+    <comment>Section title: app updates.</comment>
+  </data>
+  <data name="Settings_CheckNow.Content" xml:space="preserve">
+    <value>अभी जाँचें</value>
+    <comment>Button: check for updates now.</comment>
+  </data>
+  <data name="Settings_AutoUpdate.Header" xml:space="preserve">
+    <value>अपडेट के लिए स्वचालित रूप से जाँचें</value>
+  </data>
+  <data name="Settings_AutoUpdate.Description" xml:space="preserve">
+    <value>दिन में एक बार, प्रोजेक्ट की GitHub रिलीज़ से। इंस्टॉल करने से पहले डाउनलोड का मिलान GitHub द्वारा प्रकाशित SHA-256 चेकसम से किया जाता है।</value>
+  </data>
+  <data name="Settings_Troubleshooting.Text" xml:space="preserve">
+    <value>समस्या निवारण</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_Diagnostics.Header" xml:space="preserve">
+    <value>निदान</value>
+  </data>
+  <data name="Settings_Diagnostics.Description" xml:space="preserve">
+    <value>क्षमता पहचान से फ़र्मवेयर के मूल उत्तर। कोई समस्या या नया मॉडल रिपोर्ट करते समय इन्हें शामिल करें।</value>
+    <comment>The copied diagnostics stay in English for the developers.</comment>
+  </data>
+  <data name="Settings_Copy.Content" xml:space="preserve">
+    <value>कॉपी करें</value>
+    <comment>Button: copy the diagnostics to the clipboard.</comment>
+  </data>
+  <data name="Settings_ServiceLogs.Content" xml:space="preserve">
+    <value>सेवा लॉग</value>
+    <comment>Button: opens the background service's log folder.</comment>
+  </data>
+  <data name="Settings_AppLogs.Content" xml:space="preserve">
+    <value>ऐप लॉग</value>
+    <comment>Button: opens the app's log folder.</comment>
+  </data>
+  <data name="Settings_About.Text" xml:space="preserve">
+    <value>परिचय</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_AboutOpenSense.Description" xml:space="preserve">
+    <value>Acer Nitro और Predator लैपटॉप के लिए ओपन-सोर्स पंखा, प्रदर्शन और लाइटिंग नियंत्रण।</value>
+  </data>
+  <data name="Settings_Version" xml:space="preserve">
+    <value>संस्करण {0}</value>
+    <comment>{0} = a version number.</comment>
+  </data>
+  <data name="Settings_Mode_Portable" xml:space="preserve">
+    <value>पोर्टेबल प्रति: व्यवस्थापक के रूप में चलती है और खुली रहने तक लैपटॉप को स्वयं नियंत्रित करती है।</value>
+  </data>
+  <data name="Settings_Mode_Installed" xml:space="preserve">
+    <value>इंस्टॉल किया गया: OpenSense सेवा स्टार्टअप से ही लैपटॉप को नियंत्रित करती है, चाहे यह विंडो खुली हो या नहीं।</value>
+  </data>
+  <data name="Settings_Trademarks.Text" xml:space="preserve">
+    <value>OpenSense एक स्वतंत्र प्रोजेक्ट है और Acer से संबद्ध या उसके द्वारा समर्थित नहीं है। Acer, Nitro, Predator और NitroSense, Acer Inc. के ट्रेडमार्क हैं। GNU General Public License v3.0 या बाद के संस्करण के अंतर्गत जारी किया गया।</value>
+    <comment>Legal notice: translate faithfully and keep the names.</comment>
+  </data>
+  <data name="Update_Install.Content" xml:space="preserve">
+    <value>अभी अपडेट करें</value>
+    <comment>Button: download and install the update.</comment>
+  </data>
+  <data name="Update_WhatsNew.Content" xml:space="preserve">
+    <value>नया क्या है</value>
+    <comment>Link to the release notes.</comment>
+  </data>
+  <data name="Update_Skip.Content" xml:space="preserve">
+    <value>यह संस्करण छोड़ें</value>
+    <comment>Link.</comment>
+  </data>
+  <data name="Update_BannerTitle" xml:space="preserve">
+    <value>OpenSense {0} उपलब्ध है</value>
+    <comment>{0} = a version number.</comment>
+  </data>
+  <data name="Update_Downloading" xml:space="preserve">
+    <value>डाउनलोड हो रहा है… {0}</value>
+    <comment>{0} = progress as a percentage.</comment>
+  </data>
+  <data name="Update_NoAsset" xml:space="preserve">
+    <value>इस रिलीज़ में इस प्रति के लिए कोई डाउनलोड नहीं है; रिलीज़ पेज देखें।</value>
+  </data>
+  <data name="Update_InstallerHint" xml:space="preserve">
+    <value>इसे इंस्टॉल करने और OpenSense फिर से खोलने के लिए "अभी अपडेट करें" पर क्लिक करें (Windows अनुमति माँगेगा)।</value>
+    <comment>'Update now' = Update_Install.Content.</comment>
+  </data>
+  <data name="Update_PortableHint" xml:space="preserve">
+    <value>इस पोर्टेबल प्रति को बदलने और फिर से खोलने के लिए "अभी अपडेट करें" पर क्लिक करें।</value>
+    <comment>'Update now' = Update_Install.Content.</comment>
+  </data>
+  <data name="Update_Checking" xml:space="preserve">
+    <value>अपडेट की जाँच हो रही है…</value>
+  </data>
+  <data name="Update_UpToDate" xml:space="preserve">
+    <value>अद्यतित है। {0}</value>
+    <comment>{0} = Update_LastChecked or Update_NotChecked.</comment>
+  </data>
+  <data name="Update_Latest" xml:space="preserve">
+    <value>{0} नवीनतम संस्करण है।</value>
+    <comment>{0} = 'OpenSense' and a version number.</comment>
+  </data>
+  <data name="Update_Skipped" xml:space="preserve">
+    <value>संस्करण {0} छोड़ा गया। {1}</value>
+    <comment>{0} = a version number; {1} = Update_LastChecked or Update_NotChecked.</comment>
+  </data>
+  <data name="Update_Available" xml:space="preserve">
+    <value>संस्करण {0} उपलब्ध है। {1}</value>
+    <comment>{0} = a version number; {1} = Update_LastChecked or Update_NotChecked.</comment>
+  </data>
+  <data name="Update_LastChecked" xml:space="preserve">
+    <value>अंतिम बार जाँचा गया: {0}।</value>
+    <comment>{0} = a date and time.</comment>
+  </data>
+  <data name="Update_NotChecked" xml:space="preserve">
+    <value>अभी तक नहीं जाँचा गया।</value>
+  </data>
+  <data name="Update_OpenToUpdate" xml:space="preserve">
+    <value>अपडेट करने के लिए OpenSense खोलें।</value>
+    <comment>Notification balloon.</comment>
+  </data>
+  <data name="Update_CheckFailed" xml:space="preserve">
+    <value>अपडेट की जाँच नहीं की जा सकी: {0}</value>
+    <comment>{0} = a technical error message.</comment>
+  </data>
+  <data name="Update_Cancelled" xml:space="preserve">
+    <value>अपडेट रद्द कर दिया गया।</value>
+  </data>
+  <data name="Update_Failed" xml:space="preserve">
+    <value>अपडेट विफल रहा: {0}</value>
+    <comment>{0} = the reason, possibly a technical error message.</comment>
+  </data>
+  <data name="Update_NoDigest" xml:space="preserve">
+    <value>GitHub ने इस डाउनलोड के लिए कोई SHA-256 चेकसम प्रकाशित नहीं किया, इसलिए इसे सत्यापित नहीं किया जा सकता।</value>
+  </data>
+  <data name="Update_DigestMismatch" xml:space="preserve">
+    <value>डाउनलोड GitHub द्वारा प्रकाशित SHA-256 चेकसम से मेल नहीं खाता।</value>
+  </data>
+  <data name="Update_NoExecutable" xml:space="preserve">
+    <value>पोर्टेबल अपडेट में OpenSense.exe नहीं है।</value>
+  </data>
+  <data name="Update_OldCopyRunning" xml:space="preserve">
+    <value>चल रहा OpenSense बंद नहीं हुआ।</value>
+  </data>
+  <data name="PortableUpdate_Caption" xml:space="preserve">
+    <value>OpenSense अपडेट</value>
+    <comment>Message box title.</comment>
+  </data>
+  <data name="PortableUpdate_Failed" xml:space="preserve">
+    <value>OpenSense को अपडेट नहीं किया जा सका, इसलिए पिछला संस्करण रखा गया।
+
+{0}
+
+विवरण: {1}</value>
+    <comment>{0} = the reason; {1} = a log file path.</comment>
+  </data>
+  <data name="Tray_Open" xml:space="preserve">
+    <value>OpenSense खोलें</value>
+    <comment>Menu item of the notification area icon.</comment>
+  </data>
+  <data name="Tray_FanMode" xml:space="preserve">
+    <value>पंखा मोड</value>
+    <comment>Submenu of the notification area icon.</comment>
+  </data>
+  <data name="Tray_OperatingMode" xml:space="preserve">
+    <value>ऑपरेटिंग मोड</value>
+    <comment>Submenu of the notification area icon.</comment>
+  </data>
+  <data name="Tray_Exit" xml:space="preserve">
+    <value>बाहर निकलें</value>
+    <comment>Menu item: quit OpenSense.</comment>
+  </data>
+</root>

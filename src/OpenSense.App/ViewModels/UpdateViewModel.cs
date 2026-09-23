@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Controls;
+using OpenSense.App.Localization;
 using OpenSense.App.Services;
 using OpenSense.Core.Updates;
 
@@ -78,13 +79,12 @@ public sealed partial class UpdateViewModel : ObservableObject
 
     public bool HasUpdate => Available is not null;
 
-    public string BannerTitle => Available is { } u ? $"OpenSense {u.Version.ToString(3)} is available" : "";
+    public string BannerTitle => Available is { } u ? Strings.Format("Update_BannerTitle", u.Version.ToString(3)) : "";
 
     public string BannerMessage => Available is not { } u ? ""
-        : IsDownloading ? $"Downloading… {DownloadProgress:P0}"
-        : u.Asset is null ? "This release has no download for this copy; see the release page."
-        : Kind == InstallKind.Installer ? "Update now to install it and reopen OpenSense (Windows asks for permission)."
-        : "Update now to replace this portable copy and reopen it.";
+        : IsDownloading ? Strings.Format("Update_Downloading", DownloadProgress.ToString("P0", CultureInfo.CurrentCulture))
+        : u.Asset is null ? Strings.Get("Update_NoAsset")
+        : Strings.Get(Kind == InstallKind.Installer ? "Update_InstallerHint" : "Update_PortableHint");
 
     /// <summary>Starts the daily schedule.</summary>
     public void Start() => Schedule();
@@ -115,7 +115,7 @@ public sealed partial class UpdateViewModel : ObservableObject
     private async Task CheckAsync(bool userInitiated)
     {
         IsChecking = true;
-        Status = "Checking for updates…";
+        Status = Strings.Get("Update_Checking");
         try
         {
             var update = await _updater.CheckAsync(Kind);
@@ -125,32 +125,32 @@ public sealed partial class UpdateViewModel : ObservableObject
             {
                 Available = null;
                 BannerOpen = false;
-                Status = $"Up to date. {LastCheckText()}";
+                Status = Strings.Format("Update_UpToDate", LastCheckText());
                 if (userInitiated)
-                    _notifications.Show("Updates", $"{CurrentVersionText} is the latest version.", InfoBarSeverity.Success);
+                    _notifications.Show(Strings.Get("Notice_Updates_Title"), Strings.Format("Update_Latest", CurrentVersionText), InfoBarSeverity.Success);
                 return;
             }
 
             // Automatic checks respect "skip this version"; asking explicitly always shows it.
             if (!userInitiated && _settings.Current.Updates.SkippedVersion == update.Tag)
             {
-                Status = $"Version {update.Version.ToString(3)} skipped. {LastCheckText()}";
+                Status = Strings.Format("Update_Skipped", update.Version.ToString(3), LastCheckText());
                 return;
             }
 
             Available = update;
             BannerOpen = true;
-            Status = $"Version {update.Version.ToString(3)} is available. {LastCheckText()}";
+            Status = Strings.Format("Update_Available", update.Version.ToString(3), LastCheckText());
             LogAvailable(update.Tag);
             if (!userInitiated && !App.Current.IsWindowVisible)
-                _notifications.Alert(BannerTitle, "Open OpenSense to update.");
+                _notifications.Alert(BannerTitle, Strings.Get("Update_OpenToUpdate"));
         }
         catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or JsonException)
         {
             LogCheckFailed(ex);
-            Status = $"Could not check for updates: {ex.Message}";
+            Status = Strings.Format("Update_CheckFailed", ex.Message);
             if (userInitiated)
-                _notifications.Show("Updates", Status, InfoBarSeverity.Error);
+                _notifications.Show(Strings.Get("Notice_Updates_Title"), Status, InfoBarSeverity.Error);
         }
         finally
         {
@@ -181,7 +181,7 @@ public sealed partial class UpdateViewModel : ObservableObject
             {
                 if (!UpdateInstaller.StartSetup(path))
                 {
-                    _notifications.Show("Updates", "The update was cancelled.", InfoBarSeverity.Informational);
+                    _notifications.Show(Strings.Get("Notice_Updates_Title"), Strings.Get("Update_Cancelled"), InfoBarSeverity.Informational);
                     return;
                 }
             }
@@ -198,7 +198,10 @@ public sealed partial class UpdateViewModel : ObservableObject
                                        or UpdateVerificationException or InvalidDataException or System.ComponentModel.Win32Exception)
         {
             LogInstallFailed(ex);
-            _notifications.Show("Updates", $"The update failed: {ex.Message}", InfoBarSeverity.Error);
+            var reason = ex is UpdateVerificationException verification
+                ? Strings.Get(verification.Failure == VerificationFailure.NoDigest ? "Update_NoDigest" : "Update_DigestMismatch")
+                : ex.Message;
+            _notifications.Show(Strings.Get("Notice_Updates_Title"), Strings.Format("Update_Failed", reason), InfoBarSeverity.Error);
         }
         finally
         {
@@ -215,7 +218,7 @@ public sealed partial class UpdateViewModel : ObservableObject
             return;
         _settings.Update(s => s with { Updates = s.Updates with { SkippedVersion = update.Tag } });
         BannerOpen = false;
-        Status = $"Version {update.Version.ToString(3)} skipped. {LastCheckText()}";
+        Status = Strings.Format("Update_Skipped", update.Version.ToString(3), LastCheckText());
     }
 
     [RelayCommand(CanExecute = nameof(HasUpdate))]
@@ -226,8 +229,8 @@ public sealed partial class UpdateViewModel : ObservableObject
     }
 
     private string LastCheckText() => _settings.Current.Updates.LastCheck is { } last
-        ? $"Last checked {last.LocalDateTime.ToString("g", CultureInfo.CurrentCulture)}."
-        : "Not checked yet.";
+        ? Strings.Format("Update_LastChecked", last.LocalDateTime.ToString("g", CultureInfo.CurrentCulture))
+        : Strings.Get("Update_NotChecked");
 
     [LoggerMessage(Level = LogLevel.Debug, Message = "Next update check in {Wait}")]
     private partial void LogScheduled(TimeSpan wait);

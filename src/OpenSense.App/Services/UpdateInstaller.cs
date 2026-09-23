@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO.Compression;
 using Microsoft.Win32;
+using OpenSense.App.Localization;
 using OpenSense.Core.Updates;
 
 namespace OpenSense.App.Services;
@@ -55,7 +56,7 @@ public static class UpdateInstaller
 
         // The zip holds an OpenSense folder; find its app wherever it is.
         var newApp = Directory.EnumerateFiles(staging, "OpenSense.exe", SearchOption.AllDirectories).FirstOrDefault()
-            ?? throw new InvalidDataException("The portable update does not contain OpenSense.exe.");
+            ?? throw new InvalidDataException(Strings.Get("Update_NoExecutable"));
 
         // Started directly (not through the shell) so it keeps this copy's rights: the portable app runs elevated.
         var start = new ProcessStartInfo(newApp) { UseShellExecute = false, WorkingDirectory = Path.GetDirectoryName(newApp)! };
@@ -78,7 +79,7 @@ public static class UpdateInstaller
             {
                 using var old = Process.GetProcessById(pid);
                 if (!old.WaitForExit(TimeSpan.FromSeconds(30)))
-                    throw new TimeoutException("The running OpenSense did not close.");
+                    throw new TimeoutException(Strings.Get("Update_OldCopyRunning"));
             }
             catch (ArgumentException)
             {

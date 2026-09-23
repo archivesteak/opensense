@@ -39,16 +39,16 @@ internal sealed unsafe class NvmlGpuSensor : ITemperatureSensor
             _temperatureV = (delegate* unmanaged<nint, NvmlTemperature*, int>)temperatureV;
     }
 
-    public string Description => "NVIDIA driver";
+    public SensorStatus Status { get; } = new(ChipSensor.NvidiaDriver);
 
     /// <summary>Loads NVML without touching the GPU; null when there is no NVIDIA driver.</summary>
-    public static ITemperatureSensor? TryOpen(Action<string>? log = null)
+    public static ITemperatureSensor? TryOpen(Action<SensorProblem, string?>? fail = null)
     {
         // Full paths: loading by bare name could pick up an unrelated module that happens to share it.
         if (!NativeLibrary.TryLoad(Path.Combine(Environment.SystemDirectory, "nvml.dll"), out var library) &&
             !NativeLibrary.TryLoad(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "NVIDIA Corporation", "NVSMI", "nvml.dll"), out library))
         {
-            log?.Invoke("No NVIDIA driver found.");
+            fail?.Invoke(SensorProblem.NoNvidiaDriver, null);
             return null;
         }
         try
@@ -58,7 +58,7 @@ internal sealed unsafe class NvmlGpuSensor : ITemperatureSensor
         catch (EntryPointNotFoundException)
         {
             NativeLibrary.Free(library);
-            log?.Invoke("The NVIDIA driver's NVML library is too old.");
+            fail?.Invoke(SensorProblem.NvmlTooOld, null);
             return null;
         }
     }

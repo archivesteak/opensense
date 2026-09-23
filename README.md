@@ -14,6 +14,22 @@ An open-source replacement for NitroSense.
 [Supported laptops](#supported-laptops) •
 [Building](#building)
 
+**English** |
+[Bahasa Indonesia](docs/README-id.md) |
+[Deutsch](docs/README-de.md) |
+[Español](docs/README-es.md) |
+[Français](docs/README-fr.md) |
+[Polski](docs/README-pl.md) |
+[Português (Brasil)](docs/README-pt-BR.md) |
+[Tiếng Việt](docs/README-vi.md) |
+[Türkçe](docs/README-tr.md) |
+[Русский](docs/README-ru.md) |
+[Українська](docs/README-uk.md) |
+[简体中文](docs/README-zh-CN.md) |
+[繁體中文](docs/README-zh-TW.md)
+
+Help translate OpenSense and this page into your language: see [Translations](#translations).
+
 </div>
 
 ## Features
@@ -25,6 +41,7 @@ An open-source replacement for NitroSense.
 - **Lighting.** Static colours per keyboard zone, or Breathing, Neon, Wave, Shifting and Zoom effects.
 - **Keyboard and display.** Backlight auto-off, Windows-key lock, LCD overdrive and the GPU (MUX) switch.
 - **No admin prompts.** A small background service applies your settings from startup, and the NitroSense key opens the app.
+- **Your language.** 36 languages, following Windows or chosen in Settings.
 
 OpenSense asks the firmware what your laptop has and shows only what it supports.
 
@@ -44,6 +61,12 @@ Download the latest version from [**Releases**](https://github.com/archivesteak/
 Acer laptops with the gaming firmware interface that NitroSense and PredatorSense use. OpenSense is developed on a **Nitro 5 AN515-57**.
 
 Tried it on another model? [Open an issue](https://github.com/archivesteak/opensense/issues) and paste the diagnostics from **Settings → Troubleshooting → Copy**.
+
+## Translations
+
+OpenSense uses the Windows display language, or the one picked in **Settings → Appearance → Language**. No native speaker has checked the translations yet, so corrections are welcome.
+
+The app's text is in `src/OpenSense.App/Strings/<language>/Resources.resw` and the installer's in `installer/Strings/<language>.nsh`, with a note on each string in the English files; `dotnet test` checks that every translation has all the strings and placeholders. This page's translations are in [`docs`](docs).
 
 ## Building
 

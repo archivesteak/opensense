@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,8 +26,6 @@ public partial class App : Application
     {
         _options = options;
         _instance = instance;
-        // OpenSense is English-only for now; keep WinUI's built-in strings (Settings, On/Off) in the same language.
-        Microsoft.Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "en-US";
         InitializeComponent();
         UnhandledException += (_, e) => Log.Error(e.Exception, "Unhandled UI exception");
     }
@@ -113,6 +112,16 @@ public partial class App : Application
         _instance.Dispose(); // let the elevated copy become the running instance
         if (Program.TryRelaunchElevated(_options))
             Quit();
+    }
+
+    /// <summary>Quits and opens a new copy on the Settings page, e.g. to show a new language.</summary>
+    public void Restart()
+    {
+        _instance.Dispose(); // let the new copy become the running instance once this one has exited
+        var arguments = new LaunchOptions { Page = "settings", WaitForProcess = Environment.ProcessId }.ToArguments();
+        // Started directly, not through the shell, so it keeps this copy's rights (a portable copy runs elevated).
+        Process.Start(new ProcessStartInfo(Environment.ProcessPath!, arguments) { UseShellExecute = false })?.Dispose();
+        Quit();
     }
 
     public void Quit()

@@ -1,7 +1,9 @@
+using CommunityToolkit.WinUI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
+using OpenSense.App.Localization;
 using OpenSense.App.Services;
 using OpenSense.App.ViewModels;
 using OpenSense.App.Views;
@@ -31,10 +33,12 @@ public sealed partial class MainWindow : Window
         _settings = settings;
         InitializeComponent();
 
+        RootGrid.Language = AppLanguage.Current;
+        RootGrid.FlowDirection = LayoutDirection;
         ExtendsContentIntoTitleBar = true;
         SetTitleBar(AppTitleBar);
+        AppTitleBar.Loaded += (_, _) => MatchNavigationText();
         AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets", "OpenSense.ico"));
-        AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Tall;
         PlaceWindow();
 
         ApplyTheme(settingsPage.Theme);
@@ -58,6 +62,9 @@ public sealed partial class MainWindow : Window
     public ShellViewModel Shell { get; }
 
     public UpdateViewModel Updates { get; }
+
+    /// <summary>Right to left for Arabic, Hebrew and Persian.</summary>
+    private static FlowDirection LayoutDirection => AppLanguage.IsRightToLeft ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
 
     private void PlaceWindow()
     {
@@ -137,6 +144,13 @@ public sealed partial class MainWindow : Window
 
     private void OnPaneToggleRequested(TitleBar sender, object args) => Nav.IsPaneOpen = !Nav.IsPaneOpen;
 
+    /// <summary>The title bar's template sets the app name in the 12 px caption style; use the navigation items' 14 px.</summary>
+    private void MatchNavigationText()
+    {
+        if (AppTitleBar.FindDescendant("PART_TitleText") is TextBlock title)
+            title.Style = (Style)Application.Current.Resources["BodyTextBlockStyle"];
+    }
+
     private void OnNoticeClosed(InfoBar sender, object args)
     {
         if (sender.DataContext is Notice notice)
@@ -148,15 +162,16 @@ public sealed partial class MainWindow : Window
         var dialog = new ContentDialog
         {
             XamlRoot = Content.XamlRoot,
-            Title = mode == GpuMode.Discrete ? "Switch to discrete GPU only?" : "Switch to hybrid graphics?",
-            Content = mode == GpuMode.Discrete
-                ? "The NVIDIA GPU will drive the display directly for the best gaming performance, at the cost of battery life. Windows must restart to apply this."
-                : "The integrated GPU will drive the display and the discrete GPU powers up only when needed, saving battery. Windows must restart to apply this.",
-            PrimaryButtonText = "Restart now",
-            SecondaryButtonText = "Restart later",
-            CloseButtonText = "Cancel",
+            Title = Strings.Get(mode == GpuMode.Discrete ? "GpuSwitch_DiscreteTitle" : "GpuSwitch_HybridTitle"),
+            Content = Strings.Get(mode == GpuMode.Discrete ? "GpuSwitch_DiscreteMessage" : "GpuSwitch_HybridMessage"),
+            PrimaryButtonText = Strings.Get("GpuSwitch_RestartNow"),
+            SecondaryButtonText = Strings.Get("GpuSwitch_RestartLater"),
+            CloseButtonText = Strings.Get("GpuSwitch_Cancel"),
             DefaultButton = ContentDialogButton.Secondary,
             RequestedTheme = RootGrid.ActualTheme,
+            // Dialogs open outside the window's content, so they don't inherit these.
+            Language = RootGrid.Language,
+            FlowDirection = RootGrid.FlowDirection,
         };
         return await dialog.ShowAsync() switch
         {

@@ -19,6 +19,9 @@ public sealed record UiSettings
 
     /// <summary>0 = follow Windows, 1 = light, 2 = dark.</summary>
     public int Theme { get; init; }
+
+    /// <summary>The app's language (a Strings folder name such as "de-DE"), or null to follow Windows.</summary>
+    public string? Language { get; init; }
 }
 
 /// <summary>Update checks against GitHub Releases, per user.</summary>

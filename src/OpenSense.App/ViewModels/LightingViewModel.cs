@@ -2,6 +2,8 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Dispatching;
+using OpenSense.App.Helpers;
+using OpenSense.App.Localization;
 using OpenSense.App.Services;
 using OpenSense.Core.Control;
 using OpenSense.Core.Hardware;
@@ -13,7 +15,7 @@ public sealed partial class ZoneViewModel(int index) : ObservableObject
 {
     public int Index { get; } = index;
 
-    public string Name => $"Zone {Index + 1}";
+    public string Name => Strings.Format("Lighting_Zone", Index + 1);
 
     [ObservableProperty]
     public partial bool On { get; set; } = true;
@@ -57,16 +59,20 @@ public sealed partial class LightingViewModel : ObservableObject
 
     public static IReadOnlyList<EffectOption> Effects { get; } =
     [
-        new(KeyboardEffect.Breathing, "Breathing", "The colour fades in and out."),
-        new(KeyboardEffect.Neon, "Neon", "Cycles through the rainbow."),
-        new(KeyboardEffect.Wave, "Wave", "A wave of colour sweeps across the keys."),
-        new(KeyboardEffect.Shifting, "Shifting", "A block of colour travels across the keyboard."),
-        new(KeyboardEffect.Zoom, "Zoom", "Colour expands out from the centre."),
+        new(KeyboardEffect.Breathing, Strings.Get("Effect_Breathing"), Strings.Get("Effect_Breathing_Description")),
+        new(KeyboardEffect.Neon, Strings.Get("Effect_Neon"), Strings.Get("Effect_Neon_Description")),
+        new(KeyboardEffect.Wave, Strings.Get("Effect_Wave"), Strings.Get("Effect_Wave_Description")),
+        new(KeyboardEffect.Shifting, Strings.Get("Effect_Shifting"), Strings.Get("Effect_Shifting_Description")),
+        new(KeyboardEffect.Zoom, Strings.Get("Effect_Zoom"), Strings.Get("Effect_Zoom_Description")),
     ];
 
-    public static IReadOnlyList<string> Directions { get; } = ["Left", "Right", "Up", "Down"];
+    /// <summary>In <see cref="KeyboardDirection"/> order.</summary>
+    public static IReadOnlyList<string> Directions { get; } =
+        [Strings.Get("Direction_Left"), Strings.Get("Direction_Right"), Strings.Get("Direction_Up"), Strings.Get("Direction_Down")];
 
-    public static IReadOnlyList<string> BrightnessNames { get; } = ["Off", "25%", "50%", "75%", "100%"];
+    /// <summary>In <see cref="KeyboardProtocol.BrightnessLevels"/> order.</summary>
+    public static IReadOnlyList<string> BrightnessNames { get; } =
+        [Strings.Get("Brightness_Off"), Units.Percent(25), Units.Percent(50), Units.Percent(75), Units.Percent(100)];
 
     /// <summary>Quick colour picks.</summary>
     public static IReadOnlyList<Color> Swatches { get; } =

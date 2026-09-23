@@ -1,0 +1,1075 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Nav_Dashboard.Content" xml:space="preserve">
+    <value>Πίνακας εργαλείων</value>
+    <comment>Navigation menu item: the overview page.</comment>
+  </data>
+  <data name="Nav_Fans.Content" xml:space="preserve">
+    <value>Ανεμιστήρες</value>
+    <comment>Navigation menu item: fan control page.</comment>
+  </data>
+  <data name="Nav_Lighting.Content" xml:space="preserve">
+    <value>Φωτισμός</value>
+    <comment>Navigation menu item: the RGB keyboard lighting page.</comment>
+  </data>
+  <data name="Nav_System.Content" xml:space="preserve">
+    <value>Πληκτρολόγιο και οθόνη</value>
+    <comment>Navigation menu item: keyboard, display, GPU and power settings.</comment>
+  </data>
+  <data name="Startup_Connecting.Text" xml:space="preserve">
+    <value>Σύνδεση με τον φορητό υπολογιστή…</value>
+    <comment>Shown while the app starts.</comment>
+  </data>
+  <data name="Problem_RestartElevated.Content" xml:space="preserve">
+    <value>Επανεκκίνηση ως διαχειριστής</value>
+    <comment>Button.</comment>
+  </data>
+  <data name="Problem_StartService.Content" xml:space="preserve">
+    <value>Εκκίνηση της υπηρεσίας</value>
+    <comment>Button: starts the OpenSense background service.</comment>
+  </data>
+  <data name="Problem_NeedsElevation_Title" xml:space="preserve">
+    <value>Απαιτούνται δικαιώματα διαχειριστή</value>
+  </data>
+  <data name="Problem_NeedsElevation_Message" xml:space="preserve">
+    <value>Αυτό το φορητό αντίγραφο επικοινωνεί απευθείας με τα χειριστήρια ανεμιστήρων και φωτισμού του φορητού υπολογιστή, κάτι που απαιτεί δικαιώματα διαχειριστή. Κάντε επανεκκίνηση ως διαχειριστής ή εγκαταστήστε το OpenSense για να λειτουργεί χωρίς αυτά.</value>
+  </data>
+  <data name="Problem_ServiceUnavailable_Title" xml:space="preserve">
+    <value>Η υπηρεσία OpenSense δεν εκτελείται</value>
+  </data>
+  <data name="Problem_ServiceUnavailable_Message" xml:space="preserve">
+    <value>Το OpenSense ελέγχει τον φορητό υπολογιστή μέσω μιας υπηρεσίας παρασκηνίου, η οποία έχει διακοπεί. Ξεκινήστε την (τα Windows ζητούν άδεια) ή εγκαταστήστε ξανά το OpenSense αν διακόπτεται συνέχεια.</value>
+  </data>
+  <data name="Problem_Unsupported_Title" xml:space="preserve">
+    <value>Δεν βρέθηκε υλικολογισμικό παιχνιδιών της Acer</value>
+  </data>
+  <data name="Problem_Unsupported_Message" xml:space="preserve">
+    <value>Αυτός ο υπολογιστής δεν διαθέτει τη διασύνδεση WMI παιχνιδιών της Acer (AcerGamingFunction). Το OpenSense υποστηρίζει φορητούς υπολογιστές Acer Nitro και Predator.</value>
+    <comment>Keep 'AcerGamingFunction' as is.</comment>
+  </data>
+  <data name="Problem_Failed_Title" xml:space="preserve">
+    <value>Δεν ήταν δυνατή η εκκίνηση του OpenSense</value>
+  </data>
+  <data name="Problem_Failed_Message" xml:space="preserve">
+    <value>Παρουσιάστηκε μη αναμενόμενο σφάλμα. Ο φάκελος αρχείων καταγραφής περιέχει λεπτομέρειες.</value>
+  </data>
+  <data name="Session_VersionMismatch" xml:space="preserve">
+    <value>Η υπηρεσία OpenSense είναι διαφορετικής έκδοσης ({0}). Εγκαταστήστε ξανά το OpenSense για να την ενημερώσετε.</value>
+    <comment>{0} = a version number.</comment>
+  </data>
+  <data name="Notice_Rebuilt_Title" xml:space="preserve">
+    <value>Οι δυνατότητες ενημερώθηκαν</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_Rebuilt_Message" xml:space="preserve">
+    <value>Το OpenSense επανεκκίνησε τον έλεγχο ανεμιστήρων με τις νέες ρυθμίσεις.</value>
+  </data>
+  <data name="Notice_Service_Title" xml:space="preserve">
+    <value>Υπηρεσία</value>
+    <comment>Banner title: about the OpenSense background service.</comment>
+  </data>
+  <data name="Notice_Reconnected" xml:space="preserve">
+    <value>Έγινε επανασύνδεση με την υπηρεσία OpenSense.</value>
+  </data>
+  <data name="Notice_Disconnected" xml:space="preserve">
+    <value>Η σύνδεση με την υπηρεσία OpenSense χάθηκε. Επανασύνδεση…</value>
+  </data>
+  <data name="Notice_ServiceStartFailed" xml:space="preserve">
+    <value>Η υπηρεσία OpenSense δεν ξεκίνησε. Το αρχείο καταγραφής της υπηρεσίας στο %ProgramData%\OpenSense\logs περιέχει λεπτομέρειες.</value>
+    <comment>Keep the folder path as is.</comment>
+  </data>
+  <data name="Notice_FanControl_Title" xml:space="preserve">
+    <value>Έλεγχος ανεμιστήρων</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_Keyboard_Title" xml:space="preserve">
+    <value>Πληκτρολόγιο</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_Display_Title" xml:space="preserve">
+    <value>Οθόνη</value>
+    <comment>Banner title: the laptop screen.</comment>
+  </data>
+  <data name="Notice_FirmwareAccessDenied" xml:space="preserve">
+    <value>Απαιτούνται δικαιώματα διαχειριστή για πρόσβαση στη διασύνδεση υλικολογισμικού της Acer.</value>
+  </data>
+  <data name="Notice_ControlLoopError" xml:space="preserve">
+    <value>Σφάλμα στον έλεγχο ανεμιστήρων: {0}</value>
+    <comment>{0} = a technical error message (not translated).</comment>
+  </data>
+  <data name="Notice_OperatingModeRejected" xml:space="preserve">
+    <value>Το υλικολογισμικό απέρριψε την αλλαγή λειτουργίας ({0}).</value>
+    <comment>{0} = an operating mode name, e.g. Turbo.</comment>
+  </data>
+  <data name="Notice_CoolBoostRejected" xml:space="preserve">
+    <value>Το υλικολογισμικό απέρριψε την αλλαγή του CoolBoost.</value>
+    <comment>CoolBoost is an Acer feature name: keep it.</comment>
+  </data>
+  <data name="Notice_FansHandedBack" xml:space="preserve">
+    <value>Η θερμοκρασία της CPU δεν είναι διαθέσιμη, επομένως οι ανεμιστήρες επέστρεψαν σε Αυτόματο.</value>
+    <comment>Auto = the automatic fan mode, as in FanMode_Auto.</comment>
+  </data>
+  <data name="Notice_LightingRejected" xml:space="preserve">
+    <value>Το πληκτρολόγιο απέρριψε την αλλαγή φωτισμού.</value>
+  </data>
+  <data name="Notice_BacklightTimeoutRejected" xml:space="preserve">
+    <value>Το πληκτρολόγιο απέρριψε την αλλαγή του χρόνου απενεργοποίησης του οπίσθιου φωτισμού.</value>
+  </data>
+  <data name="Notice_WindowsKeyRejected" xml:space="preserve">
+    <value>Το υλικολογισμικό απέρριψε την αλλαγή του πλήκτρου Windows.</value>
+  </data>
+  <data name="Notice_LcdOverdriveRejected" xml:space="preserve">
+    <value>Η οθόνη απέρριψε την αλλαγή του overdrive.</value>
+    <comment>Overdrive = LCD overdrive, a screen setting that speeds up pixel response.</comment>
+  </data>
+  <data name="Notice_PowerPlan_Title" xml:space="preserve">
+    <value>Σχέδιο παροχής ενέργειας</value>
+    <comment>Banner title: a Windows power plan.</comment>
+  </data>
+  <data name="Notice_PowerPlanFailed" xml:space="preserve">
+    <value>Τα Windows δεν άλλαξαν σε «{0}».</value>
+    <comment>{0} = a Windows power plan name. Use your language's quotation marks.</comment>
+  </data>
+  <data name="Notice_GpuMode_Title" xml:space="preserve">
+    <value>Λειτουργία GPU</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_GpuModeRejected" xml:space="preserve">
+    <value>Το υλικολογισμικό απέρριψε την αλλαγή λειτουργίας GPU.</value>
+  </data>
+  <data name="Notice_Autostart_Title" xml:space="preserve">
+    <value>Εκκίνηση με τα Windows</value>
+    <comment>Banner title, same as Settings_StartWithWindows.Header.</comment>
+  </data>
+  <data name="Notice_AutostartFailed" xml:space="preserve">
+    <value>Δεν ήταν δυνατή η ενημέρωση της καταχώρησης εκκίνησης: {0}</value>
+    <comment>{0} = a technical error message.</comment>
+  </data>
+  <data name="Notice_Diagnostics_Title" xml:space="preserve">
+    <value>Διαγνωστικά</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_DiagnosticsCopied" xml:space="preserve">
+    <value>Αντιγράφηκε στο Πρόχειρο.</value>
+  </data>
+  <data name="Notice_Updates_Title" xml:space="preserve">
+    <value>Ενημερώσεις</value>
+    <comment>Banner title: app updates.</comment>
+  </data>
+  <data name="GpuSwitch_DiscreteTitle" xml:space="preserve">
+    <value>Χρήση μόνο της αποκλειστικής GPU;</value>
+    <comment>Dialog title. Discrete GPU = the separate NVIDIA graphics chip.</comment>
+  </data>
+  <data name="GpuSwitch_HybridTitle" xml:space="preserve">
+    <value>Αλλαγή σε υβριδικά γραφικά;</value>
+    <comment>Dialog title.</comment>
+  </data>
+  <data name="GpuSwitch_DiscreteMessage" xml:space="preserve">
+    <value>Η GPU της NVIDIA θα οδηγεί απευθείας την οθόνη για την καλύτερη απόδοση στα παιχνίδια, εις βάρος της διάρκειας μπαταρίας. Απαιτείται επανεκκίνηση των Windows για να εφαρμοστεί η αλλαγή.</value>
+  </data>
+  <data name="GpuSwitch_HybridMessage" xml:space="preserve">
+    <value>Η ενσωματωμένη GPU θα οδηγεί την οθόνη και η αποκλειστική GPU θα ενεργοποιείται μόνο όταν χρειάζεται, εξοικονομώντας μπαταρία. Απαιτείται επανεκκίνηση των Windows για να εφαρμοστεί η αλλαγή.</value>
+  </data>
+  <data name="GpuSwitch_RestartNow" xml:space="preserve">
+    <value>Επανεκκίνηση τώρα</value>
+    <comment>Dialog button: restart Windows now.</comment>
+  </data>
+  <data name="GpuSwitch_RestartLater" xml:space="preserve">
+    <value>Επανεκκίνηση αργότερα</value>
+    <comment>Dialog button.</comment>
+  </data>
+  <data name="GpuSwitch_Cancel" xml:space="preserve">
+    <value>Άκυρο</value>
+    <comment>Dialog button.</comment>
+  </data>
+  <data name="Chip_Cpu" xml:space="preserve">
+    <value>CPU</value>
+    <comment>The processor. Short: used in labels like 'CPU 45°'.</comment>
+  </data>
+  <data name="Chip_Gpu" xml:space="preserve">
+    <value>GPU</value>
+    <comment>The graphics chip. Short: used in labels like 'GPU 45°'.</comment>
+  </data>
+  <data name="Fan_Cpu" xml:space="preserve">
+    <value>Ανεμιστήρας CPU</value>
+  </data>
+  <data name="Fan_Gpu" xml:space="preserve">
+    <value>Ανεμιστήρας GPU</value>
+  </data>
+  <data name="FanMode_Auto" xml:space="preserve">
+    <value>Αυτόματο</value>
+    <comment>Fan mode: the laptop's firmware controls the fans. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Max" xml:space="preserve">
+    <value>Μέγιστο</value>
+    <comment>Fan mode: all fans at full speed. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Custom" xml:space="preserve">
+    <value>Χειροκίνητο</value>
+    <comment>Fan mode: a fixed speed chosen for each fan. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Curve" xml:space="preserve">
+    <value>Καμπύλη</value>
+    <comment>Fan mode: fan speed follows a temperature curve. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Auto_Description" xml:space="preserve">
+    <value>Το υλικολογισμικό του φορητού διαχειρίζεται τους ανεμιστήρες.</value>
+  </data>
+  <data name="FanMode_Max_Description" xml:space="preserve">
+    <value>Όλοι οι ανεμιστήρες στη μέγιστη ταχύτητα.</value>
+  </data>
+  <data name="FanMode_Custom_Description" xml:space="preserve">
+    <value>Σταθερή ταχύτητα για κάθε ανεμιστήρα.</value>
+  </data>
+  <data name="FanMode_Curve_Description" xml:space="preserve">
+    <value>Το OpenSense ακολουθεί τις καμπύλες θερμοκρασίας σας.</value>
+  </data>
+  <data name="FanBehavior_Auto" xml:space="preserve">
+    <value>Αυτόματο (υλικολογισμικό)</value>
+    <comment>What a fan is doing right now: controlled by the laptop's firmware.</comment>
+  </data>
+  <data name="FanBehavior_Max" xml:space="preserve">
+    <value>Μέγιστη ταχύτητα</value>
+    <comment>What a fan is doing right now.</comment>
+  </data>
+  <data name="FanBehavior_Emergency" xml:space="preserve">
+    <value>Μέγιστη ταχύτητα έκτακτης ανάγκης</value>
+    <comment>What a fan is doing right now: forced to full speed because the temperature is too high.</comment>
+  </data>
+  <data name="FanBehavior_Curve" xml:space="preserve">
+    <value>Ακολουθεί την καμπύλη</value>
+    <comment>What a fan is doing right now: following the temperature curve.</comment>
+  </data>
+  <data name="FanBehavior_Fixed" xml:space="preserve">
+    <value>Σταθερή ταχύτητα</value>
+    <comment>What a fan is doing right now.</comment>
+  </data>
+  <data name="FanLock_QuietMode" xml:space="preserve">
+    <value>Η λειτουργία Αθόρυβη κρατά τους ανεμιστήρες σε Αυτόματο.</value>
+    <comment>Quiet = OperatingMode_Quiet; Auto = FanMode_Auto.</comment>
+  </data>
+  <data name="OperatingMode_Eco" xml:space="preserve">
+    <value>Eco</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Quiet" xml:space="preserve">
+    <value>Αθόρυβη</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Balanced" xml:space="preserve">
+    <value>Ισορροπημένη</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Performance" xml:space="preserve">
+    <value>Απόδοση</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Turbo" xml:space="preserve">
+    <value>Turbo</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Eco_Description" xml:space="preserve">
+    <value>Μεγαλύτερη διάρκεια μπαταρίας.</value>
+  </data>
+  <data name="OperatingMode_Quiet_Description" xml:space="preserve">
+    <value>Ελάχιστος θόρυβος. Οι ανεμιστήρες μένουν σε Αυτόματο.</value>
+    <comment>Auto = FanMode_Auto.</comment>
+  </data>
+  <data name="OperatingMode_Balanced_Description" xml:space="preserve">
+    <value>Απόδοση για καθημερινή χρήση.</value>
+  </data>
+  <data name="OperatingMode_Performance_Description" xml:space="preserve">
+    <value>Υψηλότερα όρια ισχύος. Απαιτεί τροφοδοσία ρεύματος.</value>
+  </data>
+  <data name="OperatingMode_Turbo_Description" xml:space="preserve">
+    <value>Μέγιστη ισχύς και ψύξη. Απαιτεί τροφοδοσία ρεύματος.</value>
+  </data>
+  <data name="OperatingMode_BatteryNote" xml:space="preserve">
+    <value>Με μπαταρία, οι λειτουργίες {0} και {1} εκτελούνται ως {2} μέχρι να συνδέσετε τον φορτιστή.</value>
+    <comment>{0}, {1}, {2} = operating mode names (Performance, Turbo, Balanced).</comment>
+  </data>
+  <data name="PowerSource_PluggedIn" xml:space="preserve">
+    <value>Στην πρίζα</value>
+    <comment>Power source: the charger is connected.</comment>
+  </data>
+  <data name="PowerSource_Battery" xml:space="preserve">
+    <value>Με μπαταρία</value>
+    <comment>Power source.</comment>
+  </data>
+  <data name="Gpu_Idle" xml:space="preserve">
+    <value>Αδρανής</value>
+    <comment>Shown instead of the GPU temperature while the graphics chip is powered down. Short.</comment>
+  </data>
+  <data name="Unit_Rpm" xml:space="preserve">
+    <value>σ.α.λ.</value>
+    <comment>Unit: revolutions per minute (fan speed). Use your language's usual abbreviation.</comment>
+  </data>
+  <data name="Unit_RpmValue" xml:space="preserve">
+    <value>{0} σ.α.λ.</value>
+    <comment>{0} = a fan speed number. Same unit as Unit_Rpm.</comment>
+  </data>
+  <data name="Unit_Seconds" xml:space="preserve">
+    <value>{0} δευτ.</value>
+    <comment>{0} = a number of seconds, e.g. 0.5. Use the usual abbreviation for seconds.</comment>
+  </data>
+  <data name="ListSeparator" xml:space="preserve">
+    <value>, </value>
+    <comment>Separates items in a list inside a sentence, e.g. 'Quiet, Balanced, Performance'. Keep the trailing space if your language uses one.</comment>
+  </data>
+  <data name="Dashboard_Title.Text" xml:space="preserve">
+    <value>Πίνακας εργαλείων</value>
+    <comment>Page title, same as Nav_Dashboard.Content.</comment>
+  </data>
+  <data name="Dashboard_Failsafe.Title" xml:space="preserve">
+    <value>Οι ανεμιστήρες επιστράφηκαν στο υλικολογισμικό</value>
+    <comment>Warning banner title.</comment>
+  </data>
+  <data name="Dashboard_Failsafe.Message" xml:space="preserve">
+    <value>Η θερμοκρασία της CPU σταμάτησε να αναφέρεται, οπότε ο φορητός ελέγχει μόνος του τους ανεμιστήρες μέχρι να γίνει ξανά διαθέσιμη.</value>
+  </data>
+  <data name="Dashboard_CpuTemperature.Text" xml:space="preserve">
+    <value>Θερμοκρασία CPU</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_GpuTemperature.Text" xml:space="preserve">
+    <value>Θερμοκρασία GPU</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_CpuFan.Text" xml:space="preserve">
+    <value>Ανεμιστήρας CPU</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_GpuFan.Text" xml:space="preserve">
+    <value>Ανεμιστήρας GPU</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_LoadDetail" xml:space="preserve">
+    <value>Φόρτος {0} · {1}</value>
+    <comment>Under a temperature: {0} = usage percentage (e.g. 45%), {1} = the chip's model name.</comment>
+  </data>
+  <data name="Dashboard_AsleepDetail" xml:space="preserve">
+    <value>Σε αναστολή · {0}</value>
+    <comment>Under the GPU temperature while the graphics chip is powered down: {0} = its model name.</comment>
+  </data>
+  <data name="Dashboard_RpmDetail" xml:space="preserve">
+    <value>σ.α.λ. · κύκλος λειτουργίας {0}</value>
+    <comment>Under a fan speed number: rpm = revolutions per minute (as Unit_Rpm); {0} = the fan's duty cycle as a percentage.</comment>
+  </data>
+  <data name="Dashboard_Cooling.Text" xml:space="preserve">
+    <value>Ψύξη</value>
+    <comment>Card title.</comment>
+  </data>
+  <data name="Dashboard_CoolBoost.Text" xml:space="preserve">
+    <value>Επιτρέπει στη λειτουργία Αυτόματο να περιστρέφει πιο γρήγορα τους ανεμιστήρες.</value>
+    <comment>Describes CoolBoost (an Acer feature name shown above it). Auto = FanMode_Auto.</comment>
+  </data>
+  <data name="Dashboard_OpenFans.Content" xml:space="preserve">
+    <value>Προσαρμοσμένες ταχύτητες και καμπύλες</value>
+    <comment>Link to the Fans page.</comment>
+  </data>
+  <data name="Dashboard_Performance.Text" xml:space="preserve">
+    <value>Απόδοση</value>
+    <comment>Card title.</comment>
+  </data>
+  <data name="Dashboard_PowerPlan.Header" xml:space="preserve">
+    <value>Σχέδιο παροχής ενέργειας των Windows</value>
+    <comment>Label above a list of Windows power plans.</comment>
+  </data>
+  <data name="Dashboard_PowerSource.Text" xml:space="preserve">
+    <value>Πηγή ρεύματος</value>
+    <comment>Caption above 'Plugged in' or 'On battery'.</comment>
+  </data>
+  <data name="Dashboard_SystemTemperature.Text" xml:space="preserve">
+    <value>Θερμοκρασία συστήματος</value>
+    <comment>Caption: the laptop's internal temperature.</comment>
+  </data>
+  <data name="Fans_Title.Text" xml:space="preserve">
+    <value>Ανεμιστήρες</value>
+    <comment>Page title.</comment>
+  </data>
+  <data name="Fans_DutyLabel" xml:space="preserve">
+    <value>Κύκλος λειτουργίας {0}</value>
+    <comment>{0} = the fan's duty cycle as a percentage.</comment>
+  </data>
+  <data name="Fans_AutoToggle.OnContent" xml:space="preserve">
+    <value>Αυτόματα</value>
+    <comment>Switch label when on: the firmware controls this fan.</comment>
+  </data>
+  <data name="Fans_AutoToggle.OffContent" xml:space="preserve">
+    <value>Χειροκίνητα</value>
+    <comment>Switch label when off: the speed below is used.</comment>
+  </data>
+  <data name="Fans_FanSpeed.Header" xml:space="preserve">
+    <value>Ταχύτητα ανεμιστήρα</value>
+    <comment>Slider label.</comment>
+  </data>
+  <data name="Fans_Source.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Ποια θερμοκρασία ελέγχει αυτόν τον ανεμιστήρα</value>
+    <comment>Tooltip.</comment>
+  </data>
+  <data name="CurveSource_Cpu" xml:space="preserve">
+    <value>Θερμοκρασία CPU</value>
+    <comment>Which temperature a fan curve follows.</comment>
+  </data>
+  <data name="CurveSource_Gpu" xml:space="preserve">
+    <value>Θερμοκρασία GPU</value>
+    <comment>Which temperature a fan curve follows.</comment>
+  </data>
+  <data name="CurveSource_Hottest" xml:space="preserve">
+    <value>Η υψηλότερη από τις δύο</value>
+    <comment>Which temperature a fan curve follows: the higher of the CPU and GPU temperatures.</comment>
+  </data>
+  <data name="Fans_Presets.Content" xml:space="preserve">
+    <value>Προεπιλογές</value>
+    <comment>Button that opens a list of ready-made fan curves.</comment>
+  </data>
+  <data name="Fans_PresetSilent.Text" xml:space="preserve">
+    <value>Αθόρυβη</value>
+    <comment>Fan curve preset name.</comment>
+  </data>
+  <data name="Fans_PresetBalanced.Text" xml:space="preserve">
+    <value>Ισορροπημένη</value>
+    <comment>Fan curve preset name.</comment>
+  </data>
+  <data name="Fans_PresetPerformance.Text" xml:space="preserve">
+    <value>Απόδοση</value>
+    <comment>Fan curve preset name.</comment>
+  </data>
+  <data name="Fans_CopyCurve.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Χρήση αυτής της καμπύλης και για τους άλλους ανεμιστήρες</value>
+    <comment>Tooltip.</comment>
+  </data>
+  <data name="Fans_CurveHelp.Text" xml:space="preserve">
+    <value>Σύρετε τα σημεία για να διαμορφώσετε την καμπύλη · κάντε διπλό κλικ για να προσθέσετε σημείο · κάντε δεξί κλικ για να το καταργήσετε · τα πλήκτρα βέλους ρυθμίζουν με ακρίβεια το επιλεγμένο σημείο</value>
+    <comment>Help under the curve editor.</comment>
+  </data>
+  <data name="CurveEditor_Now" xml:space="preserve">
+    <value>Τώρα {0} · {1}</value>
+    <comment>Label on the curve editor: {0} = the current temperature, {1} = the current fan speed percentage.</comment>
+  </data>
+  <data name="Fans_Safety.Text" xml:space="preserve">
+    <value>Ασφάλεια και απόκριση</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Fans_Emergency.Header" xml:space="preserve">
+    <value>Θερμοκρασία έκτακτης ανάγκης</value>
+  </data>
+  <data name="Fans_Emergency.Description" xml:space="preserve">
+    <value>Στις λειτουργίες Χειροκίνητο και Καμπύλη, οι ανεμιστήρες περνούν στη μέγιστη ταχύτητα αν οποιοδήποτε τσιπ φτάσει αυτή τη θερμοκρασία.</value>
+    <comment>Custom, Curve = FanMode_Custom, FanMode_Curve.</comment>
+  </data>
+  <data name="Fans_MinimumSpeed.Header" xml:space="preserve">
+    <value>Ελάχιστη ταχύτητα ανεμιστήρα</value>
+  </data>
+  <data name="Fans_MinimumSpeed.Description" xml:space="preserve">
+    <value>Η χαμηλότερη ταχύτητα που θα ζητήσει το OpenSense στις λειτουργίες Χειροκίνητο και Καμπύλη.</value>
+  </data>
+  <data name="Fans_SlowDown.Header" xml:space="preserve">
+    <value>Καθυστέρηση επιβράδυνσης</value>
+    <comment>How many degrees the temperature must fall before the fans slow down (hysteresis).</comment>
+  </data>
+  <data name="Fans_SlowDown.Description" xml:space="preserve">
+    <value>Πόσο πρέπει να πέσει η θερμοκρασία προτού μια καμπύλη επιβραδύνει τους ανεμιστήρες. Οι υψηλότερες τιμές αποτρέπουν τη συνεχή επιτάχυνση και επιβράδυνση των ανεμιστήρων.</value>
+    <comment>'Hunting' = the fans speeding up and slowing down over and over.</comment>
+  </data>
+  <data name="Fans_HandBack.Header" xml:space="preserve">
+    <value>Επιστροφή των ανεμιστήρων όταν σταματά το OpenSense</value>
+  </data>
+  <data name="Fans_HandBack.Description" xml:space="preserve">
+    <value>Όταν η υπηρεσία OpenSense σταματά (ή κλείνει ένα φορητό αντίγραφο), αναλαμβάνει ξανά ο έλεγχος ανεμιστήρων του ίδιου του φορητού.</value>
+  </data>
+  <data name="Lighting_Title.Text" xml:space="preserve">
+    <value>Φωτισμός</value>
+    <comment>Page title: RGB keyboard lighting.</comment>
+  </data>
+  <data name="Lighting_Static.Content" xml:space="preserve">
+    <value>Σταθερά χρώματα</value>
+    <comment>Lighting mode: one fixed colour per keyboard zone.</comment>
+  </data>
+  <data name="Lighting_Effect.Content" xml:space="preserve">
+    <value>Εφέ</value>
+    <comment>Lighting mode: an animated effect.</comment>
+  </data>
+  <data name="Lighting_Zone" xml:space="preserve">
+    <value>Ζώνη {0}</value>
+    <comment>A keyboard lighting zone: {0} = its number.</comment>
+  </data>
+  <data name="Lighting_ZoneColor.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Επιλέξτε χρώμα</value>
+    <comment>Tooltip.</comment>
+  </data>
+  <data name="Lighting_AllZones.Text" xml:space="preserve">
+    <value>Ένα χρώμα για όλες τις ζώνες</value>
+  </data>
+  <data name="Lighting_Speed.Header" xml:space="preserve">
+    <value>Ταχύτητα</value>
+    <comment>Slider label: animation speed.</comment>
+  </data>
+  <data name="Lighting_Direction.Text" xml:space="preserve">
+    <value>Κατεύθυνση</value>
+    <comment>Label: animation direction.</comment>
+  </data>
+  <data name="Lighting_EffectColor.Text" xml:space="preserve">
+    <value>Χρώμα εφέ</value>
+  </data>
+  <data name="Lighting_AnyColor.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Οποιοδήποτε χρώμα</value>
+    <comment>Tooltip of a button that opens a colour picker.</comment>
+  </data>
+  <data name="Effect_Breathing" xml:space="preserve">
+    <value>Αναπνοή</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Neon" xml:space="preserve">
+    <value>Νέον</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Wave" xml:space="preserve">
+    <value>Κύμα</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Shifting" xml:space="preserve">
+    <value>Μετακίνηση</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Zoom" xml:space="preserve">
+    <value>Ζουμ</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Breathing_Description" xml:space="preserve">
+    <value>Το χρώμα σβήνει και ανάβει σταδιακά.</value>
+  </data>
+  <data name="Effect_Neon_Description" xml:space="preserve">
+    <value>Περνά από τα χρώματα του ουράνιου τόξου.</value>
+  </data>
+  <data name="Effect_Wave_Description" xml:space="preserve">
+    <value>Ένα κύμα χρώματος σαρώνει τα πλήκτρα.</value>
+  </data>
+  <data name="Effect_Shifting_Description" xml:space="preserve">
+    <value>Ένα μπλοκ χρώματος διασχίζει το πληκτρολόγιο.</value>
+  </data>
+  <data name="Effect_Zoom_Description" xml:space="preserve">
+    <value>Το χρώμα απλώνεται από το κέντρο.</value>
+  </data>
+  <data name="Direction_Left" xml:space="preserve">
+    <value>Αριστερά</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Direction_Right" xml:space="preserve">
+    <value>Δεξιά</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Direction_Up" xml:space="preserve">
+    <value>Πάνω</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Direction_Down" xml:space="preserve">
+    <value>Κάτω</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Brightness_Off" xml:space="preserve">
+    <value>Ανενεργό</value>
+    <comment>Keyboard backlight brightness: off. Short: shown next to 25%, 50%...</comment>
+  </data>
+  <data name="System_Title.Text" xml:space="preserve">
+    <value>Πληκτρολόγιο και οθόνη</value>
+    <comment>Page title, same as Nav_System.Content.</comment>
+  </data>
+  <data name="System_Keyboard.Text" xml:space="preserve">
+    <value>Πληκτρολόγιο</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="System_BacklightAutoOff.Header" xml:space="preserve">
+    <value>Αυτόματη απενεργοποίηση οπίσθιου φωτισμού</value>
+    <comment>Keyboard backlight setting.</comment>
+  </data>
+  <data name="System_BacklightAutoOff.Description" xml:space="preserve">
+    <value>Απενεργοποίηση του οπίσθιου φωτισμού του πληκτρολογίου μετά από 30 δευτερόλεπτα χωρίς πληκτρολόγηση.</value>
+  </data>
+  <data name="System_WindowsKey.Header" xml:space="preserve">
+    <value>Πλήκτρα Windows και μενού</value>
+    <comment>The Windows logo key and the Menu (application) key.</comment>
+  </data>
+  <data name="System_WindowsKey.Description" xml:space="preserve">
+    <value>Απενεργοποιήστε για να μην διακόπτουν τα πλήκτρα Windows και μενού τα παιχνίδια.</value>
+  </data>
+  <data name="System_StickyKeys.Header" xml:space="preserve">
+    <value>Ασύγχρονα πλήκτρα</value>
+    <comment>The Windows accessibility feature: use its official Windows name in your language.</comment>
+  </data>
+  <data name="System_StickyKeys.Description" xml:space="preserve">
+    <value>Τα πλήκτρα τροποποίησης παραμένουν πατημένα αφού τα αφήσετε. Πατήστε το Shift πέντε φορές για ενεργοποίηση ή απενεργοποίηση.</value>
+  </data>
+  <data name="System_Display.Text" xml:space="preserve">
+    <value>Οθόνη</value>
+    <comment>Section title: the laptop screen.</comment>
+  </data>
+  <data name="System_LcdOverdrive.Header" xml:space="preserve">
+    <value>Overdrive LCD</value>
+    <comment>Screen setting that speeds up pixel response.</comment>
+  </data>
+  <data name="System_LcdOverdrive.Description" xml:space="preserve">
+    <value>Για την ενσωματωμένη οθόνη του φορητού (όχι για εξωτερικές οθόνες): ταχύτερη απόκριση pixel για λιγότερο θάμπωμα κίνησης στα παιχνίδια. Λειτουργεί καλύτερα στον υψηλότερο ρυθμό ανανέωσης της οθόνης. Απενεργοποιήστε το αν βλέπετε φωτοστέφανα πίσω από κινούμενα αντικείμενα.</value>
+  </data>
+  <data name="System_Graphics.Text" xml:space="preserve">
+    <value>Γραφικά</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="System_GpuMode.Header" xml:space="preserve">
+    <value>Λειτουργία GPU</value>
+    <comment>Setting: hybrid or discrete graphics.</comment>
+  </data>
+  <data name="System_GpuMode.Description" xml:space="preserve">
+    <value>Η Υβριδική εξοικονομεί μπαταρία χρησιμοποιώντας την ενσωματωμένη GPU για την οθόνη. Η Αποκλειστική συνδέει απευθείας τη GPU της NVIDIA για την καλύτερη απόδοση στα παιχνίδια. Εφαρμόζεται μετά από επανεκκίνηση.</value>
+    <comment>Hybrid, Discrete = System_GpuHybrid, System_GpuDiscrete.</comment>
+  </data>
+  <data name="System_GpuHybrid.Content" xml:space="preserve">
+    <value>Υβριδική</value>
+    <comment>GPU mode: both graphics chips (NVIDIA Optimus). Short: a segmented button.</comment>
+  </data>
+  <data name="System_GpuDiscrete.Content" xml:space="preserve">
+    <value>Αποκλειστική</value>
+    <comment>GPU mode: only the NVIDIA graphics chip. Short: a segmented button.</comment>
+  </data>
+  <data name="System_GpuRestart.Title" xml:space="preserve">
+    <value>Κάντε επανεκκίνηση για αλλαγή λειτουργίας GPU</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="System_GpuRestart.Message" xml:space="preserve">
+    <value>Η νέα λειτουργία GPU ισχύει μετά την επανεκκίνηση των Windows.</value>
+  </data>
+  <data name="System_RestartNow.Content" xml:space="preserve">
+    <value>Επανεκκίνηση τώρα</value>
+    <comment>Button: restart Windows now.</comment>
+  </data>
+  <data name="System_Power.Text" xml:space="preserve">
+    <value>Ενέργεια</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="System_PowerPlan.Header" xml:space="preserve">
+    <value>Σχέδιο παροχής ενέργειας</value>
+    <comment>Windows power plan setting.</comment>
+  </data>
+  <data name="System_PowerPlan.Description" xml:space="preserve">
+    <value>Το σχέδιο παροχής ενέργειας των Windows που χρησιμοποιείται.</value>
+  </data>
+  <data name="Settings_Title.Text" xml:space="preserve">
+    <value>Ρυθμίσεις</value>
+    <comment>Page title.</comment>
+  </data>
+  <data name="Settings_Startup.Text" xml:space="preserve">
+    <value>Εκκίνηση</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_StartWithWindows.Header" xml:space="preserve">
+    <value>Εκκίνηση με τα Windows</value>
+  </data>
+  <data name="Settings_StartWithWindows.Description" xml:space="preserve">
+    <value>Ανοίγει το OpenSense στην περιοχή ειδοποιήσεων όταν συνδέεστε. Ο έλεγχος ανεμιστήρων δεν εξαρτάται από αυτό.</value>
+    <comment>Notification area = the Windows system tray.</comment>
+  </data>
+  <data name="Settings_NitroSenseKey.Header" xml:space="preserve">
+    <value>Άνοιγμα με το πλήκτρο NitroSense</value>
+    <comment>NitroSense is Acer's app; the laptop has a key for it. Keep the name.</comment>
+  </data>
+  <data name="Settings_NitroSenseKey.Description" xml:space="preserve">
+    <value>Το πλήκτρο NitroSense του πληκτρολογίου ανοίγει το OpenSense, όπως άνοιγε το NitroSense. Λειτουργεί όσο το OpenSense βρίσκεται στην περιοχή ειδοποιήσεων.</value>
+  </data>
+  <data name="Settings_StartMinimized.Header" xml:space="preserve">
+    <value>Εκκίνηση ελαχιστοποιημένο στην περιοχή ειδοποιήσεων</value>
+  </data>
+  <data name="Settings_CloseToTray.Header" xml:space="preserve">
+    <value>Συνέχιση εκτέλεσης όταν κλείνει το παράθυρο</value>
+  </data>
+  <data name="Settings_CloseToTray.Description" xml:space="preserve">
+    <value>Όταν κλείνετε το παράθυρο, το εικονίδιο παραμένει στην περιοχή ειδοποιήσεων. Κάντε έξοδο από το μενού του.</value>
+  </data>
+  <data name="Settings_Appearance.Text" xml:space="preserve">
+    <value>Εμφάνιση</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_Language.Header" xml:space="preserve">
+    <value>Γλώσσα</value>
+    <comment>Setting: the app's language.</comment>
+  </data>
+  <data name="Language_System" xml:space="preserve">
+    <value>Χρήση ρύθμισης συστήματος</value>
+    <comment>First entry in the language list: follow the Windows language.</comment>
+  </data>
+  <data name="Settings_LanguageRestart.Title" xml:space="preserve">
+    <value>Κάντε επανεκκίνηση για αλλαγή γλώσσας</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Settings_LanguageRestart.Message" xml:space="preserve">
+    <value>Το OpenSense εμφανίζει τη νέα γλώσσα μετά την επανεκκίνηση.</value>
+  </data>
+  <data name="Settings_LanguageRestartNow.Content" xml:space="preserve">
+    <value>Επανεκκίνηση τώρα</value>
+    <comment>Button: restart OpenSense now.</comment>
+  </data>
+  <data name="Settings_Theme.Header" xml:space="preserve">
+    <value>Θέμα</value>
+    <comment>Setting: light or dark colours.</comment>
+  </data>
+  <data name="Theme_System" xml:space="preserve">
+    <value>Χρήση ρύθμισης συστήματος</value>
+    <comment>Theme choice: follow Windows.</comment>
+  </data>
+  <data name="Theme_Light" xml:space="preserve">
+    <value>Ανοιχτόχρωμο</value>
+    <comment>Theme choice.</comment>
+  </data>
+  <data name="Theme_Dark" xml:space="preserve">
+    <value>Σκουρόχρωμο</value>
+    <comment>Theme choice.</comment>
+  </data>
+  <data name="Settings_Fahrenheit.Header" xml:space="preserve">
+    <value>Εμφάνιση θερμοκρασιών σε Φαρενάιτ</value>
+  </data>
+  <data name="Settings_Interval.Header" xml:space="preserve">
+    <value>Διάστημα ενημέρωσης</value>
+    <comment>Setting: how often sensors are read.</comment>
+  </data>
+  <data name="Settings_Interval.Description" xml:space="preserve">
+    <value>Πόσο συχνά διαβάζονται οι αισθητήρες και ενημερώνονται οι καμπύλες ανεμιστήρων, για όλους σε αυτόν τον υπολογιστή.</value>
+  </data>
+  <data name="Settings_Laptop.Text" xml:space="preserve">
+    <value>Ο φορητός σας</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_UnknownModel" xml:space="preserve">
+    <value>Φορητός υπολογιστής Acer</value>
+    <comment>Shown when the laptop's model name is unknown.</comment>
+  </data>
+  <data name="Settings_Bios" xml:space="preserve">
+    <value>BIOS {0}</value>
+    <comment>{0} = the BIOS version.</comment>
+  </data>
+  <data name="Settings_BiosUnknown" xml:space="preserve">
+    <value>Άγνωστη έκδοση BIOS</value>
+  </data>
+  <data name="Settings_Sensors.Header" xml:space="preserve">
+    <value>Αισθητήρες θερμοκρασίας</value>
+  </data>
+  <data name="Settings_SensorSources" xml:space="preserve">
+    <value>CPU: {0}
+GPU: {1}</value>
+    <comment>Two lines: {0}, {1} = where each temperature comes from (Sensor_* texts).</comment>
+  </data>
+  <data name="Sensor_IntelPackage" xml:space="preserve">
+    <value>Αισθητήρας πακέτου Intel (TjMax {0} °C)</value>
+    <comment>The Intel CPU's own temperature sensor. {0} = a temperature. Keep 'TjMax'.</comment>
+  </data>
+  <data name="Sensor_AmdTctl" xml:space="preserve">
+    <value>Αισθητήρας Tctl της AMD</value>
+    <comment>The AMD CPU's own temperature sensor. Keep 'Tctl'.</comment>
+  </data>
+  <data name="Sensor_NvidiaDriver" xml:space="preserve">
+    <value>Πρόγραμμα οδήγησης NVIDIA</value>
+    <comment>Temperature read from the NVIDIA graphics driver.</comment>
+  </data>
+  <data name="Sensor_EmbeddedController" xml:space="preserve">
+    <value>Ενσωματωμένος ελεγκτής</value>
+    <comment>The laptop's embedded controller (EC) chip, which also reports temperatures.</comment>
+  </data>
+  <data name="Sensor_EmbeddedControllerBecause" xml:space="preserve">
+    <value>Ενσωματωμένος ελεγκτής ({0})</value>
+    <comment>{0} = why the chip's own sensor isn't used (one of the SensorProblem_* texts).</comment>
+  </data>
+  <data name="SensorProblem_NotX86Cpu" xml:space="preserve">
+    <value>η CPU δεν είναι x86</value>
+    <comment>Reason in parentheses after 'Embedded controller': starts lowercase in English.</comment>
+  </data>
+  <data name="SensorProblem_UnsupportedCpuVendor" xml:space="preserve">
+    <value>μη υποστηριζόμενος κατασκευαστής CPU {0}</value>
+    <comment>Reason in parentheses. {0} = a CPU vendor code such as 'GenuineIntel'.</comment>
+  </data>
+  <data name="SensorProblem_NoPackageSensor" xml:space="preserve">
+    <value>αυτή η CPU Intel δεν διαθέτει αισθητήρα θερμοκρασίας πακέτου</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_ImplausibleTjMax" xml:space="preserve">
+    <value>η CPU ανέφερε απίθανη τιμή TjMax {0} °C</value>
+    <comment>Reason in parentheses. Keep 'TjMax'. {0} = a number.</comment>
+  </data>
+  <data name="SensorProblem_NoReading" xml:space="preserve">
+    <value>ο αισθητήρας δεν απάντησε</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_PciLockUnavailable" xml:space="preserve">
+    <value>δεν ήταν δυνατό το άνοιγμα του κοινόχρηστου κλειδώματος PCI: {0}</value>
+    <comment>Reason in parentheses. {0} = a technical error message.</comment>
+  </data>
+  <data name="SensorProblem_NoNvidiaDriver" xml:space="preserve">
+    <value>δεν βρέθηκε πρόγραμμα οδήγησης NVIDIA</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_NvmlTooOld" xml:space="preserve">
+    <value>το πρόγραμμα οδήγησης NVIDIA είναι πολύ παλιό</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_PawnIONotInstalled" xml:space="preserve">
+    <value>το PawnIO δεν είναι εγκατεστημένο</value>
+    <comment>Reason in parentheses. PawnIO is a driver's name: keep it.</comment>
+  </data>
+  <data name="SensorProblem_PawnIOUnavailable" xml:space="preserve">
+    <value>δεν ήταν δυνατό το άνοιγμα του PawnIO ({0})</value>
+    <comment>Reason in parentheses. {0} = an error code.</comment>
+  </data>
+  <data name="SensorProblem_PawnIOModuleRefused" xml:space="preserve">
+    <value>το PawnIO απέρριψε μια λειτουργική μονάδα ({0})</value>
+    <comment>Reason in parentheses. {0} = a module name and an error code.</comment>
+  </data>
+  <data name="Settings_GetPawnIO.Content" xml:space="preserve">
+    <value>Λήψη του PawnIO για ακριβείς μετρήσεις CPU</value>
+    <comment>Link. PawnIO is a driver's name: keep it.</comment>
+  </data>
+  <data name="Settings_OperatingModes.Header" xml:space="preserve">
+    <value>Λειτουργίες</value>
+    <comment>Setting: use Acer's operating modes (Eco, Quiet, Balanced...).</comment>
+  </data>
+  <data name="Settings_OperatingModes_Supported" xml:space="preserve">
+    <value>{0}, όπως τις προσφέρει το λογισμικό της Acer σε αυτό το μοντέλο. {1}</value>
+    <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
+  </data>
+  <data name="Settings_OperatingModes_Unused" xml:space="preserve">
+    <value>Το υλικολογισμικό σας αναφέρει {0}, αλλά το λογισμικό της Acer δεν τις χρησιμοποιεί σε αυτό το μοντέλο και ίσως να μην αλλάζουν τίποτα. {1}</value>
+    <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
+  </data>
+  <data name="Settings_OperatingModes_CoolBoost" xml:space="preserve">
+    <value>Όσο είναι απενεργοποιημένες, είναι διαθέσιμο το CoolBoost.</value>
+    <comment>They = the operating modes.</comment>
+  </data>
+  <data name="Settings_OperatingModes_Default" xml:space="preserve">
+    <value>Όσο είναι απενεργοποιημένες, ο φορητός παραμένει στην προεπιλεγμένη λειτουργία του.</value>
+    <comment>They = the operating modes.</comment>
+  </data>
+  <data name="Settings_Updates.Text" xml:space="preserve">
+    <value>Ενημερώσεις</value>
+    <comment>Section title: app updates.</comment>
+  </data>
+  <data name="Settings_CheckNow.Content" xml:space="preserve">
+    <value>Έλεγχος τώρα</value>
+    <comment>Button: check for updates now.</comment>
+  </data>
+  <data name="Settings_AutoUpdate.Header" xml:space="preserve">
+    <value>Αυτόματος έλεγχος για ενημερώσεις</value>
+  </data>
+  <data name="Settings_AutoUpdate.Description" xml:space="preserve">
+    <value>Μία φορά την ημέρα, από τις εκδόσεις του έργου στο GitHub. Πριν από την εγκατάσταση, οι λήψεις ελέγχονται με το άθροισμα ελέγχου SHA-256 που δημοσιεύει το GitHub.</value>
+  </data>
+  <data name="Settings_Troubleshooting.Text" xml:space="preserve">
+    <value>Αντιμετώπιση προβλημάτων</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_Diagnostics.Header" xml:space="preserve">
+    <value>Διαγνωστικά</value>
+  </data>
+  <data name="Settings_Diagnostics.Description" xml:space="preserve">
+    <value>Ακατέργαστες απαντήσεις του υλικολογισμικού από τον εντοπισμό δυνατοτήτων. Συμπεριλάβετέ τες όταν αναφέρετε ένα πρόβλημα ή ένα νέο μοντέλο.</value>
+    <comment>The copied diagnostics stay in English for the developers.</comment>
+  </data>
+  <data name="Settings_Copy.Content" xml:space="preserve">
+    <value>Αντιγραφή</value>
+    <comment>Button: copy the diagnostics to the clipboard.</comment>
+  </data>
+  <data name="Settings_ServiceLogs.Content" xml:space="preserve">
+    <value>Αρχεία καταγραφής υπηρεσίας</value>
+    <comment>Button: opens the background service's log folder.</comment>
+  </data>
+  <data name="Settings_AppLogs.Content" xml:space="preserve">
+    <value>Αρχεία καταγραφής εφαρμογής</value>
+    <comment>Button: opens the app's log folder.</comment>
+  </data>
+  <data name="Settings_About.Text" xml:space="preserve">
+    <value>Πληροφορίες</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_AboutOpenSense.Description" xml:space="preserve">
+    <value>Έλεγχος ανεμιστήρων, απόδοσης και φωτισμού ανοιχτού κώδικα για φορητούς Acer Nitro και Predator.</value>
+  </data>
+  <data name="Settings_Version" xml:space="preserve">
+    <value>Έκδοση {0}</value>
+    <comment>{0} = a version number.</comment>
+  </data>
+  <data name="Settings_Mode_Portable" xml:space="preserve">
+    <value>Φορητό αντίγραφο: εκτελείται ως διαχειριστής και ελέγχει το ίδιο τον φορητό όσο είναι ανοιχτό.</value>
+  </data>
+  <data name="Settings_Mode_Installed" xml:space="preserve">
+    <value>Εγκατεστημένο: η υπηρεσία OpenSense ελέγχει τον φορητό από την εκκίνηση, είτε αυτό το παράθυρο είναι ανοιχτό είτε όχι.</value>
+  </data>
+  <data name="Settings_Trademarks.Text" xml:space="preserve">
+    <value>Το OpenSense είναι ανεξάρτητο έργο και δεν συνδέεται με την Acer ούτε έχει την έγκρισή της. Τα Acer, Nitro, Predator και NitroSense είναι εμπορικά σήματα της Acer Inc. Κυκλοφορεί με την άδεια GNU General Public License v3.0 ή νεότερη.</value>
+    <comment>Legal notice: translate faithfully and keep the names.</comment>
+  </data>
+  <data name="Update_Install.Content" xml:space="preserve">
+    <value>Ενημέρωση τώρα</value>
+    <comment>Button: download and install the update.</comment>
+  </data>
+  <data name="Update_WhatsNew.Content" xml:space="preserve">
+    <value>Τι νέο υπάρχει</value>
+    <comment>Link to the release notes.</comment>
+  </data>
+  <data name="Update_Skip.Content" xml:space="preserve">
+    <value>Παράλειψη αυτής της έκδοσης</value>
+    <comment>Link.</comment>
+  </data>
+  <data name="Update_BannerTitle" xml:space="preserve">
+    <value>Το OpenSense {0} είναι διαθέσιμο</value>
+    <comment>{0} = a version number.</comment>
+  </data>
+  <data name="Update_Downloading" xml:space="preserve">
+    <value>Λήψη… {0}</value>
+    <comment>{0} = progress as a percentage.</comment>
+  </data>
+  <data name="Update_NoAsset" xml:space="preserve">
+    <value>Αυτή η έκδοση δεν έχει λήψη για αυτό το αντίγραφο. Δείτε τη σελίδα της έκδοσης.</value>
+  </data>
+  <data name="Update_InstallerHint" xml:space="preserve">
+    <value>Επιλέξτε «Ενημέρωση τώρα» για να την εγκαταστήσετε και να ανοίξει ξανά το OpenSense (τα Windows ζητούν άδεια).</value>
+    <comment>'Update now' = Update_Install.Content.</comment>
+  </data>
+  <data name="Update_PortableHint" xml:space="preserve">
+    <value>Επιλέξτε «Ενημέρωση τώρα» για να αντικαταστήσετε αυτό το φορητό αντίγραφο και να ανοίξει ξανά.</value>
+    <comment>'Update now' = Update_Install.Content.</comment>
+  </data>
+  <data name="Update_Checking" xml:space="preserve">
+    <value>Έλεγχος για ενημερώσεις…</value>
+  </data>
+  <data name="Update_UpToDate" xml:space="preserve">
+    <value>Ενημερωμένο. {0}</value>
+    <comment>{0} = Update_LastChecked or Update_NotChecked.</comment>
+  </data>
+  <data name="Update_Latest" xml:space="preserve">
+    <value>Το {0} είναι η πιο πρόσφατη έκδοση.</value>
+    <comment>{0} = 'OpenSense' and a version number.</comment>
+  </data>
+  <data name="Update_Skipped" xml:space="preserve">
+    <value>Η έκδοση {0} παραλείφθηκε. {1}</value>
+    <comment>{0} = a version number; {1} = Update_LastChecked or Update_NotChecked.</comment>
+  </data>
+  <data name="Update_Available" xml:space="preserve">
+    <value>Η έκδοση {0} είναι διαθέσιμη. {1}</value>
+    <comment>{0} = a version number; {1} = Update_LastChecked or Update_NotChecked.</comment>
+  </data>
+  <data name="Update_LastChecked" xml:space="preserve">
+    <value>Τελευταίος έλεγχος: {0}.</value>
+    <comment>{0} = a date and time.</comment>
+  </data>
+  <data name="Update_NotChecked" xml:space="preserve">
+    <value>Δεν έχει γίνει ακόμα έλεγχος.</value>
+  </data>
+  <data name="Update_OpenToUpdate" xml:space="preserve">
+    <value>Ανοίξτε το OpenSense για ενημέρωση.</value>
+    <comment>Notification balloon.</comment>
+  </data>
+  <data name="Update_CheckFailed" xml:space="preserve">
+    <value>Δεν ήταν δυνατός ο έλεγχος για ενημερώσεις: {0}</value>
+    <comment>{0} = a technical error message.</comment>
+  </data>
+  <data name="Update_Cancelled" xml:space="preserve">
+    <value>Η ενημέρωση ακυρώθηκε.</value>
+  </data>
+  <data name="Update_Failed" xml:space="preserve">
+    <value>Η ενημέρωση απέτυχε: {0}</value>
+    <comment>{0} = the reason, possibly a technical error message.</comment>
+  </data>
+  <data name="Update_NoDigest" xml:space="preserve">
+    <value>Το GitHub δεν δημοσίευσε άθροισμα ελέγχου SHA-256 για τη λήψη, επομένως δεν μπορεί να επαληθευτεί.</value>
+  </data>
+  <data name="Update_DigestMismatch" xml:space="preserve">
+    <value>Η λήψη δεν ταιριάζει με το άθροισμα ελέγχου SHA-256 που δημοσίευσε το GitHub.</value>
+  </data>
+  <data name="Update_NoExecutable" xml:space="preserve">
+    <value>Η φορητή ενημέρωση δεν περιέχει το OpenSense.exe.</value>
+  </data>
+  <data name="Update_OldCopyRunning" xml:space="preserve">
+    <value>Το OpenSense που εκτελείται δεν έκλεισε.</value>
+  </data>
+  <data name="PortableUpdate_Caption" xml:space="preserve">
+    <value>Ενημέρωση OpenSense</value>
+    <comment>Message box title.</comment>
+  </data>
+  <data name="PortableUpdate_Failed" xml:space="preserve">
+    <value>Δεν ήταν δυνατή η ενημέρωση του OpenSense, οπότε διατηρήθηκε η προηγούμενη έκδοση.
+
+{0}
+
+Λεπτομέρειες: {1}</value>
+    <comment>{0} = the reason; {1} = a log file path.</comment>
+  </data>
+  <data name="Tray_Open" xml:space="preserve">
+    <value>Άνοιγμα του OpenSense</value>
+    <comment>Menu item of the notification area icon.</comment>
+  </data>
+  <data name="Tray_FanMode" xml:space="preserve">
+    <value>Λειτουργία ανεμιστήρων</value>
+    <comment>Submenu of the notification area icon.</comment>
+  </data>
+  <data name="Tray_OperatingMode" xml:space="preserve">
+    <value>Λειτουργία</value>
+    <comment>Submenu of the notification area icon.</comment>
+  </data>
+  <data name="Tray_Exit" xml:space="preserve">
+    <value>Έξοδος</value>
+    <comment>Menu item: quit OpenSense.</comment>
+  </data>
+</root>

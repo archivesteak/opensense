@@ -34,7 +34,7 @@ public sealed record LaunchOptions
     /// <summary>The portable folder <see cref="MaintenanceCommand.ApplyUpdate"/> updates.</summary>
     public string? UpdateTarget { get; init; }
 
-    /// <summary>A process to wait for before updating (the running old version).</summary>
+    /// <summary>A process to wait for before starting: the old copy, when updating or restarting.</summary>
     public int? WaitForProcess { get; init; }
 
     public static LaunchOptions Parse(IReadOnlyList<string> args)
@@ -67,6 +67,7 @@ public sealed record LaunchOptions
         var parts = new List<string>();
         if (Autostart) parts.Add("--autostart");
         if (Page is not null) parts.Add($"--page {Page}");
+        if (WaitForProcess is { } pid) parts.Add(string.Create(CultureInfo.InvariantCulture, $"--wait {pid}"));
         return string.Join(' ', parts);
     }
 }

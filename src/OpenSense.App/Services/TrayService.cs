@@ -2,9 +2,12 @@ using System.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using H.NotifyIcon;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media.Imaging;
+using OpenSense.App.Localization;
 using OpenSense.App.ViewModels;
 using OpenSense.Core.Control;
+using OpenSense.Core.Hardware;
 
 namespace OpenSense.App.Services;
 
@@ -49,10 +52,17 @@ public sealed class TrayService(MonitorViewModel monitor, FanControlViewModel fa
     private MenuFlyout BuildMenu()
     {
         var menu = new MenuFlyout();
-        menu.Items.Add(Item("Open OpenSense", () => App.Current.ShowMainWindow()));
+        if (AppLanguage.IsRightToLeft)
+        {
+            // The menu opens in its own window, outside the main window's right-to-left layout.
+            var presenter = new Style(typeof(MenuFlyoutPresenter));
+            presenter.Setters.Add(new Setter(FrameworkElement.FlowDirectionProperty, FlowDirection.RightToLeft));
+            menu.MenuFlyoutPresenterStyle = presenter;
+        }
+        menu.Items.Add(Item(Strings.Get("Tray_Open"), () => App.Current.ShowMainWindow()));
         menu.Items.Add(new MenuFlyoutSeparator());
 
-        var fanMenu = new MenuFlyoutSubItem { Text = "Fan mode" };
+        var fanMenu = new MenuFlyoutSubItem { Text = Strings.Get("Tray_FanMode") };
         for (var i = 0; i < FanControlViewModel.ModeNames.Count; i++)
         {
             var index = i;
@@ -63,7 +73,7 @@ public sealed class TrayService(MonitorViewModel monitor, FanControlViewModel fa
         }
         menu.Items.Add(fanMenu);
 
-        _operatingModeMenu = new MenuFlyoutSubItem { Text = "Operating mode" };
+        _operatingModeMenu = new MenuFlyoutSubItem { Text = Strings.Get("Tray_OperatingMode") };
         menu.Items.Add(_operatingModeMenu);
 
         _coolBoostItem = new ToggleMenuFlyoutItem { Text = "CoolBoost" };
@@ -71,7 +81,7 @@ public sealed class TrayService(MonitorViewModel monitor, FanControlViewModel fa
         menu.Items.Add(_coolBoostItem);
 
         menu.Items.Add(new MenuFlyoutSeparator());
-        menu.Items.Add(Item("Exit", () => App.Current.Quit()));
+        menu.Items.Add(Item(Strings.Get("Tray_Exit"), () => App.Current.Quit()));
         menu.Opening += (_, _) => SyncMenu();
         SyncMenu();
         return menu;
@@ -91,13 +101,13 @@ public sealed class TrayService(MonitorViewModel monitor, FanControlViewModel fa
 
         if (_coolBoostItem is not null)
         {
-            _coolBoostItem.Visibility = fans.CoolBoostAvailable ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
+            _coolBoostItem.Visibility = fans.CoolBoostAvailable ? Visibility.Visible : Visibility.Collapsed;
             _coolBoostItem.IsChecked = fans.CoolBoost;
         }
 
         if (_operatingModeMenu is not null)
         {
-            _operatingModeMenu.Visibility = fans.OperatingModesAvailable ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
+            _operatingModeMenu.Visibility = fans.OperatingModesAvailable ? Visibility.Visible : Visibility.Collapsed;
             _operatingModeMenu.Items.Clear();
             for (var i = 0; i < fans.OperatingModes.Count; i++)
             {
@@ -114,15 +124,10 @@ public sealed class TrayService(MonitorViewModel monitor, FanControlViewModel fa
         if (e.PropertyName != nameof(MonitorViewModel.Latest) || _icon is null || monitor.Latest is not { } t)
             return;
 
-        var mode = t.EffectiveMode switch
-        {
-            FanControlMode.Max => "Max",
-            FanControlMode.Custom => "Custom",
-            FanControlMode.Curve => "Curve",
-            _ => "Auto",
-        };
-        var fanText = string.Join("  ", monitor.Fans.Select(f => $"{f.Name.Replace(" fan", "", StringComparison.Ordinal)} {f.RpmText}"));
-        var tooltip = $"OpenSense — {mode}\nCPU {monitor.CpuTemperatureText}  GPU {monitor.GpuTemperatureText}\n{fanText}";
+        var cpu = Names.Chip(FanId.Cpu);
+        var gpu = Names.Chip(FanId.Gpu);
+        var fanText = string.Join("  ", monitor.Fans.Select(f => $"{Names.Chip(f.Id)} {f.RpmText}"));
+        var tooltip = $"OpenSense — {Names.FanMode(t.EffectiveMode)}\n{cpu} {monitor.CpuTemperatureText}  {gpu} {monitor.GpuTemperatureText}\n{fanText}";
         if (_icon.ToolTipText != tooltip)
             _icon.ToolTipText = tooltip;
     }

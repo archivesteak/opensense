@@ -11,8 +11,6 @@ namespace OpenSense.Core.Monitoring;
 /// </summary>
 internal sealed unsafe class PawnIOModule : IDisposable
 {
-    public const string NotInstalledMessage = "PawnIO is not installed.";
-
     private static readonly Lazy<Library?> Shared = new(Library.TryLoad);
 
     private readonly Library _library;
@@ -25,11 +23,11 @@ internal sealed unsafe class PawnIOModule : IDisposable
     }
 
     /// <summary>Opens an executor and loads the embedded module <paramref name="name"/> (e.g. "IntelMSR").</summary>
-    public static PawnIOModule? TryOpen(string name, Action<string>? log)
+    public static PawnIOModule? TryOpen(string name, Action<SensorProblem, string?>? fail)
     {
         if (Shared.Value is not { } library)
         {
-            log?.Invoke(NotInstalledMessage);
+            fail?.Invoke(SensorProblem.PawnIONotInstalled, null);
             return null;
         }
 
@@ -45,7 +43,7 @@ internal sealed unsafe class PawnIOModule : IDisposable
         var hr = library.Open(&handle);
         if (hr < 0)
         {
-            log?.Invoke($"PawnIO could not be opened (0x{hr:X8}).");
+            fail?.Invoke(SensorProblem.PawnIOUnavailable, $"0x{hr:X8}");
             return null;
         }
         fixed (byte* data = blob)
@@ -53,7 +51,7 @@ internal sealed unsafe class PawnIOModule : IDisposable
         if (hr < 0)
         {
             library.Close(handle);
-            log?.Invoke($"PawnIO refused module {name} (0x{hr:X8}).");
+            fail?.Invoke(SensorProblem.PawnIOModuleRefused, $"{name}, 0x{hr:X8}");
             return null;
         }
         return new PawnIOModule(library, handle);

@@ -14,14 +14,13 @@
             MaxWidth="{StaticResource PageMaxWidth}"
             Padding="{StaticResource PagePadding}"
             Spacing="16">
-            <TextBlock Style="{StaticResource PageTitleStyle}" Text="Dashboard" />
+            <TextBlock x:Uid="Dashboard_Title" Style="{StaticResource PageTitleStyle}" />
 
             <InfoBar
-                Title="Fans handed back to the firmware"
+                x:Uid="Dashboard_Failsafe"
                 IsClosable="False"
                 IsOpen="{x:Bind Fans.Failsafe, Mode=OneWay}"
                 Visibility="{x:Bind Fans.Failsafe, Mode=OneWay}"
-                Message="The CPU temperature stopped reporting, so the laptop is controlling its own fans until it does again."
                 Severity="Warning" />
 
             <!-- Temperatures and fans -->
@@ -36,7 +35,7 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Grid Margin="0,0,0,4">
-                            <TextBlock Style="{StaticResource CaptionMutedStyle}" Text="CPU temperature" />
+                            <TextBlock x:Uid="Dashboard_CpuTemperature" Style="{StaticResource CaptionMutedStyle}" />
                             <Border
                                 Width="8"
                                 Height="8"
@@ -81,7 +80,7 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Grid Margin="0,0,0,4">
-                            <TextBlock Style="{StaticResource CaptionMutedStyle}" Text="GPU temperature" />
+                            <TextBlock x:Uid="Dashboard_GpuTemperature" Style="{StaticResource CaptionMutedStyle}" />
                             <Border
                                 Width="8"
                                 Height="8"
@@ -123,7 +122,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <TextBlock Style="{StaticResource CaptionMutedStyle}" Text="CPU fan" />
+                        <TextBlock x:Uid="Dashboard_CpuFan" Style="{StaticResource CaptionMutedStyle}" />
                         <Grid Grid.Row="1" ColumnSpacing="12">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -131,7 +130,7 @@
                             </Grid.ColumnDefinitions>
                             <StackPanel VerticalAlignment="Center">
                                 <TextBlock Style="{StaticResource TileValueStyle}" Text="{x:Bind helpers:Units.RpmNumber(Monitor.CpuFan.Rpm), Mode=OneWay, FallbackValue='--'}" />
-                                <TextBlock Style="{StaticResource CaptionMutedStyle}" Text="{x:Bind local:DashboardPage.RpmDetail(Monitor.CpuFan.DutyText), Mode=OneWay, FallbackValue='rpm'}" />
+                                <TextBlock Style="{StaticResource CaptionMutedStyle}" Text="{x:Bind local:DashboardPage.RpmDetail(Monitor.CpuFan.DutyText), Mode=OneWay, FallbackValue=''}" />
                                 <TextBlock
                                     Style="{StaticResource CaptionMutedStyle}"
                                     Text="{x:Bind Monitor.CpuFan.BehaviorText, Mode=OneWay, FallbackValue=''}"
@@ -158,7 +157,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <TextBlock Style="{StaticResource CaptionMutedStyle}" Text="GPU fan" />
+                        <TextBlock x:Uid="Dashboard_GpuFan" Style="{StaticResource CaptionMutedStyle}" />
                         <Grid Grid.Row="1" ColumnSpacing="12">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -166,7 +165,7 @@
                             </Grid.ColumnDefinitions>
                             <StackPanel VerticalAlignment="Center">
                                 <TextBlock Style="{StaticResource TileValueStyle}" Text="{x:Bind helpers:Units.RpmNumber(Monitor.GpuFan.Rpm), Mode=OneWay, FallbackValue='--'}" />
-                                <TextBlock Style="{StaticResource CaptionMutedStyle}" Text="{x:Bind local:DashboardPage.RpmDetail(Monitor.GpuFan.DutyText), Mode=OneWay, FallbackValue='rpm'}" />
+                                <TextBlock Style="{StaticResource CaptionMutedStyle}" Text="{x:Bind local:DashboardPage.RpmDetail(Monitor.GpuFan.DutyText), Mode=OneWay, FallbackValue=''}" />
                                 <TextBlock
                                     Style="{StaticResource CaptionMutedStyle}"
                                     Text="{x:Bind Monitor.GpuFan.BehaviorText, Mode=OneWay, FallbackValue=''}"
@@ -193,16 +192,12 @@
 
                 <Border Style="{StaticResource CardStyle}">
                     <StackPanel Spacing="12">
-                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Cooling" />
+                        <TextBlock x:Uid="Dashboard_Cooling" Style="{StaticResource SubtitleTextBlockStyle}" />
                         <toolkit:Segmented
                             HorizontalAlignment="Stretch"
                             IsEnabled="{x:Bind Fans.HasFans, Mode=OneWay}"
-                            SelectedIndex="{x:Bind Fans.ModeIndex, Mode=TwoWay}">
-                            <toolkit:SegmentedItem Content="Auto" />
-                            <toolkit:SegmentedItem Content="Max" />
-                            <toolkit:SegmentedItem Content="Custom" />
-                            <toolkit:SegmentedItem Content="Curve" />
-                        </toolkit:Segmented>
+                            ItemsSource="{x:Bind vm:FanControlViewModel.ModeNames}"
+                            SelectedIndex="{x:Bind Fans.ModeIndex, Mode=TwoWay}" />
                         <TextBlock
                             Style="{StaticResource CaptionMutedStyle}"
                             Text="{x:Bind Fans.ModeDescription, Mode=OneWay}"
@@ -216,7 +211,7 @@
                         <Grid Visibility="{x:Bind Fans.CoolBoostAvailable, Mode=OneWay}">
                             <StackPanel>
                                 <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="CoolBoost" />
-                                <TextBlock Style="{StaticResource CaptionMutedStyle}" Text="Lets Auto mode spin the fans faster." />
+                                <TextBlock x:Uid="Dashboard_CoolBoost" Style="{StaticResource CaptionMutedStyle}" />
                             </StackPanel>
                             <ToggleSwitch
                                 MinWidth="0"
@@ -226,15 +221,15 @@
                                 OnContent="" />
                         </Grid>
                         <HyperlinkButton
+                            x:Uid="Dashboard_OpenFans"
                             Padding="0"
-                            Click="OnOpenFans"
-                            Content="Custom speeds and curves" />
+                            Click="OnOpenFans" />
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Column="1" Style="{StaticResource CardStyle}">
                     <StackPanel Spacing="12">
-                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Performance" />
+                        <TextBlock x:Uid="Dashboard_Performance" Style="{StaticResource SubtitleTextBlockStyle}" />
 
                         <StackPanel Spacing="12" Visibility="{x:Bind Fans.OperatingModesAvailable, Mode=OneWay}">
                             <toolkit:Segmented
@@ -260,9 +255,9 @@
 
                         <StackPanel Spacing="8" Visibility="{x:Bind System.PowerPlansAvailable, Mode=OneWay}">
                             <ComboBox
+                                x:Uid="Dashboard_PowerPlan"
                                 HorizontalAlignment="Stretch"
                                 DisplayMemberPath="Name"
-                                Header="Windows power plan"
                                 ItemsSource="{x:Bind System.PowerPlans}"
                                 SelectedItem="{x:Bind System.SelectedPowerPlan, Mode=TwoWay}" />
                         </StackPanel>
@@ -273,11 +268,11 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <StackPanel>
-                                <TextBlock Style="{StaticResource CaptionMutedStyle}" Text="Power source" />
+                                <TextBlock x:Uid="Dashboard_PowerSource" Style="{StaticResource CaptionMutedStyle}" />
                                 <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="{x:Bind local:DashboardPage.PowerSource(Monitor.OnAcPower), Mode=OneWay}" />
                             </StackPanel>
                             <StackPanel Grid.Column="1" Visibility="{x:Bind Monitor.HasSystemTemperature, Mode=OneWay}">
-                                <TextBlock Style="{StaticResource CaptionMutedStyle}" Text="System temperature" />
+                                <TextBlock x:Uid="Dashboard_SystemTemperature" Style="{StaticResource CaptionMutedStyle}" />
                                 <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="{x:Bind Monitor.SystemTemperatureText, Mode=OneWay}" />
                             </StackPanel>
                         </Grid>

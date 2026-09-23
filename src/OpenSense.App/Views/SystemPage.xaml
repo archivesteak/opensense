@@ -11,68 +11,61 @@
             MaxWidth="{StaticResource PageMaxWidth}"
             Padding="{StaticResource PagePadding}"
             Spacing="4">
-            <TextBlock Style="{StaticResource PageTitleStyle}" Text="Keyboard &amp; display" />
+            <TextBlock x:Uid="System_Title" Style="{StaticResource PageTitleStyle}" />
 
-            <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="Keyboard" />
+            <TextBlock x:Uid="System_Keyboard" Style="{StaticResource SectionHeaderStyle}" />
             <toolkit:SettingsCard
-                Description="Turn the keyboard backlight off after 30 seconds without typing."
-                Header="Backlight auto-off"
+                x:Uid="System_BacklightAutoOff"
                 HeaderIcon="{ui:FontIcon Glyph=&#xE706;}"
                 Visibility="{x:Bind ViewModel.BacklightAutoOffAvailable, Mode=OneWay}">
                 <ToggleSwitch IsOn="{x:Bind ViewModel.BacklightAutoOff, Mode=TwoWay}" />
             </toolkit:SettingsCard>
             <toolkit:SettingsCard
-                Description="Turn off to stop the Windows and Menu keys from interrupting games."
-                Header="Windows and Menu keys"
+                x:Uid="System_WindowsKey"
                 HeaderIcon="{ui:FontIcon Glyph=&#xE7FC;}"
                 Visibility="{x:Bind ViewModel.WindowsKeyAvailable, Mode=OneWay}">
                 <ToggleSwitch IsOn="{x:Bind ViewModel.WindowsKey, Mode=TwoWay}" />
             </toolkit:SettingsCard>
             <toolkit:SettingsCard
-                Description="Modifier keys stay pressed after you release them; press Shift five times to toggle."
-                Header="Sticky Keys"
+                x:Uid="System_StickyKeys"
                 HeaderIcon="{ui:FontIcon Glyph=&#xE765;}">
                 <ToggleSwitch IsOn="{x:Bind ViewModel.StickyKeysOn, Mode=TwoWay}" />
             </toolkit:SettingsCard>
 
             <StackPanel Spacing="4" Visibility="{x:Bind ViewModel.LcdOverdriveAvailable, Mode=OneWay}">
-                <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="Display" />
+                <TextBlock x:Uid="System_Display" Style="{StaticResource SectionHeaderStyle}" />
                 <toolkit:SettingsCard
-                    Description="For the laptop's built-in screen (not external monitors): faster pixel response for less motion blur in games. Works best at the screen's highest refresh rate; turn off if you see halos behind moving objects."
-                    Header="LCD overdrive"
+                    x:Uid="System_LcdOverdrive"
                     HeaderIcon="{ui:FontIcon Glyph=&#xE7F4;}">
                     <ToggleSwitch IsOn="{x:Bind ViewModel.LcdOverdrive, Mode=TwoWay}" />
                 </toolkit:SettingsCard>
             </StackPanel>
 
             <StackPanel Spacing="4" Visibility="{x:Bind ViewModel.GpuSwitchAvailable, Mode=OneWay}">
-                <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="Graphics" />
+                <TextBlock x:Uid="System_Graphics" Style="{StaticResource SectionHeaderStyle}" />
                 <toolkit:SettingsCard
-                    Description="Hybrid saves battery by using the integrated GPU for the display. Discrete connects the NVIDIA GPU directly for the best game performance. Applies after a restart."
-                    Header="GPU mode"
+                    x:Uid="System_GpuMode"
                     HeaderIcon="{ui:FontIcon Glyph=&#xE7F4;}">
                     <toolkit:Segmented SelectedIndex="{x:Bind ViewModel.GpuModeIndex, Mode=TwoWay}">
-                        <toolkit:SegmentedItem Content="Hybrid" />
-                        <toolkit:SegmentedItem Content="Discrete" />
+                        <toolkit:SegmentedItem x:Uid="System_GpuHybrid" />
+                        <toolkit:SegmentedItem x:Uid="System_GpuDiscrete" />
                     </toolkit:Segmented>
                 </toolkit:SettingsCard>
                 <InfoBar
-                    Title="Restart to switch GPU mode"
+                    x:Uid="System_GpuRestart"
                     IsClosable="False"
                     IsOpen="{x:Bind ViewModel.RestartPending, Mode=OneWay}"
-                    Message="The new GPU mode takes effect after Windows restarts."
                     Severity="Informational">
                     <InfoBar.ActionButton>
-                        <Button Command="{x:Bind ViewModel.RestartNowCommand}" Content="Restart now" />
+                        <Button x:Uid="System_RestartNow" Command="{x:Bind ViewModel.RestartNowCommand}" />
                     </InfoBar.ActionButton>
                 </InfoBar>
             </StackPanel>
 
             <StackPanel Spacing="4" Visibility="{x:Bind ViewModel.PowerPlansAvailable, Mode=OneWay}">
-                <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="Power" />
+                <TextBlock x:Uid="System_Power" Style="{StaticResource SectionHeaderStyle}" />
                 <toolkit:SettingsCard
-                    Description="The Windows power plan in use."
-                    Header="Power plan"
+                    x:Uid="System_PowerPlan"
                     HeaderIcon="{ui:FontIcon Glyph=&#xE945;}">
                     <ComboBox
                         MinWidth="220"

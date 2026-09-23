@@ -1,0 +1,1075 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Nav_Dashboard.Content" xml:space="preserve">
+    <value>แดชบอร์ด</value>
+    <comment>Navigation menu item: the overview page.</comment>
+  </data>
+  <data name="Nav_Fans.Content" xml:space="preserve">
+    <value>พัดลม</value>
+    <comment>Navigation menu item: fan control page.</comment>
+  </data>
+  <data name="Nav_Lighting.Content" xml:space="preserve">
+    <value>ไฟ</value>
+    <comment>Navigation menu item: the RGB keyboard lighting page.</comment>
+  </data>
+  <data name="Nav_System.Content" xml:space="preserve">
+    <value>คีย์บอร์ดและจอแสดงผล</value>
+    <comment>Navigation menu item: keyboard, display, GPU and power settings.</comment>
+  </data>
+  <data name="Startup_Connecting.Text" xml:space="preserve">
+    <value>กำลังเชื่อมต่อกับแล็ปท็อป…</value>
+    <comment>Shown while the app starts.</comment>
+  </data>
+  <data name="Problem_RestartElevated.Content" xml:space="preserve">
+    <value>เริ่มใหม่ในฐานะผู้ดูแลระบบ</value>
+    <comment>Button.</comment>
+  </data>
+  <data name="Problem_StartService.Content" xml:space="preserve">
+    <value>เริ่มบริการ</value>
+    <comment>Button: starts the OpenSense background service.</comment>
+  </data>
+  <data name="Problem_NeedsElevation_Title" xml:space="preserve">
+    <value>ต้องใช้สิทธิ์ผู้ดูแลระบบ</value>
+  </data>
+  <data name="Problem_NeedsElevation_Message" xml:space="preserve">
+    <value>สำเนาแบบพกพานี้ติดต่อกับการควบคุมพัดลมและไฟของแล็ปท็อปโดยตรง ซึ่งต้องใช้สิทธิ์ผู้ดูแลระบบ เริ่มใหม่ในฐานะผู้ดูแลระบบ หรือติดตั้ง OpenSense เพื่อให้ทำงานได้โดยไม่ต้องใช้สิทธิ์ดังกล่าว</value>
+  </data>
+  <data name="Problem_ServiceUnavailable_Title" xml:space="preserve">
+    <value>บริการ OpenSense ไม่ได้ทำงานอยู่</value>
+  </data>
+  <data name="Problem_ServiceUnavailable_Message" xml:space="preserve">
+    <value>OpenSense ควบคุมแล็ปท็อปผ่านบริการเบื้องหลังซึ่งหยุดทำงานอยู่ เริ่มบริการ (Windows จะขอสิทธิ์) หรือติดตั้ง OpenSense ใหม่หากบริการหยุดซ้ำๆ</value>
+  </data>
+  <data name="Problem_Unsupported_Title" xml:space="preserve">
+    <value>ไม่พบเฟิร์มแวร์สำหรับเกมของ Acer</value>
+  </data>
+  <data name="Problem_Unsupported_Message" xml:space="preserve">
+    <value>พีซีเครื่องนี้ไม่มีอินเทอร์เฟซ WMI สำหรับเกมของ Acer (AcerGamingFunction) OpenSense รองรับแล็ปท็อป Acer Nitro และ Predator</value>
+    <comment>Keep 'AcerGamingFunction' as is.</comment>
+  </data>
+  <data name="Problem_Failed_Title" xml:space="preserve">
+    <value>ไม่สามารถเริ่ม OpenSense ได้</value>
+  </data>
+  <data name="Problem_Failed_Message" xml:space="preserve">
+    <value>เกิดข้อผิดพลาดที่ไม่คาดคิด ดูรายละเอียดได้ในโฟลเดอร์บันทึก</value>
+  </data>
+  <data name="Session_VersionMismatch" xml:space="preserve">
+    <value>บริการ OpenSense เป็นเวอร์ชันอื่น ({0}) ติดตั้ง OpenSense ใหม่เพื่ออัปเดตบริการ</value>
+    <comment>{0} = a version number.</comment>
+  </data>
+  <data name="Notice_Rebuilt_Title" xml:space="preserve">
+    <value>อัปเดตความสามารถแล้ว</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_Rebuilt_Message" xml:space="preserve">
+    <value>OpenSense เริ่มการควบคุมพัดลมใหม่ด้วยการตั้งค่าใหม่แล้ว</value>
+  </data>
+  <data name="Notice_Service_Title" xml:space="preserve">
+    <value>บริการ</value>
+    <comment>Banner title: about the OpenSense background service.</comment>
+  </data>
+  <data name="Notice_Reconnected" xml:space="preserve">
+    <value>เชื่อมต่อกับบริการ OpenSense อีกครั้งแล้ว</value>
+  </data>
+  <data name="Notice_Disconnected" xml:space="preserve">
+    <value>การเชื่อมต่อกับบริการ OpenSense ขาดหาย กำลังเชื่อมต่อใหม่…</value>
+  </data>
+  <data name="Notice_ServiceStartFailed" xml:space="preserve">
+    <value>บริการ OpenSense ไม่เริ่มทำงาน ดูรายละเอียดได้ในบันทึกของบริการที่ %ProgramData%\OpenSense\logs</value>
+    <comment>Keep the folder path as is.</comment>
+  </data>
+  <data name="Notice_FanControl_Title" xml:space="preserve">
+    <value>การควบคุมพัดลม</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_Keyboard_Title" xml:space="preserve">
+    <value>คีย์บอร์ด</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_Display_Title" xml:space="preserve">
+    <value>จอแสดงผล</value>
+    <comment>Banner title: the laptop screen.</comment>
+  </data>
+  <data name="Notice_FirmwareAccessDenied" xml:space="preserve">
+    <value>ต้องใช้สิทธิ์ผู้ดูแลระบบในการเข้าถึงอินเทอร์เฟซเฟิร์มแวร์ของ Acer</value>
+  </data>
+  <data name="Notice_ControlLoopError" xml:space="preserve">
+    <value>การควบคุมพัดลมเกิดข้อผิดพลาด: {0}</value>
+    <comment>{0} = a technical error message (not translated).</comment>
+  </data>
+  <data name="Notice_OperatingModeRejected" xml:space="preserve">
+    <value>เฟิร์มแวร์ปฏิเสธการเปลี่ยนโหมดการทำงาน ({0})</value>
+    <comment>{0} = an operating mode name, e.g. Turbo.</comment>
+  </data>
+  <data name="Notice_CoolBoostRejected" xml:space="preserve">
+    <value>เฟิร์มแวร์ปฏิเสธการเปลี่ยนแปลง CoolBoost</value>
+    <comment>CoolBoost is an Acer feature name: keep it.</comment>
+  </data>
+  <data name="Notice_FansHandedBack" xml:space="preserve">
+    <value>ไม่สามารถอ่านอุณหภูมิ CPU ได้ จึงคืนพัดลมกลับเป็นโหมด "อัตโนมัติ"</value>
+    <comment>Auto = the automatic fan mode, as in FanMode_Auto.</comment>
+  </data>
+  <data name="Notice_LightingRejected" xml:space="preserve">
+    <value>คีย์บอร์ดปฏิเสธการเปลี่ยนไฟ</value>
+  </data>
+  <data name="Notice_BacklightTimeoutRejected" xml:space="preserve">
+    <value>คีย์บอร์ดปฏิเสธการเปลี่ยนเวลาปิดไฟพื้นหลัง</value>
+  </data>
+  <data name="Notice_WindowsKeyRejected" xml:space="preserve">
+    <value>เฟิร์มแวร์ปฏิเสธการเปลี่ยนแปลงปุ่ม Windows</value>
+  </data>
+  <data name="Notice_LcdOverdriveRejected" xml:space="preserve">
+    <value>จอแสดงผลปฏิเสธการเปลี่ยนแปลง Overdrive</value>
+    <comment>Overdrive = LCD overdrive, a screen setting that speeds up pixel response.</comment>
+  </data>
+  <data name="Notice_PowerPlan_Title" xml:space="preserve">
+    <value>แผนการใช้พลังงาน</value>
+    <comment>Banner title: a Windows power plan.</comment>
+  </data>
+  <data name="Notice_PowerPlanFailed" xml:space="preserve">
+    <value>Windows ไม่ได้สลับไปใช้ "{0}"</value>
+    <comment>{0} = a Windows power plan name. Use your language's quotation marks.</comment>
+  </data>
+  <data name="Notice_GpuMode_Title" xml:space="preserve">
+    <value>โหมด GPU</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_GpuModeRejected" xml:space="preserve">
+    <value>เฟิร์มแวร์ปฏิเสธการเปลี่ยนโหมด GPU</value>
+  </data>
+  <data name="Notice_Autostart_Title" xml:space="preserve">
+    <value>เริ่มพร้อมกับ Windows</value>
+    <comment>Banner title, same as Settings_StartWithWindows.Header.</comment>
+  </data>
+  <data name="Notice_AutostartFailed" xml:space="preserve">
+    <value>ไม่สามารถอัปเดตรายการเริ่มต้นได้: {0}</value>
+    <comment>{0} = a technical error message.</comment>
+  </data>
+  <data name="Notice_Diagnostics_Title" xml:space="preserve">
+    <value>การวินิจฉัย</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_DiagnosticsCopied" xml:space="preserve">
+    <value>คัดลอกไปยังคลิปบอร์ดแล้ว</value>
+  </data>
+  <data name="Notice_Updates_Title" xml:space="preserve">
+    <value>การอัปเดต</value>
+    <comment>Banner title: app updates.</comment>
+  </data>
+  <data name="GpuSwitch_DiscreteTitle" xml:space="preserve">
+    <value>ใช้เฉพาะ GPU แยกหรือไม่</value>
+    <comment>Dialog title. Discrete GPU = the separate NVIDIA graphics chip.</comment>
+  </data>
+  <data name="GpuSwitch_HybridTitle" xml:space="preserve">
+    <value>สลับไปใช้กราฟิกแบบไฮบริดหรือไม่</value>
+    <comment>Dialog title.</comment>
+  </data>
+  <data name="GpuSwitch_DiscreteMessage" xml:space="preserve">
+    <value>GPU ของ NVIDIA จะขับจอแสดงผลโดยตรงเพื่อประสิทธิภาพในการเล่นเกมสูงสุด แต่แบตเตอรี่จะใช้งานได้สั้นลง ต้องเริ่ม Windows ใหม่จึงจะมีผล</value>
+  </data>
+  <data name="GpuSwitch_HybridMessage" xml:space="preserve">
+    <value>GPU ในตัวจะขับจอแสดงผล และ GPU แยกจะเปิดเฉพาะเมื่อจำเป็นเท่านั้น ช่วยประหยัดแบตเตอรี่ ต้องเริ่ม Windows ใหม่จึงจะมีผล</value>
+  </data>
+  <data name="GpuSwitch_RestartNow" xml:space="preserve">
+    <value>เริ่มใหม่ตอนนี้</value>
+    <comment>Dialog button: restart Windows now.</comment>
+  </data>
+  <data name="GpuSwitch_RestartLater" xml:space="preserve">
+    <value>เริ่มใหม่ภายหลัง</value>
+    <comment>Dialog button.</comment>
+  </data>
+  <data name="GpuSwitch_Cancel" xml:space="preserve">
+    <value>ยกเลิก</value>
+    <comment>Dialog button.</comment>
+  </data>
+  <data name="Chip_Cpu" xml:space="preserve">
+    <value>CPU</value>
+    <comment>The processor. Short: used in labels like 'CPU 45°'.</comment>
+  </data>
+  <data name="Chip_Gpu" xml:space="preserve">
+    <value>GPU</value>
+    <comment>The graphics chip. Short: used in labels like 'GPU 45°'.</comment>
+  </data>
+  <data name="Fan_Cpu" xml:space="preserve">
+    <value>พัดลม CPU</value>
+  </data>
+  <data name="Fan_Gpu" xml:space="preserve">
+    <value>พัดลม GPU</value>
+  </data>
+  <data name="FanMode_Auto" xml:space="preserve">
+    <value>อัตโนมัติ</value>
+    <comment>Fan mode: the laptop's firmware controls the fans. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Max" xml:space="preserve">
+    <value>สูงสุด</value>
+    <comment>Fan mode: all fans at full speed. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Custom" xml:space="preserve">
+    <value>กำหนดเอง</value>
+    <comment>Fan mode: a fixed speed chosen for each fan. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Curve" xml:space="preserve">
+    <value>เส้นโค้ง</value>
+    <comment>Fan mode: fan speed follows a temperature curve. Short: a segmented button.</comment>
+  </data>
+  <data name="FanMode_Auto_Description" xml:space="preserve">
+    <value>เฟิร์มแวร์ของแล็ปท็อปจัดการพัดลม</value>
+  </data>
+  <data name="FanMode_Max_Description" xml:space="preserve">
+    <value>พัดลมทุกตัวหมุนเต็มความเร็ว</value>
+  </data>
+  <data name="FanMode_Custom_Description" xml:space="preserve">
+    <value>ความเร็วคงที่สำหรับพัดลมแต่ละตัว</value>
+  </data>
+  <data name="FanMode_Curve_Description" xml:space="preserve">
+    <value>OpenSense ทำตามเส้นโค้งอุณหภูมิของคุณ</value>
+  </data>
+  <data name="FanBehavior_Auto" xml:space="preserve">
+    <value>อัตโนมัติ (เฟิร์มแวร์)</value>
+    <comment>What a fan is doing right now: controlled by the laptop's firmware.</comment>
+  </data>
+  <data name="FanBehavior_Max" xml:space="preserve">
+    <value>เต็มความเร็ว</value>
+    <comment>What a fan is doing right now.</comment>
+  </data>
+  <data name="FanBehavior_Emergency" xml:space="preserve">
+    <value>เต็มความเร็วฉุกเฉิน</value>
+    <comment>What a fan is doing right now: forced to full speed because the temperature is too high.</comment>
+  </data>
+  <data name="FanBehavior_Curve" xml:space="preserve">
+    <value>ตามเส้นโค้ง</value>
+    <comment>What a fan is doing right now: following the temperature curve.</comment>
+  </data>
+  <data name="FanBehavior_Fixed" xml:space="preserve">
+    <value>ความเร็วคงที่</value>
+    <comment>What a fan is doing right now.</comment>
+  </data>
+  <data name="FanLock_QuietMode" xml:space="preserve">
+    <value>โหมด "เงียบ" จะคงพัดลมไว้ที่ "อัตโนมัติ"</value>
+    <comment>Quiet = OperatingMode_Quiet; Auto = FanMode_Auto.</comment>
+  </data>
+  <data name="OperatingMode_Eco" xml:space="preserve">
+    <value>ประหยัด</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Quiet" xml:space="preserve">
+    <value>เงียบ</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Balanced" xml:space="preserve">
+    <value>สมดุล</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Performance" xml:space="preserve">
+    <value>ประสิทธิภาพ</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Turbo" xml:space="preserve">
+    <value>เทอร์โบ</value>
+    <comment>Acer operating mode name. Short: a segmented button.</comment>
+  </data>
+  <data name="OperatingMode_Eco_Description" xml:space="preserve">
+    <value>ใช้งานแบตเตอรี่ได้นานที่สุด</value>
+  </data>
+  <data name="OperatingMode_Quiet_Description" xml:space="preserve">
+    <value>เสียงรบกวนน้อยที่สุด พัดลมคงอยู่ที่ "อัตโนมัติ"</value>
+    <comment>Auto = FanMode_Auto.</comment>
+  </data>
+  <data name="OperatingMode_Balanced_Description" xml:space="preserve">
+    <value>ประสิทธิภาพสำหรับการใช้งานทุกวัน</value>
+  </data>
+  <data name="OperatingMode_Performance_Description" xml:space="preserve">
+    <value>ขีดจำกัดพลังงานสูงขึ้น ต้องเสียบไฟ AC</value>
+  </data>
+  <data name="OperatingMode_Turbo_Description" xml:space="preserve">
+    <value>พลังงานและการระบายความร้อนสูงสุด ต้องเสียบไฟ AC</value>
+  </data>
+  <data name="OperatingMode_BatteryNote" xml:space="preserve">
+    <value>ขณะใช้แบตเตอรี่ "{0}" และ "{1}" จะทำงานเหมือน "{2}" จนกว่าคุณจะเสียบที่ชาร์จ</value>
+    <comment>{0}, {1}, {2} = operating mode names (Performance, Turbo, Balanced).</comment>
+  </data>
+  <data name="PowerSource_PluggedIn" xml:space="preserve">
+    <value>เสียบปลั๊กอยู่</value>
+    <comment>Power source: the charger is connected.</comment>
+  </data>
+  <data name="PowerSource_Battery" xml:space="preserve">
+    <value>ใช้แบตเตอรี่</value>
+    <comment>Power source.</comment>
+  </data>
+  <data name="Gpu_Idle" xml:space="preserve">
+    <value>ไม่ได้ใช้งาน</value>
+    <comment>Shown instead of the GPU temperature while the graphics chip is powered down. Short.</comment>
+  </data>
+  <data name="Unit_Rpm" xml:space="preserve">
+    <value>รอบ/นาที</value>
+    <comment>Unit: revolutions per minute (fan speed). Use your language's usual abbreviation.</comment>
+  </data>
+  <data name="Unit_RpmValue" xml:space="preserve">
+    <value>{0} รอบ/นาที</value>
+    <comment>{0} = a fan speed number. Same unit as Unit_Rpm.</comment>
+  </data>
+  <data name="Unit_Seconds" xml:space="preserve">
+    <value>{0} วินาที</value>
+    <comment>{0} = a number of seconds, e.g. 0.5. Use the usual abbreviation for seconds.</comment>
+  </data>
+  <data name="ListSeparator" xml:space="preserve">
+    <value>, </value>
+    <comment>Separates items in a list inside a sentence, e.g. 'Quiet, Balanced, Performance'. Keep the trailing space if your language uses one.</comment>
+  </data>
+  <data name="Dashboard_Title.Text" xml:space="preserve">
+    <value>แดชบอร์ด</value>
+    <comment>Page title, same as Nav_Dashboard.Content.</comment>
+  </data>
+  <data name="Dashboard_Failsafe.Title" xml:space="preserve">
+    <value>คืนการควบคุมพัดลมให้เฟิร์มแวร์แล้ว</value>
+    <comment>Warning banner title.</comment>
+  </data>
+  <data name="Dashboard_Failsafe.Message" xml:space="preserve">
+    <value>อุณหภูมิ CPU ไม่ได้รายงานเข้ามาแล้ว แล็ปท็อปจึงควบคุมพัดลมเองจนกว่าจะอ่านค่าได้อีกครั้ง</value>
+  </data>
+  <data name="Dashboard_CpuTemperature.Text" xml:space="preserve">
+    <value>อุณหภูมิ CPU</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_GpuTemperature.Text" xml:space="preserve">
+    <value>อุณหภูมิ GPU</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_CpuFan.Text" xml:space="preserve">
+    <value>พัดลม CPU</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_GpuFan.Text" xml:space="preserve">
+    <value>พัดลม GPU</value>
+    <comment>Tile caption.</comment>
+  </data>
+  <data name="Dashboard_LoadDetail" xml:space="preserve">
+    <value>โหลด {0} · {1}</value>
+    <comment>Under a temperature: {0} = usage percentage (e.g. 45%), {1} = the chip's model name.</comment>
+  </data>
+  <data name="Dashboard_AsleepDetail" xml:space="preserve">
+    <value>อยู่ในโหมดสลีป · {0}</value>
+    <comment>Under the GPU temperature while the graphics chip is powered down: {0} = its model name.</comment>
+  </data>
+  <data name="Dashboard_RpmDetail" xml:space="preserve">
+    <value>รอบ/นาที · Duty {0}</value>
+    <comment>Under a fan speed number: rpm = revolutions per minute (as Unit_Rpm); {0} = the fan's duty cycle as a percentage.</comment>
+  </data>
+  <data name="Dashboard_Cooling.Text" xml:space="preserve">
+    <value>การระบายความร้อน</value>
+    <comment>Card title.</comment>
+  </data>
+  <data name="Dashboard_CoolBoost.Text" xml:space="preserve">
+    <value>ช่วยให้โหมด "อัตโนมัติ" หมุนพัดลมได้เร็วขึ้น</value>
+    <comment>Describes CoolBoost (an Acer feature name shown above it). Auto = FanMode_Auto.</comment>
+  </data>
+  <data name="Dashboard_OpenFans.Content" xml:space="preserve">
+    <value>ความเร็วและเส้นโค้งแบบกำหนดเอง</value>
+    <comment>Link to the Fans page.</comment>
+  </data>
+  <data name="Dashboard_Performance.Text" xml:space="preserve">
+    <value>ประสิทธิภาพ</value>
+    <comment>Card title.</comment>
+  </data>
+  <data name="Dashboard_PowerPlan.Header" xml:space="preserve">
+    <value>แผนการใช้พลังงานของ Windows</value>
+    <comment>Label above a list of Windows power plans.</comment>
+  </data>
+  <data name="Dashboard_PowerSource.Text" xml:space="preserve">
+    <value>แหล่งพลังงาน</value>
+    <comment>Caption above 'Plugged in' or 'On battery'.</comment>
+  </data>
+  <data name="Dashboard_SystemTemperature.Text" xml:space="preserve">
+    <value>อุณหภูมิระบบ</value>
+    <comment>Caption: the laptop's internal temperature.</comment>
+  </data>
+  <data name="Fans_Title.Text" xml:space="preserve">
+    <value>พัดลม</value>
+    <comment>Page title.</comment>
+  </data>
+  <data name="Fans_DutyLabel" xml:space="preserve">
+    <value>Duty {0}</value>
+    <comment>{0} = the fan's duty cycle as a percentage.</comment>
+  </data>
+  <data name="Fans_AutoToggle.OnContent" xml:space="preserve">
+    <value>อัตโนมัติ</value>
+    <comment>Switch label when on: the firmware controls this fan.</comment>
+  </data>
+  <data name="Fans_AutoToggle.OffContent" xml:space="preserve">
+    <value>ด้วยตนเอง</value>
+    <comment>Switch label when off: the speed below is used.</comment>
+  </data>
+  <data name="Fans_FanSpeed.Header" xml:space="preserve">
+    <value>ความเร็วพัดลม</value>
+    <comment>Slider label.</comment>
+  </data>
+  <data name="Fans_Source.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>อุณหภูมิที่ใช้ขับพัดลมตัวนี้</value>
+    <comment>Tooltip.</comment>
+  </data>
+  <data name="CurveSource_Cpu" xml:space="preserve">
+    <value>อุณหภูมิ CPU</value>
+    <comment>Which temperature a fan curve follows.</comment>
+  </data>
+  <data name="CurveSource_Gpu" xml:space="preserve">
+    <value>อุณหภูมิ GPU</value>
+    <comment>Which temperature a fan curve follows.</comment>
+  </data>
+  <data name="CurveSource_Hottest" xml:space="preserve">
+    <value>ค่าที่สูงกว่าของทั้งสอง</value>
+    <comment>Which temperature a fan curve follows: the higher of the CPU and GPU temperatures.</comment>
+  </data>
+  <data name="Fans_Presets.Content" xml:space="preserve">
+    <value>ค่าที่ตั้งไว้ล่วงหน้า</value>
+    <comment>Button that opens a list of ready-made fan curves.</comment>
+  </data>
+  <data name="Fans_PresetSilent.Text" xml:space="preserve">
+    <value>เงียบ</value>
+    <comment>Fan curve preset name.</comment>
+  </data>
+  <data name="Fans_PresetBalanced.Text" xml:space="preserve">
+    <value>สมดุล</value>
+    <comment>Fan curve preset name.</comment>
+  </data>
+  <data name="Fans_PresetPerformance.Text" xml:space="preserve">
+    <value>ประสิทธิภาพ</value>
+    <comment>Fan curve preset name.</comment>
+  </data>
+  <data name="Fans_CopyCurve.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>ใช้เส้นโค้งนี้กับพัดลมตัวอื่นด้วย</value>
+    <comment>Tooltip.</comment>
+  </data>
+  <data name="Fans_CurveHelp.Text" xml:space="preserve">
+    <value>ลากจุดเพื่อปรับเส้นโค้ง · ดับเบิลคลิกเพื่อเพิ่มจุด · คลิกขวาเพื่อลบจุด · ใช้ปุ่มลูกศรเพื่อปรับจุดที่เลือกอย่างละเอียด</value>
+    <comment>Help under the curve editor.</comment>
+  </data>
+  <data name="CurveEditor_Now" xml:space="preserve">
+    <value>ขณะนี้ {0} · {1}</value>
+    <comment>Label on the curve editor: {0} = the current temperature, {1} = the current fan speed percentage.</comment>
+  </data>
+  <data name="Fans_Safety.Text" xml:space="preserve">
+    <value>ความปลอดภัยและการตอบสนอง</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Fans_Emergency.Header" xml:space="preserve">
+    <value>อุณหภูมิฉุกเฉิน</value>
+  </data>
+  <data name="Fans_Emergency.Description" xml:space="preserve">
+    <value>ในโหมด "กำหนดเอง" และ "เส้นโค้ง" พัดลมจะหมุนเต็มความเร็วหากชิปตัวใดตัวหนึ่งถึงอุณหภูมินี้</value>
+    <comment>Custom, Curve = FanMode_Custom, FanMode_Curve.</comment>
+  </data>
+  <data name="Fans_MinimumSpeed.Header" xml:space="preserve">
+    <value>ความเร็วพัดลมต่ำสุด</value>
+  </data>
+  <data name="Fans_MinimumSpeed.Description" xml:space="preserve">
+    <value>ความเร็วต่ำสุดที่ OpenSense จะขอในโหมด "กำหนดเอง" และ "เส้นโค้ง"</value>
+  </data>
+  <data name="Fans_SlowDown.Header" xml:space="preserve">
+    <value>ระยะหน่วงการลดความเร็ว</value>
+    <comment>How many degrees the temperature must fall before the fans slow down (hysteresis).</comment>
+  </data>
+  <data name="Fans_SlowDown.Description" xml:space="preserve">
+    <value>อุณหภูมิต้องลดลงเท่าใดก่อนที่เส้นโค้งจะลดความเร็วพัดลม ค่าที่สูงขึ้นช่วยไม่ให้พัดลมเร่งและลดความเร็วไปมาตลอดเวลา</value>
+    <comment>'Hunting' = the fans speeding up and slowing down over and over.</comment>
+  </data>
+  <data name="Fans_HandBack.Header" xml:space="preserve">
+    <value>คืนพัดลมเมื่อ OpenSense หยุดทำงาน</value>
+  </data>
+  <data name="Fans_HandBack.Description" xml:space="preserve">
+    <value>เมื่อบริการ OpenSense หยุด (หรือปิดสำเนาแบบพกพา) การควบคุมพัดลมของแล็ปท็อปเองจะกลับมาทำงานแทน</value>
+  </data>
+  <data name="Lighting_Title.Text" xml:space="preserve">
+    <value>ไฟ</value>
+    <comment>Page title: RGB keyboard lighting.</comment>
+  </data>
+  <data name="Lighting_Static.Content" xml:space="preserve">
+    <value>สีคงที่</value>
+    <comment>Lighting mode: one fixed colour per keyboard zone.</comment>
+  </data>
+  <data name="Lighting_Effect.Content" xml:space="preserve">
+    <value>เอฟเฟกต์</value>
+    <comment>Lighting mode: an animated effect.</comment>
+  </data>
+  <data name="Lighting_Zone" xml:space="preserve">
+    <value>โซน {0}</value>
+    <comment>A keyboard lighting zone: {0} = its number.</comment>
+  </data>
+  <data name="Lighting_ZoneColor.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>เลือกสี</value>
+    <comment>Tooltip.</comment>
+  </data>
+  <data name="Lighting_AllZones.Text" xml:space="preserve">
+    <value>สีเดียวสำหรับทุกโซน</value>
+  </data>
+  <data name="Lighting_Speed.Header" xml:space="preserve">
+    <value>ความเร็ว</value>
+    <comment>Slider label: animation speed.</comment>
+  </data>
+  <data name="Lighting_Direction.Text" xml:space="preserve">
+    <value>ทิศทาง</value>
+    <comment>Label: animation direction.</comment>
+  </data>
+  <data name="Lighting_EffectColor.Text" xml:space="preserve">
+    <value>สีของเอฟเฟกต์</value>
+  </data>
+  <data name="Lighting_AnyColor.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>สีใดก็ได้</value>
+    <comment>Tooltip of a button that opens a colour picker.</comment>
+  </data>
+  <data name="Effect_Breathing" xml:space="preserve">
+    <value>หายใจ</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Neon" xml:space="preserve">
+    <value>นีออน</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Wave" xml:space="preserve">
+    <value>คลื่น</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Shifting" xml:space="preserve">
+    <value>เลื่อน</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Zoom" xml:space="preserve">
+    <value>ซูม</value>
+    <comment>Keyboard lighting effect name. Short.</comment>
+  </data>
+  <data name="Effect_Breathing_Description" xml:space="preserve">
+    <value>สีค่อยๆ สว่างขึ้นและจางลง</value>
+  </data>
+  <data name="Effect_Neon_Description" xml:space="preserve">
+    <value>วนผ่านสีรุ้ง</value>
+  </data>
+  <data name="Effect_Wave_Description" xml:space="preserve">
+    <value>คลื่นสีกวาดผ่านแป้นต่างๆ</value>
+  </data>
+  <data name="Effect_Shifting_Description" xml:space="preserve">
+    <value>บล็อกสีเคลื่อนที่ไปทั่วคีย์บอร์ด</value>
+  </data>
+  <data name="Effect_Zoom_Description" xml:space="preserve">
+    <value>สีขยายออกจากตรงกลาง</value>
+  </data>
+  <data name="Direction_Left" xml:space="preserve">
+    <value>ซ้าย</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Direction_Right" xml:space="preserve">
+    <value>ขวา</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Direction_Up" xml:space="preserve">
+    <value>ขึ้น</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Direction_Down" xml:space="preserve">
+    <value>ลง</value>
+    <comment>Animation direction. Short.</comment>
+  </data>
+  <data name="Brightness_Off" xml:space="preserve">
+    <value>ปิด</value>
+    <comment>Keyboard backlight brightness: off. Short: shown next to 25%, 50%...</comment>
+  </data>
+  <data name="System_Title.Text" xml:space="preserve">
+    <value>คีย์บอร์ดและจอแสดงผล</value>
+    <comment>Page title, same as Nav_System.Content.</comment>
+  </data>
+  <data name="System_Keyboard.Text" xml:space="preserve">
+    <value>คีย์บอร์ด</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="System_BacklightAutoOff.Header" xml:space="preserve">
+    <value>ปิดไฟพื้นหลังอัตโนมัติ</value>
+    <comment>Keyboard backlight setting.</comment>
+  </data>
+  <data name="System_BacklightAutoOff.Description" xml:space="preserve">
+    <value>ปิดไฟพื้นหลังของคีย์บอร์ดหลังจากไม่ได้พิมพ์ 30 วินาที</value>
+  </data>
+  <data name="System_WindowsKey.Header" xml:space="preserve">
+    <value>ปุ่ม Windows และปุ่มเมนู</value>
+    <comment>The Windows logo key and the Menu (application) key.</comment>
+  </data>
+  <data name="System_WindowsKey.Description" xml:space="preserve">
+    <value>ปิดเพื่อไม่ให้ปุ่ม Windows และปุ่มเมนูขัดจังหวะเกม</value>
+  </data>
+  <data name="System_StickyKeys.Header" xml:space="preserve">
+    <value>Sticky Keys</value>
+    <comment>The Windows accessibility feature: use its official Windows name in your language.</comment>
+  </data>
+  <data name="System_StickyKeys.Description" xml:space="preserve">
+    <value>แป้นปรับเปลี่ยนจะค้างอยู่หลังจากปล่อย กด Shift ห้าครั้งเพื่อเปิดหรือปิด</value>
+  </data>
+  <data name="System_Display.Text" xml:space="preserve">
+    <value>จอแสดงผล</value>
+    <comment>Section title: the laptop screen.</comment>
+  </data>
+  <data name="System_LcdOverdrive.Header" xml:space="preserve">
+    <value>LCD Overdrive</value>
+    <comment>Screen setting that speeds up pixel response.</comment>
+  </data>
+  <data name="System_LcdOverdrive.Description" xml:space="preserve">
+    <value>สำหรับหน้าจอในตัวของแล็ปท็อป (ไม่ใช่จอภายนอก): การตอบสนองของพิกเซลเร็วขึ้นเพื่อลดภาพเบลอขณะเคลื่อนไหวในเกม ทำงานได้ดีที่สุดที่อัตรารีเฟรชสูงสุดของหน้าจอ ปิดหากเห็นเงาเรืองรอบวัตถุที่กำลังเคลื่อนที่</value>
+  </data>
+  <data name="System_Graphics.Text" xml:space="preserve">
+    <value>กราฟิก</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="System_GpuMode.Header" xml:space="preserve">
+    <value>โหมด GPU</value>
+    <comment>Setting: hybrid or discrete graphics.</comment>
+  </data>
+  <data name="System_GpuMode.Description" xml:space="preserve">
+    <value>"ไฮบริด" ประหยัดแบตเตอรี่โดยใช้ GPU ในตัวสำหรับจอแสดงผล "แยก" เชื่อมต่อ GPU ของ NVIDIA โดยตรงเพื่อประสิทธิภาพในการเล่นเกมสูงสุด มีผลหลังจากเริ่มใหม่</value>
+    <comment>Hybrid, Discrete = System_GpuHybrid, System_GpuDiscrete.</comment>
+  </data>
+  <data name="System_GpuHybrid.Content" xml:space="preserve">
+    <value>ไฮบริด</value>
+    <comment>GPU mode: both graphics chips (NVIDIA Optimus). Short: a segmented button.</comment>
+  </data>
+  <data name="System_GpuDiscrete.Content" xml:space="preserve">
+    <value>แยก</value>
+    <comment>GPU mode: only the NVIDIA graphics chip. Short: a segmented button.</comment>
+  </data>
+  <data name="System_GpuRestart.Title" xml:space="preserve">
+    <value>เริ่มใหม่เพื่อสลับโหมด GPU</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="System_GpuRestart.Message" xml:space="preserve">
+    <value>โหมด GPU ใหม่จะมีผลหลังจากเริ่ม Windows ใหม่</value>
+  </data>
+  <data name="System_RestartNow.Content" xml:space="preserve">
+    <value>เริ่มใหม่ตอนนี้</value>
+    <comment>Button: restart Windows now.</comment>
+  </data>
+  <data name="System_Power.Text" xml:space="preserve">
+    <value>พลังงาน</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="System_PowerPlan.Header" xml:space="preserve">
+    <value>แผนการใช้พลังงาน</value>
+    <comment>Windows power plan setting.</comment>
+  </data>
+  <data name="System_PowerPlan.Description" xml:space="preserve">
+    <value>แผนการใช้พลังงานของ Windows ที่ใช้อยู่</value>
+  </data>
+  <data name="Settings_Title.Text" xml:space="preserve">
+    <value>การตั้งค่า</value>
+    <comment>Page title.</comment>
+  </data>
+  <data name="Settings_Startup.Text" xml:space="preserve">
+    <value>การเริ่มต้น</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_StartWithWindows.Header" xml:space="preserve">
+    <value>เริ่มพร้อมกับ Windows</value>
+  </data>
+  <data name="Settings_StartWithWindows.Description" xml:space="preserve">
+    <value>เปิด OpenSense ในพื้นที่แจ้งเตือนเมื่อคุณลงชื่อเข้าใช้ การควบคุมพัดลมไม่ได้ขึ้นอยู่กับการตั้งค่านี้</value>
+    <comment>Notification area = the Windows system tray.</comment>
+  </data>
+  <data name="Settings_NitroSenseKey.Header" xml:space="preserve">
+    <value>เปิดด้วยปุ่ม NitroSense</value>
+    <comment>NitroSense is Acer's app; the laptop has a key for it. Keep the name.</comment>
+  </data>
+  <data name="Settings_NitroSenseKey.Description" xml:space="preserve">
+    <value>ปุ่ม NitroSense บนคีย์บอร์ดจะเปิด OpenSense เหมือนที่เคยเปิด NitroSense ใช้ได้ขณะที่ OpenSense อยู่ในพื้นที่แจ้งเตือน</value>
+  </data>
+  <data name="Settings_StartMinimized.Header" xml:space="preserve">
+    <value>เริ่มโดยย่อไว้ในพื้นที่แจ้งเตือน</value>
+  </data>
+  <data name="Settings_CloseToTray.Header" xml:space="preserve">
+    <value>ทำงานต่อเมื่อปิดหน้าต่าง</value>
+  </data>
+  <data name="Settings_CloseToTray.Description" xml:space="preserve">
+    <value>การปิดหน้าต่างจะคงไอคอนไว้ในพื้นที่แจ้งเตือน ออกจากโปรแกรมได้จากเมนูของไอคอน</value>
+  </data>
+  <data name="Settings_Appearance.Text" xml:space="preserve">
+    <value>ลักษณะที่ปรากฏ</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_Language.Header" xml:space="preserve">
+    <value>ภาษา</value>
+    <comment>Setting: the app's language.</comment>
+  </data>
+  <data name="Language_System" xml:space="preserve">
+    <value>ใช้การตั้งค่าระบบ</value>
+    <comment>First entry in the language list: follow the Windows language.</comment>
+  </data>
+  <data name="Settings_LanguageRestart.Title" xml:space="preserve">
+    <value>เริ่มใหม่เพื่อเปลี่ยนภาษา</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Settings_LanguageRestart.Message" xml:space="preserve">
+    <value>OpenSense จะแสดงภาษาใหม่หลังจากเริ่มใหม่</value>
+  </data>
+  <data name="Settings_LanguageRestartNow.Content" xml:space="preserve">
+    <value>เริ่มใหม่ตอนนี้</value>
+    <comment>Button: restart OpenSense now.</comment>
+  </data>
+  <data name="Settings_Theme.Header" xml:space="preserve">
+    <value>ธีม</value>
+    <comment>Setting: light or dark colours.</comment>
+  </data>
+  <data name="Theme_System" xml:space="preserve">
+    <value>ใช้การตั้งค่าระบบ</value>
+    <comment>Theme choice: follow Windows.</comment>
+  </data>
+  <data name="Theme_Light" xml:space="preserve">
+    <value>สว่าง</value>
+    <comment>Theme choice.</comment>
+  </data>
+  <data name="Theme_Dark" xml:space="preserve">
+    <value>มืด</value>
+    <comment>Theme choice.</comment>
+  </data>
+  <data name="Settings_Fahrenheit.Header" xml:space="preserve">
+    <value>แสดงอุณหภูมิเป็นฟาเรนไฮต์</value>
+  </data>
+  <data name="Settings_Interval.Header" xml:space="preserve">
+    <value>ช่วงเวลาการอัปเดต</value>
+    <comment>Setting: how often sensors are read.</comment>
+  </data>
+  <data name="Settings_Interval.Description" xml:space="preserve">
+    <value>ความถี่ในการอ่านเซ็นเซอร์และอัปเดตเส้นโค้งพัดลม สำหรับทุกคนบนพีซีเครื่องนี้</value>
+  </data>
+  <data name="Settings_Laptop.Text" xml:space="preserve">
+    <value>แล็ปท็อปของคุณ</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_UnknownModel" xml:space="preserve">
+    <value>แล็ปท็อป Acer</value>
+    <comment>Shown when the laptop's model name is unknown.</comment>
+  </data>
+  <data name="Settings_Bios" xml:space="preserve">
+    <value>BIOS {0}</value>
+    <comment>{0} = the BIOS version.</comment>
+  </data>
+  <data name="Settings_BiosUnknown" xml:space="preserve">
+    <value>ไม่ทราบเวอร์ชัน BIOS</value>
+  </data>
+  <data name="Settings_Sensors.Header" xml:space="preserve">
+    <value>เซ็นเซอร์อุณหภูมิ</value>
+  </data>
+  <data name="Settings_SensorSources" xml:space="preserve">
+    <value>CPU: {0}
+GPU: {1}</value>
+    <comment>Two lines: {0}, {1} = where each temperature comes from (Sensor_* texts).</comment>
+  </data>
+  <data name="Sensor_IntelPackage" xml:space="preserve">
+    <value>เซ็นเซอร์แพ็กเกจของ Intel (TjMax {0} °C)</value>
+    <comment>The Intel CPU's own temperature sensor. {0} = a temperature. Keep 'TjMax'.</comment>
+  </data>
+  <data name="Sensor_AmdTctl" xml:space="preserve">
+    <value>เซ็นเซอร์ Tctl ของ AMD</value>
+    <comment>The AMD CPU's own temperature sensor. Keep 'Tctl'.</comment>
+  </data>
+  <data name="Sensor_NvidiaDriver" xml:space="preserve">
+    <value>โปรแกรมควบคุม NVIDIA</value>
+    <comment>Temperature read from the NVIDIA graphics driver.</comment>
+  </data>
+  <data name="Sensor_EmbeddedController" xml:space="preserve">
+    <value>ตัวควบคุมแบบฝังตัว</value>
+    <comment>The laptop's embedded controller (EC) chip, which also reports temperatures.</comment>
+  </data>
+  <data name="Sensor_EmbeddedControllerBecause" xml:space="preserve">
+    <value>ตัวควบคุมแบบฝังตัว ({0})</value>
+    <comment>{0} = why the chip's own sensor isn't used (one of the SensorProblem_* texts).</comment>
+  </data>
+  <data name="SensorProblem_NotX86Cpu" xml:space="preserve">
+    <value>ไม่ใช่ CPU แบบ x86</value>
+    <comment>Reason in parentheses after 'Embedded controller': starts lowercase in English.</comment>
+  </data>
+  <data name="SensorProblem_UnsupportedCpuVendor" xml:space="preserve">
+    <value>ไม่รองรับผู้ผลิต CPU {0}</value>
+    <comment>Reason in parentheses. {0} = a CPU vendor code such as 'GenuineIntel'.</comment>
+  </data>
+  <data name="SensorProblem_NoPackageSensor" xml:space="preserve">
+    <value>CPU ของ Intel ตัวนี้ไม่มีเซ็นเซอร์อุณหภูมิแพ็กเกจ</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_ImplausibleTjMax" xml:space="preserve">
+    <value>CPU รายงานค่า TjMax ที่ไม่สมเหตุสมผล {0} °C</value>
+    <comment>Reason in parentheses. Keep 'TjMax'. {0} = a number.</comment>
+  </data>
+  <data name="SensorProblem_NoReading" xml:space="preserve">
+    <value>เซ็นเซอร์ไม่ตอบสนอง</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_PciLockUnavailable" xml:space="preserve">
+    <value>ไม่สามารถเปิดการล็อก PCI ที่ใช้ร่วมกันได้: {0}</value>
+    <comment>Reason in parentheses. {0} = a technical error message.</comment>
+  </data>
+  <data name="SensorProblem_NoNvidiaDriver" xml:space="preserve">
+    <value>ไม่พบโปรแกรมควบคุม NVIDIA</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_NvmlTooOld" xml:space="preserve">
+    <value>โปรแกรมควบคุม NVIDIA เก่าเกินไป</value>
+    <comment>Reason in parentheses.</comment>
+  </data>
+  <data name="SensorProblem_PawnIONotInstalled" xml:space="preserve">
+    <value>ไม่ได้ติดตั้ง PawnIO</value>
+    <comment>Reason in parentheses. PawnIO is a driver's name: keep it.</comment>
+  </data>
+  <data name="SensorProblem_PawnIOUnavailable" xml:space="preserve">
+    <value>ไม่สามารถเปิด PawnIO ได้ ({0})</value>
+    <comment>Reason in parentheses. {0} = an error code.</comment>
+  </data>
+  <data name="SensorProblem_PawnIOModuleRefused" xml:space="preserve">
+    <value>PawnIO ปฏิเสธโมดูล ({0})</value>
+    <comment>Reason in parentheses. {0} = a module name and an error code.</comment>
+  </data>
+  <data name="Settings_GetPawnIO.Content" xml:space="preserve">
+    <value>รับ PawnIO เพื่อค่า CPU ที่แม่นยำ</value>
+    <comment>Link. PawnIO is a driver's name: keep it.</comment>
+  </data>
+  <data name="Settings_OperatingModes.Header" xml:space="preserve">
+    <value>โหมดการทำงาน</value>
+    <comment>Setting: use Acer's operating modes (Eco, Quiet, Balanced...).</comment>
+  </data>
+  <data name="Settings_OperatingModes_Supported" xml:space="preserve">
+    <value>{0} ตามที่ซอฟต์แวร์ของ Acer มีให้ในรุ่นนี้ {1}</value>
+    <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
+  </data>
+  <data name="Settings_OperatingModes_Unused" xml:space="preserve">
+    <value>เฟิร์มแวร์ของคุณระบุ {0} แต่ซอฟต์แวร์ของ Acer ไม่ได้ใช้โหมดเหล่านี้ในรุ่นนี้ และอาจไม่มีผลใดๆ {1}</value>
+    <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
+  </data>
+  <data name="Settings_OperatingModes_CoolBoost" xml:space="preserve">
+    <value>ใช้ CoolBoost ได้ขณะที่ปิดโหมดเหล่านี้</value>
+    <comment>They = the operating modes.</comment>
+  </data>
+  <data name="Settings_OperatingModes_Default" xml:space="preserve">
+    <value>ขณะที่ปิดโหมดเหล่านี้ แล็ปท็อปจะอยู่ในโหมดเริ่มต้น</value>
+    <comment>They = the operating modes.</comment>
+  </data>
+  <data name="Settings_Updates.Text" xml:space="preserve">
+    <value>การอัปเดต</value>
+    <comment>Section title: app updates.</comment>
+  </data>
+  <data name="Settings_CheckNow.Content" xml:space="preserve">
+    <value>ตรวจสอบตอนนี้</value>
+    <comment>Button: check for updates now.</comment>
+  </data>
+  <data name="Settings_AutoUpdate.Header" xml:space="preserve">
+    <value>ตรวจหาการอัปเดตโดยอัตโนมัติ</value>
+  </data>
+  <data name="Settings_AutoUpdate.Description" xml:space="preserve">
+    <value>วันละครั้ง จากรุ่นเผยแพร่ของโครงการบน GitHub ไฟล์ที่ดาวน์โหลดจะได้รับการตรวจสอบกับค่าตรวจสอบ SHA-256 ที่ GitHub เผยแพร่ก่อนการติดตั้ง</value>
+  </data>
+  <data name="Settings_Troubleshooting.Text" xml:space="preserve">
+    <value>การแก้ไขปัญหา</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_Diagnostics.Header" xml:space="preserve">
+    <value>การวินิจฉัย</value>
+  </data>
+  <data name="Settings_Diagnostics.Description" xml:space="preserve">
+    <value>คำตอบดิบของเฟิร์มแวร์จากการตรวจหาความสามารถ แนบข้อมูลนี้เมื่อรายงานปัญหาหรือรุ่นใหม่</value>
+    <comment>The copied diagnostics stay in English for the developers.</comment>
+  </data>
+  <data name="Settings_Copy.Content" xml:space="preserve">
+    <value>คัดลอก</value>
+    <comment>Button: copy the diagnostics to the clipboard.</comment>
+  </data>
+  <data name="Settings_ServiceLogs.Content" xml:space="preserve">
+    <value>บันทึกของบริการ</value>
+    <comment>Button: opens the background service's log folder.</comment>
+  </data>
+  <data name="Settings_AppLogs.Content" xml:space="preserve">
+    <value>บันทึกของแอป</value>
+    <comment>Button: opens the app's log folder.</comment>
+  </data>
+  <data name="Settings_About.Text" xml:space="preserve">
+    <value>เกี่ยวกับ</value>
+    <comment>Section title.</comment>
+  </data>
+  <data name="Settings_AboutOpenSense.Description" xml:space="preserve">
+    <value>การควบคุมพัดลม ประสิทธิภาพ และไฟแบบโอเพนซอร์สสำหรับแล็ปท็อป Acer Nitro และ Predator</value>
+  </data>
+  <data name="Settings_Version" xml:space="preserve">
+    <value>เวอร์ชัน {0}</value>
+    <comment>{0} = a version number.</comment>
+  </data>
+  <data name="Settings_Mode_Portable" xml:space="preserve">
+    <value>สำเนาแบบพกพา: ทำงานในฐานะผู้ดูแลระบบ และควบคุมแล็ปท็อปเองขณะที่เปิดอยู่</value>
+  </data>
+  <data name="Settings_Mode_Installed" xml:space="preserve">
+    <value>ติดตั้งแล้ว: บริการ OpenSense ควบคุมแล็ปท็อปตั้งแต่เริ่มระบบ ไม่ว่าหน้าต่างนี้จะเปิดอยู่หรือไม่</value>
+  </data>
+  <data name="Settings_Trademarks.Text" xml:space="preserve">
+    <value>OpenSense เป็นโครงการอิสระ ไม่มีส่วนเกี่ยวข้องและไม่ได้รับการรับรองจาก Acer ส่วน Acer, Nitro, Predator และ NitroSense เป็นเครื่องหมายการค้าของ Acer Inc. เผยแพร่ภายใต้ GNU General Public License v3.0 หรือใหม่กว่า</value>
+    <comment>Legal notice: translate faithfully and keep the names.</comment>
+  </data>
+  <data name="Update_Install.Content" xml:space="preserve">
+    <value>อัปเดตตอนนี้</value>
+    <comment>Button: download and install the update.</comment>
+  </data>
+  <data name="Update_WhatsNew.Content" xml:space="preserve">
+    <value>มีอะไรใหม่</value>
+    <comment>Link to the release notes.</comment>
+  </data>
+  <data name="Update_Skip.Content" xml:space="preserve">
+    <value>ข้ามเวอร์ชันนี้</value>
+    <comment>Link.</comment>
+  </data>
+  <data name="Update_BannerTitle" xml:space="preserve">
+    <value>OpenSense {0} พร้อมใช้งานแล้ว</value>
+    <comment>{0} = a version number.</comment>
+  </data>
+  <data name="Update_Downloading" xml:space="preserve">
+    <value>กำลังดาวน์โหลด… {0}</value>
+    <comment>{0} = progress as a percentage.</comment>
+  </data>
+  <data name="Update_NoAsset" xml:space="preserve">
+    <value>รุ่นเผยแพร่นี้ไม่มีไฟล์ดาวน์โหลดสำหรับสำเนานี้ ดูที่หน้ารุ่นเผยแพร่</value>
+  </data>
+  <data name="Update_InstallerHint" xml:space="preserve">
+    <value>คลิก "อัปเดตตอนนี้" เพื่อติดตั้งและเปิด OpenSense อีกครั้ง (Windows จะขอสิทธิ์)</value>
+    <comment>'Update now' = Update_Install.Content.</comment>
+  </data>
+  <data name="Update_PortableHint" xml:space="preserve">
+    <value>คลิก "อัปเดตตอนนี้" เพื่อแทนที่สำเนาแบบพกพานี้และเปิดอีกครั้ง</value>
+    <comment>'Update now' = Update_Install.Content.</comment>
+  </data>
+  <data name="Update_Checking" xml:space="preserve">
+    <value>กำลังตรวจหาการอัปเดต…</value>
+  </data>
+  <data name="Update_UpToDate" xml:space="preserve">
+    <value>เป็นเวอร์ชันล่าสุดแล้ว {0}</value>
+    <comment>{0} = Update_LastChecked or Update_NotChecked.</comment>
+  </data>
+  <data name="Update_Latest" xml:space="preserve">
+    <value>{0} เป็นเวอร์ชันล่าสุด</value>
+    <comment>{0} = 'OpenSense' and a version number.</comment>
+  </data>
+  <data name="Update_Skipped" xml:space="preserve">
+    <value>ข้ามเวอร์ชัน {0} แล้ว {1}</value>
+    <comment>{0} = a version number; {1} = Update_LastChecked or Update_NotChecked.</comment>
+  </data>
+  <data name="Update_Available" xml:space="preserve">
+    <value>เวอร์ชัน {0} พร้อมใช้งาน {1}</value>
+    <comment>{0} = a version number; {1} = Update_LastChecked or Update_NotChecked.</comment>
+  </data>
+  <data name="Update_LastChecked" xml:space="preserve">
+    <value>ตรวจสอบล่าสุดเมื่อ {0}</value>
+    <comment>{0} = a date and time.</comment>
+  </data>
+  <data name="Update_NotChecked" xml:space="preserve">
+    <value>ยังไม่ได้ตรวจสอบ</value>
+  </data>
+  <data name="Update_OpenToUpdate" xml:space="preserve">
+    <value>เปิด OpenSense เพื่ออัปเดต</value>
+    <comment>Notification balloon.</comment>
+  </data>
+  <data name="Update_CheckFailed" xml:space="preserve">
+    <value>ไม่สามารถตรวจหาการอัปเดตได้: {0}</value>
+    <comment>{0} = a technical error message.</comment>
+  </data>
+  <data name="Update_Cancelled" xml:space="preserve">
+    <value>ยกเลิกการอัปเดตแล้ว</value>
+  </data>
+  <data name="Update_Failed" xml:space="preserve">
+    <value>การอัปเดตล้มเหลว: {0}</value>
+    <comment>{0} = the reason, possibly a technical error message.</comment>
+  </data>
+  <data name="Update_NoDigest" xml:space="preserve">
+    <value>GitHub ไม่ได้เผยแพร่ค่าตรวจสอบ SHA-256 สำหรับไฟล์ที่ดาวน์โหลด จึงไม่สามารถตรวจสอบได้</value>
+  </data>
+  <data name="Update_DigestMismatch" xml:space="preserve">
+    <value>ไฟล์ที่ดาวน์โหลดไม่ตรงกับค่าตรวจสอบ SHA-256 ที่ GitHub เผยแพร่</value>
+  </data>
+  <data name="Update_NoExecutable" xml:space="preserve">
+    <value>การอัปเดตแบบพกพาไม่มี OpenSense.exe</value>
+  </data>
+  <data name="Update_OldCopyRunning" xml:space="preserve">
+    <value>OpenSense ที่กำลังทำงานอยู่ไม่ได้ปิดลง</value>
+  </data>
+  <data name="PortableUpdate_Caption" xml:space="preserve">
+    <value>การอัปเดต OpenSense</value>
+    <comment>Message box title.</comment>
+  </data>
+  <data name="PortableUpdate_Failed" xml:space="preserve">
+    <value>ไม่สามารถอัปเดต OpenSense ได้ จึงคงเวอร์ชันก่อนหน้าไว้
+
+{0}
+
+รายละเอียด: {1}</value>
+    <comment>{0} = the reason; {1} = a log file path.</comment>
+  </data>
+  <data name="Tray_Open" xml:space="preserve">
+    <value>เปิด OpenSense</value>
+    <comment>Menu item of the notification area icon.</comment>
+  </data>
+  <data name="Tray_FanMode" xml:space="preserve">
+    <value>โหมดพัดลม</value>
+    <comment>Submenu of the notification area icon.</comment>
+  </data>
+  <data name="Tray_OperatingMode" xml:space="preserve">
+    <value>โหมดการทำงาน</value>
+    <comment>Submenu of the notification area icon.</comment>
+  </data>
+  <data name="Tray_Exit" xml:space="preserve">
+    <value>ออก</value>
+    <comment>Menu item: quit OpenSense.</comment>
+  </data>
+</root>

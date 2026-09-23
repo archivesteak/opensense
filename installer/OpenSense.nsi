@@ -65,12 +65,12 @@ VIAddVersionKey "LegalCopyright" "OpenSense contributors. GNU GPL v3 or later."
 !define MUI_ABORTWARNING
 !define MUI_COMPONENTSPAGE_SMALLDESC
 !define MUI_FINISHPAGE_RUN
-!define MUI_FINISHPAGE_RUN_TEXT "Start ${APP_NAME}"
+!define MUI_FINISHPAGE_RUN_TEXT "$(Inst_Run)"
 !define MUI_FINISHPAGE_RUN_FUNCTION LaunchApp
 
 !insertmacro MUI_PAGE_WELCOME
 ; The GPL is not an agreement to accept: it grants the rights to share and change OpenSense.
-!define MUI_LICENSEPAGE_TEXT_BOTTOM "You don't need to accept this license to use ${APP_NAME}. It gives you the right to share and change it, and sets the conditions for doing so."
+!define MUI_LICENSEPAGE_TEXT_BOTTOM "$(Inst_LicenseNote)"
 !define MUI_LICENSEPAGE_BUTTON "$(^NextBtn)"
 !insertmacro MUI_PAGE_LICENSE "..\LICENSE"
 !insertmacro MUI_PAGE_COMPONENTS
@@ -81,12 +81,82 @@ VIAddVersionKey "LegalCopyright" "OpenSense contributors. GNU GPL v3 or later."
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
 
-!insertmacro MUI_LANGUAGE "English"
+; --- languages ------------------------------------------------------------------------------
+
+; The app's languages (src\OpenSense.App\Strings), each with its own text in Strings\<language>.nsh. A string
+; missing there falls back to English, with a warning at build time.
+!macro OpenSenseLanguage NLFID
+  !insertmacro MUI_LANGUAGE "${NLFID}"
+  !insertmacro LANGFILE_INCLUDE_WITHDEFAULT "Strings\${NLFID}.nsh" "Strings\English.nsh"
+!macroend
+
+; English first: setup runs in it when no other language matches Windows' display language.
+!insertmacro OpenSenseLanguage "English"
+!insertmacro OpenSenseLanguage "Arabic"
+!insertmacro OpenSenseLanguage "Bulgarian"
+!insertmacro OpenSenseLanguage "Catalan"
+!insertmacro OpenSenseLanguage "Czech"
+!insertmacro OpenSenseLanguage "Dutch"
+!insertmacro OpenSenseLanguage "Estonian"
+!insertmacro OpenSenseLanguage "Farsi"
+!insertmacro OpenSenseLanguage "Finnish"
+!insertmacro OpenSenseLanguage "French"
+!insertmacro OpenSenseLanguage "German"
+!insertmacro OpenSenseLanguage "Greek"
+!insertmacro OpenSenseLanguage "Hebrew"
+!insertmacro OpenSenseLanguage "Hindi"
+!insertmacro OpenSenseLanguage "Hungarian"
+!insertmacro OpenSenseLanguage "Indonesian"
+!insertmacro OpenSenseLanguage "Italian"
+!insertmacro OpenSenseLanguage "Japanese"
+!insertmacro OpenSenseLanguage "Korean"
+!insertmacro OpenSenseLanguage "Latvian"
+!insertmacro OpenSenseLanguage "Norwegian"
+!insertmacro OpenSenseLanguage "Polish"
+!insertmacro OpenSenseLanguage "Portuguese"
+!insertmacro OpenSenseLanguage "PortugueseBR"
+!insertmacro OpenSenseLanguage "Romanian"
+!insertmacro OpenSenseLanguage "Russian"
+!insertmacro OpenSenseLanguage "Serbian"
+!insertmacro OpenSenseLanguage "SimpChinese"
+!insertmacro OpenSenseLanguage "Slovak"
+!insertmacro OpenSenseLanguage "Spanish"
+!insertmacro OpenSenseLanguage "Swedish"
+!insertmacro OpenSenseLanguage "Thai"
+!insertmacro OpenSenseLanguage "TradChinese"
+!insertmacro OpenSenseLanguage "Turkish"
+!insertmacro OpenSenseLanguage "Ukrainian"
+!insertmacro OpenSenseLanguage "Vietnamese"
+
+; NSIS runs in Windows' display language or, failing that, in any language sharing its primary language,
+; whatever the script. Chinese needs the script its region uses, and Croatian, Bosnian and Latin-script
+; Serbian must not get Cyrillic Serbian; this settles them as the app does.
+!macro SettleLanguage
+  System::Call 'kernel32::GetUserDefaultUILanguage() i .r0'
+  IntOp $1 $0 & 0x3FF
+  ${If} $1 = 0x04 ; Chinese: Simplified in mainland China and Singapore, Traditional elsewhere
+    ${If} $0 = 0x0804
+    ${OrIf} $0 = 0x1004
+      StrCpy $LANGUAGE ${LANG_SIMPCHINESE}
+    ${Else}
+      StrCpy $LANGUAGE ${LANG_TRADCHINESE}
+    ${EndIf}
+  ${ElseIf} $1 = 0x1A ; Serbian, Croatian and Bosnian: only Serbian in Cyrillic is translated
+    ${If} $0 = 0x0C1A
+    ${OrIf} $0 = 0x1C1A
+    ${OrIf} $0 = 0x281A
+    ${OrIf} $0 = 0x301A
+      StrCpy $LANGUAGE ${LANG_SERBIAN}
+    ${Else}
+      StrCpy $LANGUAGE ${LANG_ENGLISH}
+    ${EndIf}
+  ${EndIf}
+!macroend
 
 ; Asks the running window to quit before its files change.
 !macro StopRunningCopy
   ${If} ${FileExists} "$INSTDIR\${APP_EXE}"
-    DetailPrint "Closing the running copy of ${APP_NAME}..."
+    DetailPrint "$(Inst_Closing)"
     ExecWait '"$INSTDIR\${APP_EXE}" --exit'
   ${EndIf}
 !macroend
@@ -115,13 +185,13 @@ Section "-Remove installed version"
     Return
   ${EndIf}
 
-  DetailPrint "Removing the installed version from $0..."
+  DetailPrint "$(Inst_RemovingOld)"
   ClearErrors
   ; _?= runs the uninstaller in place instead of from a temporary copy, so ExecWait really waits.
   ExecWait '"$0\Uninstall.exe" /S _?=$0' $1
   ${If} ${Errors}
   ${OrIf} $1 != 0
-    MessageBox MB_YESNO|MB_ICONEXCLAMATION "The installed version of ${APP_NAME} could not be removed (error $1). Continue anyway?" /SD IDYES IDYES +2
+    MessageBox MB_YESNO|MB_ICONEXCLAMATION "$(Inst_RemoveFailed)" /SD IDYES IDYES +2
       Abort
   ${EndIf}
   ; A running uninstaller cannot delete itself.
@@ -129,7 +199,7 @@ Section "-Remove installed version"
   RMDir "$0"
 SectionEnd
 
-Section "${APP_NAME} (required)" SecCore
+Section "$(Inst_SecCore)" SecCore
   SectionIn RO
   SetOutPath "$INSTDIR"
   !insertmacro StopRunningCopy
@@ -152,82 +222,83 @@ Section "${APP_NAME} (required)" SecCore
   WriteRegDWORD HKLM "${UNINSTALL_KEY}" "EstimatedSize" "$0"
 SectionEnd
 
-Section "PawnIO driver (required)" SecPawnIO
+Section "$(Inst_SecPawnIO)" SecPawnIO
   SectionIn RO
   ; Shared with other tools (LibreHardwareMonitor, FanControl), so an existing install is used as it is.
   ReadRegStr $0 HKLM "${PAWNIO_KEY}" "DisplayVersion"
   ${If} $0 != ""
-    DetailPrint "PawnIO $0 is already installed."
+    DetailPrint "$(Inst_PawnIOPresent)"
     Return
   ${EndIf}
 
-  DetailPrint "Installing PawnIO..."
+  DetailPrint "$(Inst_PawnIOInstalling)"
   InitPluginsDir
   File "/oname=$PLUGINSDIR\PawnIO_setup.exe" "${PAWNIO_SETUP}"
   ExecWait '"$PLUGINSDIR\PawnIO_setup.exe" -install -silent' $1
   ${If} $1 != 0
-    MessageBox MB_OK|MB_ICONEXCLAMATION "The PawnIO driver could not be installed (error $1). ${APP_NAME} will show the firmware's less accurate CPU temperature until it is." /SD IDOK
+    MessageBox MB_OK|MB_ICONEXCLAMATION "$(Inst_PawnIOFailed)" /SD IDOK
   ${EndIf}
 SectionEnd
 
 ; The service owns the laptop's firmware as LocalSystem from boot, so the app needs no administrator
 ; rights. After PawnIO, so its first start finds the driver.
 Section "-Service"
-  DetailPrint "Registering the ${APP_NAME} service..."
+  DetailPrint "$(Inst_ServiceRegistering)"
   nsExec::ExecToLog '"$SYSDIR\sc.exe" create ${SERVICE_NAME} binPath= "\"$INSTDIR\${SERVICE_EXE}\"" start= auto depend= Winmgmt DisplayName= "${APP_NAME}"'
   Pop $0
   ${If} $0 != 0
-    MessageBox MB_OK|MB_ICONSTOP "The ${APP_NAME} service could not be registered (error $0)." /SD IDOK
+    MessageBox MB_OK|MB_ICONSTOP "$(Inst_ServiceRegisterFailed)" /SD IDOK
     Abort
   ${EndIf}
-  nsExec::ExecToLog '"$SYSDIR\sc.exe" description ${SERVICE_NAME} "Fan, performance and lighting control for Acer Nitro and Predator laptops."'
+  nsExec::ExecToLog '"$SYSDIR\sc.exe" description ${SERVICE_NAME} "$(Inst_ServiceDescription)"'
   Pop $0
   ; Restart after a crash: 5 s, 10 s, then every minute; the count resets after a day.
   nsExec::ExecToLog '"$SYSDIR\sc.exe" failure ${SERVICE_NAME} reset= 86400 actions= restart/5000/restart/10000/restart/60000'
   Pop $0
 
-  DetailPrint "Starting the ${APP_NAME} service..."
+  DetailPrint "$(Inst_ServiceStarting)"
   nsExec::ExecToLog '"$SYSDIR\net.exe" start ${SERVICE_NAME}'
   Pop $0
   ${If} $0 != 0
-    MessageBox MB_OK|MB_ICONEXCLAMATION "The ${APP_NAME} service did not start (error $0). Its log is in %ProgramData%\${APP_NAME}\logs." /SD IDOK
+    MessageBox MB_OK|MB_ICONEXCLAMATION "$(Inst_ServiceStartFailed)" /SD IDOK
   ${EndIf}
 SectionEnd
 
-Section "Start menu shortcut" SecStartMenu
+Section "$(Inst_SecStartMenu)" SecStartMenu
   SetShellVarContext all
-  CreateShortcut "$SMPROGRAMS\${APP_NAME}.lnk" "$INSTDIR\${APP_EXE}" "" "$INSTDIR\${APP_EXE}" 0 SW_SHOWNORMAL "" "Fan, performance and lighting control"
+  CreateShortcut "$SMPROGRAMS\${APP_NAME}.lnk" "$INSTDIR\${APP_EXE}" "" "$INSTDIR\${APP_EXE}" 0 SW_SHOWNORMAL "" "$(Inst_ShortcutDescription)"
 SectionEnd
 
-Section "Desktop shortcut" SecDesktop
+Section "$(Inst_SecDesktop)" SecDesktop
   SetShellVarContext all
   CreateShortcut "$DESKTOP\${APP_NAME}.lnk" "$INSTDIR\${APP_EXE}"
 SectionEnd
 
-Section "Start with Windows" SecAutostart
+Section "$(Inst_SecAutostart)" SecAutostart
   ; A per-user Run entry for the notification area icon; fan control runs from boot regardless.
   ExecWait '"$INSTDIR\${APP_EXE}" --enable-autostart'
 SectionEnd
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecCore} "The OpenSense app and its background service, with everything they need to run."
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecPawnIO} "Signed driver that lets OpenSense read the CPU's own temperature sensor, like ThrottleStop and HWiNFO. Skipped if PawnIO is already installed."
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecStartMenu} "Adds OpenSense to the Start menu."
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecDesktop} "Adds an OpenSense shortcut to the desktop."
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecAutostart} "Opens OpenSense in the notification area when you sign in. Fan control runs from startup either way."
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecCore} "$(Inst_DescCore)"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecPawnIO} "$(Inst_DescPawnIO)"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecStartMenu} "$(Inst_DescStartMenu)"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecDesktop} "$(Inst_DescDesktop)"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecAutostart} "$(Inst_DescAutostart)"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ; --- checks and defaults (after the sections, so their ids are defined) ---------------------
 
 Function .onInit
+  !insertmacro SettleLanguage
   ${IfNot} ${RunningX64}
-    MessageBox MB_OK|MB_ICONSTOP "${APP_NAME} requires 64-bit Windows." /SD IDOK
+    MessageBox MB_OK|MB_ICONSTOP "$(Inst_Needs64Bit)" /SD IDOK
     Abort
   ${EndIf}
   SetRegView 64
   ReadRegStr $0 HKLM "SOFTWARE\Microsoft\Windows NT\CurrentVersion" "CurrentBuildNumber"
   ${If} $0 < ${MIN_WINDOWS_BUILD}
-    MessageBox MB_OK|MB_ICONSTOP "${APP_NAME} requires Windows 10 version 2004 (build ${MIN_WINDOWS_BUILD}) or later." /SD IDOK
+    MessageBox MB_OK|MB_ICONSTOP "$(Inst_NeedsWindows)" /SD IDOK
     Abort
   ${EndIf}
 
@@ -271,6 +342,7 @@ Function .onInstSuccess
 FunctionEnd
 
 Function un.onInit
+  !insertmacro SettleLanguage
   SetRegView 64
 FunctionEnd
 
@@ -281,7 +353,7 @@ Section "Uninstall"
   ${If} ${FileExists} "$INSTDIR\${APP_EXE}"
     ExecWait '"$INSTDIR\${APP_EXE}" --disable-autostart'
   ${EndIf}
-  DetailPrint "Stopping the ${APP_NAME} service..."
+  DetailPrint "$(Inst_ServiceStopping)"
   !insertmacro RemoveService
 
   SetShellVarContext all
@@ -296,7 +368,7 @@ Section "Uninstall"
   RMDir /REBOOTOK "$INSTDIR"
   DeleteRegKey HKLM "${UNINSTALL_KEY}"
 
-  MessageBox MB_YESNO|MB_ICONQUESTION "Also remove your ${APP_NAME} settings and logs?" /SD IDNO IDNO keep_user_data
+  MessageBox MB_YESNO|MB_ICONQUESTION "$(Inst_RemoveUserData)" /SD IDNO IDNO keep_user_data
     SetShellVarContext all
     RMDir /r "$APPDATA\${APP_NAME}" ; %ProgramData%: the service's settings and logs
     SetShellVarContext current
@@ -305,6 +377,6 @@ Section "Uninstall"
   keep_user_data:
 
   ${If} ${RebootFlag}
-    MessageBox MB_OK|MB_ICONINFORMATION "Some ${APP_NAME} files are in use and will be removed when Windows restarts." /SD IDOK
+    MessageBox MB_OK|MB_ICONINFORMATION "$(Inst_RebootToFinish)" /SD IDOK
   ${EndIf}
 SectionEnd

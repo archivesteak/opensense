@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Dispatching;
+using OpenSense.App.Localization;
 using OpenSense.App.Services;
 using OpenSense.Core.Control;
 using OpenSense.Core.Hardware;
@@ -107,7 +108,7 @@ public sealed partial class SystemViewModel(DispatcherQueue dispatcher, DeviceSe
     partial void OnSelectedPowerPlanChanged(PowerPlan? value)
     {
         if (!_loading && value is not null && value.Id != Core.Hardware.PowerPlans.Active() && !Core.Hardware.PowerPlans.SetActive(value.Id))
-            notifications.Show("Power plan", $"Windows did not switch to \"{value.Name}\".");
+            notifications.Show(Strings.Get("Notice_PowerPlan_Title"), Strings.Format("Notice_PowerPlanFailed", value.Name));
     }
 
     /// <summary>GPU mode the firmware is set to (0 hybrid, 1 discrete).</summary>
@@ -147,7 +148,7 @@ public sealed partial class SystemViewModel(DispatcherQueue dispatcher, DeviceSe
         var ok = await session.SetGpuModeAsync(mode);
         if (!ok)
         {
-            notifications.Show("GPU mode", "The firmware rejected the GPU mode change.", Microsoft.UI.Xaml.Controls.InfoBarSeverity.Error);
+            notifications.Show(Strings.Get("Notice_GpuMode_Title"), Strings.Get("Notice_GpuModeRejected"), Microsoft.UI.Xaml.Controls.InfoBarSeverity.Error);
             Revert(oldIndex);
             return;
         }

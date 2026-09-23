@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
@@ -6,8 +7,8 @@ namespace OpenSense.Core.Monitoring;
 
 public interface ITemperatureSensor : IDisposable
 {
-    /// <summary>What is being read, for the UI (e.g. "Intel package sensor").</summary>
-    string Description { get; }
+    /// <summary>What is being read.</summary>
+    SensorStatus Status { get; }
 
     /// <summary>Degrees Celsius, or null when the reading failed.</summary>
     double? Read();
@@ -19,23 +20,23 @@ public interface ITemperatureSensor : IDisposable
 /// </summary>
 internal static class CpuTemperatureSensor
 {
-    /// <summary>Opens the sensor, or returns null and logs why (no PawnIO, unsupported CPU, ...).</summary>
-    public static ITemperatureSensor? TryOpen(Action<string>? log = null)
+    /// <summary>Opens the sensor, or returns null and reports why (no PawnIO, unsupported CPU, ...).</summary>
+    public static ITemperatureSensor? TryOpen(Action<SensorProblem, string?>? fail = null)
     {
         if (!X86Base.IsSupported)
         {
-            log?.Invoke("Not an x86 CPU.");
+            fail?.Invoke(SensorProblem.NotX86Cpu, null);
             return null;
         }
         var vendor = Vendor();
         switch (vendor)
         {
             case "GenuineIntel":
-                return IntelPackageSensor.TryOpen(log);
+                return IntelPackageSensor.TryOpen(fail);
             case "AuthenticAMD":
-                return AmdTctlSensor.TryOpen(log);
+                return AmdTctlSensor.TryOpen(fail);
             default:
-                log?.Invoke($"Unsupported CPU vendor {vendor}.");
+                fail?.Invoke(SensorProblem.UnsupportedCpuVendor, vendor);
                 return null;
         }
     }
@@ -63,31 +64,31 @@ internal sealed class IntelPackageSensor : ITemperatureSensor
         _tjMax = tjMax;
     }
 
-    public string Description => $"Intel package sensor (TjMax {_tjMax} °C)";
+    public SensorStatus Status => new(ChipSensor.IntelPackage, _tjMax);
 
-    public static ITemperatureSensor? TryOpen(Action<string>? log)
+    public static ITemperatureSensor? TryOpen(Action<SensorProblem, string?>? fail)
     {
         // CPUID.06H:EAX[6]: package thermal management, i.e. IA32_PACKAGE_THERM_STATUS exists.
         if ((X86Base.CpuId(6, 0).Eax & (1 << 6)) == 0)
         {
-            log?.Invoke("This Intel CPU has no package temperature sensor.");
+            fail?.Invoke(SensorProblem.NoPackageSensor, null);
             return null;
         }
-        if (PawnIOModule.TryOpen("IntelMSR", log) is not { } module)
+        if (PawnIOModule.TryOpen("IntelMSR", fail) is not { } module)
             return null;
 
         var tjMax = module.Call("ioctl_read_msr", TemperatureTarget) is { } target ? (int)((target >> 16) & 0xFF) : 0;
         if (tjMax is < 60 or > 130)
         {
             module.Dispose();
-            log?.Invoke($"The CPU reported an implausible TjMax ({tjMax} °C).");
+            fail?.Invoke(SensorProblem.ImplausibleTjMax, tjMax.ToString(CultureInfo.InvariantCulture));
             return null;
         }
         var sensor = new IntelPackageSensor(module, tjMax);
         if (sensor.Read() is null)
         {
             sensor.Dispose();
-            log?.Invoke("The CPU package sensor did not answer.");
+            fail?.Invoke(SensorProblem.NoReading, null);
             return null;
         }
         return sensor;
@@ -121,12 +122,12 @@ internal sealed class AmdTctlSensor : ITemperatureSensor
         _pciLock = pciLock;
     }
 
-    public string Description => "AMD Tctl sensor";
+    public SensorStatus Status { get; } = new(ChipSensor.AmdTctl);
 
-    public static ITemperatureSensor? TryOpen(Action<string>? log)
+    public static ITemperatureSensor? TryOpen(Action<SensorProblem, string?>? fail)
     {
         // The module itself refuses to load outside families 17h–1Ah.
-        if (PawnIOModule.TryOpen("AMDFamily17", log) is not { } module)
+        if (PawnIOModule.TryOpen("AMDFamily17", fail) is not { } module)
             return null;
 
         Mutex pciLock;
@@ -138,7 +139,7 @@ internal sealed class AmdTctlSensor : ITemperatureSensor
         catch (Exception ex) when (ex is UnauthorizedAccessException or WaitHandleCannotBeOpenedException)
         {
             module.Dispose();
-            log?.Invoke($"Could not open the shared PCI lock: {ex.Message}");
+            fail?.Invoke(SensorProblem.PciLockUnavailable, ex.Message);
             return null;
         }
 
@@ -146,7 +147,7 @@ internal sealed class AmdTctlSensor : ITemperatureSensor
         if (sensor.Read() is null)
         {
             sensor.Dispose();
-            log?.Invoke("The CPU temperature register did not answer.");
+            fail?.Invoke(SensorProblem.NoReading, null);
             return null;
         }
         return sensor;

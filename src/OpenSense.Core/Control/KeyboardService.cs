@@ -37,7 +37,7 @@ public sealed class KeyboardService
     public KeyboardSettings Current { get; private set; } = new();
 
     /// <summary>Raised (on a worker thread) when the firmware rejects a change.</summary>
-    public event Action<string>? Notice;
+    public event Action<ControlNotice>? Notice;
 
     public Task<KeyboardState> ReadStateAsync() => _dispatcher.InvokeAsync(d => KeyboardState.Read(d, _caps));
 
@@ -85,20 +85,20 @@ public sealed class KeyboardService
             }
             var failures = await _dispatcher.InvokeAsync(d => ApplyChanges(d, next)).ConfigureAwait(false);
             foreach (var failure in failures)
-                Notice?.Invoke(failure);
+                Notice?.Invoke(new ControlNotice(failure));
         }
     }
 
-    private List<string> ApplyChanges(AcerDevice device, KeyboardSettings settings)
+    private List<NoticeKind> ApplyChanges(AcerDevice device, KeyboardSettings settings)
     {
-        var failures = new List<string>();
+        var failures = new List<NoticeKind>();
 
         if (_caps.RgbBacklight && settings.Lighting is { } lighting && !SameLighting(lighting, _appliedLighting))
         {
             if (ApplyLighting(device, lighting))
                 _appliedLighting = lighting;
             else
-                failures.Add("The keyboard rejected the lighting change.");
+                failures.Add(NoticeKind.LightingRejected);
         }
 
         if (_caps.BacklightHotkey is { } hotkey && settings.BacklightAutoOff is { } autoOff && autoOff != _appliedAutoOff)
@@ -107,7 +107,7 @@ public sealed class KeyboardService
             if (device.SetBacklightTimeout(hotkey, brightness, autoOff ? KeyboardProtocol.AutoOffSeconds : 0))
                 _appliedAutoOff = autoOff;
             else
-                failures.Add("The keyboard rejected the backlight timeout change.");
+                failures.Add(NoticeKind.BacklightTimeoutRejected);
         }
 
         if (_caps.WindowsKey && settings.WindowsKey is { } winKey && winKey != _appliedWindowsKey)
@@ -115,7 +115,7 @@ public sealed class KeyboardService
             if (device.SetWindowsKeyEnabled(winKey))
                 _appliedWindowsKey = winKey;
             else
-                failures.Add("The firmware rejected the Windows key change.");
+                failures.Add(NoticeKind.WindowsKeyRejected);
         }
 
         if (_caps.LcdOverdrive && settings.LcdOverdrive is { } overdrive && overdrive != _appliedOverdrive)
@@ -123,7 +123,7 @@ public sealed class KeyboardService
             if (device.SetLcdOverdrive(overdrive))
                 _appliedOverdrive = overdrive;
             else
-                failures.Add("The display rejected the overdrive change.");
+                failures.Add(NoticeKind.LcdOverdriveRejected);
         }
 
         return failures;

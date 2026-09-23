@@ -89,8 +89,8 @@ public class FanControlServiceTests
     public void Emergency_temperature_forces_max_then_releases_with_margin()
     {
         var (service, fw, _) = Create(new ControlProfile { Mode = FanControlMode.Custom });
-        var notices = new List<string>();
-        service.Notice += n => notices.Add(n.Message);
+        var notices = new List<ControlNotice>();
+        service.Notice += notices.Add;
 
         fw.CpuTemp = 96;
         service.Tick();
@@ -137,7 +137,7 @@ public class FanControlServiceTests
         service.Tick();
         Assert.Equal(OperatingMode.Quiet, fw.Mode);
         Assert.Equal(FanBehavior.Auto, fw.Behavior[0]);
-        Assert.NotNull(service.Latest!.FanLockReason);
+        Assert.Equal(FanLock.QuietMode, service.Latest!.FanLock);
     }
 
     [Fact]

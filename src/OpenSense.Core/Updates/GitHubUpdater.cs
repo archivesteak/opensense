@@ -27,7 +27,20 @@ public sealed record ReleaseAsset(string Name, Uri DownloadUrl, Uri ApiUrl, long
 public sealed record AvailableUpdate(Version Version, string Tag, string Name, Uri ReleasePage, DateTimeOffset? PublishedAt, ReleaseAsset? Asset);
 
 /// <summary>The downloaded file does not match the SHA-256 digest GitHub published for it.</summary>
-public sealed class UpdateVerificationException(string message) : Exception(message);
+/// <summary>Why a download could not be verified.</summary>
+public enum VerificationFailure
+{
+    /// <summary>GitHub published no SHA-256 digest for the asset.</summary>
+    NoDigest,
+
+    /// <summary>The download does not match the published digest.</summary>
+    DigestMismatch,
+}
+
+public sealed class UpdateVerificationException(VerificationFailure failure, string message) : Exception(message)
+{
+    public VerificationFailure Failure { get; } = failure;
+}
 
 /// <summary>
 /// Finds newer OpenSense releases on GitHub and downloads the matching installer or portable zip, verified
@@ -70,7 +83,7 @@ public sealed partial class GitHubUpdater(HttpClient http, UpdaterOptions option
         var digest = asset.Digest
             ?? (await http.GetFromJsonAsync(asset.ApiUrl, GitHubJson.Default.GitHubAsset, cancellationToken).ConfigureAwait(false))?.Digest;
         if (digest is null || !digest.StartsWith("sha256:", StringComparison.OrdinalIgnoreCase))
-            throw new UpdateVerificationException($"GitHub published no SHA-256 digest for {asset.Name}, so it cannot be verified.");
+            throw new UpdateVerificationException(VerificationFailure.NoDigest, $"GitHub published no SHA-256 digest for {asset.Name}, so it cannot be verified.");
 
         Directory.CreateDirectory(Path.GetDirectoryName(path)!);
         using var hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
@@ -98,7 +111,8 @@ public sealed partial class GitHubUpdater(HttpClient http, UpdaterOptions option
         if (actual != expected)
         {
             File.Delete(path);
-            throw new UpdateVerificationException($"{asset.Name} does not match its published SHA-256 digest (expected {expected}, got {actual}).");
+            throw new UpdateVerificationException(VerificationFailure.DigestMismatch,
+                $"{asset.Name} does not match its published SHA-256 digest (expected {expected}, got {actual}).");
         }
         LogDownloaded(asset.Name, path);
     }

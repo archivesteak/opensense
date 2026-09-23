@@ -20,11 +20,6 @@
             IsBackButtonVisible="False"
             IsPaneToggleButtonVisible="True"
             PaneToggleRequested="OnPaneToggleRequested">
-            <TitleBar.Resources>
-                <!-- 15% larger than the default 16 px; the artwork itself fills 5% more of the image -->
-                <x:Double x:Key="TitleBarIconMaxWidth">17.5</x:Double>
-                <x:Double x:Key="TitleBarIconMaxHeight">17.5</x:Double>
-            </TitleBar.Resources>
             <TitleBar.IconSource>
                 <ImageIconSource ImageSource="ms-appx:///Assets/OpenSense.png" />
             </TitleBar.IconSource>
@@ -41,25 +36,25 @@
             SelectionChanged="OnNavigationChanged"
             Visibility="{x:Bind Shell.IsReady, Mode=OneWay}">
             <NavigationView.MenuItems>
-                <NavigationViewItem Content="Dashboard" Tag="dashboard">
+                <NavigationViewItem x:Uid="Nav_Dashboard" Tag="dashboard">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE80F;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem Content="Fans" Tag="fans">
+                <NavigationViewItem x:Uid="Nav_Fans" Tag="fans">
                     <NavigationViewItem.Icon>
                         <PathIcon Data="M15.5,8 A7.5,7.5 0 1 1 0.5,8 A7.5,7.5 0 1 1 15.5,8 Z M14.5,8 A6.5,6.5 0 1 1 1.5,8 A6.5,6.5 0 1 1 14.5,8 Z M9.75,8 A1.75,1.75 0 1 1 6.25,8 A1.75,1.75 0 1 1 9.75,8 Z M8.71,5.42 L8.71,5.48 L8.88,5.3 L9.13,5.13 L9.46,4.99 L9.85,4.89 L10.31,4.86 L10.82,4.91 L11.37,5.05 L11.93,5.3 L12.5,5.67 A0.58,0.58 0 0 0 13.22,4.76 L12.52,4.27 L11.8,3.91 L11.07,3.69 L10.36,3.59 L9.69,3.6 L9.08,3.72 L8.52,3.92 L8.04,4.2 L7.64,4.56 L7.29,5.18 A0.72,0.72 0 0 0 8.71,5.42 Z M10.67,7.88 L10.62,7.9 L10.84,8 L11.08,8.19 L11.31,8.45 L11.53,8.8 L11.7,9.23 L11.81,9.73 L11.84,10.29 L11.78,10.91 L11.61,11.55 A0.58,0.58 0 0 0 12.69,11.96 L12.95,11.15 L13.06,10.35 L13.05,9.59 L12.92,8.88 L12.71,8.25 L12.41,7.7 L12.04,7.24 L11.63,6.87 L11.17,6.59 L10.47,6.45 A0.72,0.72 0 0 0 10.67,7.88 Z M8.94,10.5 L8.91,10.46 L8.88,10.7 L8.77,10.98 L8.59,11.29 L8.33,11.6 L7.97,11.9 L7.53,12.16 L7.01,12.36 L6.4,12.49 L5.73,12.53 A0.58,0.58 0 0 0 5.68,13.69 L6.54,13.68 L7.33,13.54 L8.05,13.29 L8.68,12.96 L9.21,12.55 L9.65,12.1 L9.98,11.61 L10.2,11.1 L10.32,10.58 L10.23,9.87 A0.72,0.72 0 0 0 8.94,10.5 Z M5.91,9.67 L5.94,9.62 L5.71,9.67 L5.4,9.66 L5.05,9.58 L4.67,9.42 L4.28,9.18 L3.9,8.84 L3.54,8.41 L3.23,7.87 L2.99,7.24 A0.58,0.58 0 0 0 1.87,7.55 L2.15,8.36 L2.53,9.08 L2.98,9.68 L3.5,10.18 L4.05,10.56 L4.61,10.83 L5.18,10.99 L5.73,11.05 L6.27,11 L6.91,10.7 A0.72,0.72 0 0 0 5.91,9.67 Z M5.77,6.53 L5.82,6.54 L5.71,6.33 L5.62,6.04 L5.59,5.69 L5.62,5.28 L5.73,4.83 L5.93,4.36 L6.24,3.89 L6.65,3.43 L7.17,3 A0.58,0.58 0 0 0 6.53,2.04 L5.85,2.55 L5.29,3.13 L4.85,3.75 L4.54,4.39 L4.34,5.03 L4.26,5.65 L4.28,6.24 L4.4,6.79 L4.61,7.28 L5.1,7.8 A0.72,0.72 0 0 0 5.77,6.53 Z" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem
-                    Content="Lighting"
+                    x:Uid="Nav_Lighting"
                     Tag="lighting"
                     Visibility="{x:Bind Shell.LightingAvailable, Mode=OneWay}">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE790;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem Content="Keyboard &amp; display" Tag="system">
+                <NavigationViewItem x:Uid="Nav_System" Tag="system">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE765;" />
                     </NavigationViewItem.Icon>
@@ -81,8 +76,8 @@
                         Severity="Informational">
                         <InfoBar.ActionButton>
                             <Button
+                                x:Uid="Update_Install"
                                 Command="{x:Bind Updates.InstallCommand}"
-                                Content="Update now"
                                 Style="{StaticResource AccentButtonStyle}" />
                         </InfoBar.ActionButton>
                         <StackPanel Margin="0,0,0,12" Spacing="4">
@@ -91,8 +86,8 @@
                                 Visibility="{x:Bind Updates.IsDownloading, Mode=OneWay}"
                                 Value="{x:Bind Updates.DownloadProgress, Mode=OneWay}" />
                             <StackPanel Orientation="Horizontal" Spacing="4">
-                                <HyperlinkButton Command="{x:Bind Updates.OpenReleasePageCommand}" Content="What's new" />
-                                <HyperlinkButton Command="{x:Bind Updates.SkipCommand}" Content="Skip this version" />
+                                <HyperlinkButton x:Uid="Update_WhatsNew" Command="{x:Bind Updates.OpenReleasePageCommand}" />
+                                <HyperlinkButton x:Uid="Update_Skip" Command="{x:Bind Updates.SkipCommand}" />
                             </StackPanel>
                         </StackPanel>
                     </InfoBar>
@@ -122,7 +117,7 @@
             Spacing="16"
             Visibility="{x:Bind Shell.IsStarting, Mode=OneWay}">
             <ProgressRing Width="48" Height="48" IsActive="True" />
-            <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="Connecting to your laptop…" />
+            <TextBlock x:Uid="Startup_Connecting" Style="{StaticResource BodyTextBlockStyle}" />
         </StackPanel>
 
         <!-- Problems -->
@@ -150,13 +145,13 @@
                 Orientation="Horizontal"
                 Spacing="8">
                 <Button
+                    x:Uid="Problem_RestartElevated"
                     Command="{x:Bind Shell.RetryElevationCommand}"
-                    Content="Restart as administrator"
                     Style="{StaticResource AccentButtonStyle}"
                     Visibility="{x:Bind Shell.CanRetryElevation, Mode=OneWay}" />
                 <Button
+                    x:Uid="Problem_StartService"
                     Command="{x:Bind Shell.StartServiceCommand}"
-                    Content="Start the service"
                     Style="{StaticResource AccentButtonStyle}"
                     Visibility="{x:Bind Shell.CanStartService, Mode=OneWay}" />
             </StackPanel>

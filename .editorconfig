@@ -12,6 +12,10 @@ indent_size = 4
 [*.{csproj,props,targets,json,xml,manifest,nsi,nsh}]
 indent_size = 2
 
+# NSIS reads a file without a byte order mark in the system code page (installer\Strings).
+[*.nsh]
+charset = utf-8-bom
+
 [*.cs]
 csharp_style_namespace_declarations = file_scoped:warning
 csharp_prefer_braces = when_multiline:silent

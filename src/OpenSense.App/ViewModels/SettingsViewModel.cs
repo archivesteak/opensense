@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using OpenSense.App.Localization;
 using OpenSense.App.Services;
 using OpenSense.Core.Hardware;
 using OpenSense.Core.Settings;
@@ -22,9 +23,14 @@ public sealed partial class SettingsViewModel(SettingsService settings, DeviceSe
 
     private bool _loading;
 
-    public static IReadOnlyList<string> IntervalNames { get; } = ["0.5 s", "1 s", "2 s"];
+    /// <summary>In <see cref="Intervals"/> order.</summary>
+    public static IReadOnlyList<string> IntervalNames { get; } =
+        [.. Intervals.Select(ms => Strings.Format("Unit_Seconds", ms / 1000.0))];
 
-    public static IReadOnlyList<string> ThemeNames { get; } = ["Use system setting", "Light", "Dark"];
+    public static IReadOnlyList<string> ThemeNames { get; } = [Strings.Get("Theme_System"), Strings.Get("Theme_Light"), Strings.Get("Theme_Dark")];
+
+    /// <summary>"Use system setting" (an empty tag), then every translation by its own name.</summary>
+    public static IReadOnlyList<LanguageOption> Languages { get; } = [new("", Strings.Get("Language_System")), .. AppLanguage.Available];
 
     public string Version { get; } = typeof(SettingsViewModel).Assembly.GetName().Version?.ToString(3) ?? "0.0.0";
 
@@ -48,6 +54,13 @@ public sealed partial class SettingsViewModel(SettingsService settings, DeviceSe
 
     [ObservableProperty]
     public partial int ThemeIndex { get; set; }
+
+    [ObservableProperty]
+    public partial int LanguageIndex { get; set; }
+
+    /// <summary>The chosen language isn't the one on screen until OpenSense restarts.</summary>
+    [ObservableProperty]
+    public partial bool LanguageRestartNeeded { get; set; }
 
     /// <summary>The firmware lists operating modes, so the user can switch them on or off.</summary>
     [ObservableProperty]
@@ -99,6 +112,7 @@ public sealed partial class SettingsViewModel(SettingsService settings, DeviceSe
         OpenWithNitroSenseKey = ui.OpenWithNitroSenseKey;
         IntervalIndex = Math.Max(0, Array.IndexOf(Intervals, machine.PollIntervalMs));
         ThemeIndex = ui.Theme;
+        LanguageIndex = Math.Max(0, Languages.ToList().FindIndex(l => l.Tag.Length > 0 && string.Equals(l.Tag, ui.Language, StringComparison.OrdinalIgnoreCase)));
 
         var detected = session.Detected;
         OperatingModesSwitchAvailable = detected.FirmwareOperatingModes.Count > 0 || detected.HasOperatingModes;
@@ -106,13 +120,12 @@ public sealed partial class SettingsViewModel(SettingsService settings, DeviceSe
         OperatingModesDescription = DescribeOperatingModes(detected);
 
         Diagnostics = detected.Diagnostics;
-        LaptopModel = session.DeviceName;
-        BiosVersion = session.BiosVersion is { } bios ? $"BIOS {bios}" : "BIOS version unknown";
+        LaptopModel = session.DeviceName ?? Strings.Get("Settings_UnknownModel");
+        BiosVersion = session.BiosVersion is { } bios ? Strings.Format("Settings_Bios", bios) : Strings.Get("Settings_BiosUnknown");
         var sources = session.TemperatureSources;
-        TemperatureSources = $"CPU: {sources.Cpu}.\nGPU: {sources.Gpu}.";
+        TemperatureSources = Strings.Format("Settings_SensorSources", Names.TemperatureSource(sources.Cpu), Names.TemperatureSource(sources.Gpu));
         PawnIOMissing = sources.PawnIOMissing;
-        ModeDescription = session.IsPortable ? "Portable copy: runs as administrator and controls the laptop itself while it is open."
-            : "Installed: the OpenSense service controls the laptop from startup, whether or not this window is open.";
+        ModeDescription = Strings.Get(session.IsPortable ? "Settings_Mode_Portable" : "Settings_Mode_Installed");
         HasServiceLogs = session.UsesService;
         _loading = false;
     }
@@ -130,7 +143,7 @@ public sealed partial class SettingsViewModel(SettingsService settings, DeviceSe
         }
         catch (Exception ex) when (ex is UnauthorizedAccessException or SecurityException or IOException)
         {
-            notifications.Show("Start with Windows", $"Could not update the startup entry: {ex.Message}", InfoBarSeverity.Error);
+            notifications.Show(Strings.Get("Notice_Autostart_Title"), Strings.Format("Notice_AutostartFailed", ex.Message), InfoBarSeverity.Error);
         }
     }
 
@@ -166,6 +179,18 @@ public sealed partial class SettingsViewModel(SettingsService settings, DeviceSe
         ThemeChanged?.Invoke(Theme);
     }
 
+    partial void OnLanguageIndexChanged(int value)
+    {
+        if (value < 0 || value >= Languages.Count)
+            return;
+        var choice = value == 0 ? null : Languages[value].Tag;
+        LanguageRestartNeeded = AppLanguage.Resolve(choice) != AppLanguage.Current;
+        UpdateUi(u => u with { Language = choice });
+    }
+
+    [RelayCommand]
+    private static void Restart() => App.Current.Restart();
+
     partial void OnOperatingModesOnChanged(bool value)
     {
         if (_loading)
@@ -178,13 +203,9 @@ public sealed partial class SettingsViewModel(SettingsService settings, DeviceSe
     private static string DescribeOperatingModes(DeviceCapabilities detected)
     {
         var modes = detected.FirmwareOperatingModes.Count > 0 ? detected.FirmwareOperatingModes : detected.OperatingModes;
-        var listed = string.Join(", ", modes);
-        var alternative = detected.FirmwareCoolBoost
-            ? "CoolBoost is available while they are off."
-            : "While they are off the laptop stays in its default mode.";
-        return detected.HasOperatingModes
-            ? $"{listed}, as Acer's software offers them on this model. {alternative}"
-            : $"Your firmware lists {listed}, but Acer's software doesn't use them on this model and they may change nothing. {alternative}";
+        var listed = string.Join(Strings.Get("ListSeparator"), modes.Select(Names.OperatingMode));
+        var alternative = Strings.Get(detected.FirmwareCoolBoost ? "Settings_OperatingModes_CoolBoost" : "Settings_OperatingModes_Default");
+        return Strings.Format(detected.HasOperatingModes ? "Settings_OperatingModes_Supported" : "Settings_OperatingModes_Unused", listed, alternative);
     }
 
     [RelayCommand]
@@ -193,7 +214,7 @@ public sealed partial class SettingsViewModel(SettingsService settings, DeviceSe
         var package = new DataPackage();
         package.SetText(Diagnostics);
         Clipboard.SetContent(package);
-        notifications.Show("Diagnostics", "Copied to the clipboard.", InfoBarSeverity.Success);
+        notifications.Show(Strings.Get("Notice_Diagnostics_Title"), Strings.Get("Notice_DiagnosticsCopied"), InfoBarSeverity.Success);
     }
 
     [RelayCommand]

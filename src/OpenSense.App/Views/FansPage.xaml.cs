@@ -2,6 +2,7 @@ using System.Globalization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml.Controls;
 using OpenSense.App.Helpers;
+using OpenSense.App.Localization;
 using OpenSense.App.ViewModels;
 
 namespace OpenSense.App.Views;
@@ -25,11 +26,11 @@ public sealed partial class FansPage : Page
 
     public static double DutyValue(int? duty) => duty ?? double.NaN;
 
-    public static string DutyLabel(string duty) => $"{duty} duty";
+    public static string DutyLabel(string duty) => Strings.Format("Fans_DutyLabel", duty);
 
     public static string TemperatureLabel(double celsius, bool fahrenheit) => Units.TemperatureWithUnit(celsius, fahrenheit);
 
-    public static string PercentLabel(double value) => string.Create(CultureInfo.CurrentCulture, $"{value:0}%");
+    public static string PercentLabel(double value) => Units.Percent(value);
 
     public static string DegreesLabel(double value) => string.Create(CultureInfo.CurrentCulture, $"{value:0} °");
 }

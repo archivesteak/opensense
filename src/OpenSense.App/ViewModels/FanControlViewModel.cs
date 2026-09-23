@@ -3,6 +3,8 @@ using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Dispatching;
+using OpenSense.App.Helpers;
+using OpenSense.App.Localization;
 using OpenSense.App.Services;
 using OpenSense.Core.Control;
 using OpenSense.Core.Hardware;
@@ -25,14 +27,16 @@ public sealed partial class ManualFanViewModel(FanId id, string name) : Observab
 
     public bool IsManual => !Auto;
 
-    public string PercentText => $"{Percent:0}%";
+    public string PercentText => Units.Percent(Percent);
 
     public ManualFanSetting ToSetting() => new(Auto, (int)Math.Round(Percent));
 }
 
 public sealed partial class CurveFanViewModel(FanId id, string name) : ObservableObject
 {
-    public static IReadOnlyList<string> Sources { get; } = ["CPU temperature", "GPU temperature", "Hottest of both"];
+    /// <summary>In <see cref="TemperatureSource"/> order.</summary>
+    public static IReadOnlyList<string> Sources { get; } =
+        [Strings.Get("CurveSource_Cpu"), Strings.Get("CurveSource_Gpu"), Strings.Get("CurveSource_Hottest")];
 
     public FanId Id { get; } = id;
 
@@ -79,12 +83,15 @@ public sealed partial class FanControlViewModel : ObservableObject
 
     private static readonly OperatingModeOption[] AllModes =
     [
-        new(OperatingMode.Eco, "Eco", "Longest battery life.", false),
-        new(OperatingMode.Quiet, "Quiet", "Lowest noise. Fans stay on Auto.", false),
-        new(OperatingMode.Balanced, "Balanced", "Everyday performance.", false),
-        new(OperatingMode.Performance, "Performance", "Higher power limits. Needs AC power.", true),
-        new(OperatingMode.Turbo, "Turbo", "Maximum power and cooling. Needs AC power.", true),
+        Option(OperatingMode.Eco, needsAc: false),
+        Option(OperatingMode.Quiet, needsAc: false),
+        Option(OperatingMode.Balanced, needsAc: false),
+        Option(OperatingMode.Performance, needsAc: true),
+        Option(OperatingMode.Turbo, needsAc: true),
     ];
+
+    private static OperatingModeOption Option(OperatingMode mode, bool needsAc) =>
+        new(mode, Names.OperatingMode(mode), Names.OperatingModeDescription(mode), needsAc);
 
     private readonly DeviceSession _session;
     private readonly MonitorViewModel _monitor;
@@ -102,7 +109,9 @@ public sealed partial class FanControlViewModel : ObservableObject
         monitor.PropertyChanged += OnMonitorChanged;
     }
 
-    public static IReadOnlyList<string> ModeNames { get; } = ["Auto", "Max", "Custom", "Curve"];
+    /// <summary>In <see cref="FanControlMode"/> order.</summary>
+    public static IReadOnlyList<string> ModeNames { get; } =
+        [Names.FanMode(FanControlMode.Auto), Names.FanMode(FanControlMode.Max), Names.FanMode(FanControlMode.Custom), Names.FanMode(FanControlMode.Curve)];
 
     public ObservableCollection<ManualFanViewModel> ManualFans { get; } = [];
 
@@ -120,13 +129,7 @@ public sealed partial class FanControlViewModel : ObservableObject
 
     public bool IsCurve => Mode == FanControlMode.Curve;
 
-    public string ModeDescription => Mode switch
-    {
-        FanControlMode.Auto => "The laptop's firmware manages the fans.",
-        FanControlMode.Max => "All fans at full speed.",
-        FanControlMode.Custom => "Fixed speed for each fan.",
-        _ => "OpenSense follows your temperature curves.",
-    };
+    public string ModeDescription => Names.FanModeDescription(Mode);
 
     [ObservableProperty]
     public partial bool HasFans { get; set; }
@@ -186,11 +189,11 @@ public sealed partial class FanControlViewModel : ObservableObject
         CurveFans.Clear();
         foreach (var fan in caps.Fans)
         {
-            var manual = new ManualFanViewModel(fan.Id, fan.Name + " fan") { Auto = profile.ManualFor(fan.Id).Auto, Percent = profile.ManualFor(fan.Id).Percent };
+            var manual = new ManualFanViewModel(fan.Id, Names.Fan(fan.Id)) { Auto = profile.ManualFor(fan.Id).Auto, Percent = profile.ManualFor(fan.Id).Percent };
             manual.PropertyChanged += (_, _) => SchedulePush();
             ManualFans.Add(manual);
 
-            var curve = new CurveFanViewModel(fan.Id, fan.Name + " fan") { Curve = profile.CurveFor(fan.Id).Curve, SourceIndex = (int)profile.CurveFor(fan.Id).Source };
+            var curve = new CurveFanViewModel(fan.Id, Names.Fan(fan.Id)) { Curve = profile.CurveFor(fan.Id).Curve, SourceIndex = (int)profile.CurveFor(fan.Id).Source };
             curve.PropertyChanged += (_, e) =>
             {
                 if (e.PropertyName is nameof(CurveFanViewModel.Curve) or nameof(CurveFanViewModel.SourceIndex))
@@ -300,10 +303,11 @@ public sealed partial class FanControlViewModel : ObservableObject
         if (e.PropertyName != nameof(MonitorViewModel.Latest) || _monitor.Latest is not { } t)
             return;
 
-        LockReason = t.FanLockReason;
+        LockReason = t.FanLock is { } fanLock ? Names.FanLock(fanLock) : null;
         Failsafe = t.Failsafe;
         OperatingModeNote = !t.OnAcPower && OperatingModes.Any(m => m.NeedsAc)
-            ? "On battery: Performance and Turbo run as Balanced until you plug in."
+            ? Strings.Format("OperatingMode_BatteryNote", Names.OperatingMode(OperatingMode.Performance), Names.OperatingMode(OperatingMode.Turbo),
+                Names.OperatingMode(OperatingMode.Balanced))
             : null;
 
         foreach (var curve in CurveFans)

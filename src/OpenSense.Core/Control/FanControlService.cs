@@ -4,9 +4,6 @@ using OpenSense.Core.Monitoring;
 
 namespace OpenSense.Core.Control;
 
-/// <param name="Important">Worth interrupting the user for (failsafe), not just a log line.</param>
-public sealed record ControlNotice(string Message, bool Important = false);
-
 /// <summary>
 /// Owns the firmware: polls sensors, applies the user's <see cref="ControlProfile"/>, runs fan curves
 /// and enforces safety rules. All WMI traffic happens on its single worker thread.
@@ -143,13 +140,13 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
             {
                 Tick();
             }
-            catch (AcerWmiAccessDeniedException ex)
+            catch (AcerWmiAccessDeniedException)
             {
-                Notice?.Invoke(new ControlNotice(ex.Message));
+                Notice?.Invoke(new ControlNotice(NoticeKind.FirmwareAccessDenied));
             }
             catch (Exception ex)
             {
-                Notice?.Invoke(new ControlNotice($"Control loop error: {ex.Message}"));
+                Notice?.Invoke(new ControlNotice(NoticeKind.ControlLoopError, ex.Message));
             }
             _wake.WaitOne(Interval);
         }
@@ -184,7 +181,7 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
 
         ApplyOperatingMode(profile, onAc, reapply);
         ApplyCoolBoost(profile, reapply);
-        var (effective, lockReason) = ApplyFans(profile, now, reapply);
+        var (effective, fanLock) = ApplyFans(profile, now, reapply);
 
         var telemetry = new Telemetry
         {
@@ -205,7 +202,7 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
                 _appliedPercent.TryGetValue(f.Id, out var p) ? p : null)).ToList(),
             RequestedMode = profile.Mode,
             EffectiveMode = effective,
-            FanLockReason = lockReason,
+            FanLock = fanLock,
             OperatingMode = _appliedMode,
             CoolBoost = _appliedCoolBoost,
             OnAcPower = onAc,
@@ -267,7 +264,7 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
         if (_device.SetOperatingMode(target))
             _appliedMode = target;
         else
-            Notice?.Invoke(new ControlNotice($"The firmware rejected operating mode {target}."));
+            Notice?.Invoke(new ControlNotice(NoticeKind.OperatingModeRejected) { OperatingMode = target });
     }
 
     /// <summary>
@@ -293,18 +290,18 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
         if (_device.SetCoolBoost(wanted))
             _appliedCoolBoost = wanted;
         else
-            Notice?.Invoke(new ControlNotice("The firmware rejected the CoolBoost change."));
+            Notice?.Invoke(new ControlNotice(NoticeKind.CoolBoostRejected));
     }
 
-    private (FanControlMode Effective, string? LockReason) ApplyFans(ControlProfile profile, DateTime now, bool reapply)
+    private (FanControlMode Effective, FanLock? Lock) ApplyFans(ControlProfile profile, DateTime now, bool reapply)
     {
         var effective = profile.Mode;
-        string? lockReason = null;
+        FanLock? fanLock = null;
 
         if (_appliedMode == OperatingMode.Quiet && effective != FanControlMode.Auto)
         {
             effective = FanControlMode.Auto;
-            lockReason = "Quiet mode keeps the fans on Auto.";
+            fanLock = FanLock.QuietMode;
         }
 
         // Failsafe: manual control without a CPU temperature is flying blind.
@@ -313,7 +310,7 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
             if (++_cpuMisses >= FailsafeAfterMisses && !_failsafe)
             {
                 _failsafe = true;
-                Notice?.Invoke(new ControlNotice("CPU temperature is unavailable, so the fans were handed back to Auto.", Important: true));
+                Notice?.Invoke(new ControlNotice(NoticeKind.FansHandedBack, Important: true));
             }
         }
         else
@@ -374,7 +371,7 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
 
         if (assert)
             _lastAssert = now;
-        return (effective, lockReason);
+        return (effective, fanLock);
     }
 
     private (FanBehavior Behavior, int? Percent) Target(FanChannel fan, FanControlMode mode, ControlProfile profile)

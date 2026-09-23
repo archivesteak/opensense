@@ -9,6 +9,7 @@ using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Input;
 using OpenSense.App.Helpers;
+using OpenSense.App.Localization;
 using OpenSense.Core.Control;
 using Windows.Foundation;
 using Windows.System;
@@ -112,7 +113,14 @@ public sealed partial class FanCurveEditor : CanvasElement
     protected override void OnDraw(CanvasDrawingSession session, Size size)
     {
         var plot = Plot(size);
-        using var labels = new CanvasTextFormat { FontSize = 11, FontFamily = "Segoe UI Variable Text" };
+        // Tags hold words: shape and order them in the app's language.
+        using var labels = new CanvasTextFormat
+        {
+            FontSize = 11,
+            FontFamily = "Segoe UI Variable Text",
+            LocaleName = AppLanguage.Current,
+            Direction = AppLanguage.IsRightToLeft ? CanvasTextDirection.RightToLeftThenTopToBottom : CanvasTextDirection.LeftToRightThenTopToBottom,
+        };
         using var rightLabels = new CanvasTextFormat { FontSize = 11, FontFamily = "Segoe UI Variable Text", HorizontalAlignment = CanvasHorizontalAlignment.Right };
         using var centered = new CanvasTextFormat { FontSize = 11, FontFamily = "Segoe UI Variable Text", HorizontalAlignment = CanvasHorizontalAlignment.Center };
 
@@ -121,7 +129,7 @@ public sealed partial class FanCurveEditor : CanvasElement
         {
             var y = Y(plot, pct);
             session.DrawLine((float)plot.X, y, (float)plot.Right, y, GridLine, 1);
-            session.DrawText($"{pct}%", (float)plot.X - 8, y - 8, TextTertiary, rightLabels);
+            session.DrawText(Units.Percent(pct), (float)plot.X - 8, y - 8, TextTertiary, rightLabels);
         }
         var labelEvery = plot.Width > 420 ? 10 : 20;
         for (var t = FanCurve.MinTemperature; t <= FanCurve.MaxTemperature; t += 10)
@@ -167,7 +175,7 @@ public sealed partial class FanCurveEditor : CanvasElement
         {
             var p = _points[tagIndex];
             DrawTag(session, labels, new Vector2(X(plot, p.Temperature), Y(plot, p.Percent) - 26),
-                $"{Units.TemperatureWithUnit(p.Temperature, UseFahrenheit)} · {p.Percent}%", plot);
+                $"{Units.TemperatureWithUnit(p.Temperature, UseFahrenheit)} · {Units.Percent(p.Percent)}", plot);
         }
     }
 
@@ -207,7 +215,8 @@ public sealed partial class FanCurveEditor : CanvasElement
         session.DrawLine(x, (float)plot.Bottom, x, y, TemperatureScale.WithAlpha(color, 0xC0), 1.5f, dashed);
         session.FillCircle(x, y, 9, TemperatureScale.WithAlpha(color, 0x40));
         session.FillCircle(x, y, 4.5f, color);
-        DrawTag(session, format, new Vector2(x, (float)plot.Y + 4), $"Now {Units.Temperature(LiveTemperature, UseFahrenheit)} · {percent:0}%", plot, color);
+        DrawTag(session, format, new Vector2(x, (float)plot.Y + 4),
+            Strings.Format("CurveEditor_Now", Units.Temperature(LiveTemperature, UseFahrenheit), Units.Percent(percent)), plot, color);
     }
 
     private void DrawTag(CanvasDrawingSession session, CanvasTextFormat format, Vector2 anchor, string text, Rect plot, Windows.UI.Color? accent = null)

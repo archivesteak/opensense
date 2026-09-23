@@ -20,6 +20,8 @@ public abstract partial class CanvasElement : UserControl
     protected CanvasElement()
     {
         Content = _root;
+        // Graphs, fans and the keyboard are pictures: right-to-left languages mustn't mirror them (or the text drawn on them).
+        FlowDirection = FlowDirection.LeftToRight;
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;
         ActualThemeChanged += (_, _) => Invalidate();

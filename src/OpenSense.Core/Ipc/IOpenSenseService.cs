@@ -1,6 +1,8 @@
 using OpenSense.Core.Control;
 using OpenSense.Core.Hardware;
+using OpenSense.Core.Monitoring;
 using OpenSense.Core.Settings;
+using System.Text.Json.Serialization;
 using StreamJsonRpc;
 
 namespace OpenSense.Core.Ipc;
@@ -16,7 +18,7 @@ public partial interface IOpenSenseService
     event EventHandler<Telemetry>? TelemetryUpdated;
 
     /// <summary>Something the user should know about, e.g. the firmware rejected a change.</summary>
-    event EventHandler<EngineNotice>? NoticeRaised;
+    event EventHandler<ControlNotice>? NoticeRaised;
 
     /// <summary>The device session was rebuilt (capability overrides changed); carries the new state.</summary>
     event EventHandler<EngineSnapshot>? Rebuilt;
@@ -53,12 +55,15 @@ public enum EngineState
     Failed,
 }
 
-/// <param name="Important">Worth a notification when the window is hidden (failsafe).</param>
-public sealed record EngineNotice(string Title, string Message, bool Important = false);
-
 /// <summary>Where temperatures come from, for the UI.</summary>
-/// <param name="PawnIOMissing">The CPU sensor is unavailable because the PawnIO driver is not installed.</param>
-public sealed record TemperatureSources(string Cpu = "", string Gpu = "", bool PawnIOMissing = false);
+public sealed record TemperatureSources(SensorStatus Cpu, SensorStatus Gpu)
+{
+    public static TemperatureSources None { get; } = new(SensorStatus.NotUsed, SensorStatus.NotUsed);
+
+    /// <summary>The CPU sensor is unavailable because the PawnIO driver is not installed.</summary>
+    [JsonIgnore]
+    public bool PawnIOMissing => Cpu.Problem == SensorProblem.PawnIONotInstalled;
+}
 
 /// <summary>Everything a client needs to show the laptop, taken at one moment.</summary>
 public sealed record EngineSnapshot
@@ -71,7 +76,8 @@ public sealed record EngineSnapshot
 
     public string? Error { get; init; }
 
-    public string DeviceName { get; init; } = "";
+    /// <summary>The laptop's model name, if the firmware reports one.</summary>
+    public string? DeviceName { get; init; }
 
     public string? BiosVersion { get; init; }
 
@@ -93,7 +99,7 @@ public sealed record EngineSnapshot
 
     public MachineSettings Settings { get; init; } = new();
 
-    public TemperatureSources TemperatureSources { get; init; } = new();
+    public TemperatureSources TemperatureSources { get; init; } = TemperatureSources.None;
 
     public Telemetry? Latest { get; init; }
 }
