@@ -43,7 +43,8 @@ public static class KeyboardProtocol
     /// <summary>NitroSense offers five brightness steps; the firmware takes 0..100.</summary>
     public static IReadOnlyList<int> BrightnessLevels { get; } = [0, 25, 50, 75, 100];
 
-    public static bool UsesColor(KeyboardEffect effect) => effect is not (KeyboardEffect.Static or KeyboardEffect.Neon);
+    /// <summary>Neon and Wave are rainbow effects: the firmware draws its own colours.</summary>
+    public static bool UsesColor(KeyboardEffect effect) => effect is not (KeyboardEffect.Static or KeyboardEffect.Neon or KeyboardEffect.Wave);
 
     public static bool UsesDirection(KeyboardEffect effect) => effect is KeyboardEffect.Wave or KeyboardEffect.Shifting;
 

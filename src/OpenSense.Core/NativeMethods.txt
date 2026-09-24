@@ -14,6 +14,26 @@ IDXGIAdapter1
 DXGI_ERROR_NOT_FOUND
 DXGI_ADAPTER_FLAG
 
+// Discrete GPU power state (Windows' records of the device, not the GPU itself)
+CM_Get_Device_ID_List_SizeW
+CM_Get_Device_ID_ListW
+CM_GETIDLIST_FILTER_CLASS
+CM_GETIDLIST_FILTER_PRESENT
+CM_Locate_DevNodeW
+CM_Get_DevNode_PropertyW
+Windows.Win32.System.Power.CM_POWER_DATA
+DEVPKEY_Device_PowerData
+DEVPKEY_PciDevice_D3ColdSupport
+PCI_DEVICE_D3COLD_STATE_REASON
+GUID_DEVCLASS_DISPLAY
+
+// GPU temperature from the graphics driver, through Windows (what Task Manager shows)
+D3DKMTOpenAdapterFromLuid
+D3DKMTQueryAdapterInfo
+D3DKMTCloseAdapter
+D3DKMT_ADAPTER_PERFDATA
+KMTQUERYADAPTERINFOTYPE
+
 // Power source
 GetSystemPowerStatus
 

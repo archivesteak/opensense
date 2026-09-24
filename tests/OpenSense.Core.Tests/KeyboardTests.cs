@@ -14,10 +14,10 @@ public class KeyboardProtocolTests
     }
 
     [Fact]
-    public void Wave_payload_carries_flag_direction_and_colour()
+    public void Wave_payload_carries_flag_and_direction_but_no_colour()
     {
         var payload = KeyboardProtocol.BacklightPayload(KeyboardEffect.Wave, 4, 100, KeyboardDirection.Up, new RgbColor(0x10, 0x20, 0x30));
-        Assert.Equal(new byte[] { 3, 4, 100, 0x08, 3, 0x10, 0x20, 0x30, 3, 1, 100, 0x08, 3, 0x10, 0x20, 0x30 }, payload);
+        Assert.Equal(new byte[] { 3, 4, 100, 0x08, 3, 0, 0, 0, 3, 1, 100, 0x08, 3, 0, 0, 0 }, payload);
     }
 
     [Fact]
@@ -122,14 +122,14 @@ public class KeyboardServiceTests
 
         await service.ApplyAsync(new KeyboardSettings
         {
-            Lighting = new LightingSettings { Effect = KeyboardEffect.Wave, Speed = 3, Brightness = 75, Direction = KeyboardDirection.Left, EffectColor = "#FF8000" },
+            Lighting = new LightingSettings { Effect = KeyboardEffect.Shifting, Speed = 3, Brightness = 75, Direction = KeyboardDirection.Left, EffectColor = "#FF8000" },
             WindowsKey = false,
             LcdOverdrive = true,
             BacklightAutoOff = false,
         });
         var state = await service.ReadStateAsync();
 
-        Assert.Equal(KeyboardEffect.Wave, state.Effect);
+        Assert.Equal(KeyboardEffect.Shifting, state.Effect);
         Assert.Equal(3, state.Speed);
         Assert.Equal(75, state.Brightness);
         Assert.Equal(KeyboardDirection.Left, state.Direction);

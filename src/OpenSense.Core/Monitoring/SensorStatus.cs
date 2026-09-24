@@ -11,6 +11,9 @@ public enum ChipSensor
 
     /// <summary>The NVIDIA driver (NVML).</summary>
     NvidiaDriver,
+
+    /// <summary>The GPU's driver, through Windows (what Task Manager shows).</summary>
+    GraphicsDriver,
 }
 
 /// <summary>Why a chip's own sensor is not used, so the embedded controller's reading is.</summary>
@@ -33,8 +36,11 @@ public enum SensorProblem
     /// <summary>The detail is the error.</summary>
     PciLockUnavailable,
 
-    NoNvidiaDriver,
-    NvmlTooOld,
+    NoDiscreteGpu,
+
+    /// <summary>Windows' graphics kernel would not open the GPU's adapter; the detail is the error code.</summary>
+    GpuAdapterUnavailable,
+
     PawnIONotInstalled,
 
     /// <summary>The detail is the error code.</summary>

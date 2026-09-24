@@ -15,7 +15,7 @@ public static class OpenSensePipe
     public const string ServiceName = "OpenSense";
 
     /// <summary>Raised whenever <see cref="IOpenSenseService"/> changes incompatibly; app and service must agree.</summary>
-    public const int ProtocolVersion = 3;
+    public const int ProtocolVersion = 4;
 
     /// <summary>The OpenSense service is registered on this machine (an installed, not portable, copy).</summary>
     public static bool IsServiceInstalled

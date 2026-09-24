@@ -1,5 +1,6 @@
 using OpenSense.Core.Control;
 using OpenSense.Core.Hardware;
+using OpenSense.Core.Monitoring;
 
 namespace OpenSense.Core.Tests;
 
@@ -49,13 +50,13 @@ public class CurveTests
 public class FanControlServiceTests
 {
     private static (FanControlService Service, FakeFirmware Firmware, FakePower Power) Create(ControlProfile profile, bool modes = false,
-        Func<DateTime>? clock = null)
+        Func<DateTime>? clock = null, DirectSensors? sensors = null)
     {
         var firmware = new FakeFirmware { SupportsModes = modes };
         var device = new AcerDevice(firmware);
         var caps = CapabilityProbe.Probe(device);
         var power = new FakePower();
-        var service = new FanControlService(device, caps, new FakeLoad(), power, profile, clock: clock);
+        var service = new FanControlService(device, caps, new FakeLoad(), power, profile, sensors, clock);
         firmware.Calls.Clear();
         return (service, firmware, power);
     }
@@ -186,6 +187,92 @@ public class FanControlServiceTests
         service.Tick();
         Assert.Equal(FanBehavior.Auto, fw.Behavior[3]);
         Assert.True(service.Latest!.GpuAsleep);
+    }
+
+    [Fact]
+    public void A_gpu_windows_reports_on_is_read_from_the_driver_though_the_firmware_reads_zero()
+    {
+        // After a resume from sleep the firmware can go on reading 0 with the GPU back on.
+        var gpu = new FakeGpuSensor { Temperature = 62 };
+        var sensors = new DirectSensors(null, gpu, new FakeGpuPowerState { On = true }, SensorStatus.NotUsed, gpu.Status);
+        var (service, fw, _) = Create(new ControlProfile(), sensors: sensors);
+        fw.GpuTemp = 0;
+
+        service.Tick();
+
+        Assert.False(service.Latest!.GpuAsleep);
+        Assert.Equal(62d, service.Latest.GpuTemperature);
+        Assert.Equal(TemperatureOrigin.GpuDriver, service.Latest.GpuTemperatureOrigin);
+    }
+
+    [Theory]
+    [InlineData(false, 55)] // Windows says off: the driver isn't asked, even with a temperature from the firmware
+    [InlineData(false, 0)]
+    [InlineData(null, 0)] // Windows can't tell: the firmware's 0 says off
+    public void A_gpu_that_is_off_is_not_woken_by_asking_the_driver(bool? windowsSaysOn, int firmwareTemp)
+    {
+        var gpu = new FakeGpuSensor();
+        var sensors = new DirectSensors(null, gpu, new FakeGpuPowerState { On = windowsSaysOn }, SensorStatus.NotUsed, gpu.Status);
+        var (service, fw, _) = Create(new ControlProfile(), sensors: sensors);
+        fw.GpuTemp = firmwareTemp;
+
+        service.Tick();
+
+        Assert.Equal(0, gpu.Reads);
+        Assert.Equal(firmwareTemp == 0, service.Latest!.GpuAsleep);
+        Assert.Equal(firmwareTemp > 0 ? firmwareTemp : (double?)null, service.Latest.GpuTemperature);
+    }
+
+    [Fact]
+    public void Without_a_firmware_gpu_sensor_the_gpu_fan_follows_the_drivers_reading()
+    {
+        var gpu = new FakeGpuSensor { Temperature = 50 };
+        var sensors = new DirectSensors(null, gpu, new FakeGpuPowerState { On = true }, SensorStatus.NotUsed, gpu.Status);
+        var (service, fw) = CreateWithoutFirmwareGpuTemperature(BothFansOnCurves, sensors);
+        fw.CpuTemp = 60;
+
+        service.Tick();
+
+        Assert.Equal(50d, service.Latest!.GpuTemperature);
+        Assert.Equal(TemperatureOrigin.GpuDriver, service.Latest.GpuTemperatureOrigin);
+        Assert.Equal(40, fw.Speed[1]);
+        Assert.Equal(20, fw.Speed[4]);
+    }
+
+    [Fact]
+    public void Without_a_firmware_gpu_sensor_or_a_known_gpu_power_state_the_gpu_fan_follows_the_cpu()
+    {
+        var gpu = new FakeGpuSensor { Temperature = 50 };
+        var sensors = new DirectSensors(null, gpu, new FakeGpuPowerState { On = null }, SensorStatus.NotUsed, gpu.Status);
+        var (service, fw) = CreateWithoutFirmwareGpuTemperature(BothFansOnCurves, sensors);
+        fw.CpuTemp = 60;
+
+        service.Tick();
+
+        Assert.Equal(0, gpu.Reads); // it may be asleep: asking could wake it
+        Assert.Null(service.Latest!.GpuTemperature);
+        Assert.False(service.Latest.GpuAsleep);
+        Assert.Equal(40, fw.Speed[4]);
+    }
+
+    private static ControlProfile BothFansOnCurves { get; } = new()
+    {
+        Mode = FanControlMode.Custom,
+        Manual = new Dictionary<FanId, ManualFanSetting> { [FanId.Cpu] = new(UseCurve: true), [FanId.Gpu] = new(UseCurve: true) },
+        Curves = new Dictionary<FanId, CurveFanSetting>
+        {
+            [FanId.Cpu] = new(FanCurve.From((40, 0), (80, 80))), // 2 % per °C
+            [FanId.Gpu] = new(FanCurve.From((40, 0), (80, 80))),
+        },
+    };
+
+    private static (FanControlService Service, FakeFirmware Firmware) CreateWithoutFirmwareGpuTemperature(ControlProfile profile, DirectSensors sensors)
+    {
+        var firmware = new FakeFirmware();
+        var device = new AcerDevice(firmware);
+        var probed = CapabilityProbe.Probe(device);
+        var caps = probed with { Sensors = probed.Sensors.Where(s => s != SensorId.GpuTemperature).ToHashSet() };
+        return (new FanControlService(device, caps, new FakeLoad(), new FakePower(), profile, sensors), firmware);
     }
 
     [Fact]

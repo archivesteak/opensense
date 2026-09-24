@@ -75,6 +75,7 @@ public static class Names
         ChipSensor.IntelPackage => Strings.Format("Sensor_IntelPackage", status.TjMax),
         ChipSensor.AmdTctl => Strings.Get("Sensor_AmdTctl"),
         ChipSensor.NvidiaDriver => Strings.Get("Sensor_NvidiaDriver"),
+        ChipSensor.GraphicsDriver => Strings.Get("Sensor_GraphicsDriver"),
         _ when status.Problem == SensorProblem.None => Strings.Get("Sensor_EmbeddedController"),
         _ => Strings.Format("Sensor_EmbeddedControllerBecause", Reason(status)),
     };
@@ -87,8 +88,8 @@ public static class Names
         SensorProblem.ImplausibleTjMax => Strings.Format("SensorProblem_ImplausibleTjMax", status.Detail),
         SensorProblem.NoReading => Strings.Get("SensorProblem_NoReading"),
         SensorProblem.PciLockUnavailable => Strings.Format("SensorProblem_PciLockUnavailable", status.Detail),
-        SensorProblem.NoNvidiaDriver => Strings.Get("SensorProblem_NoNvidiaDriver"),
-        SensorProblem.NvmlTooOld => Strings.Get("SensorProblem_NvmlTooOld"),
+        SensorProblem.NoDiscreteGpu => Strings.Get("SensorProblem_NoDiscreteGpu"),
+        SensorProblem.GpuAdapterUnavailable => Strings.Format("SensorProblem_GpuAdapterUnavailable", status.Detail),
         SensorProblem.PawnIONotInstalled => Strings.Get("SensorProblem_PawnIONotInstalled"),
         SensorProblem.PawnIOUnavailable => Strings.Format("SensorProblem_PawnIOUnavailable", status.Detail),
         SensorProblem.PawnIOModuleRefused => Strings.Format("SensorProblem_PawnIOModuleRefused", status.Detail),

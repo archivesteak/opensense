@@ -153,7 +153,7 @@ public sealed partial class MonitorViewModel : ObservableObject
             Fans.Add(new FanReadingViewModel(fan.Id, Names.Fan(fan.Id)));
         CpuFan = Fans.FirstOrDefault(f => f.Id == FanId.Cpu);
         GpuFan = Fans.FirstOrDefault(f => f.Id == FanId.Gpu);
-        HasGpu = caps.Has(SensorId.GpuTemperature) || caps.Has(SensorId.GpuFanSpeed);
+        HasGpu = caps.Has(SensorId.GpuTemperature) || caps.Has(SensorId.GpuFanSpeed) || _session.TemperatureSources.Gpu.Sensor is not null;
         HasSystemTemperature = caps.Has(SensorId.SystemTemperature);
         CpuName = _session.CpuName ?? Names.Chip(FanId.Cpu);
         GpuName = _session.GpuName ?? Names.Chip(FanId.Gpu);

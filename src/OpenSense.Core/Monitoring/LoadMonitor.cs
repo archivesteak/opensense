@@ -28,14 +28,7 @@ public sealed partial class LoadMonitor : ILoadMonitor
         _cpu = _query.Add(@"\Processor Information(_Total)\% Processor Utility")
             ?? _query.Add(@"\Processor(_Total)\% Processor Time");
         _gpu3d = _query.Add(@"\GPU Engine(*engtype_3D)\Utilization Percentage");
-        try
-        {
-            _discrete = GpuAdapters.FindDiscrete(GpuAdapters.Enumerate());
-        }
-        catch (Exception)
-        {
-            _discrete = null;
-        }
+        _discrete = GpuAdapters.FindDiscrete(GpuAdapters.TryEnumerate());
         CpuName = ReadCpuName();
         _query.Collect(); // rate counters need a baseline sample
     }

@@ -224,14 +224,18 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
         _cpuOrigin = cpu is null ? TemperatureOrigin.Firmware : TemperatureOrigin.Processor;
         _cpuTemp = cpu ?? (Capabilities.Has(SensorId.CpuTemperature) && _device.ReadSensor(SensorId.CpuTemperature) is > 0 and var c ? c : null);
 
-        if (Capabilities.Has(SensorId.GpuTemperature))
+        var firmwareGpu = Capabilities.Has(SensorId.GpuTemperature);
+        if (firmwareGpu || _direct.Gpu is not null)
         {
-            var g = _device.ReadSensor(SensorId.GpuTemperature);
-            _gpuAsleep = g == 0;
-            // The firmware reads 0 while the discrete GPU is powered down; asking the driver then could wake it.
-            var gpu = g > 0 ? _direct.Gpu?.Read() : null;
+            var g = firmwareGpu ? _device.ReadSensor(SensorId.GpuTemperature) : null;
+            // Is the discrete GPU on? Windows knows where it powers the GPU down itself. The firmware reads 0 while
+            // the GPU is off, but after a resume from sleep it can go on reading 0 with the GPU back on (AN515-57).
+            var on = _direct.GpuPower?.IsOn() ?? (g is { } firmware ? firmware > 0 : null);
+            // Asking the driver while the GPU is off could wake it.
+            var gpu = on == true ? _direct.Gpu?.Read() : null;
             _gpuOrigin = gpu is null ? TemperatureOrigin.Firmware : TemperatureOrigin.GpuDriver;
             _gpuTemp = gpu ?? (g > 0 ? g : null);
+            _gpuAsleep = on == false && _gpuTemp is null;
         }
 
         _systemTemp = Capabilities.Has(SensorId.SystemTemperature) && _device.ReadSensor(SensorId.SystemTemperature) is > 0 and var s ? s : null;
@@ -428,10 +432,16 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
 
     /// <summary>
     /// What a fan's curve follows: its own chip, so the GPU fan the GPU (null while it sleeps) and the CPU
-    /// fan the CPU. The GPU fan falls back to the CPU on laptops whose firmware reports no GPU temperature.
+    /// fan the CPU. The GPU fan falls back to the CPU on laptops whose firmware reports no GPU temperature,
+    /// whenever there is no reading from the GPU's driver either.
     /// </summary>
-    private double? CurveTemperature(FanId fan) =>
-        fan == FanId.Gpu && Capabilities.Has(SensorId.GpuTemperature) ? _gpuTemp : _cpuTemp;
+    private double? CurveTemperature(FanId fan) => fan switch
+    {
+        FanId.Gpu when Capabilities.Has(SensorId.GpuTemperature) => _gpuTemp,
+        FanId.Gpu when _gpuAsleep => null,
+        FanId.Gpu => _gpuTemp ?? _cpuTemp,
+        _ => _cpuTemp,
+    };
 
     private void RestoreOnExit()
     {

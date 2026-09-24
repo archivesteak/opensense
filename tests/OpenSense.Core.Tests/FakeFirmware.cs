@@ -99,3 +99,25 @@ internal sealed class FakePower : IPowerSource
 {
     public bool IsOnAcPower { get; set; } = true;
 }
+
+/// <summary>The GPU driver's sensor: counts reads, since reading a sleeping GPU could wake it.</summary>
+internal sealed class FakeGpuSensor : ITemperatureSensor
+{
+    public double? Temperature { get; set; } = 62;
+    public int Reads { get; private set; }
+    public SensorStatus Status { get; } = new(ChipSensor.NvidiaDriver);
+
+    public double? Read()
+    {
+        Reads++;
+        return Temperature;
+    }
+
+    public void Dispose() { }
+}
+
+internal sealed class FakeGpuPowerState : IGpuPowerState
+{
+    public bool? On { get; set; }
+    public bool? IsOn() => On;
+}

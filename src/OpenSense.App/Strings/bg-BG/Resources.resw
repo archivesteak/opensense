@@ -751,6 +751,10 @@
     <value>Драйвер на NVIDIA</value>
     <comment>Temperature read from the NVIDIA graphics driver.</comment>
   </data>
+  <data name="Sensor_GraphicsDriver" xml:space="preserve">
+    <value>Графичен драйвер (чрез Windows)</value>
+    <comment>Where the GPU temperature comes from: the GPU's driver, read through Windows (as Task Manager does).</comment>
+  </data>
   <data name="Sensor_EmbeddedController" xml:space="preserve">
     <value>Вграден контролер</value>
     <comment>The laptop's embedded controller (EC) chip, which also reports temperatures.</comment>
@@ -783,13 +787,13 @@
     <value>споделеното PCI заключване не можа да се отвори: {0}</value>
     <comment>Reason in parentheses. {0} = a technical error message.</comment>
   </data>
-  <data name="SensorProblem_NoNvidiaDriver" xml:space="preserve">
-    <value>не е намерен драйвер на NVIDIA</value>
-    <comment>Reason in parentheses.</comment>
+  <data name="SensorProblem_NoDiscreteGpu" xml:space="preserve">
+    <value>не е намерен дискретен ГП</value>
+    <comment>Why the GPU temperature comes from the embedded controller: Windows lists no graphics card.</comment>
   </data>
-  <data name="SensorProblem_NvmlTooOld" xml:space="preserve">
-    <value>драйверът на NVIDIA е твърде стар</value>
-    <comment>Reason in parentheses.</comment>
+  <data name="SensorProblem_GpuAdapterUnavailable" xml:space="preserve">
+    <value>Windows не можа да отвори ГП ({0})</value>
+    <comment>Why the GPU temperature comes from the embedded controller. {0} = the error code.</comment>
   </data>
   <data name="SensorProblem_PawnIONotInstalled" xml:space="preserve">
     <value>PawnIO не е инсталиран</value>

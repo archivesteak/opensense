@@ -124,7 +124,7 @@ public sealed partial class KeyboardPreview : CanvasElement
                 return off;
             color = vm.Zones[zone].Color;
         }
-        else if (vm.Effect == KeyboardEffect.Neon)
+        else if (vm.Effect is KeyboardEffect.Neon or KeyboardEffect.Wave)
         {
             color = Hue(units / (MainUnits + Gap * 2 + PadUnits));
         }
