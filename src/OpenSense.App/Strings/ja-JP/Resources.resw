@@ -115,19 +115,9 @@
     <value>OpenSense サービスのバージョンが異なります（{0}）。更新するには OpenSense を再インストールしてください。</value>
     <comment>{0} = a version number.</comment>
   </data>
-  <data name="Notice_Rebuilt_Title" xml:space="preserve">
-    <value>機能を更新しました</value>
-    <comment>Banner title.</comment>
-  </data>
-  <data name="Notice_Rebuilt_Message" xml:space="preserve">
-    <value>OpenSense は新しい設定でファン制御を再起動しました。</value>
-  </data>
   <data name="Notice_Service_Title" xml:space="preserve">
     <value>サービス</value>
     <comment>Banner title: about the OpenSense background service.</comment>
-  </data>
-  <data name="Notice_Reconnected" xml:space="preserve">
-    <value>OpenSense サービスに再接続しました。</value>
   </data>
   <data name="Notice_Disconnected" xml:space="preserve">
     <value>OpenSense サービスとの接続が切れました。再接続しています…</value>
@@ -203,17 +193,6 @@
     <value>スタートアップ エントリを更新できませんでした: {0}</value>
     <comment>{0} = a technical error message.</comment>
   </data>
-  <data name="Notice_Diagnostics_Title" xml:space="preserve">
-    <value>診断</value>
-    <comment>Banner title.</comment>
-  </data>
-  <data name="Notice_DiagnosticsCopied" xml:space="preserve">
-    <value>クリップボードにコピーしました。</value>
-  </data>
-  <data name="Notice_Updates_Title" xml:space="preserve">
-    <value>更新</value>
-    <comment>Banner title: app updates.</comment>
-  </data>
   <data name="GpuSwitch_DiscreteTitle" xml:space="preserve">
     <value>専用 GPU のみに切り替えますか？</value>
     <comment>Dialog title. Discrete GPU = the separate NVIDIA graphics chip.</comment>
@@ -264,23 +243,16 @@
   </data>
   <data name="FanMode_Custom" xml:space="preserve">
     <value>カスタム</value>
-    <comment>Fan mode: a fixed speed chosen for each fan. Short: a segmented button.</comment>
-  </data>
-  <data name="FanMode_Curve" xml:space="preserve">
-    <value>カーブ</value>
-    <comment>Fan mode: fan speed follows a temperature curve. Short: a segmented button.</comment>
+    <comment>Fan mode: speed added on top of Auto for each fan, fixed or following a curve. Short: a segmented button.</comment>
   </data>
   <data name="FanMode_Auto_Description" xml:space="preserve">
-    <value>ノート PC のファームウェアがファンを管理します。</value>
+    <value>ノート PC のファームウェアがファンを管理します。高温時には OpenSense が速度を上乗せできます。</value>
   </data>
   <data name="FanMode_Max_Description" xml:space="preserve">
     <value>すべてのファンを最高速度で回します。</value>
   </data>
   <data name="FanMode_Custom_Description" xml:space="preserve">
-    <value>ファンごとに固定の速度を設定します。</value>
-  </data>
-  <data name="FanMode_Curve_Description" xml:space="preserve">
-    <value>OpenSense が温度カーブに従って制御します。</value>
+    <value>ファンごとに、ファームウェアの速度に上乗せする速度です (固定、またはカーブに従う)。0% はファームウェアに任せ、100% は最高速度です。</value>
   </data>
   <data name="FanBehavior_Auto" xml:space="preserve">
     <value>自動（ファームウェア）</value>
@@ -290,17 +262,9 @@
     <value>最高速度</value>
     <comment>What a fan is doing right now.</comment>
   </data>
-  <data name="FanBehavior_Emergency" xml:space="preserve">
-    <value>緊急時の最高速度</value>
-    <comment>What a fan is doing right now: forced to full speed because the temperature is too high.</comment>
-  </data>
-  <data name="FanBehavior_Curve" xml:space="preserve">
-    <value>カーブに従う</value>
-    <comment>What a fan is doing right now: following the temperature curve.</comment>
-  </data>
-  <data name="FanBehavior_Fixed" xml:space="preserve">
-    <value>固定速度</value>
-    <comment>What a fan is doing right now.</comment>
+  <data name="FanBehavior_Boost" xml:space="preserve">
+    <value>自動 + {0}</value>
+    <comment>What a fan is doing right now: the firmware's speed plus what OpenSense adds. {0} = the added speed as a percentage. Auto = FanMode_Auto.</comment>
   </data>
   <data name="FanLock_QuietMode" xml:space="preserve">
     <value>「静音」モードではファンは「自動」のままです。</value>
@@ -366,10 +330,6 @@
     <value>{0} rpm</value>
     <comment>{0} = a fan speed number. Same unit as Unit_Rpm.</comment>
   </data>
-  <data name="Unit_Seconds" xml:space="preserve">
-    <value>{0} 秒</value>
-    <comment>{0} = a number of seconds, e.g. 0.5. Use the usual abbreviation for seconds.</comment>
-  </data>
   <data name="ListSeparator" xml:space="preserve">
     <value>、</value>
     <comment>Separates items in a list inside a sentence, e.g. 'Quiet, Balanced, Performance'. Keep the trailing space if your language uses one.</comment>
@@ -409,10 +369,6 @@
     <value>スリープ中 · {0}</value>
     <comment>Under the GPU temperature while the graphics chip is powered down: {0} = its model name.</comment>
   </data>
-  <data name="Dashboard_RpmDetail" xml:space="preserve">
-    <value>rpm · デューティ比 {0}</value>
-    <comment>Under a fan speed number: rpm = revolutions per minute (as Unit_Rpm); {0} = the fan's duty cycle as a percentage.</comment>
-  </data>
   <data name="Dashboard_Cooling.Text" xml:space="preserve">
     <value>冷却</value>
     <comment>Card title.</comment>
@@ -420,10 +376,6 @@
   <data name="Dashboard_CoolBoost.Text" xml:space="preserve">
     <value>「自動」モードでファンをより速く回せるようにします。</value>
     <comment>Describes CoolBoost (an Acer feature name shown above it). Auto = FanMode_Auto.</comment>
-  </data>
-  <data name="Dashboard_OpenFans.Content" xml:space="preserve">
-    <value>カスタム速度とカーブ</value>
-    <comment>Link to the Fans page.</comment>
   </data>
   <data name="Dashboard_Performance.Text" xml:space="preserve">
     <value>パフォーマンス</value>
@@ -445,57 +397,37 @@
     <value>ファン</value>
     <comment>Page title.</comment>
   </data>
-  <data name="Fans_DutyLabel" xml:space="preserve">
-    <value>デューティ比 {0}</value>
-    <comment>{0} = the fan's duty cycle as a percentage.</comment>
+  <data name="Fans_AutoBoost.Header" xml:space="preserve">
+    <value>スロットリング防止</value>
+    <comment>Name of an on/off setting in Auto mode: OpenSense adds fan speed as the chips heat up, so the processor does not throttle (slow itself down because it is too hot). Short.</comment>
   </data>
-  <data name="Fans_AutoToggle.OnContent" xml:space="preserve">
-    <value>自動</value>
-    <comment>Switch label when on: the firmware controls this fan.</comment>
+  <data name="Fans_AutoBoost.Description" xml:space="preserve">
+    <value>チップが熱くなるにつれてファームウェアの速度に上乗せし、プロセッサーが性能を落とし始める温度で最高速度に達します。</value>
+    <comment>What the on/off setting does. "Throttle" = the processor slowing itself down because it is too hot.</comment>
   </data>
-  <data name="Fans_AutoToggle.OffContent" xml:space="preserve">
-    <value>手動</value>
-    <comment>Switch label when off: the speed below is used.</comment>
+  <data name="Fans_CoolBoost.Description" xml:space="preserve">
+    <value>ファームウェア自身のファン速度を上げます。「自動」モードはこの速度を使い、「カスタム」モードはこれに上乗せします。</value>
+    <comment>Under the header "CoolBoost" (an Acer feature name). Auto, Custom = FanMode_Auto, FanMode_Custom.</comment>
   </data>
-  <data name="Fans_FanSpeed.Header" xml:space="preserve">
-    <value>ファン速度</value>
-    <comment>Slider label.</comment>
+  <data name="Fans_BoostFixed.Content" xml:space="preserve">
+    <value>固定</value>
+    <comment>Segmented button per fan in Custom mode: add a fixed amount of speed (the slider below). Very short.</comment>
   </data>
-  <data name="Fans_Source.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>このファンを制御する温度</value>
-    <comment>Tooltip.</comment>
+  <data name="Fans_BoostCurve.Content" xml:space="preserve">
+    <value>カーブ</value>
+    <comment>Segmented button per fan in Custom mode: the added speed follows a temperature curve. Very short.</comment>
   </data>
-  <data name="CurveSource_Cpu" xml:space="preserve">
-    <value>CPU 温度</value>
-    <comment>Which temperature a fan curve follows.</comment>
-  </data>
-  <data name="CurveSource_Gpu" xml:space="preserve">
-    <value>GPU 温度</value>
-    <comment>Which temperature a fan curve follows.</comment>
-  </data>
-  <data name="CurveSource_Hottest" xml:space="preserve">
-    <value>高い方の温度</value>
-    <comment>Which temperature a fan curve follows: the higher of the CPU and GPU temperatures.</comment>
+  <data name="Fans_Boost.Header" xml:space="preserve">
+    <value>上乗せする速度</value>
+    <comment>Slider label: speed added on top of the firmware's, from 0% (firmware only) to 100% (full speed).</comment>
   </data>
   <data name="Fans_Presets.Content" xml:space="preserve">
     <value>プリセット</value>
     <comment>Button that opens a list of ready-made fan curves.</comment>
   </data>
-  <data name="Fans_PresetSilent.Text" xml:space="preserve">
-    <value>静音</value>
-    <comment>Fan curve preset name.</comment>
-  </data>
-  <data name="Fans_PresetBalanced.Text" xml:space="preserve">
-    <value>バランス</value>
-    <comment>Fan curve preset name.</comment>
-  </data>
-  <data name="Fans_PresetPerformance.Text" xml:space="preserve">
-    <value>パフォーマンス</value>
-    <comment>Fan curve preset name.</comment>
-  </data>
-  <data name="Fans_CopyCurve.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>このカーブを他のファンにも使用</value>
-    <comment>Tooltip.</comment>
+  <data name="Fans_PresetDefault.Text" xml:space="preserve">
+    <value>既定</value>
+    <comment>Fan curve preset name: the curve Auto uses when it speeds up the fans.</comment>
   </data>
   <data name="Fans_CurveHelp.Text" xml:space="preserve">
     <value>ポイントをドラッグしてカーブを調整 · ダブルクリックでポイントを追加 · 右クリックでポイントを削除 · 方向キーで選択したポイントを微調整</value>
@@ -503,32 +435,11 @@
   </data>
   <data name="CurveEditor_Now" xml:space="preserve">
     <value>現在 {0} · {1}</value>
-    <comment>Label on the curve editor: {0} = the current temperature, {1} = the current fan speed percentage.</comment>
+    <comment>Label on the curve editor: {0} = the current temperature, {1} = the speed OpenSense adds now, as a percentage.</comment>
   </data>
   <data name="Fans_Safety.Text" xml:space="preserve">
-    <value>安全と応答</value>
+    <value>安全</value>
     <comment>Section title.</comment>
-  </data>
-  <data name="Fans_Emergency.Header" xml:space="preserve">
-    <value>緊急温度</value>
-  </data>
-  <data name="Fans_Emergency.Description" xml:space="preserve">
-    <value>「カスタム」と「カーブ」モードでは、いずれかのチップがこの温度に達するとファンが最高速度になります。</value>
-    <comment>Custom, Curve = FanMode_Custom, FanMode_Curve.</comment>
-  </data>
-  <data name="Fans_MinimumSpeed.Header" xml:space="preserve">
-    <value>最低ファン速度</value>
-  </data>
-  <data name="Fans_MinimumSpeed.Description" xml:space="preserve">
-    <value>「カスタム」と「カーブ」モードで OpenSense が要求する最低速度です。</value>
-  </data>
-  <data name="Fans_SlowDown.Header" xml:space="preserve">
-    <value>減速までの幅</value>
-    <comment>How many degrees the temperature must fall before the fans slow down (hysteresis).</comment>
-  </data>
-  <data name="Fans_SlowDown.Description" xml:space="preserve">
-    <value>カーブがファンを減速させるまでに温度がどれだけ下がる必要があるかを指定します。値を大きくすると、ファンが加速と減速を繰り返すのを防げます。</value>
-    <comment>'Hunting' = the fans speeding up and slowing down over and over.</comment>
   </data>
   <data name="Fans_HandBack.Header" xml:space="preserve">
     <value>OpenSense の停止時にファンを戻す</value>
@@ -733,8 +644,29 @@
   <data name="Settings_NitroSenseKey.Description" xml:space="preserve">
     <value>キーボードの NitroSense キーで、NitroSense と同じように OpenSense が開きます。OpenSense が通知領域にあるときに機能します。</value>
   </data>
-  <data name="Settings_StartMinimized.Header" xml:space="preserve">
-    <value>通知領域に最小化して起動</value>
+  <data name="Settings_OpenShortcut.Header" xml:space="preserve">
+    <value>ショートカットで開く</value>
+    <comment>Setting under Settings_NitroSenseKey.Header: a key or key combination chosen by the user opens OpenSense.</comment>
+  </data>
+  <data name="Settings_ShortcutHelp" xml:space="preserve">
+    <value>どこからでも OpenSense を開くキーまたはキーの組み合わせです。</value>
+    <comment>Description of Settings_OpenShortcut.Header.</comment>
+  </data>
+  <data name="Settings_ShortcutTaken" xml:space="preserve">
+    <value>そのショートカットは別のアプリが既に使っています。別のものを選んでください。</value>
+    <comment>Shown instead of Settings_ShortcutHelp when Windows refuses the chosen shortcut (another app has it).</comment>
+  </data>
+  <data name="Settings_ShortcutNone" xml:space="preserve">
+    <value>未設定</value>
+    <comment>On the shortcut button when no shortcut is chosen. Short.</comment>
+  </data>
+  <data name="Settings_ShortcutRecording" xml:space="preserve">
+    <value>キーを押してください…</value>
+    <comment>On the shortcut button while it waits for the user to press the key or combination. Short.</comment>
+  </data>
+  <data name="Settings_ShortcutClear.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>ショートカットを削除</value>
+    <comment>Tooltip of the ✕ button next to the shortcut.</comment>
   </data>
   <data name="Settings_CloseToTray.Header" xml:space="preserve">
     <value>ウィンドウを閉じても実行を続ける</value>
@@ -783,13 +715,6 @@
   </data>
   <data name="Settings_Fahrenheit.Header" xml:space="preserve">
     <value>温度を華氏で表示する</value>
-  </data>
-  <data name="Settings_Interval.Header" xml:space="preserve">
-    <value>更新間隔</value>
-    <comment>Setting: how often sensors are read.</comment>
-  </data>
-  <data name="Settings_Interval.Description" xml:space="preserve">
-    <value>センサーを読み取り、ファン カーブを更新する頻度です。この PC のすべてのユーザーに適用されます。</value>
   </data>
   <data name="Settings_Laptop.Text" xml:space="preserve">
     <value>お使いのノート PC</value>
@@ -931,6 +856,10 @@ GPU: {1}</value>
     <value>コピー</value>
     <comment>Button: copy the diagnostics to the clipboard.</comment>
   </data>
+  <data name="Settings_Copied" xml:space="preserve">
+    <value>コピーしました</value>
+    <comment>Shown on the Copy button (Settings_Copy.Content) for a moment after the diagnostics were copied to the clipboard. Short.</comment>
+  </data>
   <data name="Settings_ServiceLogs.Content" xml:space="preserve">
     <value>サービス ログ</value>
     <comment>Button: opens the background service's log folder.</comment>
@@ -998,10 +927,6 @@ GPU: {1}</value>
     <value>最新の状態です。{0}</value>
     <comment>{0} = Update_LastChecked or Update_NotChecked.</comment>
   </data>
-  <data name="Update_Latest" xml:space="preserve">
-    <value>{0} が最新バージョンです。</value>
-    <comment>{0} = 'OpenSense' and a version number.</comment>
-  </data>
   <data name="Update_Skipped" xml:space="preserve">
     <value>バージョン {0} をスキップしました。{1}</value>
     <comment>{0} = a version number; {1} = Update_LastChecked or Update_NotChecked.</comment>
@@ -1057,7 +982,7 @@ GPU: {1}</value>
     <comment>{0} = the reason; {1} = a log file path.</comment>
   </data>
   <data name="Tray_Open" xml:space="preserve">
-    <value>OpenSense を開く</value>
+    <value>開く</value>
     <comment>Menu item of the notification area icon.</comment>
   </data>
   <data name="Tray_FanMode" xml:space="preserve">

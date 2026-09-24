@@ -2,56 +2,30 @@ using OpenSense.Core.Hardware;
 
 namespace OpenSense.Core.Control;
 
+/// <summary>
+/// Fan modes. The firmware's Custom behaviour is not a fixed speed: it adds speed on top of Auto
+/// (0 % is Auto, 100 % is full speed), so every percentage OpenSense sends is such a boost.
+/// </summary>
 public enum FanControlMode
 {
-    /// <summary>Firmware controls the fans.</summary>
+    /// <summary>Firmware controls the fans; OpenSense boosts them when hot (<see cref="ControlProfile.AutoBoostCurve"/>), unless that is turned off.</summary>
     Auto,
 
     /// <summary>All fans at full speed.</summary>
     Max,
 
-    /// <summary>Fixed duty per fan (or Auto per fan).</summary>
+    /// <summary>A boost per fan, fixed or following a curve.</summary>
     Custom,
-
-    /// <summary>OpenSense follows a temperature curve per fan.</summary>
-    Curve,
 }
 
-public enum TemperatureSource
-{
-    Cpu,
+/// <summary>One fan in Custom mode: a fixed boost, or the boost its curve gives.</summary>
+public sealed record ManualFanSetting(int Percent = 30, bool UseCurve = false);
 
-    /// <summary>GPU temperature; falls back to CPU while the discrete GPU sleeps.</summary>
-    Gpu,
-
-    Hottest,
-}
-
-public sealed record ManualFanSetting(bool Auto = false, int Percent = 50);
-
-public sealed record CurveFanSetting(FanCurve Curve, TemperatureSource Source);
-
-public sealed record ResponseSettings
-{
-    /// <summary>Smoothing factor per sample while temperature rises (1 = no smoothing).</summary>
-    public double RiseSmoothing { get; init; } = 0.6;
-
-    /// <summary>Smoothing factor per sample while temperature falls.</summary>
-    public double FallSmoothing { get; init; } = 0.12;
-
-    public int HysteresisC { get; init; } = 3;
-
-    public int MinChangePercent { get; init; } = 2;
-}
+/// <summary>A fan's curve in Custom mode. It follows the fan's own chip: the CPU fan the CPU, the GPU fan the GPU.</summary>
+public sealed record CurveFanSetting(FanCurve Curve);
 
 public sealed record SafetySettings
 {
-    /// <summary>Above this temperature manual and curve modes are overridden to full speed.</summary>
-    public int EmergencyTemperatureC { get; init; } = 95;
-
-    /// <summary>Lowest duty OpenSense will command in Custom / Curve mode.</summary>
-    public int MinimumPercent { get; init; }
-
     public bool RestoreAutoOnExit { get; init; } = true;
 }
 
@@ -60,16 +34,20 @@ public sealed record ControlProfile
 {
     public FanControlMode Mode { get; init; } = FanControlMode.Auto;
 
+    /// <summary>Auto adds speed along <see cref="AutoBoostCurve"/> when it gets hot.</summary>
+    public bool AutoBoost { get; init; } = true;
+
     public IReadOnlyDictionary<FanId, ManualFanSetting> Manual { get; init; } = new Dictionary<FanId, ManualFanSetting>
     {
         [FanId.Cpu] = new(),
         [FanId.Gpu] = new(),
     };
 
+    /// <summary>Custom mode's curves, used by fans set to <see cref="ManualFanSetting.UseCurve"/>.</summary>
     public IReadOnlyDictionary<FanId, CurveFanSetting> Curves { get; init; } = new Dictionary<FanId, CurveFanSetting>
     {
-        [FanId.Cpu] = new(CurvePresets.Balanced, TemperatureSource.Cpu),
-        [FanId.Gpu] = new(CurvePresets.Balanced, TemperatureSource.Hottest),
+        [FanId.Cpu] = new(CurvePresets.Default),
+        [FanId.Gpu] = new(CurvePresets.Default),
     };
 
     /// <summary>Desired CoolBoost state; null leaves the firmware setting alone.</summary>
@@ -78,12 +56,16 @@ public sealed record ControlProfile
     /// <summary>Desired operating mode on AC power; null leaves the firmware setting alone.</summary>
     public OperatingMode? OperatingMode { get; init; }
 
-    public ResponseSettings Response { get; init; } = new();
-
     public SafetySettings Safety { get; init; } = new();
 
     public ManualFanSetting ManualFor(FanId fan) => Manual.GetValueOrDefault(fan) ?? new ManualFanSetting();
 
     public CurveFanSetting CurveFor(FanId fan) =>
-        Curves.GetValueOrDefault(fan) ?? new CurveFanSetting(CurvePresets.Balanced, TemperatureSource.Cpu);
+        Curves.GetValueOrDefault(fan) ?? new CurveFanSetting(CurvePresets.Default);
+
+    /// <summary>OpenSense adds speed on top of the firmware's in <paramref name="mode"/> (as opposed to leaving Auto alone).</summary>
+    public bool Boosts(FanControlMode mode) => mode == FanControlMode.Custom || (mode == FanControlMode.Auto && AutoBoost);
+
+    /// <summary>Auto's fixed boost, for every fan on its own chip's temperature.</summary>
+    public static FanCurve AutoBoostCurve => CurvePresets.Default;
 }

@@ -6,13 +6,13 @@ namespace OpenSense.Core.Tests;
 public class CurveTests
 {
     [Theory]
-    [InlineData(30, 15)]
-    [InlineData(40, 15)]
-    [InlineData(45, 20)]
-    [InlineData(75, 65)]
-    [InlineData(99, 100)]
-    public void Balanced_curve_interpolates_and_clamps(double temperature, int expected) =>
-        Assert.Equal(expected, CurvePresets.Balanced.Evaluate(temperature));
+    [InlineData(30, 0)]
+    [InlineData(70, 0)]
+    [InlineData(75, 10)]
+    [InlineData(85, 35)]
+    [InlineData(100, 100)]
+    public void Default_curve_interpolates_and_clamps(double temperature, int expected) =>
+        Assert.Equal(expected, CurvePresets.Default.Evaluate(temperature));
 
     [Fact]
     public void Points_are_sorted_and_clamped()
@@ -22,47 +22,51 @@ public class CurveTests
     }
 
     [Fact]
-    public void Follower_rises_fast_but_needs_hysteresis_to_fall()
+    public void Follower_rises_at_once_and_falls_one_reading_later()
     {
         var curve = FanCurve.From((40, 0), (80, 80)); // 2 % per °C
-        var response = new ResponseSettings { RiseSmoothing = 1, FallSmoothing = 1, HysteresisC = 3, MinChangePercent = 1 };
         var f = new CurveFollower();
 
-        Assert.Equal(40, f.Update(60, curve, response, 0));
-        Assert.Equal(40, f.Update(58, curve, response, 0)); // 58+3=61 → 42 ≥ 40: hold
-        Assert.Equal(40, f.Update(57, curve, response, 0)); // 57+3=60 → 40: hold
-        Assert.Equal(38, f.Update(56, curve, response, 0)); // 56+3=59 → 38: drop
-        Assert.Equal(50, f.Update(65, curve, response, 0)); // rising: immediate
+        Assert.Equal(70, f.Update(75, curve));
+        Assert.Equal(70, f.Update(69, curve)); // a drop alone holds 75's boost
+        Assert.Equal(58, f.Update(68, curve)); // the next reading confirms it: 69's boost
+        Assert.Equal(56, f.Update(68, curve));
+        Assert.Equal(70, f.Update(75, curve)); // rising: at once
     }
 
     [Fact]
-    public void Follower_respects_minimum()
+    public void Follower_holds_through_a_wobble_and_ignores_tiny_changes()
     {
+        var curve = FanCurve.From((40, 0), (80, 80));
         var f = new CurveFollower();
-        Assert.Equal(25, f.Update(30, CurvePresets.Silent, new ResponseSettings(), minimumPercent: 25));
+
+        foreach (var temperature in new[] { 60.0, 58, 60, 58, 60 })
+            Assert.Equal(40, f.Update(temperature, curve));
+        Assert.Equal(40, f.Update(60.4, curve)); // 41 %: under the 2 % step
     }
 }
 
 public class FanControlServiceTests
 {
-    private static (FanControlService Service, FakeFirmware Firmware, FakePower Power) Create(ControlProfile profile, bool modes = false)
+    private static (FanControlService Service, FakeFirmware Firmware, FakePower Power) Create(ControlProfile profile, bool modes = false,
+        Func<DateTime>? clock = null)
     {
         var firmware = new FakeFirmware { SupportsModes = modes };
         var device = new AcerDevice(firmware);
         var caps = CapabilityProbe.Probe(device);
         var power = new FakePower();
-        var service = new FanControlService(device, caps, new FakeLoad(), power, profile);
+        var service = new FanControlService(device, caps, new FakeLoad(), power, profile, clock: clock);
         firmware.Calls.Clear();
         return (service, firmware, power);
     }
 
     [Fact]
-    public void Custom_mode_sets_behaviour_then_speeds()
+    public void Custom_mode_sets_behaviour_then_boosts_and_leaves_a_zero_boost_on_auto()
     {
         var profile = new ControlProfile
         {
             Mode = FanControlMode.Custom,
-            Manual = new Dictionary<FanId, ManualFanSetting> { [FanId.Cpu] = new(false, 70), [FanId.Gpu] = new(true, 30) },
+            Manual = new Dictionary<FanId, ManualFanSetting> { [FanId.Cpu] = new(70), [FanId.Gpu] = new(0) },
         };
         var (service, fw, _) = Create(profile);
 
@@ -72,7 +76,8 @@ public class FanControlServiceTests
         Assert.Equal(FanBehavior.Auto, fw.Behavior[3]);
         Assert.Equal(70, fw.Speed[1]);
         Assert.False(fw.Speed.ContainsKey(4));
-        Assert.Equal(70, service.Latest!.Fan(FanId.Cpu)!.CommandedPercent);
+        Assert.Equal(70, service.Latest!.Fan(FanId.Cpu)!.BoostPercent);
+        Assert.Null(service.Latest.Fan(FanId.Gpu)!.BoostPercent);
     }
 
     [Fact]
@@ -86,37 +91,9 @@ public class FanControlServiceTests
     }
 
     [Fact]
-    public void Emergency_temperature_forces_max_then_releases_with_margin()
-    {
-        var (service, fw, _) = Create(new ControlProfile { Mode = FanControlMode.Custom });
-        var notices = new List<ControlNotice>();
-        service.Notice += notices.Add;
-
-        fw.CpuTemp = 96;
-        service.Tick();
-        Assert.NotEqual(FanBehavior.Max, fw.Behavior[0]); // one hot sample may be a turbo spike
-
-        SkipSampleThrottle(service);
-        service.Tick();
-        Assert.Equal(FanBehavior.Max, fw.Behavior[0]);
-        Assert.True(service.Latest!.Emergency);
-        Assert.Empty(notices); // no banner: the fan tiles say "Emergency full speed"
-
-        fw.CpuTemp = 90; // below threshold but inside the release margin
-        SkipSampleThrottle(service);
-        service.Tick();
-        Assert.Equal(FanBehavior.Max, fw.Behavior[0]);
-
-        fw.CpuTemp = 80;
-        SkipSampleThrottle(service);
-        service.Tick();
-        Assert.Equal(FanBehavior.Custom, fw.Behavior[0]);
-    }
-
-    [Fact]
     public void Missing_cpu_temperature_hands_fans_back_to_auto()
     {
-        var (service, fw, _) = Create(new ControlProfile { Mode = FanControlMode.Curve });
+        var (service, fw, _) = Create(new ControlProfile { Mode = FanControlMode.Custom });
         service.Tick();
         Assert.Equal(FanBehavior.Custom, fw.Behavior[0]);
 
@@ -154,15 +131,16 @@ public class FanControlServiceTests
     }
 
     [Fact]
-    public void Curve_mode_follows_temperature()
+    public void Custom_curves_follow_temperature()
     {
         var profile = new ControlProfile
         {
-            Mode = FanControlMode.Curve,
+            Mode = FanControlMode.Custom,
+            Manual = new Dictionary<FanId, ManualFanSetting> { [FanId.Cpu] = new(UseCurve: true), [FanId.Gpu] = new(UseCurve: true) },
             Curves = new Dictionary<FanId, CurveFanSetting>
             {
-                [FanId.Cpu] = new(FanCurve.From((40, 0), (80, 80)), TemperatureSource.Cpu),
-                [FanId.Gpu] = new(FanCurve.From((40, 0), (80, 80)), TemperatureSource.Gpu),
+                [FanId.Cpu] = new(FanCurve.From((40, 0), (80, 80))),
+                [FanId.Gpu] = new(FanCurve.From((40, 0), (80, 80))),
             },
         };
         var (service, fw, _) = Create(profile);
@@ -171,6 +149,85 @@ public class FanControlServiceTests
         service.Tick();
         Assert.Equal(40, fw.Speed[1]);
         Assert.Equal(20, fw.Speed[4]);
+    }
+
+    [Fact]
+    public void Auto_boosts_only_when_hot()
+    {
+        var now = new DateTime(2026, 9, 24, 12, 0, 0, DateTimeKind.Utc);
+        var (service, fw, _) = Create(new ControlProfile(), clock: () => now);
+
+        fw.CpuTemp = 60;
+        fw.GpuTemp = 50;
+        service.Tick();
+        Assert.Equal(FanBehavior.Auto, fw.Behavior[0]);
+        Assert.Equal(FanBehavior.Auto, fw.Behavior[3]);
+        Assert.Empty(fw.Speed);
+
+        fw.CpuTemp = 90; // Default: 50 % at 90 °C
+        now += FanControlService.CurveInterval;
+        service.Tick();
+        Assert.Equal(FanBehavior.Custom, fw.Behavior[0]);
+        Assert.Equal(50, fw.Speed[1]);
+        Assert.Equal(FanBehavior.Auto, fw.Behavior[3]); // the GPU fan follows the GPU, still cool
+    }
+
+    [Fact]
+    public void A_sleeping_gpu_gets_no_boost()
+    {
+        var profile = new ControlProfile
+        {
+            Mode = FanControlMode.Custom,
+            Manual = new Dictionary<FanId, ManualFanSetting> { [FanId.Cpu] = new(0), [FanId.Gpu] = new(UseCurve: true) },
+            Curves = new Dictionary<FanId, CurveFanSetting> { [FanId.Gpu] = new(FanCurve.From((20, 60), (100, 60))) },
+        };
+        var (service, fw, _) = Create(profile);
+        fw.GpuTemp = 0; // the firmware's answer while the discrete GPU is powered down
+        service.Tick();
+        Assert.Equal(FanBehavior.Auto, fw.Behavior[3]);
+        Assert.True(service.Latest!.GpuAsleep);
+    }
+
+    [Fact]
+    public void Auto_without_its_boost_leaves_the_fans_to_the_firmware_even_when_hot()
+    {
+        var (service, fw, _) = Create(new ControlProfile { AutoBoost = false });
+        fw.CpuTemp = 97;
+        for (var i = 0; i < 3; i++)
+        {
+            SkipSampleThrottle(service);
+            service.Tick();
+        }
+        Assert.Equal(FanBehavior.Auto, fw.Behavior[0]);
+        Assert.Empty(fw.Speed);
+    }
+
+    [Fact]
+    public void Curves_step_every_three_seconds_on_the_average_temperature()
+    {
+        var now = new DateTime(2026, 9, 24, 12, 0, 0, DateTimeKind.Utc);
+        var curve = FanCurve.From((40, 0), (80, 80)); // 2 % per °C
+        var profile = new ControlProfile
+        {
+            Mode = FanControlMode.Custom,
+            Manual = new Dictionary<FanId, ManualFanSetting> { [FanId.Cpu] = new(UseCurve: true), [FanId.Gpu] = new(0) },
+            Curves = new Dictionary<FanId, CurveFanSetting> { [FanId.Cpu] = new(curve) },
+        };
+        var (service, fw, _) = Create(profile, clock: () => now);
+
+        fw.CpuTemp = 60;
+        service.Tick();
+        Assert.Equal(40, fw.Speed[1]);
+
+        foreach (var temperature in new[] { 70, 74, 78 })
+        {
+            now += TimeSpan.FromSeconds(1);
+            fw.CpuTemp = temperature;
+            service.Tick();
+            if (temperature != 78)
+                Assert.Equal(40, fw.Speed[1]); // held between steps
+        }
+        Assert.Equal(68, fw.Speed[1]); // (70 + 74 + 78) / 3 = 74 °C
     }
 
     [Fact]
@@ -198,8 +255,8 @@ public class FanControlServiceTests
         var profile = FirmwareState.Read(device, caps).ToProfile(new ControlProfile());
 
         Assert.Equal(FanControlMode.Custom, profile.Mode);
-        Assert.Equal(new ManualFanSetting(false, 100), profile.ManualFor(FanId.Cpu));
-        Assert.True(profile.ManualFor(FanId.Gpu).Auto);
+        Assert.Equal(new ManualFanSetting(100), profile.ManualFor(FanId.Cpu));
+        Assert.Equal(new ManualFanSetting(0), profile.ManualFor(FanId.Gpu)); // left on Auto = no boost
     }
 
     /// <summary>Tick() only re-reads sensors once per interval; tests move faster than that.</summary>

@@ -115,19 +115,9 @@
     <value>Layanan OpenSense memiliki versi yang berbeda ({0}). Instal ulang OpenSense untuk memperbaruinya.</value>
     <comment>{0} = a version number.</comment>
   </data>
-  <data name="Notice_Rebuilt_Title" xml:space="preserve">
-    <value>Kemampuan diperbarui</value>
-    <comment>Banner title.</comment>
-  </data>
-  <data name="Notice_Rebuilt_Message" xml:space="preserve">
-    <value>OpenSense memulai ulang kontrol kipas dengan pengaturan baru.</value>
-  </data>
   <data name="Notice_Service_Title" xml:space="preserve">
     <value>Layanan</value>
     <comment>Banner title: about the OpenSense background service.</comment>
-  </data>
-  <data name="Notice_Reconnected" xml:space="preserve">
-    <value>Tersambung kembali ke layanan OpenSense.</value>
   </data>
   <data name="Notice_Disconnected" xml:space="preserve">
     <value>Sambungan ke layanan OpenSense terputus. Menyambungkan kembali…</value>
@@ -203,17 +193,6 @@
     <value>Tidak dapat memperbarui entri startup: {0}</value>
     <comment>{0} = a technical error message.</comment>
   </data>
-  <data name="Notice_Diagnostics_Title" xml:space="preserve">
-    <value>Diagnostik</value>
-    <comment>Banner title.</comment>
-  </data>
-  <data name="Notice_DiagnosticsCopied" xml:space="preserve">
-    <value>Disalin ke clipboard.</value>
-  </data>
-  <data name="Notice_Updates_Title" xml:space="preserve">
-    <value>Pembaruan</value>
-    <comment>Banner title: app updates.</comment>
-  </data>
   <data name="GpuSwitch_DiscreteTitle" xml:space="preserve">
     <value>Gunakan GPU diskrit saja?</value>
     <comment>Dialog title. Discrete GPU = the separate NVIDIA graphics chip.</comment>
@@ -264,23 +243,16 @@
   </data>
   <data name="FanMode_Custom" xml:space="preserve">
     <value>Kustom</value>
-    <comment>Fan mode: a fixed speed chosen for each fan. Short: a segmented button.</comment>
-  </data>
-  <data name="FanMode_Curve" xml:space="preserve">
-    <value>Kurva</value>
-    <comment>Fan mode: fan speed follows a temperature curve. Short: a segmented button.</comment>
+    <comment>Fan mode: speed added on top of Auto for each fan, fixed or following a curve. Short: a segmented button.</comment>
   </data>
   <data name="FanMode_Auto_Description" xml:space="preserve">
-    <value>Firmware laptop mengelola kipas.</value>
+    <value>Firmware laptop mengelola kipas; OpenSense dapat menambah kecepatan saat panas.</value>
   </data>
   <data name="FanMode_Max_Description" xml:space="preserve">
     <value>Semua kipas pada kecepatan penuh.</value>
   </data>
   <data name="FanMode_Custom_Description" xml:space="preserve">
-    <value>Kecepatan tetap untuk setiap kipas.</value>
-  </data>
-  <data name="FanMode_Curve_Description" xml:space="preserve">
-    <value>OpenSense mengikuti kurva suhu Anda.</value>
+    <value>Kecepatan yang ditambahkan di atas kecepatan firmware untuk setiap kipas, tetap atau mengikuti kurva. 0% menyerahkan kipas ke firmware, 100% adalah kecepatan penuh.</value>
   </data>
   <data name="FanBehavior_Auto" xml:space="preserve">
     <value>Otomatis (firmware)</value>
@@ -290,17 +262,9 @@
     <value>Kecepatan penuh</value>
     <comment>What a fan is doing right now.</comment>
   </data>
-  <data name="FanBehavior_Emergency" xml:space="preserve">
-    <value>Kecepatan penuh darurat</value>
-    <comment>What a fan is doing right now: forced to full speed because the temperature is too high.</comment>
-  </data>
-  <data name="FanBehavior_Curve" xml:space="preserve">
-    <value>Mengikuti kurva</value>
-    <comment>What a fan is doing right now: following the temperature curve.</comment>
-  </data>
-  <data name="FanBehavior_Fixed" xml:space="preserve">
-    <value>Kecepatan tetap</value>
-    <comment>What a fan is doing right now.</comment>
+  <data name="FanBehavior_Boost" xml:space="preserve">
+    <value>Otomatis + {0}</value>
+    <comment>What a fan is doing right now: the firmware's speed plus what OpenSense adds. {0} = the added speed as a percentage. Auto = FanMode_Auto.</comment>
   </data>
   <data name="FanLock_QuietMode" xml:space="preserve">
     <value>Mode Senyap membuat kipas tetap pada Otomatis.</value>
@@ -366,10 +330,6 @@
     <value>{0} rpm</value>
     <comment>{0} = a fan speed number. Same unit as Unit_Rpm.</comment>
   </data>
-  <data name="Unit_Seconds" xml:space="preserve">
-    <value>{0} dtk</value>
-    <comment>{0} = a number of seconds, e.g. 0.5. Use the usual abbreviation for seconds.</comment>
-  </data>
   <data name="ListSeparator" xml:space="preserve">
     <value>, </value>
     <comment>Separates items in a list inside a sentence, e.g. 'Quiet, Balanced, Performance'. Keep the trailing space if your language uses one.</comment>
@@ -409,10 +369,6 @@
     <value>Tidur · {0}</value>
     <comment>Under the GPU temperature while the graphics chip is powered down: {0} = its model name.</comment>
   </data>
-  <data name="Dashboard_RpmDetail" xml:space="preserve">
-    <value>rpm · siklus kerja {0}</value>
-    <comment>Under a fan speed number: rpm = revolutions per minute (as Unit_Rpm); {0} = the fan's duty cycle as a percentage.</comment>
-  </data>
   <data name="Dashboard_Cooling.Text" xml:space="preserve">
     <value>Pendinginan</value>
     <comment>Card title.</comment>
@@ -420,10 +376,6 @@
   <data name="Dashboard_CoolBoost.Text" xml:space="preserve">
     <value>Memungkinkan mode Otomatis memutar kipas lebih cepat.</value>
     <comment>Describes CoolBoost (an Acer feature name shown above it). Auto = FanMode_Auto.</comment>
-  </data>
-  <data name="Dashboard_OpenFans.Content" xml:space="preserve">
-    <value>Kecepatan dan kurva kustom</value>
-    <comment>Link to the Fans page.</comment>
   </data>
   <data name="Dashboard_Performance.Text" xml:space="preserve">
     <value>Performa</value>
@@ -445,57 +397,37 @@
     <value>Kipas</value>
     <comment>Page title.</comment>
   </data>
-  <data name="Fans_DutyLabel" xml:space="preserve">
-    <value>Siklus kerja {0}</value>
-    <comment>{0} = the fan's duty cycle as a percentage.</comment>
+  <data name="Fans_AutoBoost.Header" xml:space="preserve">
+    <value>Anti-throttling</value>
+    <comment>Name of an on/off setting in Auto mode: OpenSense adds fan speed as the chips heat up, so the processor does not throttle (slow itself down because it is too hot). Short.</comment>
   </data>
-  <data name="Fans_AutoToggle.OnContent" xml:space="preserve">
-    <value>Otomatis</value>
-    <comment>Switch label when on: the firmware controls this fan.</comment>
+  <data name="Fans_AutoBoost.Description" xml:space="preserve">
+    <value>Menambah kecepatan di atas kecepatan firmware saat chip memanas, hingga kecepatan penuh pada suhu saat prosesor mulai menurunkan kinerjanya.</value>
+    <comment>What the on/off setting does. "Throttle" = the processor slowing itself down because it is too hot.</comment>
   </data>
-  <data name="Fans_AutoToggle.OffContent" xml:space="preserve">
-    <value>Manual</value>
-    <comment>Switch label when off: the speed below is used.</comment>
+  <data name="Fans_CoolBoost.Description" xml:space="preserve">
+    <value>Menaikkan kecepatan kipas bawaan firmware, yang dipakai mode Otomatis dan ditambah oleh mode Kustom.</value>
+    <comment>Under the header "CoolBoost" (an Acer feature name). Auto, Custom = FanMode_Auto, FanMode_Custom.</comment>
   </data>
-  <data name="Fans_FanSpeed.Header" xml:space="preserve">
-    <value>Kecepatan kipas</value>
-    <comment>Slider label.</comment>
+  <data name="Fans_BoostFixed.Content" xml:space="preserve">
+    <value>Tetap</value>
+    <comment>Segmented button per fan in Custom mode: add a fixed amount of speed (the slider below). Very short.</comment>
   </data>
-  <data name="Fans_Source.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Suhu yang mengendalikan kipas ini</value>
-    <comment>Tooltip.</comment>
+  <data name="Fans_BoostCurve.Content" xml:space="preserve">
+    <value>Kurva</value>
+    <comment>Segmented button per fan in Custom mode: the added speed follows a temperature curve. Very short.</comment>
   </data>
-  <data name="CurveSource_Cpu" xml:space="preserve">
-    <value>Suhu CPU</value>
-    <comment>Which temperature a fan curve follows.</comment>
-  </data>
-  <data name="CurveSource_Gpu" xml:space="preserve">
-    <value>Suhu GPU</value>
-    <comment>Which temperature a fan curve follows.</comment>
-  </data>
-  <data name="CurveSource_Hottest" xml:space="preserve">
-    <value>Yang lebih panas dari keduanya</value>
-    <comment>Which temperature a fan curve follows: the higher of the CPU and GPU temperatures.</comment>
+  <data name="Fans_Boost.Header" xml:space="preserve">
+    <value>Kecepatan tambahan</value>
+    <comment>Slider label: speed added on top of the firmware's, from 0% (firmware only) to 100% (full speed).</comment>
   </data>
   <data name="Fans_Presets.Content" xml:space="preserve">
     <value>Prasetel</value>
     <comment>Button that opens a list of ready-made fan curves.</comment>
   </data>
-  <data name="Fans_PresetSilent.Text" xml:space="preserve">
-    <value>Hening</value>
-    <comment>Fan curve preset name.</comment>
-  </data>
-  <data name="Fans_PresetBalanced.Text" xml:space="preserve">
-    <value>Seimbang</value>
-    <comment>Fan curve preset name.</comment>
-  </data>
-  <data name="Fans_PresetPerformance.Text" xml:space="preserve">
-    <value>Performa</value>
-    <comment>Fan curve preset name.</comment>
-  </data>
-  <data name="Fans_CopyCurve.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Gunakan kurva ini juga untuk kipas lainnya</value>
-    <comment>Tooltip.</comment>
+  <data name="Fans_PresetDefault.Text" xml:space="preserve">
+    <value>Bawaan</value>
+    <comment>Fan curve preset name: the curve Auto uses when it speeds up the fans.</comment>
   </data>
   <data name="Fans_CurveHelp.Text" xml:space="preserve">
     <value>Seret titik untuk membentuk kurva · klik dua kali untuk menambahkan titik · klik kanan untuk menghapusnya · tombol panah menyetel titik yang dipilih dengan halus</value>
@@ -503,32 +435,11 @@
   </data>
   <data name="CurveEditor_Now" xml:space="preserve">
     <value>Sekarang {0} · {1}</value>
-    <comment>Label on the curve editor: {0} = the current temperature, {1} = the current fan speed percentage.</comment>
+    <comment>Label on the curve editor: {0} = the current temperature, {1} = the speed OpenSense adds now, as a percentage.</comment>
   </data>
   <data name="Fans_Safety.Text" xml:space="preserve">
-    <value>Keamanan dan respons</value>
+    <value>Keamanan</value>
     <comment>Section title.</comment>
-  </data>
-  <data name="Fans_Emergency.Header" xml:space="preserve">
-    <value>Suhu darurat</value>
-  </data>
-  <data name="Fans_Emergency.Description" xml:space="preserve">
-    <value>Dalam mode Kustom dan Kurva, kipas beralih ke kecepatan penuh jika salah satu chip mencapai suhu ini.</value>
-    <comment>Custom, Curve = FanMode_Custom, FanMode_Curve.</comment>
-  </data>
-  <data name="Fans_MinimumSpeed.Header" xml:space="preserve">
-    <value>Kecepatan kipas minimum</value>
-  </data>
-  <data name="Fans_MinimumSpeed.Description" xml:space="preserve">
-    <value>Kecepatan terendah yang akan diminta OpenSense dalam mode Kustom dan Kurva.</value>
-  </data>
-  <data name="Fans_SlowDown.Header" xml:space="preserve">
-    <value>Jeda perlambatan</value>
-    <comment>How many degrees the temperature must fall before the fans slow down (hysteresis).</comment>
-  </data>
-  <data name="Fans_SlowDown.Description" xml:space="preserve">
-    <value>Seberapa jauh suhu harus turun sebelum kurva memperlambat kipas. Nilai yang lebih tinggi mencegah kipas terus-menerus naik dan turun.</value>
-    <comment>'Hunting' = the fans speeding up and slowing down over and over.</comment>
   </data>
   <data name="Fans_HandBack.Header" xml:space="preserve">
     <value>Kembalikan kipas saat OpenSense berhenti</value>
@@ -733,8 +644,29 @@
   <data name="Settings_NitroSenseKey.Description" xml:space="preserve">
     <value>Tombol NitroSense pada keyboard membuka OpenSense, seperti saat membuka NitroSense. Berfungsi saat OpenSense berada di area pemberitahuan.</value>
   </data>
-  <data name="Settings_StartMinimized.Header" xml:space="preserve">
-    <value>Mulai dalam keadaan diminimalkan ke area pemberitahuan</value>
+  <data name="Settings_OpenShortcut.Header" xml:space="preserve">
+    <value>Buka dengan pintasan</value>
+    <comment>Setting under Settings_NitroSenseKey.Header: a key or key combination chosen by the user opens OpenSense.</comment>
+  </data>
+  <data name="Settings_ShortcutHelp" xml:space="preserve">
+    <value>Tombol atau kombinasi yang membuka OpenSense dari mana saja.</value>
+    <comment>Description of Settings_OpenShortcut.Header.</comment>
+  </data>
+  <data name="Settings_ShortcutTaken" xml:space="preserve">
+    <value>Aplikasi lain sudah menggunakan pintasan itu. Pilih yang lain.</value>
+    <comment>Shown instead of Settings_ShortcutHelp when Windows refuses the chosen shortcut (another app has it).</comment>
+  </data>
+  <data name="Settings_ShortcutNone" xml:space="preserve">
+    <value>Belum diatur</value>
+    <comment>On the shortcut button when no shortcut is chosen. Short.</comment>
+  </data>
+  <data name="Settings_ShortcutRecording" xml:space="preserve">
+    <value>Tekan tombol…</value>
+    <comment>On the shortcut button while it waits for the user to press the key or combination. Short.</comment>
+  </data>
+  <data name="Settings_ShortcutClear.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Hapus pintasan</value>
+    <comment>Tooltip of the ✕ button next to the shortcut.</comment>
   </data>
   <data name="Settings_CloseToTray.Header" xml:space="preserve">
     <value>Tetap berjalan saat jendela ditutup</value>
@@ -783,13 +715,6 @@
   </data>
   <data name="Settings_Fahrenheit.Header" xml:space="preserve">
     <value>Tampilkan suhu dalam Fahrenheit</value>
-  </data>
-  <data name="Settings_Interval.Header" xml:space="preserve">
-    <value>Interval pembaruan</value>
-    <comment>Setting: how often sensors are read.</comment>
-  </data>
-  <data name="Settings_Interval.Description" xml:space="preserve">
-    <value>Seberapa sering sensor dibaca dan kurva kipas diperbarui, untuk semua pengguna di PC ini.</value>
   </data>
   <data name="Settings_Laptop.Text" xml:space="preserve">
     <value>Laptop Anda</value>
@@ -931,6 +856,10 @@ GPU: {1}</value>
     <value>Salin</value>
     <comment>Button: copy the diagnostics to the clipboard.</comment>
   </data>
+  <data name="Settings_Copied" xml:space="preserve">
+    <value>Disalin</value>
+    <comment>Shown on the Copy button (Settings_Copy.Content) for a moment after the diagnostics were copied to the clipboard. Short.</comment>
+  </data>
   <data name="Settings_ServiceLogs.Content" xml:space="preserve">
     <value>Log layanan</value>
     <comment>Button: opens the background service's log folder.</comment>
@@ -998,10 +927,6 @@ GPU: {1}</value>
     <value>Sudah terbaru. {0}</value>
     <comment>{0} = Update_LastChecked or Update_NotChecked.</comment>
   </data>
-  <data name="Update_Latest" xml:space="preserve">
-    <value>{0} adalah versi terbaru.</value>
-    <comment>{0} = 'OpenSense' and a version number.</comment>
-  </data>
   <data name="Update_Skipped" xml:space="preserve">
     <value>Versi {0} dilewati. {1}</value>
     <comment>{0} = a version number; {1} = Update_LastChecked or Update_NotChecked.</comment>
@@ -1057,7 +982,7 @@ Detail: {1}</value>
     <comment>{0} = the reason; {1} = a log file path.</comment>
   </data>
   <data name="Tray_Open" xml:space="preserve">
-    <value>Buka OpenSense</value>
+    <value>Buka</value>
     <comment>Menu item of the notification area icon.</comment>
   </data>
   <data name="Tray_FanMode" xml:space="preserve">

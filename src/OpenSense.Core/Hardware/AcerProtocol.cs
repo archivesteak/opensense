@@ -44,6 +44,11 @@ public static class AcerProtocol
         return mask | modes;
     }
 
+    /// <summary>
+    /// <c>SetGamingFanSpeed</c> for a fan on Custom. The percentage is not a speed but a boost over Auto:
+    /// the firmware keeps its own curve and moves the fan that far towards full speed (0 % = Auto,
+    /// 100 % = Max; measured on the AN515-57, where Custom 40 % turned Auto's 3890 rpm into 4690 of 5880).
+    /// </summary>
     public static ulong FanSpeedInput(FanChannel fan, int percent) =>
         fan.SpeedId | ((ulong)Math.Clamp(percent, 0, 100) << 8);
 
@@ -54,8 +59,11 @@ public static class AcerProtocol
     public static FanBehavior? FanBehaviorValue(ulong output, FanChannel fan) =>
         ((output >> (8 + 2 * fan.GroupBit)) & 0x3) is var v and >= 1 and <= 3 ? (FanBehavior)v : null;
 
-    /// <summary><c>GetGamingFanSpeed</c> takes the speed id and answers the current duty in bits 8-15.</summary>
-    public static int FanDutyValue(ulong output) => (int)((output >> 8) & 0xFF);
+    /// <summary>
+    /// <c>GetGamingFanSpeed</c> takes the speed id and answers, in bits 8-15, the last percentage written with
+    /// <c>SetGamingFanSpeed</c>. It is not what the fan is doing: on Auto it still reads the old Custom value.
+    /// </summary>
+    public static int FanBoostValue(ulong output) => (int)((output >> 8) & 0xFF);
 
     // --- CoolBoost (APGeAction) ------------------------------------------------------------
 

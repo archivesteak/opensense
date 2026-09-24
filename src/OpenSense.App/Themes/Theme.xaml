@@ -4,28 +4,11 @@
 
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Default">
-            <!-- OpenSense accent (the icon's red-orange), tuned for dark surfaces. -->
-            <Color x:Key="SystemAccentColor">#FF5A4E</Color>
-            <Color x:Key="SystemAccentColorLight1">#FF7466</Color>
-            <Color x:Key="SystemAccentColorLight2">#FF8E80</Color>
-            <Color x:Key="SystemAccentColorLight3">#FFB3A9</Color>
-            <Color x:Key="SystemAccentColorDark1">#E4473C</Color>
-            <Color x:Key="SystemAccentColorDark2">#C13A31</Color>
-            <Color x:Key="SystemAccentColorDark3">#9E2E27</Color>
-
             <SolidColorBrush x:Key="GaugeTrackBrush" Color="#1FFFFFFF" />
             <SolidColorBrush x:Key="ChartGridBrush" Color="#14FFFFFF" />
             <SolidColorBrush x:Key="ZoneOffBrush" Color="#26FFFFFF" />
         </ResourceDictionary>
         <ResourceDictionary x:Key="Light">
-            <Color x:Key="SystemAccentColor">#E4473C</Color>
-            <Color x:Key="SystemAccentColorLight1">#F0584C</Color>
-            <Color x:Key="SystemAccentColorLight2">#FF7466</Color>
-            <Color x:Key="SystemAccentColorLight3">#FF9D92</Color>
-            <Color x:Key="SystemAccentColorDark1">#CC3D33</Color>
-            <Color x:Key="SystemAccentColorDark2">#AD3129</Color>
-            <Color x:Key="SystemAccentColorDark3">#8C2620</Color>
-
             <SolidColorBrush x:Key="GaugeTrackBrush" Color="#18000000" />
             <SolidColorBrush x:Key="ChartGridBrush" Color="#12000000" />
             <SolidColorBrush x:Key="ZoneOffBrush" Color="#1A000000" />
@@ -53,6 +36,83 @@
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="{StaticResource OverlayCornerRadius}" />
         <Setter Property="Padding" Value="20" />
+    </Style>
+
+    <!--
+        A button that is a colour (lighting swatches and zones), behaving like WinUI's accent button with the
+        colour in place of the accent: 90 % opaque on hover and 80 % pressed, a quick fade between them, the
+        accent elevation border (none while pressed), and the accent disabled fill.
+    -->
+    <Style x:Key="ColorButtonStyle" TargetType="Button">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="BorderBrush" Value="{ThemeResource AccentControlElevationBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="UseSystemFocusVisuals" Value="{StaticResource UseSystemFocusVisuals}" />
+        <Setter Property="FocusVisualMargin" Value="-3" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Border
+                            x:Name="Fill"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="{TemplateBinding CornerRadius}" />
+                        <Border
+                            x:Name="Frame"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}" />
+                        <ContentPresenter
+                            Padding="{TemplateBinding Padding}"
+                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}" />
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <!-- Every state animates the fill's opacity itself, so leaving hover always brings it back. -->
+                                <VisualState x:Name="Normal">
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="Fill"
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="1"
+                                            Duration="0:0:0.083" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="PointerOver">
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="Fill"
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0.9"
+                                            Duration="0:0:0.083" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Target="Frame.BorderBrush" Value="{ThemeResource ControlFillColorTransparentBrush}" />
+                                    </VisualState.Setters>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="Fill"
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="0.8"
+                                            Duration="0:0:0.083" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <VisualState.Setters>
+                                        <Setter Target="Fill.Background" Value="{ThemeResource AccentFillColorDisabledBrush}" />
+                                        <Setter Target="Frame.BorderBrush" Value="{ThemeResource ControlFillColorTransparentBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style x:Key="PageTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource TitleTextBlockStyle}">

@@ -115,19 +115,9 @@
     <value>OpenSense hizmeti farklı bir sürüm ({0}). Güncellemek için OpenSense'i yeniden yükleyin.</value>
     <comment>{0} = a version number.</comment>
   </data>
-  <data name="Notice_Rebuilt_Title" xml:space="preserve">
-    <value>Özellikler güncellendi</value>
-    <comment>Banner title.</comment>
-  </data>
-  <data name="Notice_Rebuilt_Message" xml:space="preserve">
-    <value>OpenSense, fan denetimini yeni ayarlarla yeniden başlattı.</value>
-  </data>
   <data name="Notice_Service_Title" xml:space="preserve">
     <value>Hizmet</value>
     <comment>Banner title: about the OpenSense background service.</comment>
-  </data>
-  <data name="Notice_Reconnected" xml:space="preserve">
-    <value>OpenSense hizmetine yeniden bağlanıldı.</value>
   </data>
   <data name="Notice_Disconnected" xml:space="preserve">
     <value>OpenSense hizmetiyle bağlantı kesildi. Yeniden bağlanılıyor…</value>
@@ -203,17 +193,6 @@
     <value>Başlangıç girdisi güncellenemedi: {0}</value>
     <comment>{0} = a technical error message.</comment>
   </data>
-  <data name="Notice_Diagnostics_Title" xml:space="preserve">
-    <value>Tanılama</value>
-    <comment>Banner title.</comment>
-  </data>
-  <data name="Notice_DiagnosticsCopied" xml:space="preserve">
-    <value>Panoya kopyalandı.</value>
-  </data>
-  <data name="Notice_Updates_Title" xml:space="preserve">
-    <value>Güncelleştirmeler</value>
-    <comment>Banner title: app updates.</comment>
-  </data>
   <data name="GpuSwitch_DiscreteTitle" xml:space="preserve">
     <value>Yalnızca ayrı GPU'ya geçilsin mi?</value>
     <comment>Dialog title. Discrete GPU = the separate NVIDIA graphics chip.</comment>
@@ -264,23 +243,16 @@
   </data>
   <data name="FanMode_Custom" xml:space="preserve">
     <value>Özel</value>
-    <comment>Fan mode: a fixed speed chosen for each fan. Short: a segmented button.</comment>
-  </data>
-  <data name="FanMode_Curve" xml:space="preserve">
-    <value>Eğri</value>
-    <comment>Fan mode: fan speed follows a temperature curve. Short: a segmented button.</comment>
+    <comment>Fan mode: speed added on top of Auto for each fan, fixed or following a curve. Short: a segmented button.</comment>
   </data>
   <data name="FanMode_Auto_Description" xml:space="preserve">
-    <value>Fanları dizüstü bilgisayarın üretici yazılımı yönetir.</value>
+    <value>Fanları dizüstü bilgisayarın üretici yazılımı yönetir; ısındığında OpenSense hız ekleyebilir.</value>
   </data>
   <data name="FanMode_Max_Description" xml:space="preserve">
     <value>Tüm fanlar tam hızda.</value>
   </data>
   <data name="FanMode_Custom_Description" xml:space="preserve">
-    <value>Her fan için sabit hız.</value>
-  </data>
-  <data name="FanMode_Curve_Description" xml:space="preserve">
-    <value>OpenSense sıcaklık eğrilerinizi izler.</value>
+    <value>Her fan için üretici yazılımının hızına eklenen hız; sabit ya da bir eğriye göre. %0 fanı üretici yazılımına bırakır, %100 tam hızdır.</value>
   </data>
   <data name="FanBehavior_Auto" xml:space="preserve">
     <value>Otomatik (üretici yazılımı)</value>
@@ -290,17 +262,9 @@
     <value>Tam hız</value>
     <comment>What a fan is doing right now.</comment>
   </data>
-  <data name="FanBehavior_Emergency" xml:space="preserve">
-    <value>Acil durum tam hızı</value>
-    <comment>What a fan is doing right now: forced to full speed because the temperature is too high.</comment>
-  </data>
-  <data name="FanBehavior_Curve" xml:space="preserve">
-    <value>Eğriyi izliyor</value>
-    <comment>What a fan is doing right now: following the temperature curve.</comment>
-  </data>
-  <data name="FanBehavior_Fixed" xml:space="preserve">
-    <value>Sabit hız</value>
-    <comment>What a fan is doing right now.</comment>
+  <data name="FanBehavior_Boost" xml:space="preserve">
+    <value>Otomatik + {0}</value>
+    <comment>What a fan is doing right now: the firmware's speed plus what OpenSense adds. {0} = the added speed as a percentage. Auto = FanMode_Auto.</comment>
   </data>
   <data name="FanLock_QuietMode" xml:space="preserve">
     <value>Sessiz modu fanları Otomatik modunda tutar.</value>
@@ -366,10 +330,6 @@
     <value>{0} dev/dk</value>
     <comment>{0} = a fan speed number. Same unit as Unit_Rpm.</comment>
   </data>
-  <data name="Unit_Seconds" xml:space="preserve">
-    <value>{0} sn</value>
-    <comment>{0} = a number of seconds, e.g. 0.5. Use the usual abbreviation for seconds.</comment>
-  </data>
   <data name="ListSeparator" xml:space="preserve">
     <value>, </value>
     <comment>Separates items in a list inside a sentence, e.g. 'Quiet, Balanced, Performance'. Keep the trailing space if your language uses one.</comment>
@@ -409,10 +369,6 @@
     <value>Uykuda · {0}</value>
     <comment>Under the GPU temperature while the graphics chip is powered down: {0} = its model name.</comment>
   </data>
-  <data name="Dashboard_RpmDetail" xml:space="preserve">
-    <value>dev/dk · {0} görev döngüsü</value>
-    <comment>Under a fan speed number: rpm = revolutions per minute (as Unit_Rpm); {0} = the fan's duty cycle as a percentage.</comment>
-  </data>
   <data name="Dashboard_Cooling.Text" xml:space="preserve">
     <value>Soğutma</value>
     <comment>Card title.</comment>
@@ -420,10 +376,6 @@
   <data name="Dashboard_CoolBoost.Text" xml:space="preserve">
     <value>Otomatik modunun fanları daha hızlı döndürmesini sağlar.</value>
     <comment>Describes CoolBoost (an Acer feature name shown above it). Auto = FanMode_Auto.</comment>
-  </data>
-  <data name="Dashboard_OpenFans.Content" xml:space="preserve">
-    <value>Özel hızlar ve eğriler</value>
-    <comment>Link to the Fans page.</comment>
   </data>
   <data name="Dashboard_Performance.Text" xml:space="preserve">
     <value>Performans</value>
@@ -445,57 +397,37 @@
     <value>Fanlar</value>
     <comment>Page title.</comment>
   </data>
-  <data name="Fans_DutyLabel" xml:space="preserve">
-    <value>{0} görev döngüsü</value>
-    <comment>{0} = the fan's duty cycle as a percentage.</comment>
+  <data name="Fans_AutoBoost.Header" xml:space="preserve">
+    <value>Kısılma önleme</value>
+    <comment>Name of an on/off setting in Auto mode: OpenSense adds fan speed as the chips heat up, so the processor does not throttle (slow itself down because it is too hot). Short.</comment>
   </data>
-  <data name="Fans_AutoToggle.OnContent" xml:space="preserve">
-    <value>Otomatik</value>
-    <comment>Switch label when on: the firmware controls this fan.</comment>
+  <data name="Fans_AutoBoost.Description" xml:space="preserve">
+    <value>Yongalar ısındıkça üretici yazılımının hızına hız ekler ve işlemcinin kendini yavaşlatmaya başladığı sıcaklıkta tam hıza ulaşır.</value>
+    <comment>What the on/off setting does. "Throttle" = the processor slowing itself down because it is too hot.</comment>
   </data>
-  <data name="Fans_AutoToggle.OffContent" xml:space="preserve">
-    <value>El ile</value>
-    <comment>Switch label when off: the speed below is used.</comment>
+  <data name="Fans_CoolBoost.Description" xml:space="preserve">
+    <value>Üretici yazılımının kendi fan hızlarını yükseltir; Otomatik mod bu hızları kullanır, Özel mod bunlara hız ekler.</value>
+    <comment>Under the header "CoolBoost" (an Acer feature name). Auto, Custom = FanMode_Auto, FanMode_Custom.</comment>
   </data>
-  <data name="Fans_FanSpeed.Header" xml:space="preserve">
-    <value>Fan hızı</value>
-    <comment>Slider label.</comment>
+  <data name="Fans_BoostFixed.Content" xml:space="preserve">
+    <value>Sabit</value>
+    <comment>Segmented button per fan in Custom mode: add a fixed amount of speed (the slider below). Very short.</comment>
   </data>
-  <data name="Fans_Source.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Bu fanı hangi sıcaklığın yönlendirdiği</value>
-    <comment>Tooltip.</comment>
+  <data name="Fans_BoostCurve.Content" xml:space="preserve">
+    <value>Eğri</value>
+    <comment>Segmented button per fan in Custom mode: the added speed follows a temperature curve. Very short.</comment>
   </data>
-  <data name="CurveSource_Cpu" xml:space="preserve">
-    <value>CPU sıcaklığı</value>
-    <comment>Which temperature a fan curve follows.</comment>
-  </data>
-  <data name="CurveSource_Gpu" xml:space="preserve">
-    <value>GPU sıcaklığı</value>
-    <comment>Which temperature a fan curve follows.</comment>
-  </data>
-  <data name="CurveSource_Hottest" xml:space="preserve">
-    <value>İkisinden yüksek olanı</value>
-    <comment>Which temperature a fan curve follows: the higher of the CPU and GPU temperatures.</comment>
+  <data name="Fans_Boost.Header" xml:space="preserve">
+    <value>Eklenen hız</value>
+    <comment>Slider label: speed added on top of the firmware's, from 0% (firmware only) to 100% (full speed).</comment>
   </data>
   <data name="Fans_Presets.Content" xml:space="preserve">
     <value>Ön ayarlar</value>
     <comment>Button that opens a list of ready-made fan curves.</comment>
   </data>
-  <data name="Fans_PresetSilent.Text" xml:space="preserve">
-    <value>Sessiz</value>
-    <comment>Fan curve preset name.</comment>
-  </data>
-  <data name="Fans_PresetBalanced.Text" xml:space="preserve">
-    <value>Dengeli</value>
-    <comment>Fan curve preset name.</comment>
-  </data>
-  <data name="Fans_PresetPerformance.Text" xml:space="preserve">
-    <value>Performans</value>
-    <comment>Fan curve preset name.</comment>
-  </data>
-  <data name="Fans_CopyCurve.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Bu eğriyi diğer fanlar için de kullan</value>
-    <comment>Tooltip.</comment>
+  <data name="Fans_PresetDefault.Text" xml:space="preserve">
+    <value>Varsayılan</value>
+    <comment>Fan curve preset name: the curve Auto uses when it speeds up the fans.</comment>
   </data>
   <data name="Fans_CurveHelp.Text" xml:space="preserve">
     <value>Eğriyi şekillendirmek için noktaları sürükleyin · nokta eklemek için çift tıklayın · kaldırmak için sağ tıklayın · ok tuşları seçili noktaya ince ayar yapar</value>
@@ -503,32 +435,11 @@
   </data>
   <data name="CurveEditor_Now" xml:space="preserve">
     <value>Şimdi {0} · {1}</value>
-    <comment>Label on the curve editor: {0} = the current temperature, {1} = the current fan speed percentage.</comment>
+    <comment>Label on the curve editor: {0} = the current temperature, {1} = the speed OpenSense adds now, as a percentage.</comment>
   </data>
   <data name="Fans_Safety.Text" xml:space="preserve">
-    <value>Güvenlik ve yanıt</value>
+    <value>Güvenlik</value>
     <comment>Section title.</comment>
-  </data>
-  <data name="Fans_Emergency.Header" xml:space="preserve">
-    <value>Acil durum sıcaklığı</value>
-  </data>
-  <data name="Fans_Emergency.Description" xml:space="preserve">
-    <value>Özel ve Eğri modlarında, yongalardan biri bu sıcaklığa ulaşırsa fanlar tam hıza geçer.</value>
-    <comment>Custom, Curve = FanMode_Custom, FanMode_Curve.</comment>
-  </data>
-  <data name="Fans_MinimumSpeed.Header" xml:space="preserve">
-    <value>En düşük fan hızı</value>
-  </data>
-  <data name="Fans_MinimumSpeed.Description" xml:space="preserve">
-    <value>OpenSense'in Özel ve Eğri modlarında isteyeceği en düşük hız.</value>
-  </data>
-  <data name="Fans_SlowDown.Header" xml:space="preserve">
-    <value>Yavaşlama gecikmesi</value>
-    <comment>How many degrees the temperature must fall before the fans slow down (hysteresis).</comment>
-  </data>
-  <data name="Fans_SlowDown.Description" xml:space="preserve">
-    <value>Bir eğrinin fanları yavaşlatmasından önce sıcaklığın ne kadar düşmesi gerektiği. Daha yüksek değerler fanların sürekli hızlanıp yavaşlamasını önler.</value>
-    <comment>'Hunting' = the fans speeding up and slowing down over and over.</comment>
   </data>
   <data name="Fans_HandBack.Header" xml:space="preserve">
     <value>OpenSense durduğunda fanları geri ver</value>
@@ -733,8 +644,29 @@
   <data name="Settings_NitroSenseKey.Description" xml:space="preserve">
     <value>Klavyedeki NitroSense tuşu, NitroSense'i açtığı gibi OpenSense'i açar. OpenSense bildirim alanındayken çalışır.</value>
   </data>
-  <data name="Settings_StartMinimized.Header" xml:space="preserve">
-    <value>Bildirim alanına simge durumunda başlat</value>
+  <data name="Settings_OpenShortcut.Header" xml:space="preserve">
+    <value>Kısayolla aç</value>
+    <comment>Setting under Settings_NitroSenseKey.Header: a key or key combination chosen by the user opens OpenSense.</comment>
+  </data>
+  <data name="Settings_ShortcutHelp" xml:space="preserve">
+    <value>OpenSense'i her yerden açan bir tuş ya da tuş bileşimi.</value>
+    <comment>Description of Settings_OpenShortcut.Header.</comment>
+  </data>
+  <data name="Settings_ShortcutTaken" xml:space="preserve">
+    <value>Bu kısayolu başka bir uygulama zaten kullanıyor. Başka bir kısayol seçin.</value>
+    <comment>Shown instead of Settings_ShortcutHelp when Windows refuses the chosen shortcut (another app has it).</comment>
+  </data>
+  <data name="Settings_ShortcutNone" xml:space="preserve">
+    <value>Ayarlanmadı</value>
+    <comment>On the shortcut button when no shortcut is chosen. Short.</comment>
+  </data>
+  <data name="Settings_ShortcutRecording" xml:space="preserve">
+    <value>Bir tuşa basın…</value>
+    <comment>On the shortcut button while it waits for the user to press the key or combination. Short.</comment>
+  </data>
+  <data name="Settings_ShortcutClear.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Kısayolu kaldır</value>
+    <comment>Tooltip of the ✕ button next to the shortcut.</comment>
   </data>
   <data name="Settings_CloseToTray.Header" xml:space="preserve">
     <value>Pencere kapatıldığında çalışmaya devam et</value>
@@ -783,13 +715,6 @@
   </data>
   <data name="Settings_Fahrenheit.Header" xml:space="preserve">
     <value>Sıcaklıkları Fahrenhayt olarak göster</value>
-  </data>
-  <data name="Settings_Interval.Header" xml:space="preserve">
-    <value>Güncelleştirme aralığı</value>
-    <comment>Setting: how often sensors are read.</comment>
-  </data>
-  <data name="Settings_Interval.Description" xml:space="preserve">
-    <value>Bu bilgisayardaki herkes için sensörlerin ne sıklıkta okunacağı ve fan eğrilerinin ne sıklıkta güncelleneceği.</value>
   </data>
   <data name="Settings_Laptop.Text" xml:space="preserve">
     <value>Dizüstü bilgisayarınız</value>
@@ -931,6 +856,10 @@ GPU: {1}</value>
     <value>Kopyala</value>
     <comment>Button: copy the diagnostics to the clipboard.</comment>
   </data>
+  <data name="Settings_Copied" xml:space="preserve">
+    <value>Kopyalandı</value>
+    <comment>Shown on the Copy button (Settings_Copy.Content) for a moment after the diagnostics were copied to the clipboard. Short.</comment>
+  </data>
   <data name="Settings_ServiceLogs.Content" xml:space="preserve">
     <value>Hizmet günlükleri</value>
     <comment>Button: opens the background service's log folder.</comment>
@@ -998,10 +927,6 @@ GPU: {1}</value>
     <value>Güncel. {0}</value>
     <comment>{0} = Update_LastChecked or Update_NotChecked.</comment>
   </data>
-  <data name="Update_Latest" xml:space="preserve">
-    <value>{0} en son sürüm.</value>
-    <comment>{0} = 'OpenSense' and a version number.</comment>
-  </data>
   <data name="Update_Skipped" xml:space="preserve">
     <value>{0} sürümü atlandı. {1}</value>
     <comment>{0} = a version number; {1} = Update_LastChecked or Update_NotChecked.</comment>
@@ -1057,7 +982,7 @@ Ayrıntılar: {1}</value>
     <comment>{0} = the reason; {1} = a log file path.</comment>
   </data>
   <data name="Tray_Open" xml:space="preserve">
-    <value>OpenSense'i aç</value>
+    <value>Aç</value>
     <comment>Menu item of the notification area icon.</comment>
   </data>
   <data name="Tray_FanMode" xml:space="preserve">

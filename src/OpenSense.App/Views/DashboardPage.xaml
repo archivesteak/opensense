@@ -9,7 +9,7 @@
     xmlns:vm="using:OpenSense.App.ViewModels"
     NavigationCacheMode="Required">
 
-    <ScrollViewer>
+    <ScrollView>
         <StackPanel
             MaxWidth="{StaticResource PageMaxWidth}"
             Padding="{StaticResource PagePadding}"
@@ -129,8 +129,15 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Style="{StaticResource TileValueStyle}" Text="{x:Bind helpers:Units.RpmNumber(Monitor.CpuFan.Rpm), Mode=OneWay, FallbackValue='--'}" />
-                                <TextBlock Style="{StaticResource CaptionMutedStyle}" Text="{x:Bind local:DashboardPage.RpmDetail(Monitor.CpuFan.DutyText), Mode=OneWay, FallbackValue=''}" />
+                                <TextBlock LineHeight="40">
+                                    <Run
+                                        CharacterSpacing="-10"
+                                        FontFamily="Segoe UI Variable Display"
+                                        FontSize="32"
+                                        FontWeight="SemiBold"
+                                        Text="{x:Bind helpers:Units.RpmNumber(Monitor.CpuFan.Rpm), Mode=OneWay, FallbackValue='--'}" />
+                                    <Run Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind helpers:Units.RpmSuffix}" />
+                                </TextBlock>
                                 <TextBlock
                                     Style="{StaticResource CaptionMutedStyle}"
                                     Text="{x:Bind Monitor.CpuFan.BehaviorText, Mode=OneWay, FallbackValue=''}"
@@ -141,7 +148,7 @@
                                 Grid.Column="1"
                                 Height="150"
                                 VerticalAlignment="Center"
-                                Duty="{x:Bind local:DashboardPage.FanDuty(Monitor.CpuFan.Duty), Mode=OneWay}"
+                                Boost="{x:Bind local:DashboardPage.FanBoost(Monitor.CpuFan.Boost), Mode=OneWay}"
                                 Rpm="{x:Bind local:DashboardPage.FanRpm(Monitor.CpuFan.Rpm), Mode=OneWay}" />
                         </Grid>
                     </Grid>
@@ -164,8 +171,15 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Style="{StaticResource TileValueStyle}" Text="{x:Bind helpers:Units.RpmNumber(Monitor.GpuFan.Rpm), Mode=OneWay, FallbackValue='--'}" />
-                                <TextBlock Style="{StaticResource CaptionMutedStyle}" Text="{x:Bind local:DashboardPage.RpmDetail(Monitor.GpuFan.DutyText), Mode=OneWay, FallbackValue=''}" />
+                                <TextBlock LineHeight="40">
+                                    <Run
+                                        CharacterSpacing="-10"
+                                        FontFamily="Segoe UI Variable Display"
+                                        FontSize="32"
+                                        FontWeight="SemiBold"
+                                        Text="{x:Bind helpers:Units.RpmNumber(Monitor.GpuFan.Rpm), Mode=OneWay, FallbackValue='--'}" />
+                                    <Run Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind helpers:Units.RpmSuffix}" />
+                                </TextBlock>
                                 <TextBlock
                                     Style="{StaticResource CaptionMutedStyle}"
                                     Text="{x:Bind Monitor.GpuFan.BehaviorText, Mode=OneWay, FallbackValue=''}"
@@ -176,7 +190,7 @@
                                 Grid.Column="1"
                                 Height="150"
                                 VerticalAlignment="Center"
-                                Duty="{x:Bind local:DashboardPage.FanDuty(Monitor.GpuFan.Duty), Mode=OneWay}"
+                                Boost="{x:Bind local:DashboardPage.FanBoost(Monitor.GpuFan.Boost), Mode=OneWay}"
                                 Rpm="{x:Bind local:DashboardPage.FanRpm(Monitor.GpuFan.Rpm), Mode=OneWay}" />
                         </Grid>
                     </Grid>
@@ -220,10 +234,6 @@
                                 OffContent=""
                                 OnContent="" />
                         </Grid>
-                        <HyperlinkButton
-                            x:Uid="Dashboard_OpenFans"
-                            Padding="0"
-                            Click="OnOpenFans" />
                     </StackPanel>
                 </Border>
 
@@ -280,5 +290,5 @@
                 </Border>
             </Grid>
         </StackPanel>
-    </ScrollViewer>
+    </ScrollView>
 </Page>

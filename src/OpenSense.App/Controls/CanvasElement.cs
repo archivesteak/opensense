@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Windows.Foundation;
 using Windows.UI;
+using Windows.UI.ViewManagement;
 
 namespace OpenSense.App.Controls;
 
@@ -14,6 +15,9 @@ namespace OpenSense.App.Controls;
 /// </summary>
 public abstract partial class CanvasElement : UserControl
 {
+    // Windows' own colours; kept alive so its change event keeps firing.
+    private static readonly UISettings UiSettings = new();
+
     private readonly Grid _root = new();
     private CanvasControl? _canvas;
 
@@ -45,6 +49,7 @@ public abstract partial class CanvasElement : UserControl
     {
         if (_canvas is not null)
             return;
+        UiSettings.ColorValuesChanged += OnColorValuesChanged;
         _canvas = new CanvasControl { ClearColor = Colors.Transparent };
         _canvas.Draw += (s, args) => OnDraw(args.DrawingSession, s.Size);
         AttachInput(_canvas);
@@ -55,10 +60,14 @@ public abstract partial class CanvasElement : UserControl
     {
         if (_canvas is null)
             return;
+        UiSettings.ColorValuesChanged -= OnColorValuesChanged;
         _root.Children.Remove(_canvas);
         _canvas.RemoveFromVisualTree();
         _canvas = null;
     }
+
+    // A new accent colour in Windows; the event comes on a background thread.
+    private void OnColorValuesChanged(UISettings sender, object args) => DispatcherQueue.TryEnqueue(Invalidate);
 
     // Theme-aware colours matching WinUI's text and stroke brushes.
     protected bool IsLight => ActualTheme == ElementTheme.Light;
@@ -73,7 +82,8 @@ public abstract partial class CanvasElement : UserControl
 
     protected Color GridLine => IsLight ? Color.FromArgb(0x14, 0, 0, 0) : Color.FromArgb(0x16, 0xFF, 0xFF, 0xFF);
 
-    protected Color Accent => IsLight ? Color.FromArgb(0xFF, 0xE4, 0x47, 0x3C) : Color.FromArgb(0xFF, 0xFF, 0x5A, 0x4E);
+    /// <summary>Windows' accent colour in the shade WinUI's accent fill uses: lighter on dark, darker on light.</summary>
+    protected Color Accent => UiSettings.GetColorValue(IsLight ? UIColorType.AccentDark1 : UIColorType.AccentLight2);
 
     protected Color Surface => IsLight ? Color.FromArgb(0xFF, 0xFB, 0xFB, 0xFB) : Color.FromArgb(0xFF, 0x2B, 0x2B, 0x2B);
 }

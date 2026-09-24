@@ -35,8 +35,8 @@ NitroSense 的开源替代品。
 ## 功能
 
 - **真实温度。** CPU 和 GPU 温度直接从芯片本身读取，与 HWiNFO 和 ThrottleStop 的做法相同，并提供 5 分钟曲线图。
-- **风扇控制。** “自动”、“最大”、每个风扇的固定转速，或者你自己绘制的温度曲线。
-- **默认安全。** 达到紧急温度时风扇会全速运转；如果传感器或 OpenSense 停止工作，固件会重新接管风扇。
+- **风扇控制。** “自动”：笔记本发热时由 OpenSense 额外提速（可关闭）；“最大”；或“自定义”：为每个风扇额外增加转速，固定或按你自己绘制的曲线变化。
+- **默认安全。** “防降频”会在处理器接近降频温度时把风扇提到全速；如果传感器或 OpenSense 停止工作，固件会重新接管风扇。
 - **性能。** 操作模式、CoolBoost 和 Windows 电源计划。
 - **灯光。** 按键盘区域设置静态颜色，或使用“呼吸”、“霓虹”、“波浪”、“移动”和“缩放”效果。
 - **键盘和显示器。** 自动关闭背光、锁定 Windows 键、LCD Overdrive 以及 GPU（MUX）切换。
@@ -58,7 +58,9 @@ OpenSense 会向固件询问你的笔记本电脑具备哪些功能，并且只�
 
 ## 支持的笔记本电脑
 
-带有 NitroSense 和 PredatorSense 所使用的游戏固件接口的 Acer 笔记本电脑。OpenSense 在 **Nitro 5 AN515-57** 上开发。
+带有 NitroSense 和 PredatorSense 所使用的游戏固件接口的 Acer 笔记本电脑。
+
+OpenSense 是在 **Nitro 5 AN515-57** 上开发的。
 
 在其他型号上试过了？请[提交 issue](https://github.com/archivesteak/opensense/issues)，并粘贴 **设置 → 疑难解答 → 复制** 中的诊断信息。
 

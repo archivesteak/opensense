@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.UI.Input;
-using Windows.Win32.UI.WindowsAndMessaging;
 
 namespace OpenSense.App.Services;
 
@@ -23,13 +22,12 @@ public sealed unsafe partial class NitroSenseKey(ILogger<NitroSenseKey> log) : I
     private const ushort AcerGamingPage = 0x88, AcerGamingUsage = 0x01;
     private const string WindowClass = "OpenSense.NitroSenseKey";
 
-    private WNDPROC? _windowProc; // kept alive while the window exists
-    private HWND _window;
+    private MessageWindow? _window;
     private bool _keyDown;
 
     public event Action? Pressed;
 
-    public bool IsListening => _window != HWND.Null;
+    public bool IsListening => _window is not null;
 
     /// <summary>Starts listening; call on the UI thread (its message loop delivers the input).</summary>
     public void Start()
@@ -37,35 +35,17 @@ public sealed unsafe partial class NitroSenseKey(ILogger<NitroSenseKey> log) : I
         if (IsListening)
             return;
 
-        _windowProc = WindowProc;
-        fixed (char* className = WindowClass)
+        _window = MessageWindow.Create(WindowClass, OnMessage, out var failure);
+        if (_window is null)
         {
-            var windowClass = new WNDCLASSEXW
-            {
-                cbSize = (uint)Marshal.SizeOf<WNDCLASSEXW>(),
-                lpfnWndProc = _windowProc,
-                hInstance = Instance,
-                lpszClassName = className,
-            };
-            if (PInvoke.RegisterClassEx(windowClass) == 0)
-            {
-                LogFailed("RegisterClassEx", Marshal.GetLastPInvokeError());
-                return;
-            }
-        }
-
-        // HWND_MESSAGE: a message-only window, never shown.
-        _window = PInvoke.CreateWindowEx(0, WindowClass, "", 0, 0, 0, 0, 0, new HWND(-3), null, null, null);
-        if (_window == HWND.Null)
-        {
-            LogFailed("CreateWindowEx", Marshal.GetLastPInvokeError());
+            LogFailed(failure.Call, failure.Error);
             return;
         }
 
         RAWINPUTDEVICE[] devices =
         [
-            new() { usUsagePage = GenericDesktopPage, usUsage = KeyboardUsage, dwFlags = RAWINPUTDEVICE_FLAGS.RIDEV_INPUTSINK, hwndTarget = _window },
-            new() { usUsagePage = AcerGamingPage, usUsage = AcerGamingUsage, dwFlags = RAWINPUTDEVICE_FLAGS.RIDEV_INPUTSINK, hwndTarget = _window },
+            new() { usUsagePage = GenericDesktopPage, usUsage = KeyboardUsage, dwFlags = RAWINPUTDEVICE_FLAGS.RIDEV_INPUTSINK, hwndTarget = _window.Handle },
+            new() { usUsagePage = AcerGamingPage, usUsage = AcerGamingUsage, dwFlags = RAWINPUTDEVICE_FLAGS.RIDEV_INPUTSINK, hwndTarget = _window.Handle },
         ];
         if (!PInvoke.RegisterRawInputDevices(devices, (uint)sizeof(RAWINPUTDEVICE)))
         {
@@ -78,7 +58,7 @@ public sealed unsafe partial class NitroSenseKey(ILogger<NitroSenseKey> log) : I
 
     public void Stop()
     {
-        if (!IsListening)
+        if (_window is null)
             return;
         RAWINPUTDEVICE[] devices =
         [
@@ -86,21 +66,15 @@ public sealed unsafe partial class NitroSenseKey(ILogger<NitroSenseKey> log) : I
             new() { usUsagePage = AcerGamingPage, usUsage = AcerGamingUsage, dwFlags = RAWINPUTDEVICE_FLAGS.RIDEV_REMOVE },
         ];
         PInvoke.RegisterRawInputDevices(devices, (uint)sizeof(RAWINPUTDEVICE));
-        PInvoke.DestroyWindow(_window);
-        fixed (char* className = WindowClass)
-            PInvoke.UnregisterClass(className, Instance);
-        _window = HWND.Null;
-        _windowProc = null;
+        _window.Dispose();
+        _window = null;
         _keyDown = false;
     }
 
-    private static HINSTANCE Instance => (HINSTANCE)(nint)PInvoke.GetModuleHandle((PCWSTR)null);
-
-    private LRESULT WindowProc(HWND hwnd, uint message, WPARAM wParam, LPARAM lParam)
+    private void OnMessage(uint message, WPARAM wParam, LPARAM lParam)
     {
         if (message == PInvoke.WM_INPUT)
             OnInput(new HRAWINPUT(lParam.Value));
-        return PInvoke.DefWindowProc(hwnd, message, wParam, lParam);
     }
 
     private void OnInput(HRAWINPUT input)

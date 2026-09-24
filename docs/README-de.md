@@ -35,8 +35,8 @@ Hilf mit, OpenSense und diese Seite in deine Sprache zu übersetzen: siehe [Übe
 ## Funktionen
 
 - **Echte Temperaturen.** CPU und GPU werden direkt von den Chips gelesen, wie es HWiNFO und ThrottleStop tun, mit Verlaufsdiagrammen über 5 Minuten.
-- **Lüftersteuerung.** Auto, Max, eine feste Drehzahl pro Lüfter oder selbst gezeichnete Temperaturkurven.
-- **Sicher von Haus aus.** Bei einer Notfalltemperatur laufen die Lüfter mit voller Drehzahl, und die Firmware übernimmt wieder, wenn ein Sensor oder OpenSense ausfällt.
+- **Lüftersteuerung.** Auto, das OpenSense bei Hitze beschleunigt (lässt sich abschalten), Max oder Manuell: zusätzliche Drehzahl pro Lüfter, fest oder nach einer selbst gezeichneten Kurve.
+- **Sicher von Haus aus.** Anti-Drosselung dreht die Lüfter bis zur vollen Drehzahl hoch, wenn sich der Prozessor der Drosselgrenze nähert, und die Firmware übernimmt wieder, wenn ein Sensor oder OpenSense ausfällt.
 - **Leistung.** Betriebsmodi, CoolBoost und Windows-Energiesparpläne.
 - **Beleuchtung.** Feste Farben pro Tastaturzone oder die Effekte Atmen, Neon, Welle, Wandern und Zoom.
 - **Tastatur und Display.** Automatisches Ausschalten der Beleuchtung, Sperre der Windows-Taste, LCD-Overdrive und der GPU-Umschalter (MUX).
@@ -58,7 +58,9 @@ Lade die neueste Version unter [**Releases**](https://github.com/archivesteak/op
 
 ## Unterstützte Laptops
 
-Acer-Laptops mit der Gaming-Firmware-Schnittstelle, die NitroSense und PredatorSense verwenden. OpenSense wird auf einem **Nitro 5 AN515-57** entwickelt.
+Acer-Laptops mit der Gaming-Firmware-Schnittstelle, die NitroSense und PredatorSense verwenden.
+
+OpenSense wurde auf einem **Nitro 5 AN515-57** entwickelt.
 
 Auf einem anderen Modell ausprobiert? [Erstelle ein Issue](https://github.com/archivesteak/opensense/issues) und füge die Diagnosedaten aus **Einstellungen → Problembehandlung → Kopieren** ein.
 

@@ -16,7 +16,6 @@ public sealed class TrayService(MonitorViewModel monitor, FanControlViewModel fa
 {
     private TaskbarIcon? _icon;
     private readonly List<RadioMenuFlyoutItem> _modeItems = [];
-    private ToggleMenuFlyoutItem? _coolBoostItem;
     private MenuFlyoutSubItem? _operatingModeMenu;
 
     public void Initialize()
@@ -35,9 +34,8 @@ public sealed class TrayService(MonitorViewModel monitor, FanControlViewModel fa
         monitor.PropertyChanged += OnMonitorChanged;
         fans.PropertyChanged += (_, e) =>
         {
-            if (e.PropertyName is nameof(FanControlViewModel.ModeIndex) or nameof(FanControlViewModel.CoolBoost)
-                or nameof(FanControlViewModel.OperatingModeIndex) or nameof(FanControlViewModel.OperatingModesAvailable)
-                or nameof(FanControlViewModel.CoolBoostAvailable))
+            if (e.PropertyName is nameof(FanControlViewModel.ModeIndex) or nameof(FanControlViewModel.OperatingModeIndex)
+                or nameof(FanControlViewModel.OperatingModesAvailable))
                 SyncMenu();
         };
         notifications.Important += notice =>
@@ -76,10 +74,6 @@ public sealed class TrayService(MonitorViewModel monitor, FanControlViewModel fa
         _operatingModeMenu = new MenuFlyoutSubItem { Text = Strings.Get("Tray_OperatingMode") };
         menu.Items.Add(_operatingModeMenu);
 
-        _coolBoostItem = new ToggleMenuFlyoutItem { Text = "CoolBoost" };
-        _coolBoostItem.Click += (_, _) => fans.CoolBoost = _coolBoostItem.IsChecked;
-        menu.Items.Add(_coolBoostItem);
-
         menu.Items.Add(new MenuFlyoutSeparator());
         menu.Items.Add(Item(Strings.Get("Tray_Exit"), () => App.Current.Quit()));
         menu.Opening += (_, _) => SyncMenu();
@@ -98,12 +92,6 @@ public sealed class TrayService(MonitorViewModel monitor, FanControlViewModel fa
     {
         for (var i = 0; i < _modeItems.Count; i++)
             _modeItems[i].IsChecked = i == fans.ModeIndex;
-
-        if (_coolBoostItem is not null)
-        {
-            _coolBoostItem.Visibility = fans.CoolBoostAvailable ? Visibility.Visible : Visibility.Collapsed;
-            _coolBoostItem.IsChecked = fans.CoolBoost;
-        }
 
         if (_operatingModeMenu is not null)
         {
@@ -127,7 +115,7 @@ public sealed class TrayService(MonitorViewModel monitor, FanControlViewModel fa
         var cpu = Names.Chip(FanId.Cpu);
         var gpu = Names.Chip(FanId.Gpu);
         var fanText = string.Join("  ", monitor.Fans.Select(f => $"{Names.Chip(f.Id)} {f.RpmText}"));
-        var tooltip = $"OpenSense — {Names.FanMode(t.EffectiveMode)}\n{cpu} {monitor.CpuTemperatureText}  {gpu} {monitor.GpuTemperatureText}\n{fanText}";
+        var tooltip = $"OpenSense · {Names.FanMode(t.EffectiveMode)}\n{cpu} {monitor.CpuTemperatureText}  {gpu} {monitor.GpuTemperatureText}\n{fanText}";
         if (_icon.ToolTipText != tooltip)
             _icon.ToolTipText = tooltip;
     }

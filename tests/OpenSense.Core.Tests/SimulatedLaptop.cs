@@ -112,10 +112,11 @@ public sealed class SimulatedTransport : IWmiTransport
                 (GamingClass, "SetGamingFanBehavior") => SetBehavior(input),
                 (GamingClass, "SetGamingFanSpeed") => SetSpeed(input),
                 (GamingClass, "GetGamingFanBehavior") => GetBehavior(input),
+                // Like the real firmware: the last boost written, not what the fan is doing.
                 (GamingClass, "GetGamingFanSpeed") => (input & 0xFF) switch
                 {
-                    1 => Ok((ulong)Math.Round(_cpuFanPct)),
-                    4 => Ok((ulong)Math.Round(_gpuFanPct)),
+                    1 => Ok((ulong)_cpuCustom),
+                    4 => Ok((ulong)_gpuCustom),
                     _ => Error,
                 },
                 (GamingClass, "GetGamingMiscSetting") => GetMisc((MiscSetting)(input & 0xFF)),
@@ -279,12 +280,17 @@ public sealed class SimulatedTransport : IWmiTransport
         _gpuTemp = Math.Clamp(Approach(_gpuTemp, gpuEq, dt, 9), 30, 92);
     }
 
-    private double FanTarget(FanBehavior behavior, int custom, double temp) => behavior switch
+    /// <summary>Custom boosts Auto: it moves the fan <paramref name="custom"/> % of the way to full speed.</summary>
+    private double FanTarget(FanBehavior behavior, int custom, double temp)
     {
-        FanBehavior.Max => 100,
-        FanBehavior.Custom => custom,
-        _ => Math.Clamp((temp - 42) * 1.9 + 22 + (_coolBoost ? 15 : 0), temp < 45 ? 0 : 22, 100),
-    };
+        var auto = Math.Clamp((temp - 42) * 1.9 + 22 + (_coolBoost ? 15 : 0), temp < 45 ? 0 : 22, 100);
+        return behavior switch
+        {
+            FanBehavior.Max => 100,
+            FanBehavior.Custom => auto + custom / 100.0 * (100 - auto),
+            _ => auto,
+        };
+    }
 
     private static double Approach(double value, double target, double dt, double tau) =>
         value + (target - value) * (1 - Math.Exp(-dt / tau));
@@ -301,6 +307,9 @@ public sealed class SimulatedMachine(SimulatedModel model) : IMachine
     public string? Model => model == SimulatedModel.Nitro2022 ? "Nitro AN515-58 (simulated)" : "Nitro AN515-57 (simulated)";
 
     public string? BiosVersion => "simulated";
+
+    /// <summary>Made up, in the format of an Acer label.</summary>
+    public string? SerialNumber => "NHQ7PEU00A1230ABCD7600";
 
     public IWmiTransport OpenFirmware()
     {

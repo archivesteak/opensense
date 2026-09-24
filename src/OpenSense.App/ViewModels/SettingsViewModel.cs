@@ -4,28 +4,26 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using OpenSense.App.Helpers;
 using OpenSense.App.Localization;
 using OpenSense.App.Services;
 using OpenSense.Core.Hardware;
 using OpenSense.Core.Settings;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.System;
 
 namespace OpenSense.App.ViewModels;
 
 /// <summary>App preferences, capability overrides, diagnostics and about.</summary>
-public sealed partial class SettingsViewModel(SettingsService settings, DeviceSession session, NotificationService notifications, NitroSenseKey nitroSenseKey)
+public sealed partial class SettingsViewModel(SettingsService settings, DeviceSession session, NotificationService notifications, NitroSenseKey nitroSenseKey,
+    OpenShortcut openShortcut)
     : ObservableObject
 {
-    private static readonly int[] Intervals = [500, 1000, 2000];
     private static readonly string AppLogDirectory =
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "OpenSense", "logs");
     private static readonly string ServiceLogDirectory = Path.Combine(SettingsPaths.MachineDirectory, "logs");
 
     private bool _loading;
-
-    /// <summary>In <see cref="Intervals"/> order.</summary>
-    public static IReadOnlyList<string> IntervalNames { get; } =
-        [.. Intervals.Select(ms => Strings.Format("Unit_Seconds", ms / 1000.0))];
 
     public static IReadOnlyList<string> ThemeNames { get; } = [Strings.Get("Theme_System"), Strings.Get("Theme_Light"), Strings.Get("Theme_Dark")];
 
@@ -38,19 +36,14 @@ public sealed partial class SettingsViewModel(SettingsService settings, DeviceSe
     public partial bool StartWithWindows { get; set; }
 
     [ObservableProperty]
-    public partial bool StartMinimized { get; set; }
-
-    [ObservableProperty]
     public partial bool CloseToTray { get; set; }
+
 
     [ObservableProperty]
     public partial bool UseFahrenheit { get; set; }
 
     [ObservableProperty]
     public partial bool OpenWithNitroSenseKey { get; set; }
-
-    [ObservableProperty]
-    public partial int IntervalIndex { get; set; } = 1;
 
     [ObservableProperty]
     public partial int ThemeIndex { get; set; }
@@ -81,6 +74,20 @@ public sealed partial class SettingsViewModel(SettingsService settings, DeviceSe
     [ObservableProperty]
     public partial string BiosVersion { get; set; } = "";
 
+    /// <summary>The serial number on the laptop's label; empty when Windows does not say.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasSerialNumber))]
+    public partial string SerialNumber { get; set; } = "";
+
+    /// <summary>Acer's SNID, worked out from the serial number as Care Center does; empty for a serial not in Acer's format.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasSnid))]
+    public partial string Snid { get; set; } = "";
+
+    public bool HasSerialNumber => SerialNumber.Length > 0;
+
+    public bool HasSnid => Snid.Length > 0;
+
     [ObservableProperty]
     public partial string TemperatureSources { get; set; } = "";
 
@@ -104,13 +111,13 @@ public sealed partial class SettingsViewModel(SettingsService settings, DeviceSe
     {
         _loading = true;
         var ui = settings.Current.Ui;
-        var machine = session.Settings;
         StartWithWindows = AutostartService.IsEnabled;
-        StartMinimized = ui.StartMinimized;
         CloseToTray = ui.CloseToTray;
         UseFahrenheit = ui.UseFahrenheit;
         OpenWithNitroSenseKey = ui.OpenWithNitroSenseKey;
-        IntervalIndex = Math.Max(0, Array.IndexOf(Intervals, machine.PollIntervalMs));
+        RecordingShortcut = false;
+        Shortcut = ui.OpenShortcut;
+        ShortcutHelp = Strings.Get(Shortcut is not null && !openShortcut.IsSet ? "Settings_ShortcutTaken" : "Settings_ShortcutHelp");
         ThemeIndex = ui.Theme;
         LanguageIndex = Math.Max(0, Languages.ToList().FindIndex(l => l.Tag.Length > 0 && string.Equals(l.Tag, ui.Language, StringComparison.OrdinalIgnoreCase)));
 
@@ -122,6 +129,8 @@ public sealed partial class SettingsViewModel(SettingsService settings, DeviceSe
         Diagnostics = detected.Diagnostics;
         LaptopModel = session.DeviceName ?? Strings.Get("Settings_UnknownModel");
         BiosVersion = session.BiosVersion is { } bios ? Strings.Format("Settings_Bios", bios) : Strings.Get("Settings_BiosUnknown");
+        SerialNumber = session.SerialNumber ?? "";
+        Snid = SystemInfo.Snid(session.SerialNumber) ?? "";
         var sources = session.TemperatureSources;
         TemperatureSources = Strings.Format("Settings_SensorSources", Names.TemperatureSource(sources.Cpu), Names.TemperatureSource(sources.Gpu));
         PawnIOMissing = sources.PawnIOMissing;
@@ -147,11 +156,84 @@ public sealed partial class SettingsViewModel(SettingsService settings, DeviceSe
         }
     }
 
-    partial void OnStartMinimizedChanged(bool value) => UpdateUi(u => u with { StartMinimized = value });
-
     partial void OnCloseToTrayChanged(bool value) => UpdateUi(u => u with { CloseToTray = value });
 
     partial void OnUseFahrenheitChanged(bool value) => UpdateUi(u => u with { UseFahrenheit = value });
+
+    /// <summary>The shortcut that opens OpenSense (<see cref="Services.OpenShortcut"/>); null for none.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ShortcutText), nameof(HasShortcut))]
+    public partial KeyShortcut? Shortcut { get; set; }
+
+    /// <summary>The shortcut button is waiting for a key.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ShortcutText))]
+    public partial bool RecordingShortcut { get; set; }
+
+    [ObservableProperty]
+    public partial string ShortcutHelp { get; set; } = "";
+
+    public bool HasShortcut => Shortcut is not null;
+
+    public string ShortcutText =>
+        RecordingShortcut ? Strings.Get("Settings_ShortcutRecording")
+        : Shortcut is { } shortcut ? KeyNames.Describe(shortcut)
+        : Strings.Get("Settings_ShortcutNone");
+
+    [RelayCommand]
+    private void RecordShortcut()
+    {
+        openShortcut.Set(null); // so pressing the current shortcut records it rather than opening the window
+        RecordingShortcut = true;
+    }
+
+    public void CancelShortcutRecording()
+    {
+        if (!RecordingShortcut)
+            return;
+        RecordingShortcut = false;
+        openShortcut.Set(Shortcut);
+    }
+
+    [RelayCommand]
+    private void ClearShortcut() => ApplyShortcut(null);
+
+    /// <summary>
+    /// A key pressed while recording: any key, alone or with modifiers. False, and still recording, for a modifier
+    /// on its own (the key it goes with is still to come). Esc on its own cancels.
+    /// </summary>
+    public bool TryRecordShortcut(VirtualKey key, bool control, bool alt, bool shift, bool windows)
+    {
+        if (!RecordingShortcut || IsModifier(key))
+            return false;
+        if (key == VirtualKey.Escape && !(control || alt || shift || windows))
+        {
+            CancelShortcutRecording();
+            return true;
+        }
+        RecordingShortcut = false;
+        ApplyShortcut(new KeyShortcut((int)key, control, alt, shift, windows));
+        return true;
+    }
+
+    private void ApplyShortcut(KeyShortcut? shortcut)
+    {
+        if (openShortcut.Set(shortcut))
+        {
+            Shortcut = shortcut;
+            ShortcutHelp = Strings.Get("Settings_ShortcutHelp");
+            UpdateUi(u => u with { OpenShortcut = shortcut });
+        }
+        else
+        {
+            openShortcut.Set(Shortcut); // another app has it: keep the one that worked
+            ShortcutHelp = Strings.Get("Settings_ShortcutTaken");
+        }
+    }
+
+    private static bool IsModifier(VirtualKey key) => key is VirtualKey.Control or VirtualKey.LeftControl or VirtualKey.RightControl
+        or VirtualKey.Menu or VirtualKey.LeftMenu or VirtualKey.RightMenu or VirtualKey.Shift or VirtualKey.LeftShift
+        or VirtualKey.RightShift or VirtualKey.LeftWindows or VirtualKey.RightWindows;
 
     partial void OnOpenWithNitroSenseKeyChanged(bool value)
     {
@@ -162,13 +244,6 @@ public sealed partial class SettingsViewModel(SettingsService settings, DeviceSe
             nitroSenseKey.Start();
         else
             nitroSenseKey.Stop();
-    }
-
-    partial void OnIntervalIndexChanged(int value)
-    {
-        if (_loading || value < 0)
-            return;
-        _ = session.SetPollIntervalAsync(Intervals[Math.Clamp(value, 0, Intervals.Length - 1)]);
     }
 
     partial void OnThemeIndexChanged(int value)
@@ -208,13 +283,25 @@ public sealed partial class SettingsViewModel(SettingsService settings, DeviceSe
         return Strings.Format(detected.HasOperatingModes ? "Settings_OperatingModes_Supported" : "Settings_OperatingModes_Unused", listed, alternative);
     }
 
-    [RelayCommand]
-    private void CopyDiagnostics()
+    /// <summary>The Copy button's text: "Copied" for a moment after copying.</summary>
+    [ObservableProperty]
+    public partial string CopyText { get; set; } = Strings.Get("Settings_Copy/Content");
+
+    private int _copies;
+
+    [RelayCommand(AllowConcurrentExecutions = true)]
+    private async Task CopyDiagnosticsAsync()
     {
         var package = new DataPackage();
         package.SetText(Diagnostics);
         Clipboard.SetContent(package);
-        notifications.Show(Strings.Get("Notice_Diagnostics_Title"), Strings.Get("Notice_DiagnosticsCopied"), InfoBarSeverity.Success);
+
+        // Said on the button rather than with a notice.
+        var copy = ++_copies;
+        CopyText = Strings.Get("Settings_Copied");
+        await Task.Delay(TimeSpan.FromSeconds(2));
+        if (copy == _copies)
+            CopyText = Strings.Get("Settings_Copy/Content");
     }
 
     [RelayCommand]

@@ -47,7 +47,7 @@ public partial class App : Application
         _instance.ExitRequested += () => _window.DispatcherQueue.TryEnqueue(Quit);
 
         var settings = Services.GetRequiredService<SettingsService>().Current;
-        if (!_options.Autostart && !settings.Ui.StartMinimized)
+        if (!_options.Autostart)
             _window.Activate();
 
         Services.GetRequiredService<UpdateViewModel>().Start();
@@ -55,6 +55,9 @@ public partial class App : Application
         nitroSenseKey.Pressed += ShowMainWindow;
         if (settings.Ui.OpenWithNitroSenseKey)
             nitroSenseKey.Start();
+        var shortcut = Services.GetRequiredService<OpenShortcut>();
+        shortcut.Pressed += ShowMainWindow;
+        shortcut.Set(settings.Ui.OpenShortcut);
         await Services.GetRequiredService<ShellViewModel>().InitializeAsync();
     }
 
@@ -76,6 +79,7 @@ public partial class App : Application
         builder.Services.AddSingleton<TrayService>();
         builder.Services.AddSingleton<NavigationService>();
         builder.Services.AddSingleton<NitroSenseKey>();
+        builder.Services.AddSingleton<OpenShortcut>();
         builder.Services.AddSingleton(UpdaterOptions());
         builder.Services.AddHttpClient<GitHubUpdater>(client =>
         {
@@ -132,6 +136,7 @@ public partial class App : Application
         if (_host is not null)
         {
             Services.GetRequiredService<NitroSenseKey>().Dispose();
+            Services.GetRequiredService<OpenShortcut>().Dispose();
             Services.GetRequiredService<TrayService>().Dispose();
             Services.GetRequiredService<DeviceSession>().Dispose(); // the service keeps control; a hosted engine hands the fans back
             Services.GetRequiredService<SettingsService>().Dispose();

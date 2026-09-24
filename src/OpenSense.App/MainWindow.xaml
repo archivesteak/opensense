@@ -51,7 +51,7 @@
                     Tag="lighting"
                     Visibility="{x:Bind Shell.LightingAvailable, Mode=OneWay}">
                     <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE790;" />
+                        <FontIcon Glyph="&#xE781;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Nav_System" Tag="system">

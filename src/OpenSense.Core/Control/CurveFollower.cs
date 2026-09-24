@@ -1,42 +1,32 @@
 namespace OpenSense.Core.Control;
 
 /// <summary>
-/// Turns noisy temperature readings into a steady fan duty: fast rise, slow fall, a hysteresis band
-/// before slowing down, and a dead band so tiny changes are not sent to the firmware.
+/// Turns a fan's curve-step temperatures into a steady boost. It follows the higher of the last two readings,
+/// so the fans speed up at once but only slow down when the next reading confirms the drop (95 then 89 holds
+/// 95's boost; a following 88 moves to 89's). Changes under <see cref="MinChangePercent"/> are not sent.
 /// </summary>
 public sealed class CurveFollower
 {
-    private double? _smoothed;
+    private const int MinChangePercent = 2;
+
+    private double? _previous;
 
     public int? Current { get; private set; }
 
     public void Reset()
     {
-        _smoothed = null;
+        _previous = null;
         Current = null;
     }
 
-    public int Update(double temperature, FanCurve curve, ResponseSettings response, int minimumPercent)
+    public int Update(double temperature, FanCurve curve)
     {
-        _smoothed = _smoothed is not { } s
-            ? temperature
-            : s + (temperature - s) * (temperature > s ? response.RiseSmoothing : response.FallSmoothing);
+        var effective = _previous is { } previous ? Math.Max(previous, temperature) : temperature;
+        _previous = temperature;
 
-        var rising = curve.Evaluate(_smoothed.Value);
-        int target;
-        if (Current is not { } current || rising >= current)
-        {
-            target = rising;
-        }
-        else
-        {
-            // Only slow down once the temperature is HysteresisC below the point that justified the current speed.
-            target = Math.Min(current, curve.Evaluate(_smoothed.Value + response.HysteresisC));
-        }
-
-        target = Math.Clamp(Math.Max(target, minimumPercent), 0, 100);
-        if (Current is { } c && Math.Abs(target - c) < response.MinChangePercent && target is not (0 or 100) && target != minimumPercent)
-            target = c;
+        var target = Math.Clamp(curve.Evaluate(effective), 0, 100);
+        if (Current is { } current && Math.Abs(target - current) < MinChangePercent && target is not (0 or 100))
+            target = current;
 
         Current = target;
         return target;

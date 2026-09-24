@@ -11,6 +11,9 @@ public interface IMachine
 
     string? BiosVersion { get; }
 
+    /// <summary>The serial number on the laptop's label; null when Windows does not say.</summary>
+    string? SerialNumber { get; }
+
     /// <summary>Acer's gaming WMI interface.</summary>
     IWmiTransport OpenFirmware();
 
@@ -31,6 +34,8 @@ public sealed class WindowsMachine : IMachine
     public string? Model => SystemInfo.ReadModel();
 
     public string? BiosVersion => SystemInfo.ReadBiosVersion();
+
+    public string? SerialNumber => SystemInfo.ReadSerialNumber();
 
     public IWmiTransport OpenFirmware() => new WmiTransport();
 

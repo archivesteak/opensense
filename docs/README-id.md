@@ -35,8 +35,8 @@ Bantu terjemahkan OpenSense dan halaman ini ke bahasa Anda: lihat [Terjemahan](#
 ## Fitur
 
 - **Suhu yang sebenarnya.** Suhu CPU dan GPU dibaca langsung dari chip-nya, seperti yang dilakukan HWiNFO dan ThrottleStop, dengan grafik 5 menit.
-- **Kontrol kipas.** Otomatis, Maks, kecepatan tetap per kipas, atau kurva suhu yang Anda gambar sendiri.
-- **Aman secara default.** Kipas berputar dengan kecepatan penuh pada suhu darurat, dan firmware kembali mengambil alih jika sensor atau OpenSense berhenti.
+- **Kontrol kipas.** Otomatis, yang dipercepat OpenSense saat laptop panas (bisa Anda matikan), Maks, atau Kustom: kecepatan tambahan per kipas, tetap atau mengikuti kurva yang Anda gambar sendiri.
+- **Aman secara default.** Anti-throttling menaikkan kipas hingga kecepatan penuh saat prosesor mendekati titik throttling, dan firmware kembali mengambil alih jika sensor atau OpenSense berhenti.
 - **Performa.** Mode operasi, CoolBoost, dan rencana daya Windows.
 - **Pencahayaan.** Warna statis per zona keyboard, atau efek Bernapas, Neon, Gelombang, Bergeser, dan Zoom.
 - **Keyboard dan layar.** Lampu latar mati otomatis, kunci tombol Windows, Overdrive LCD, dan sakelar GPU (MUX).
@@ -58,7 +58,9 @@ Unduh versi terbaru dari [**Releases**](https://github.com/archivesteak/opensens
 
 ## Laptop yang didukung
 
-Laptop Acer dengan antarmuka firmware gaming yang digunakan NitroSense dan PredatorSense. OpenSense dikembangkan di **Nitro 5 AN515-57**.
+Laptop Acer dengan antarmuka firmware gaming yang digunakan NitroSense dan PredatorSense.
+
+OpenSense dikembangkan di **Nitro 5 AN515-57**.
 
 Sudah mencobanya di model lain? [Buka issue](https://github.com/archivesteak/opensense/issues) dan tempelkan data diagnostik dari **Pengaturan → Pemecahan masalah → Salin**.
 

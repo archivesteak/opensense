@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Management;
 using System.Security.Principal;
 
@@ -51,5 +52,41 @@ public static class SystemInfo
         {
         }
         return null;
+    }
+
+    /// <summary>The serial number on the label under the laptop (SMBIOS system serial). Does not need elevation.</summary>
+    public static string? ReadSerialNumber()
+    {
+        try
+        {
+            using var searcher = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_BIOS");
+            foreach (var item in searcher.Get())
+                return item["SerialNumber"]?.ToString()?.Trim() is { Length: > 0 } serial ? serial : null;
+        }
+        catch (ManagementException)
+        {
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Acer's SNID, the all-digit form of a 22-character Acer serial number, as Acer Care Center shows it: characters
+    /// 11 to 13 as they are, characters 14 to 18 (hexadecimal) in decimal and padded to six digits, character 19 as it
+    /// is, and character 20 as a number (a digit as itself, a letter counting from 10 for A). Null for other serials.
+    /// </summary>
+    public static string? Snid(string? serialNumber)
+    {
+        if (serialNumber is not { Length: 22 }
+            || !int.TryParse(serialNumber.AsSpan(13, 5), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out var middle))
+            return null;
+        var last = char.ToUpperInvariant(serialNumber[19]) switch
+        {
+            >= '0' and <= '9' and var digit => digit - '0',
+            >= 'A' and <= 'Z' and var letter => letter - 'A' + 10,
+            _ => -1,
+        };
+        return last < 0
+            ? null
+            : string.Create(CultureInfo.InvariantCulture, $"{serialNumber.AsSpan(10, 3)}{middle:D6}{serialNumber[18]}{last}");
     }
 }

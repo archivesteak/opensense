@@ -10,9 +10,9 @@ public enum FanLock
     QuietMode,
 }
 
-/// <param name="Duty">Duty (%) the firmware reports it is driving the fan at, in any mode.</param>
-/// <param name="CommandedPercent">Duty OpenSense last commanded (Custom / Curve only).</param>
-public sealed record FanTelemetry(FanId Id, int? Rpm, int? Duty, FanBehavior Behavior, int? CommandedPercent);
+/// <param name="BoostPercent">Boost OpenSense is adding on top of Auto; null while the fan is left to the firmware.</param>
+/// <remarks>The firmware reports no duty: its speed read-back only echoes the last boost written, so RPM is the measure.</remarks>
+public sealed record FanTelemetry(FanId Id, int? Rpm, FanBehavior Behavior, int? BoostPercent);
 
 /// <summary>One sample of sensors plus what the controller is doing about them.</summary>
 public sealed record Telemetry
@@ -40,9 +40,6 @@ public sealed record Telemetry
     public OperatingMode? OperatingMode { get; init; }
     public bool? CoolBoost { get; init; }
     public bool OnAcPower { get; init; } = true;
-
-    /// <summary>Temperature crossed the emergency threshold; fans forced to max.</summary>
-    public bool Emergency { get; init; }
 
     /// <summary>Sensors stopped answering; fans handed back to firmware.</summary>
     public bool Failsafe { get; init; }

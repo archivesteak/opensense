@@ -115,19 +115,9 @@
     <value>OpenSense 服務的版本不同（{0}）。請重新安裝 OpenSense 以進行更新。</value>
     <comment>{0} = a version number.</comment>
   </data>
-  <data name="Notice_Rebuilt_Title" xml:space="preserve">
-    <value>功能已更新</value>
-    <comment>Banner title.</comment>
-  </data>
-  <data name="Notice_Rebuilt_Message" xml:space="preserve">
-    <value>OpenSense 已使用新設定重新啟動風扇控制。</value>
-  </data>
   <data name="Notice_Service_Title" xml:space="preserve">
     <value>服務</value>
     <comment>Banner title: about the OpenSense background service.</comment>
-  </data>
-  <data name="Notice_Reconnected" xml:space="preserve">
-    <value>已重新連線到 OpenSense 服務。</value>
   </data>
   <data name="Notice_Disconnected" xml:space="preserve">
     <value>與 OpenSense 服務的連線已中斷。正在重新連線…</value>
@@ -203,17 +193,6 @@
     <value>無法更新啟動項目：{0}</value>
     <comment>{0} = a technical error message.</comment>
   </data>
-  <data name="Notice_Diagnostics_Title" xml:space="preserve">
-    <value>診斷</value>
-    <comment>Banner title.</comment>
-  </data>
-  <data name="Notice_DiagnosticsCopied" xml:space="preserve">
-    <value>已複製到剪貼簿。</value>
-  </data>
-  <data name="Notice_Updates_Title" xml:space="preserve">
-    <value>更新</value>
-    <comment>Banner title: app updates.</comment>
-  </data>
   <data name="GpuSwitch_DiscreteTitle" xml:space="preserve">
     <value>只使用獨立 GPU？</value>
     <comment>Dialog title. Discrete GPU = the separate NVIDIA graphics chip.</comment>
@@ -264,23 +243,16 @@
   </data>
   <data name="FanMode_Custom" xml:space="preserve">
     <value>自訂</value>
-    <comment>Fan mode: a fixed speed chosen for each fan. Short: a segmented button.</comment>
-  </data>
-  <data name="FanMode_Curve" xml:space="preserve">
-    <value>曲線</value>
-    <comment>Fan mode: fan speed follows a temperature curve. Short: a segmented button.</comment>
+    <comment>Fan mode: speed added on top of Auto for each fan, fixed or following a curve. Short: a segmented button.</comment>
   </data>
   <data name="FanMode_Auto_Description" xml:space="preserve">
-    <value>由筆記型電腦的韌體管理風扇。</value>
+    <value>由筆記型電腦的韌體管理風扇；溫度升高時，OpenSense 可以額外提速。</value>
   </data>
   <data name="FanMode_Max_Description" xml:space="preserve">
     <value>所有風扇全速運轉。</value>
   </data>
   <data name="FanMode_Custom_Description" xml:space="preserve">
-    <value>為每個風扇設定固定轉速。</value>
-  </data>
-  <data name="FanMode_Curve_Description" xml:space="preserve">
-    <value>OpenSense 會依照您的溫度曲線運作。</value>
+    <value>為每個風扇在韌體轉速之上額外增加的轉速，可固定或依曲線變化。0% 表示交給韌體，100% 表示全速。</value>
   </data>
   <data name="FanBehavior_Auto" xml:space="preserve">
     <value>自動（韌體）</value>
@@ -290,17 +262,9 @@
     <value>全速</value>
     <comment>What a fan is doing right now.</comment>
   </data>
-  <data name="FanBehavior_Emergency" xml:space="preserve">
-    <value>緊急全速</value>
-    <comment>What a fan is doing right now: forced to full speed because the temperature is too high.</comment>
-  </data>
-  <data name="FanBehavior_Curve" xml:space="preserve">
-    <value>依照曲線</value>
-    <comment>What a fan is doing right now: following the temperature curve.</comment>
-  </data>
-  <data name="FanBehavior_Fixed" xml:space="preserve">
-    <value>固定轉速</value>
-    <comment>What a fan is doing right now.</comment>
+  <data name="FanBehavior_Boost" xml:space="preserve">
+    <value>自動 + {0}</value>
+    <comment>What a fan is doing right now: the firmware's speed plus what OpenSense adds. {0} = the added speed as a percentage. Auto = FanMode_Auto.</comment>
   </data>
   <data name="FanLock_QuietMode" xml:space="preserve">
     <value>「安靜」模式會讓風扇保持「自動」。</value>
@@ -366,10 +330,6 @@
     <value>{0} 轉/分</value>
     <comment>{0} = a fan speed number. Same unit as Unit_Rpm.</comment>
   </data>
-  <data name="Unit_Seconds" xml:space="preserve">
-    <value>{0} 秒</value>
-    <comment>{0} = a number of seconds, e.g. 0.5. Use the usual abbreviation for seconds.</comment>
-  </data>
   <data name="ListSeparator" xml:space="preserve">
     <value>、</value>
     <comment>Separates items in a list inside a sentence, e.g. 'Quiet, Balanced, Performance'. Keep the trailing space if your language uses one.</comment>
@@ -409,10 +369,6 @@
     <value>休眠中 · {0}</value>
     <comment>Under the GPU temperature while the graphics chip is powered down: {0} = its model name.</comment>
   </data>
-  <data name="Dashboard_RpmDetail" xml:space="preserve">
-    <value>轉/分 · 工作週期 {0}</value>
-    <comment>Under a fan speed number: rpm = revolutions per minute (as Unit_Rpm); {0} = the fan's duty cycle as a percentage.</comment>
-  </data>
   <data name="Dashboard_Cooling.Text" xml:space="preserve">
     <value>散熱</value>
     <comment>Card title.</comment>
@@ -420,10 +376,6 @@
   <data name="Dashboard_CoolBoost.Text" xml:space="preserve">
     <value>讓「自動」模式可以使風扇轉得更快。</value>
     <comment>Describes CoolBoost (an Acer feature name shown above it). Auto = FanMode_Auto.</comment>
-  </data>
-  <data name="Dashboard_OpenFans.Content" xml:space="preserve">
-    <value>自訂轉速與曲線</value>
-    <comment>Link to the Fans page.</comment>
   </data>
   <data name="Dashboard_Performance.Text" xml:space="preserve">
     <value>效能</value>
@@ -445,57 +397,37 @@
     <value>風扇</value>
     <comment>Page title.</comment>
   </data>
-  <data name="Fans_DutyLabel" xml:space="preserve">
-    <value>工作週期 {0}</value>
-    <comment>{0} = the fan's duty cycle as a percentage.</comment>
+  <data name="Fans_AutoBoost.Header" xml:space="preserve">
+    <value>防降頻</value>
+    <comment>Name of an on/off setting in Auto mode: OpenSense adds fan speed as the chips heat up, so the processor does not throttle (slow itself down because it is too hot). Short.</comment>
   </data>
-  <data name="Fans_AutoToggle.OnContent" xml:space="preserve">
-    <value>自動</value>
-    <comment>Switch label when on: the firmware controls this fan.</comment>
+  <data name="Fans_AutoBoost.Description" xml:space="preserve">
+    <value>隨著晶片升溫，在韌體轉速之上額外提速，並在處理器開始降頻的溫度達到全速。</value>
+    <comment>What the on/off setting does. "Throttle" = the processor slowing itself down because it is too hot.</comment>
   </data>
-  <data name="Fans_AutoToggle.OffContent" xml:space="preserve">
-    <value>手動</value>
-    <comment>Switch label when off: the speed below is used.</comment>
+  <data name="Fans_CoolBoost.Description" xml:space="preserve">
+    <value>提高韌體本身的風扇轉速：「自動」模式使用這個轉速，「自訂」模式在其之上額外增加。</value>
+    <comment>Under the header "CoolBoost" (an Acer feature name). Auto, Custom = FanMode_Auto, FanMode_Custom.</comment>
   </data>
-  <data name="Fans_FanSpeed.Header" xml:space="preserve">
-    <value>風扇轉速</value>
-    <comment>Slider label.</comment>
+  <data name="Fans_BoostFixed.Content" xml:space="preserve">
+    <value>固定</value>
+    <comment>Segmented button per fan in Custom mode: add a fixed amount of speed (the slider below). Very short.</comment>
   </data>
-  <data name="Fans_Source.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>驅動此風扇的溫度</value>
-    <comment>Tooltip.</comment>
+  <data name="Fans_BoostCurve.Content" xml:space="preserve">
+    <value>曲線</value>
+    <comment>Segmented button per fan in Custom mode: the added speed follows a temperature curve. Very short.</comment>
   </data>
-  <data name="CurveSource_Cpu" xml:space="preserve">
-    <value>CPU 溫度</value>
-    <comment>Which temperature a fan curve follows.</comment>
-  </data>
-  <data name="CurveSource_Gpu" xml:space="preserve">
-    <value>GPU 溫度</value>
-    <comment>Which temperature a fan curve follows.</comment>
-  </data>
-  <data name="CurveSource_Hottest" xml:space="preserve">
-    <value>兩者中較高者</value>
-    <comment>Which temperature a fan curve follows: the higher of the CPU and GPU temperatures.</comment>
+  <data name="Fans_Boost.Header" xml:space="preserve">
+    <value>額外轉速</value>
+    <comment>Slider label: speed added on top of the firmware's, from 0% (firmware only) to 100% (full speed).</comment>
   </data>
   <data name="Fans_Presets.Content" xml:space="preserve">
     <value>預設組</value>
     <comment>Button that opens a list of ready-made fan curves.</comment>
   </data>
-  <data name="Fans_PresetSilent.Text" xml:space="preserve">
-    <value>靜音</value>
-    <comment>Fan curve preset name.</comment>
-  </data>
-  <data name="Fans_PresetBalanced.Text" xml:space="preserve">
-    <value>平衡</value>
-    <comment>Fan curve preset name.</comment>
-  </data>
-  <data name="Fans_PresetPerformance.Text" xml:space="preserve">
-    <value>效能</value>
-    <comment>Fan curve preset name.</comment>
-  </data>
-  <data name="Fans_CopyCurve.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>將此曲線也用於其他風扇</value>
-    <comment>Tooltip.</comment>
+  <data name="Fans_PresetDefault.Text" xml:space="preserve">
+    <value>預設</value>
+    <comment>Fan curve preset name: the curve Auto uses when it speeds up the fans.</comment>
   </data>
   <data name="Fans_CurveHelp.Text" xml:space="preserve">
     <value>拖曳點以調整曲線 · 按兩下以新增點 · 按一下滑鼠右鍵以移除點 · 使用方向鍵微調選取的點</value>
@@ -503,32 +435,11 @@
   </data>
   <data name="CurveEditor_Now" xml:space="preserve">
     <value>目前 {0} · {1}</value>
-    <comment>Label on the curve editor: {0} = the current temperature, {1} = the current fan speed percentage.</comment>
+    <comment>Label on the curve editor: {0} = the current temperature, {1} = the speed OpenSense adds now, as a percentage.</comment>
   </data>
   <data name="Fans_Safety.Text" xml:space="preserve">
-    <value>安全與回應</value>
+    <value>安全</value>
     <comment>Section title.</comment>
-  </data>
-  <data name="Fans_Emergency.Header" xml:space="preserve">
-    <value>緊急溫度</value>
-  </data>
-  <data name="Fans_Emergency.Description" xml:space="preserve">
-    <value>在「自訂」與「曲線」模式下，如果任一晶片達到此溫度，風扇會全速運轉。</value>
-    <comment>Custom, Curve = FanMode_Custom, FanMode_Curve.</comment>
-  </data>
-  <data name="Fans_MinimumSpeed.Header" xml:space="preserve">
-    <value>最低風扇轉速</value>
-  </data>
-  <data name="Fans_MinimumSpeed.Description" xml:space="preserve">
-    <value>OpenSense 在「自訂」與「曲線」模式下要求的最低轉速。</value>
-  </data>
-  <data name="Fans_SlowDown.Header" xml:space="preserve">
-    <value>降速延遲</value>
-    <comment>How many degrees the temperature must fall before the fans slow down (hysteresis).</comment>
-  </data>
-  <data name="Fans_SlowDown.Description" xml:space="preserve">
-    <value>溫度需要下降多少，曲線才會降低風扇轉速。值越高，越能避免風扇反覆加速與減速。</value>
-    <comment>'Hunting' = the fans speeding up and slowing down over and over.</comment>
   </data>
   <data name="Fans_HandBack.Header" xml:space="preserve">
     <value>OpenSense 停止時交還風扇</value>
@@ -733,8 +644,29 @@
   <data name="Settings_NitroSenseKey.Description" xml:space="preserve">
     <value>鍵盤上的 NitroSense 鍵會開啟 OpenSense，就像它以前開啟 NitroSense 一樣。OpenSense 位於通知區域時有效。</value>
   </data>
-  <data name="Settings_StartMinimized.Header" xml:space="preserve">
-    <value>啟動時最小化到通知區域</value>
+  <data name="Settings_OpenShortcut.Header" xml:space="preserve">
+    <value>使用快速鍵開啟</value>
+    <comment>Setting under Settings_NitroSenseKey.Header: a key or key combination chosen by the user opens OpenSense.</comment>
+  </data>
+  <data name="Settings_ShortcutHelp" xml:space="preserve">
+    <value>在任何地方開啟 OpenSense 的按鍵或組合鍵。</value>
+    <comment>Description of Settings_OpenShortcut.Header.</comment>
+  </data>
+  <data name="Settings_ShortcutTaken" xml:space="preserve">
+    <value>其他應用程式已在使用該快速鍵。請選擇其他快速鍵。</value>
+    <comment>Shown instead of Settings_ShortcutHelp when Windows refuses the chosen shortcut (another app has it).</comment>
+  </data>
+  <data name="Settings_ShortcutNone" xml:space="preserve">
+    <value>未設定</value>
+    <comment>On the shortcut button when no shortcut is chosen. Short.</comment>
+  </data>
+  <data name="Settings_ShortcutRecording" xml:space="preserve">
+    <value>請按鍵…</value>
+    <comment>On the shortcut button while it waits for the user to press the key or combination. Short.</comment>
+  </data>
+  <data name="Settings_ShortcutClear.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>移除快速鍵</value>
+    <comment>Tooltip of the ✕ button next to the shortcut.</comment>
   </data>
   <data name="Settings_CloseToTray.Header" xml:space="preserve">
     <value>關閉視窗後繼續執行</value>
@@ -783,13 +715,6 @@
   </data>
   <data name="Settings_Fahrenheit.Header" xml:space="preserve">
     <value>以華氏顯示溫度</value>
-  </data>
-  <data name="Settings_Interval.Header" xml:space="preserve">
-    <value>更新間隔</value>
-    <comment>Setting: how often sensors are read.</comment>
-  </data>
-  <data name="Settings_Interval.Description" xml:space="preserve">
-    <value>讀取感應器及更新風扇曲線的頻率，適用於此電腦上的所有使用者。</value>
   </data>
   <data name="Settings_Laptop.Text" xml:space="preserve">
     <value>您的筆記型電腦</value>
@@ -931,6 +856,10 @@ GPU：{1}</value>
     <value>複製</value>
     <comment>Button: copy the diagnostics to the clipboard.</comment>
   </data>
+  <data name="Settings_Copied" xml:space="preserve">
+    <value>已複製</value>
+    <comment>Shown on the Copy button (Settings_Copy.Content) for a moment after the diagnostics were copied to the clipboard. Short.</comment>
+  </data>
   <data name="Settings_ServiceLogs.Content" xml:space="preserve">
     <value>服務記錄檔</value>
     <comment>Button: opens the background service's log folder.</comment>
@@ -998,10 +927,6 @@ GPU：{1}</value>
     <value>已是最新狀態。{0}</value>
     <comment>{0} = Update_LastChecked or Update_NotChecked.</comment>
   </data>
-  <data name="Update_Latest" xml:space="preserve">
-    <value>{0} 是最新版本。</value>
-    <comment>{0} = 'OpenSense' and a version number.</comment>
-  </data>
   <data name="Update_Skipped" xml:space="preserve">
     <value>已略過版本 {0}。{1}</value>
     <comment>{0} = a version number; {1} = Update_LastChecked or Update_NotChecked.</comment>
@@ -1057,7 +982,7 @@ GPU：{1}</value>
     <comment>{0} = the reason; {1} = a log file path.</comment>
   </data>
   <data name="Tray_Open" xml:space="preserve">
-    <value>開啟 OpenSense</value>
+    <value>開啟</value>
     <comment>Menu item of the notification area icon.</comment>
   </data>
   <data name="Tray_FanMode" xml:space="preserve">

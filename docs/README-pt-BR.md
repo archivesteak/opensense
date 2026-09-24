@@ -35,8 +35,8 @@ Ajude a traduzir o OpenSense e esta página para o seu idioma: veja [Traduções
 ## Recursos
 
 - **Temperaturas reais.** A CPU e a GPU são lidas dos próprios chips, como fazem o HWiNFO e o ThrottleStop, com gráficos de 5 minutos.
-- **Controle das ventoinhas.** Auto, Máx., uma velocidade fixa para cada ventoinha ou curvas de temperatura que você mesmo desenha.
-- **Seguro por padrão.** As ventoinhas vão para a velocidade máxima numa temperatura de emergência, e o firmware assume de novo se um sensor ou o OpenSense parar.
+- **Controle das ventoinhas.** Auto, que o OpenSense acelera quando o notebook esquenta (dá para desligar), Máx. ou Manual: velocidade adicional para cada ventoinha, fixa ou seguindo uma curva que você mesmo desenha.
+- **Seguro por padrão.** O Anti-throttling leva as ventoinhas à velocidade máxima quando o processador se aproxima do ponto de throttling, e o firmware assume de novo se um sensor ou o OpenSense parar.
 - **Desempenho.** Modos de operação, CoolBoost e planos de energia do Windows.
 - **Iluminação.** Cores estáticas por zona do teclado, ou os efeitos Respiração, Neon, Onda, Deslocamento e Zoom.
 - **Teclado e tela.** Desligamento automático da luz de fundo, bloqueio da tecla Windows, overdrive da tela LCD e a chave de GPU (MUX).
@@ -58,7 +58,9 @@ Baixe a versão mais recente em [**Releases**](https://github.com/archivesteak/o
 
 ## Notebooks compatíveis
 
-Notebooks Acer com a interface de firmware para jogos que o NitroSense e o PredatorSense usam. O OpenSense é desenvolvido em um **Nitro 5 AN515-57**.
+Notebooks Acer com a interface de firmware para jogos que o NitroSense e o PredatorSense usam.
+
+O OpenSense foi desenvolvido em um **Nitro 5 AN515-57**.
 
 Testou em outro modelo? [Abra uma issue](https://github.com/archivesteak/opensense/issues) e cole os diagnósticos de **Configurações → Solução de problemas → Copiar**.
 

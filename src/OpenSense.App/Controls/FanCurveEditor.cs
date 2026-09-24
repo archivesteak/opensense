@@ -8,6 +8,7 @@ using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Media;
 using OpenSense.App.Helpers;
 using OpenSense.App.Localization;
 using OpenSense.Core.Control;
@@ -29,12 +30,28 @@ public sealed partial class FanCurveEditor : CanvasElement
     private List<CurvePoint> _points = [];
     private int _dragging = -1;
     private int _hover = -1;
+    private readonly PointerEventHandler _pressedAnywhere;
+    private UIElement? _window;
 
     public FanCurveEditor()
     {
         IsTabStop = true;
         UseSystemFocusVisuals = true;
         KeyDown += OnKeyDown;
+        _pressedAnywhere = OnPressedAnywhere;
+
+        // A selected point (and its value tag) stays until the user clicks anything else or tabs away.
+        LostFocus += (_, _) => Deselect();
+        Loaded += (_, _) =>
+        {
+            _window = XamlRoot?.Content;
+            _window?.AddHandler(PointerPressedEvent, _pressedAnywhere, handledEventsToo: true);
+        };
+        Unloaded += (_, _) =>
+        {
+            _window?.RemoveHandler(PointerPressedEvent, _pressedAnywhere);
+            _window = null;
+        };
     }
 
     public static readonly DependencyProperty CurveProperty = DependencyProperty.Register(
@@ -215,7 +232,9 @@ public sealed partial class FanCurveEditor : CanvasElement
         session.DrawLine(x, (float)plot.Bottom, x, y, TemperatureScale.WithAlpha(color, 0xC0), 1.5f, dashed);
         session.FillCircle(x, y, 9, TemperatureScale.WithAlpha(color, 0x40));
         session.FillCircle(x, y, 4.5f, color);
-        DrawTag(session, format, new Vector2(x, (float)plot.Y + 4),
+        // Just above the point it labels; below it where the curve runs along the top.
+        var tagTop = y - 34 >= plot.Y - 10 ? y - 34 : y + 12;
+        DrawTag(session, format, new Vector2(x, tagTop),
             Strings.Format("CurveEditor_Now", Units.Temperature(LiveTemperature, UseFahrenheit), Units.Percent(percent)), plot, color);
     }
 
@@ -271,12 +290,31 @@ public sealed partial class FanCurveEditor : CanvasElement
         Focus(FocusState.Pointer);
         var hit = HitTest(e.GetCurrentPoint(Canvas).Position);
         if (hit < 0)
+        {
+            Deselect();
             return;
+        }
         _dragging = hit;
         SelectedIndex = hit;
         Canvas?.CapturePointer(e.Pointer);
         e.Handled = true;
         Invalidate();
+    }
+
+    private void OnPressedAnywhere(object sender, PointerRoutedEventArgs e)
+    {
+        for (var element = e.OriginalSource as DependencyObject; element is not null; element = VisualTreeHelper.GetParent(element))
+        {
+            if (element == this)
+                return;
+        }
+        Deselect();
+    }
+
+    private void Deselect()
+    {
+        if (SelectedIndex >= 0 && _dragging < 0)
+            SelectedIndex = -1;
     }
 
     private void OnPointerMoved(object sender, PointerRoutedEventArgs e)

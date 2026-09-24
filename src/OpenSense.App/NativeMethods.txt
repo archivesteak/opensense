@@ -22,3 +22,11 @@ RI_KEY_BREAK
 RI_KEY_E0
 WM_INPUT
 RID_DEVICE_INFO_TYPE
+
+// The shortcut that opens OpenSense (a hot key on a message-only window), and key names for it
+RegisterHotKey
+UnregisterHotKey
+WM_HOTKEY
+MapVirtualKey
+GetKeyNameText
+GetAsyncKeyState

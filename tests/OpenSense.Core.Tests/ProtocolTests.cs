@@ -58,4 +58,16 @@ public class ProtocolTests
         var output = ((1UL << 0) | (1UL << 1) | (1UL << 4)) << 8;
         Assert.Equal([OperatingMode.Quiet, OperatingMode.Balanced, OperatingMode.Performance], AcerProtocol.DecodeOperatingModeMask(output));
     }
+
+    // Made-up serials in the format of an Acer label: 10-character part number, then 123 | 0ABCD (hex) | 7 | 6 | 00.
+    [Theory]
+    [InlineData("NHQ7PEU00A1230ABCD7600", "12304398176")]
+    [InlineData("NHQ7PEU00A1230abcd7600", "12304398176")]
+    [InlineData("NHQ7PEU00A1230ABCD7B00", "123043981711")]
+    [InlineData("NHQ7PEU00A1230000017600", null)]
+    [InlineData("NHQ7PEU00A123XYZWV7600", null)]
+    [InlineData("To be filled by O.E.M.", null)]
+    [InlineData(null, null)]
+    public void Snid_is_derived_from_the_serial_number(string? serial, string? snid) =>
+        Assert.Equal(snid, SystemInfo.Snid(serial));
 }

@@ -121,6 +121,10 @@ public sealed partial class LightingViewModel : ObservableObject
     [ObservableProperty]
     public partial int BrightnessIndex { get; set; } = 4;
 
+    /// <summary>The "any colour" picker of "all zones": what it picks goes to every zone.</summary>
+    [ObservableProperty]
+    public partial Color AllZonesColor { get; set; } = Color.FromArgb(255, 0xFF, 0x3B, 0x30);
+
     /// <summary>Changes whenever anything visible in the keyboard preview changes.</summary>
     [ObservableProperty]
     public partial int PreviewRevision { get; set; }
@@ -151,6 +155,7 @@ public sealed partial class LightingViewModel : ObservableObject
             zone.PropertyChanged += (_, _) => Changed();
             Zones.Add(zone);
         }
+        AllZonesColor = Zones.FirstOrDefault()?.Color ?? AllZonesColor;
         _loading = false;
     }
 
@@ -165,6 +170,12 @@ public sealed partial class LightingViewModel : ObservableObject
     partial void OnEffectColorChanged(Color value) => Changed();
 
     partial void OnBrightnessIndexChanged(int value) => Changed();
+
+    partial void OnAllZonesColorChanged(Color value)
+    {
+        if (!_loading)
+            SetAllZones(value);
+    }
 
     [RelayCommand]
     private void SetAllZones(Color color)

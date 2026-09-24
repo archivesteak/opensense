@@ -6,7 +6,7 @@
     xmlns:ui="using:CommunityToolkit.WinUI"
     NavigationCacheMode="Required">
 
-    <ScrollViewer>
+    <ScrollView>
         <StackPanel
             MaxWidth="{StaticResource PageMaxWidth}"
             Padding="{StaticResource PagePadding}"
@@ -75,5 +75,5 @@
                 </toolkit:SettingsCard>
             </StackPanel>
         </StackPanel>
-    </ScrollViewer>
+    </ScrollView>
 </Page>

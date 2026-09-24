@@ -35,8 +35,8 @@ OpenSense'i ve bu sayfayı kendi dilinize çevirmemize yardım edin: [Çeviriler
 ## Özellikler
 
 - **Gerçek sıcaklıklar.** CPU ve GPU sıcaklıkları, HWiNFO ve ThrottleStop'un yaptığı gibi doğrudan yongaların kendisinden okunur; 5 dakikalık grafiklerle.
-- **Fan kontrolü.** Otomatik, Maks., her fan için sabit bir hız veya kendi çizdiğiniz sıcaklık eğrileri.
-- **Varsayılan olarak güvenli.** Fanlar acil durum sıcaklığında tam hıza geçer; bir sensör ya da OpenSense durursa denetimi yeniden bellenim devralır.
+- **Fan kontrolü.** Dizüstü ısındığında OpenSense'in hızlandırdığı Otomatik (kapatılabilir), Maks. ya da Özel: her fana eklenen, sabit veya kendi çizdiğiniz bir eğriyi izleyen hız.
+- **Varsayılan olarak güvenli.** Kısılma önleme, işlemci kısılma noktasına yaklaştıkça fanları tam hıza çıkarır; bir sensör ya da OpenSense durursa denetimi yeniden bellenim devralır.
 - **Performans.** Çalışma modları, CoolBoost ve Windows güç planları.
 - **Aydınlatma.** Klavye bölgesi başına sabit renkler ya da Nefes, Neon, Dalga, Kayma ve Yakınlaştırma efektleri.
 - **Klavye ve ekran.** Arka ışığı otomatik kapatma, Windows tuşu kilidi, LCD overdrive ve GPU (MUX) anahtarı.
@@ -58,7 +58,9 @@ En son sürümü [**Releases**](https://github.com/archivesteak/opensense/releas
 
 ## Desteklenen dizüstü bilgisayarlar
 
-NitroSense ve PredatorSense'in kullandığı oyun bellenim arabirimine sahip Acer dizüstü bilgisayarlar. OpenSense bir **Nitro 5 AN515-57** üzerinde geliştiriliyor.
+NitroSense ve PredatorSense'in kullandığı oyun bellenim arabirimine sahip Acer dizüstü bilgisayarlar.
+
+OpenSense bir **Nitro 5 AN515-57** üzerinde geliştirildi.
 
 Başka bir modelde denediniz mi? [Bir issue açın](https://github.com/archivesteak/opensense/issues) ve **Ayarlar → Sorun giderme → Kopyala** ile alınan tanılama bilgilerini yapıştırın.
 

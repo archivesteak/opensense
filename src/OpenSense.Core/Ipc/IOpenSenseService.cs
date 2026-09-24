@@ -35,8 +35,6 @@ public partial interface IOpenSenseService
     /// <summary>Stores new capability overrides and rebuilds the session with them (raises <see cref="Rebuilt"/>).</summary>
     Task SetOverridesAsync(CapabilityOverrides capabilityOverrides, CancellationToken cancellationToken = default);
 
-    Task SetPollIntervalAsync(int milliseconds, CancellationToken cancellationToken = default);
-
     /// <summary>Switches the GPU (MUX) mode, effective after a restart. False if the firmware refused.</summary>
     Task<bool> SetGpuModeAsync(GpuMode mode, CancellationToken cancellationToken = default);
 
@@ -80,6 +78,9 @@ public sealed record EngineSnapshot
     public string? DeviceName { get; init; }
 
     public string? BiosVersion { get; init; }
+
+    /// <summary>The serial number on the laptop's label.</summary>
+    public string? SerialNumber { get; init; }
 
     public string? CpuName { get; init; }
 

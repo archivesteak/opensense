@@ -18,14 +18,16 @@ public sealed class SettingsTests : IDisposable
         {
             Profile = new ControlProfile
             {
-                Mode = FanControlMode.Curve,
+                Mode = FanControlMode.Custom,
+                Manual = new Dictionary<FanId, ManualFanSetting> { [FanId.Cpu] = new(40, UseCurve: true), [FanId.Gpu] = new(20) },
                 Curves = new Dictionary<FanId, CurveFanSetting>
                 {
-                    [FanId.Cpu] = new(FanCurve.From((35, 10), (70, 60), (90, 100)), TemperatureSource.Hottest),
-                    [FanId.Gpu] = new(CurvePresets.Silent, TemperatureSource.Gpu),
+                    [FanId.Cpu] = new(FanCurve.From((35, 10), (70, 60), (90, 100))),
+                    [FanId.Gpu] = new(CurvePresets.Default),
                 },
+                AutoBoost = false,
                 OperatingMode = OperatingMode.Performance,
-                Safety = new SafetySettings { EmergencyTemperatureC = 90, MinimumPercent = 20 },
+                Safety = new SafetySettings { RestoreAutoOnExit = false },
             },
             Keyboard = new KeyboardSettings
             {
@@ -33,15 +35,16 @@ public sealed class SettingsTests : IDisposable
                 WindowsKey = false,
             },
             Overrides = new CapabilityOverrides { OperatingModes = true },
-            PollIntervalMs = 500,
         };
 
         store.Save(original);
         var loaded = store.Load();
 
-        Assert.Equal(FanControlMode.Curve, loaded.Profile.Mode);
+        Assert.Equal(FanControlMode.Custom, loaded.Profile.Mode);
+        Assert.Equal(new ManualFanSetting(40, UseCurve: true), loaded.Profile.ManualFor(FanId.Cpu));
         Assert.Equal(original.Profile.CurveFor(FanId.Cpu), loaded.Profile.CurveFor(FanId.Cpu));
-        Assert.Equal(TemperatureSource.Gpu, loaded.Profile.CurveFor(FanId.Gpu).Source);
+        Assert.Equal(CurvePresets.Default, loaded.Profile.CurveFor(FanId.Gpu).Curve);
+        Assert.False(loaded.Profile.AutoBoost);
         Assert.Equal(OperatingMode.Performance, loaded.Profile.OperatingMode);
         Assert.Equal(original.Profile.Safety, loaded.Profile.Safety);
         Assert.Equal(KeyboardEffect.Wave, loaded.Keyboard.Lighting!.Effect);
@@ -49,7 +52,6 @@ public sealed class SettingsTests : IDisposable
         Assert.False(loaded.Keyboard.WindowsKey);
         Assert.Null(loaded.Keyboard.LcdOverdrive);
         Assert.True(loaded.Overrides.OperatingModes);
-        Assert.Equal(500, loaded.PollIntervalMs);
     }
 
     [Fact]
@@ -72,9 +74,8 @@ public sealed class SettingsTests : IDisposable
         var loaded = new SettingsStore<MachineSettings>(SettingsPath).Load();
 
         Assert.Equal(FanControlMode.Max, loaded.Profile.Mode);
-        Assert.Equal(95, loaded.Profile.Safety.EmergencyTemperatureC);
-        Assert.Equal(CurvePresets.Balanced, loaded.Profile.CurveFor(FanId.Cpu).Curve);
-        Assert.Equal(1000, loaded.PollIntervalMs);
+        Assert.True(loaded.Profile.AutoBoost);
+        Assert.Equal(CurvePresets.Default, loaded.Profile.CurveFor(FanId.Cpu).Curve);
     }
 
     [Fact]

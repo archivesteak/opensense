@@ -35,8 +35,8 @@ Help translate OpenSense and this page into your language: see [Translations](#t
 ## Features
 
 - **Real temperatures.** CPU and GPU are read from the chips themselves, like HWiNFO and ThrottleStop do, with 5-minute graphs.
-- **Fan control.** Auto, Max, a fixed speed per fan, or temperature curves you draw yourself.
-- **Safe by default.** Fans go to full speed at an emergency temperature, and the firmware takes over again if a sensor or OpenSense stops.
+- **Fan control.** Auto, which OpenSense speeds up when the laptop gets hot (unless you turn that off), Max, or Custom: speed added to each fan, fixed or following a curve you draw.
+- **Safe by default.** Anti-throttle brings the fans up to full speed as the processor nears its throttling point, and the firmware takes over again if a sensor or OpenSense stops.
 - **Performance.** Operating modes, CoolBoost and Windows power plans.
 - **Lighting.** Static colours per keyboard zone, or Breathing, Neon, Wave, Shifting and Zoom effects.
 - **Keyboard and display.** Backlight auto-off, Windows-key lock, LCD overdrive and the GPU (MUX) switch.
@@ -58,7 +58,9 @@ Download the latest version from [**Releases**](https://github.com/archivesteak/
 
 ## Supported laptops
 
-Acer laptops with the gaming firmware interface that NitroSense and PredatorSense use. OpenSense is developed on a **Nitro 5 AN515-57**.
+Acer laptops with the gaming firmware interface that NitroSense and PredatorSense use.
+
+OpenSense was developed on a **Nitro 5 AN515-57**.
 
 Tried it on another model? [Open an issue](https://github.com/archivesteak/opensense/issues) and paste the diagnostics from **Settings → Troubleshooting → Copy**.
 

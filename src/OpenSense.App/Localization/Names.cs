@@ -11,7 +11,6 @@ public static class Names
     {
         FanControlMode.Max => Strings.Get("FanMode_Max"),
         FanControlMode.Custom => Strings.Get("FanMode_Custom"),
-        FanControlMode.Curve => Strings.Get("FanMode_Curve"),
         _ => Strings.Get("FanMode_Auto"),
     };
 
@@ -19,7 +18,6 @@ public static class Names
     {
         FanControlMode.Max => Strings.Get("FanMode_Max_Description"),
         FanControlMode.Custom => Strings.Get("FanMode_Custom_Description"),
-        FanControlMode.Curve => Strings.Get("FanMode_Curve_Description"),
         _ => Strings.Get("FanMode_Auto_Description"),
     };
 

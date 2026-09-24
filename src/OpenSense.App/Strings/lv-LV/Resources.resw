@@ -115,19 +115,9 @@
     <value>OpenSense pakalpojumam ir cita versija ({0}). Lai to atjauninātu, atkārtoti instalējiet OpenSense.</value>
     <comment>{0} = a version number.</comment>
   </data>
-  <data name="Notice_Rebuilt_Title" xml:space="preserve">
-    <value>Iespējas atjauninātas</value>
-    <comment>Banner title.</comment>
-  </data>
-  <data name="Notice_Rebuilt_Message" xml:space="preserve">
-    <value>OpenSense restartēja ventilatoru vadību ar jaunajiem iestatījumiem.</value>
-  </data>
   <data name="Notice_Service_Title" xml:space="preserve">
     <value>Pakalpojums</value>
     <comment>Banner title: about the OpenSense background service.</comment>
-  </data>
-  <data name="Notice_Reconnected" xml:space="preserve">
-    <value>Savienojums ar OpenSense pakalpojumu ir atjaunots.</value>
   </data>
   <data name="Notice_Disconnected" xml:space="preserve">
     <value>Savienojums ar OpenSense pakalpojumu tika zaudēts. Notiek atkārtota savienošana…</value>
@@ -203,17 +193,6 @@
     <value>Neizdevās atjaunināt startēšanas ierakstu: {0}</value>
     <comment>{0} = a technical error message.</comment>
   </data>
-  <data name="Notice_Diagnostics_Title" xml:space="preserve">
-    <value>Diagnostika</value>
-    <comment>Banner title.</comment>
-  </data>
-  <data name="Notice_DiagnosticsCopied" xml:space="preserve">
-    <value>Nokopēts starpliktuvē.</value>
-  </data>
-  <data name="Notice_Updates_Title" xml:space="preserve">
-    <value>Atjauninājumi</value>
-    <comment>Banner title: app updates.</comment>
-  </data>
   <data name="GpuSwitch_DiscreteTitle" xml:space="preserve">
     <value>Vai izmantot tikai atsevišķo GPU?</value>
     <comment>Dialog title. Discrete GPU = the separate NVIDIA graphics chip.</comment>
@@ -264,23 +243,16 @@
   </data>
   <data name="FanMode_Custom" xml:space="preserve">
     <value>Manuāli</value>
-    <comment>Fan mode: a fixed speed chosen for each fan. Short: a segmented button.</comment>
-  </data>
-  <data name="FanMode_Curve" xml:space="preserve">
-    <value>Līkne</value>
-    <comment>Fan mode: fan speed follows a temperature curve. Short: a segmented button.</comment>
+    <comment>Fan mode: speed added on top of Auto for each fan, fixed or following a curve. Short: a segmented button.</comment>
   </data>
   <data name="FanMode_Auto_Description" xml:space="preserve">
-    <value>Klēpjdatora aparātprogrammatūra pārvalda ventilatorus.</value>
+    <value>Klēpjdatora aparātprogrammatūra pārvalda ventilatorus; OpenSense var pievienot ātrumu, kad tas sakarst.</value>
   </data>
   <data name="FanMode_Max_Description" xml:space="preserve">
     <value>Visi ventilatori ar pilnu ātrumu.</value>
   </data>
   <data name="FanMode_Custom_Description" xml:space="preserve">
-    <value>Fiksēts ātrums katram ventilatoram.</value>
-  </data>
-  <data name="FanMode_Curve_Description" xml:space="preserve">
-    <value>OpenSense seko jūsu temperatūras līknēm.</value>
+    <value>Aparātprogrammatūras ātrumam pievienotais ātrums katram ventilatoram, fiksēts vai pēc līknes. 0% atstāj ventilatoru aparātprogrammatūrai, 100% ir pilns ātrums.</value>
   </data>
   <data name="FanBehavior_Auto" xml:space="preserve">
     <value>Auto (aparātprogrammatūra)</value>
@@ -290,17 +262,9 @@
     <value>Pilns ātrums</value>
     <comment>What a fan is doing right now.</comment>
   </data>
-  <data name="FanBehavior_Emergency" xml:space="preserve">
-    <value>Pilns ātrums (ārkārtas)</value>
-    <comment>What a fan is doing right now: forced to full speed because the temperature is too high.</comment>
-  </data>
-  <data name="FanBehavior_Curve" xml:space="preserve">
-    <value>Seko līknei</value>
-    <comment>What a fan is doing right now: following the temperature curve.</comment>
-  </data>
-  <data name="FanBehavior_Fixed" xml:space="preserve">
-    <value>Fiksēts ātrums</value>
-    <comment>What a fan is doing right now.</comment>
+  <data name="FanBehavior_Boost" xml:space="preserve">
+    <value>Auto + {0}</value>
+    <comment>What a fan is doing right now: the firmware's speed plus what OpenSense adds. {0} = the added speed as a percentage. Auto = FanMode_Auto.</comment>
   </data>
   <data name="FanLock_QuietMode" xml:space="preserve">
     <value>Klusais režīms patur ventilatorus režīmā Auto.</value>
@@ -366,10 +330,6 @@
     <value>{0} apgr./min</value>
     <comment>{0} = a fan speed number. Same unit as Unit_Rpm.</comment>
   </data>
-  <data name="Unit_Seconds" xml:space="preserve">
-    <value>{0} s</value>
-    <comment>{0} = a number of seconds, e.g. 0.5. Use the usual abbreviation for seconds.</comment>
-  </data>
   <data name="ListSeparator" xml:space="preserve">
     <value>, </value>
     <comment>Separates items in a list inside a sentence, e.g. 'Quiet, Balanced, Performance'. Keep the trailing space if your language uses one.</comment>
@@ -409,10 +369,6 @@
     <value>Miega režīmā · {0}</value>
     <comment>Under the GPU temperature while the graphics chip is powered down: {0} = its model name.</comment>
   </data>
-  <data name="Dashboard_RpmDetail" xml:space="preserve">
-    <value>apgr./min · darba cikls {0}</value>
-    <comment>Under a fan speed number: rpm = revolutions per minute (as Unit_Rpm); {0} = the fan's duty cycle as a percentage.</comment>
-  </data>
   <data name="Dashboard_Cooling.Text" xml:space="preserve">
     <value>Dzesēšana</value>
     <comment>Card title.</comment>
@@ -420,10 +376,6 @@
   <data name="Dashboard_CoolBoost.Text" xml:space="preserve">
     <value>Ļauj režīmam Auto griezt ventilatorus ātrāk.</value>
     <comment>Describes CoolBoost (an Acer feature name shown above it). Auto = FanMode_Auto.</comment>
-  </data>
-  <data name="Dashboard_OpenFans.Content" xml:space="preserve">
-    <value>Pielāgoti ātrumi un līknes</value>
-    <comment>Link to the Fans page.</comment>
   </data>
   <data name="Dashboard_Performance.Text" xml:space="preserve">
     <value>Veiktspēja</value>
@@ -445,57 +397,37 @@
     <value>Ventilatori</value>
     <comment>Page title.</comment>
   </data>
-  <data name="Fans_DutyLabel" xml:space="preserve">
-    <value>Darba cikls {0}</value>
-    <comment>{0} = the fan's duty cycle as a percentage.</comment>
+  <data name="Fans_AutoBoost.Header" xml:space="preserve">
+    <value>Ierobežošanas novēršana</value>
+    <comment>Name of an on/off setting in Auto mode: OpenSense adds fan speed as the chips heat up, so the processor does not throttle (slow itself down because it is too hot). Short.</comment>
   </data>
-  <data name="Fans_AutoToggle.OnContent" xml:space="preserve">
-    <value>Automātiski</value>
-    <comment>Switch label when on: the firmware controls this fan.</comment>
+  <data name="Fans_AutoBoost.Description" xml:space="preserve">
+    <value>Mikroshēmām sakarstot, pievieno ātrumu aparātprogrammatūras ātrumam un sasniedz pilnu ātrumu temperatūrā, kurā procesors sāk samazināt veiktspēju.</value>
+    <comment>What the on/off setting does. "Throttle" = the processor slowing itself down because it is too hot.</comment>
   </data>
-  <data name="Fans_AutoToggle.OffContent" xml:space="preserve">
-    <value>Manuāli</value>
-    <comment>Switch label when off: the speed below is used.</comment>
+  <data name="Fans_CoolBoost.Description" xml:space="preserve">
+    <value>Paaugstina aparātprogrammatūras pašas ventilatoru ātrumus, kurus izmanto režīms Auto un kuriem režīms Manuāli pievieno ātrumu.</value>
+    <comment>Under the header "CoolBoost" (an Acer feature name). Auto, Custom = FanMode_Auto, FanMode_Custom.</comment>
   </data>
-  <data name="Fans_FanSpeed.Header" xml:space="preserve">
-    <value>Ventilatora ātrums</value>
-    <comment>Slider label.</comment>
+  <data name="Fans_BoostFixed.Content" xml:space="preserve">
+    <value>Fiksēts</value>
+    <comment>Segmented button per fan in Custom mode: add a fixed amount of speed (the slider below). Very short.</comment>
   </data>
-  <data name="Fans_Source.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Kura temperatūra vada šo ventilatoru</value>
-    <comment>Tooltip.</comment>
+  <data name="Fans_BoostCurve.Content" xml:space="preserve">
+    <value>Līkne</value>
+    <comment>Segmented button per fan in Custom mode: the added speed follows a temperature curve. Very short.</comment>
   </data>
-  <data name="CurveSource_Cpu" xml:space="preserve">
-    <value>CPU temperatūra</value>
-    <comment>Which temperature a fan curve follows.</comment>
-  </data>
-  <data name="CurveSource_Gpu" xml:space="preserve">
-    <value>GPU temperatūra</value>
-    <comment>Which temperature a fan curve follows.</comment>
-  </data>
-  <data name="CurveSource_Hottest" xml:space="preserve">
-    <value>Augstākā no abām</value>
-    <comment>Which temperature a fan curve follows: the higher of the CPU and GPU temperatures.</comment>
+  <data name="Fans_Boost.Header" xml:space="preserve">
+    <value>Pievienotais ātrums</value>
+    <comment>Slider label: speed added on top of the firmware's, from 0% (firmware only) to 100% (full speed).</comment>
   </data>
   <data name="Fans_Presets.Content" xml:space="preserve">
     <value>Sākotnējie iestatījumi</value>
     <comment>Button that opens a list of ready-made fan curves.</comment>
   </data>
-  <data name="Fans_PresetSilent.Text" xml:space="preserve">
-    <value>Kluss</value>
-    <comment>Fan curve preset name.</comment>
-  </data>
-  <data name="Fans_PresetBalanced.Text" xml:space="preserve">
-    <value>Līdzsvarots</value>
-    <comment>Fan curve preset name.</comment>
-  </data>
-  <data name="Fans_PresetPerformance.Text" xml:space="preserve">
-    <value>Veiktspēja</value>
-    <comment>Fan curve preset name.</comment>
-  </data>
-  <data name="Fans_CopyCurve.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Izmantot šo līkni arī pārējiem ventilatoriem</value>
-    <comment>Tooltip.</comment>
+  <data name="Fans_PresetDefault.Text" xml:space="preserve">
+    <value>Noklusējums</value>
+    <comment>Fan curve preset name: the curve Auto uses when it speeds up the fans.</comment>
   </data>
   <data name="Fans_CurveHelp.Text" xml:space="preserve">
     <value>Velciet punktus, lai veidotu līkni · veiciet dubultklikšķi, lai pievienotu punktu · noklikšķiniet ar peles labo pogu, lai to noņemtu · bulttaustiņi precīzi pielāgo atlasīto punktu</value>
@@ -503,32 +435,11 @@
   </data>
   <data name="CurveEditor_Now" xml:space="preserve">
     <value>Tagad {0} · {1}</value>
-    <comment>Label on the curve editor: {0} = the current temperature, {1} = the current fan speed percentage.</comment>
+    <comment>Label on the curve editor: {0} = the current temperature, {1} = the speed OpenSense adds now, as a percentage.</comment>
   </data>
   <data name="Fans_Safety.Text" xml:space="preserve">
-    <value>Drošība un reakcija</value>
+    <value>Drošība</value>
     <comment>Section title.</comment>
-  </data>
-  <data name="Fans_Emergency.Header" xml:space="preserve">
-    <value>Ārkārtas temperatūra</value>
-  </data>
-  <data name="Fans_Emergency.Description" xml:space="preserve">
-    <value>Režīmos Manuāli un Līkne ventilatori pārslēdzas uz pilnu ātrumu, ja kāda no mikroshēmām sasniedz šo temperatūru.</value>
-    <comment>Custom, Curve = FanMode_Custom, FanMode_Curve.</comment>
-  </data>
-  <data name="Fans_MinimumSpeed.Header" xml:space="preserve">
-    <value>Minimālais ventilatora ātrums</value>
-  </data>
-  <data name="Fans_MinimumSpeed.Description" xml:space="preserve">
-    <value>Zemākais ātrums, ko OpenSense pieprasīs režīmos Manuāli un Līkne.</value>
-  </data>
-  <data name="Fans_SlowDown.Header" xml:space="preserve">
-    <value>Palēnināšanas aizture</value>
-    <comment>How many degrees the temperature must fall before the fans slow down (hysteresis).</comment>
-  </data>
-  <data name="Fans_SlowDown.Description" xml:space="preserve">
-    <value>Cik daudz jāpazeminās temperatūrai, pirms līkne palēnina ventilatorus. Lielākas vērtības neļauj ventilatoriem nemitīgi paātrināties un palēnināties.</value>
-    <comment>'Hunting' = the fans speeding up and slowing down over and over.</comment>
   </data>
   <data name="Fans_HandBack.Header" xml:space="preserve">
     <value>Atdot ventilatorus, kad OpenSense apstājas</value>
@@ -733,8 +644,29 @@
   <data name="Settings_NitroSenseKey.Description" xml:space="preserve">
     <value>Tastatūras NitroSense taustiņš atver OpenSense tāpat, kā tas atvēra NitroSense. Darbojas, kamēr OpenSense ir paziņojumu apgabalā.</value>
   </data>
-  <data name="Settings_StartMinimized.Header" xml:space="preserve">
-    <value>Startēt minimizētu paziņojumu apgabalā</value>
+  <data name="Settings_OpenShortcut.Header" xml:space="preserve">
+    <value>Atvērt ar īsinājumtaustiņu</value>
+    <comment>Setting under Settings_NitroSenseKey.Header: a key or key combination chosen by the user opens OpenSense.</comment>
+  </data>
+  <data name="Settings_ShortcutHelp" xml:space="preserve">
+    <value>Taustiņš vai kombinācija, kas atver OpenSense no jebkuras vietas.</value>
+    <comment>Description of Settings_OpenShortcut.Header.</comment>
+  </data>
+  <data name="Settings_ShortcutTaken" xml:space="preserve">
+    <value>Šo īsinājumtaustiņu jau izmanto cita lietotne. Izvēlieties citu.</value>
+    <comment>Shown instead of Settings_ShortcutHelp when Windows refuses the chosen shortcut (another app has it).</comment>
+  </data>
+  <data name="Settings_ShortcutNone" xml:space="preserve">
+    <value>Nav iestatīts</value>
+    <comment>On the shortcut button when no shortcut is chosen. Short.</comment>
+  </data>
+  <data name="Settings_ShortcutRecording" xml:space="preserve">
+    <value>Nospiediet taustiņu…</value>
+    <comment>On the shortcut button while it waits for the user to press the key or combination. Short.</comment>
+  </data>
+  <data name="Settings_ShortcutClear.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Noņemt īsinājumtaustiņu</value>
+    <comment>Tooltip of the ✕ button next to the shortcut.</comment>
   </data>
   <data name="Settings_CloseToTray.Header" xml:space="preserve">
     <value>Turpināt darbu, kad logs tiek aizvērts</value>
@@ -783,13 +715,6 @@
   </data>
   <data name="Settings_Fahrenheit.Header" xml:space="preserve">
     <value>Rādīt temperatūru pēc Fārenheita</value>
-  </data>
-  <data name="Settings_Interval.Header" xml:space="preserve">
-    <value>Atjaunināšanas intervāls</value>
-    <comment>Setting: how often sensors are read.</comment>
-  </data>
-  <data name="Settings_Interval.Description" xml:space="preserve">
-    <value>Cik bieži tiek nolasīti sensori un atjauninātas ventilatoru līknes — visiem šī datora lietotājiem.</value>
   </data>
   <data name="Settings_Laptop.Text" xml:space="preserve">
     <value>Jūsu klēpjdators</value>
@@ -931,6 +856,10 @@ GPU: {1}</value>
     <value>Kopēt</value>
     <comment>Button: copy the diagnostics to the clipboard.</comment>
   </data>
+  <data name="Settings_Copied" xml:space="preserve">
+    <value>Nokopēts</value>
+    <comment>Shown on the Copy button (Settings_Copy.Content) for a moment after the diagnostics were copied to the clipboard. Short.</comment>
+  </data>
   <data name="Settings_ServiceLogs.Content" xml:space="preserve">
     <value>Pakalpojuma žurnāli</value>
     <comment>Button: opens the background service's log folder.</comment>
@@ -998,10 +927,6 @@ GPU: {1}</value>
     <value>Atjaunināts. {0}</value>
     <comment>{0} = Update_LastChecked or Update_NotChecked.</comment>
   </data>
-  <data name="Update_Latest" xml:space="preserve">
-    <value>{0} ir jaunākā versija.</value>
-    <comment>{0} = 'OpenSense' and a version number.</comment>
-  </data>
   <data name="Update_Skipped" xml:space="preserve">
     <value>Versija {0} izlaista. {1}</value>
     <comment>{0} = a version number; {1} = Update_LastChecked or Update_NotChecked.</comment>
@@ -1057,7 +982,7 @@ Detalizēta informācija: {1}</value>
     <comment>{0} = the reason; {1} = a log file path.</comment>
   </data>
   <data name="Tray_Open" xml:space="preserve">
-    <value>Atvērt OpenSense</value>
+    <value>Atvērt</value>
     <comment>Menu item of the notification area icon.</comment>
   </data>
   <data name="Tray_FanMode" xml:space="preserve">

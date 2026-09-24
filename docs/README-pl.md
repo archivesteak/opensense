@@ -35,8 +35,8 @@ Pomóż przetłumaczyć OpenSense i tę stronę na swój język: zobacz [Tłumac
 ## Funkcje
 
 - **Prawdziwe temperatury.** Temperatury CPU i GPU są odczytywane z samych układów, tak jak robią to HWiNFO i ThrottleStop, z wykresami z 5 minut.
-- **Sterowanie wentylatorami.** Auto, Maks., stała prędkość dla każdego wentylatora albo krzywe temperatury, które rysujesz sam.
-- **Bezpieczne domyślnie.** Po osiągnięciu temperatury awaryjnej wentylatory przechodzą na pełną prędkość, a gdy czujnik lub OpenSense przestanie działać, sterowanie ponownie przejmuje oprogramowanie układowe.
+- **Sterowanie wentylatorami.** Auto, które OpenSense przyspiesza, gdy laptop się nagrzewa (można to wyłączyć), Maks. albo Ręczny: dodatkowa prędkość dla każdego wentylatora, stała lub według krzywej, którą rysujesz sam.
+- **Bezpieczne domyślnie.** Ochrona przed dławieniem rozkręca wentylatory do pełnej prędkości, gdy procesor zbliża się do progu dławienia, a gdy czujnik lub OpenSense przestanie działać, sterowanie ponownie przejmuje oprogramowanie układowe.
 - **Wydajność.** Tryby pracy, CoolBoost i plany zasilania systemu Windows.
 - **Podświetlenie.** Stałe kolory dla każdej strefy klawiatury albo efekty Oddychanie, Neon, Fala, Przesuwanie i Powiększanie.
 - **Klawiatura i ekran.** Automatyczne wyłączanie podświetlenia, blokada klawisza Windows, Overdrive LCD i przełącznik GPU (MUX).
@@ -58,7 +58,9 @@ Pobierz najnowszą wersję z [**Releases**](https://github.com/archivesteak/open
 
 ## Obsługiwane laptopy
 
-Laptopy Acer z interfejsem oprogramowania układowego dla graczy, z którego korzystają NitroSense i PredatorSense. OpenSense powstaje na **Nitro 5 AN515-57**.
+Laptopy Acer z interfejsem oprogramowania układowego dla graczy, z którego korzystają NitroSense i PredatorSense.
+
+OpenSense powstał na **Nitro 5 AN515-57**.
 
 Wypróbowałeś na innym modelu? [Otwórz issue](https://github.com/archivesteak/opensense/issues) i wklej dane diagnostyczne z **Ustawienia → Rozwiązywanie problemów → Kopiuj**.
 

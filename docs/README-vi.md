@@ -35,8 +35,8 @@ Hãy giúp dịch OpenSense và trang này sang ngôn ngữ của bạn: xem [B�
 ## Tính năng
 
 - **Nhiệt độ thực.** Nhiệt độ CPU và GPU được đọc trực tiếp từ chính các chip, giống như HWiNFO và ThrottleStop, kèm biểu đồ 5 phút.
-- **Điều khiển quạt.** Tự động, Tối đa, tốc độ cố định cho từng quạt, hoặc đường cong nhiệt độ do bạn tự vẽ.
-- **An toàn theo mặc định.** Quạt chạy hết tốc độ khi đạt nhiệt độ khẩn cấp, và firmware sẽ tiếp quản lại nếu cảm biến hoặc OpenSense ngừng hoạt động.
+- **Điều khiển quạt.** Tự động, được OpenSense tăng tốc khi máy nóng (có thể tắt), Tối đa, hoặc Tùy chỉnh: tốc độ cộng thêm cho từng quạt, cố định hoặc theo đường cong do bạn tự vẽ.
+- **An toàn theo mặc định.** Chống bóp xung đẩy quạt lên hết tốc độ khi bộ xử lý gần đến ngưỡng bóp xung, và firmware sẽ tiếp quản lại nếu cảm biến hoặc OpenSense ngừng hoạt động.
 - **Hiệu năng.** Chế độ hoạt động, CoolBoost và kế hoạch nguồn điện của Windows.
 - **Đèn.** Màu tĩnh cho từng vùng bàn phím, hoặc các hiệu ứng Nhịp thở, Neon, Sóng, Dịch chuyển và Phóng to.
 - **Bàn phím và màn hình.** Tự động tắt đèn nền, khóa phím Windows, LCD overdrive và công tắc GPU (MUX).
@@ -58,7 +58,9 @@ Tải phiên bản mới nhất từ [**Releases**](https://github.com/archivest
 
 ## Laptop được hỗ trợ
 
-Laptop Acer có giao diện firmware dành cho chơi game mà NitroSense và PredatorSense sử dụng. OpenSense được phát triển trên một chiếc **Nitro 5 AN515-57**.
+Laptop Acer có giao diện firmware dành cho chơi game mà NitroSense và PredatorSense sử dụng.
+
+OpenSense đã được phát triển trên một chiếc **Nitro 5 AN515-57**.
 
 Đã thử trên mẫu máy khác? Hãy [mở một issue](https://github.com/archivesteak/opensense/issues) và dán thông tin chẩn đoán từ **Cài đặt → Khắc phục sự cố → Sao chép**.
 

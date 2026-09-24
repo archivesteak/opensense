@@ -37,6 +37,7 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
     private string? _error;
     private string? _deviceName;
     private string? _biosVersion;
+    private string? _serialNumber;
     private DeviceCapabilities _detected = DeviceCapabilities.None;
     private DeviceCapabilities _capabilities = DeviceCapabilities.None;
     private FirmwareState? _firmware;
@@ -80,6 +81,7 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
 
             _deviceName = _machine.Model;
             _biosVersion = _machine.BiosVersion;
+            _serialNumber = _machine.SerialNumber;
             _detected = CapabilityProbe.Probe(device, _machine.ReadHints(), _machine.ReadSmbios());
             LogDetected(_deviceName ?? "Unknown model", _detected.Diagnostics);
             _capabilities = Current.Overrides.Apply(_detected);
@@ -171,15 +173,6 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
         Rebuilt?.Invoke(this, rebuilt);
     }
 
-    public Task SetPollIntervalAsync(int milliseconds, CancellationToken cancellationToken = default)
-    {
-        var interval = Math.Clamp(milliseconds, 250, 5000);
-        UpdateSettings(s => s with { PollIntervalMs = interval });
-        if (_controller is { } controller)
-            controller.Interval = TimeSpan.FromMilliseconds(interval);
-        return Task.CompletedTask;
-    }
-
     public async Task<bool> SetGpuModeAsync(GpuMode mode, CancellationToken cancellationToken = default)
     {
         if (_controller is not { } controller || !_capabilities.GpuModeSwitch)
@@ -210,6 +203,7 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
         Error = _error,
         DeviceName = _deviceName,
         BiosVersion = _biosVersion,
+        SerialNumber = _serialNumber,
         CpuName = _load?.CpuName,
         GpuName = _load?.GpuName,
         Detected = _detected,
@@ -224,10 +218,7 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
     private void StartControl(AcerDevice device)
     {
         var settings = Current;
-        _controller = new FanControlService(device, _capabilities, _load!, new SystemPowerSource(), settings.Profile, _sensors)
-        {
-            Interval = TimeSpan.FromMilliseconds(Math.Clamp(settings.PollIntervalMs, 250, 5000)),
-        };
+        _controller = new FanControlService(device, _capabilities, _load!, new SystemPowerSource(), settings.Profile, _sensors);
         _controller.TelemetryUpdated += OnTelemetry;
         _controller.Notice += OnNotice;
         _controller.Start();

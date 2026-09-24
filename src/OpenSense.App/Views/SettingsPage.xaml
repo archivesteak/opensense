@@ -9,7 +9,7 @@
     xmlns:vm="using:OpenSense.App.ViewModels"
     NavigationCacheMode="Required">
 
-    <ScrollViewer>
+    <ScrollView>
         <StackPanel
             MaxWidth="{StaticResource PageMaxWidth}"
             Padding="{StaticResource PagePadding}"
@@ -20,13 +20,37 @@
             <toolkit:SettingsCard x:Uid="Settings_StartWithWindows" HeaderIcon="{ui:FontIcon Glyph=&#xE7E8;}">
                 <ToggleSwitch IsOn="{x:Bind ViewModel.StartWithWindows, Mode=TwoWay}" />
             </toolkit:SettingsCard>
-            <toolkit:SettingsCard x:Uid="Settings_NitroSenseKey" HeaderIcon="{ui:FontIcon Glyph=&#xE92E;}">
+            <toolkit:SettingsCard x:Uid="Settings_NitroSenseKey">
+                <toolkit:SettingsCard.HeaderIcon>
+                    <!--
+                        Segoe Fluent Icons' KeyboardStandard with the sparkle, cut the way Windows' own sparkle glyphs are and,
+                        like SquareSparkle, narrowed so the small star sits on its edge.
+                        20 px em like the other header icons; the margin makes up the em box below the keyboard.
+                    -->
+                    <PathIcon Margin="0,0,0,3.75" Data="M2.45,16.25 L15.05,16.25 Q15.54,16.25 15.98,16.05 Q16.43,15.85 16.76,15.51 Q17.01,15.27 17.18,14.97 Q17.03,15 16.88,15 Q16.49,15 16.15,14.83 Q16,14.76 15.87,14.65 Q15.7,14.81 15.49,14.9 Q15.26,15 15,15 L2.5,15 Q2.24,15 2.01,14.9 Q1.78,14.8 1.61,14.64 Q1.45,14.47 1.35,14.24 Q1.25,14.01 1.25,13.75 L1.25,5 Q1.25,4.74 1.35,4.51 Q1.45,4.29 1.62,4.12 Q1.79,3.95 2.01,3.85 Q2.24,3.75 2.5,3.75 L7.61,3.75 Q7.69,3.54 7.83,3.35 Q8.14,2.91 8.64,2.72 Q8.94,2.59 9.25,2.5 L2.45,2.5 Q1.96,2.5 1.52,2.7 Q1.07,2.9 0.74,3.24 Q0.4,3.57 0.2,4.02 Q0,4.46 0,4.95 L0,13.8 Q0,14.29 0.2,14.73 Q0.4,15.18 0.74,15.51 Q1.07,15.85 1.52,16.05 Q1.96,16.25 2.45,16.25 Z M13.12,12.5 L4.38,12.5 Q4.12,12.5 3.94,12.69 Q3.75,12.87 3.75,13.12 Q3.75,13.38 3.94,13.56 Q4.12,13.75 4.38,13.75 L13.12,13.75 Q13.38,13.75 13.56,13.56 Q13.75,13.38 13.75,13.12 Q13.75,12.87 13.56,12.69 Q13.38,12.5 13.12,12.5 Z M16.89,7.5 Q17.15,7.5 17.25,7.75 Q17.34,7.99 17.41,8.24 Q17.48,8.49 17.57,8.73 Q17.71,9.15 17.95,9.4 Q18.19,9.65 18.46,9.8 Q18.73,9.95 19,10.03 Q19.28,10.12 19.5,10.19 Q19.72,10.25 19.86,10.35 Q20,10.45 20,10.62 Q20,10.87 19.75,10.98 Q19.52,11.07 19.27,11.14 Q19.02,11.21 18.79,11.29 Q18.38,11.43 18.12,11.66 Q17.87,11.89 17.72,12.17 Q17.57,12.44 17.49,12.72 Q17.4,13.01 17.32,13.23 Q17.25,13.46 17.15,13.6 Q17.05,13.75 16.88,13.75 Q16.69,13.75 16.59,13.61 Q16.49,13.47 16.43,13.25 Q16.36,13.03 16.28,12.75 Q16.2,12.47 16.05,12.2 Q15.9,11.92 15.64,11.68 Q15.38,11.45 14.96,11.3 Q14.73,11.22 14.48,11.15 Q14.24,11.07 14,10.99 Q13.9,10.94 13.82,10.84 Q13.75,10.75 13.75,10.62 Q13.75,10.38 14,10.27 Q14.24,10.18 14.49,10.11 Q14.74,10.04 14.98,9.96 Q15.39,9.82 15.64,9.59 Q15.89,9.37 16.04,9.07 Q16.2,8.78 16.3,8.44 Q16.41,8.11 16.53,7.75 Q16.58,7.64 16.68,7.57 Q16.78,7.5 16.89,7.5 Z M5.62,10.31 Q5.62,9.92 5.9,9.65 Q6.17,9.38 6.56,9.38 Q6.95,9.38 7.23,9.65 Q7.5,9.92 7.5,10.31 Q7.5,10.7 7.23,10.98 Q6.95,11.25 6.56,11.25 Q6.17,11.25 5.9,10.98 Q5.62,10.7 5.62,10.31 Z M9.65,9.65 Q9.38,9.92 9.38,10.31 Q9.38,10.7 9.65,10.98 Q9.92,11.25 10.31,11.25 Q10.7,11.25 10.98,10.98 Q11.25,10.7 11.25,10.31 Q11.25,9.92 10.98,9.65 Q10.7,9.38 10.31,9.38 Q9.92,9.38 9.65,9.65 Z M8.85,4.07 Q8.75,4.21 8.75,4.38 Q8.75,4.74 9.1,4.87 Q9.42,5.01 9.77,5.11 Q10.11,5.21 10.44,5.31 Q11.03,5.52 11.38,5.85 Q11.74,6.18 11.95,6.56 Q12.17,6.94 12.28,7.33 Q12.39,7.72 12.5,8.04 Q12.6,8.35 12.73,8.55 Q12.87,8.75 13.12,8.75 Q13.3,8.75 13.43,8.66 Q13.55,8.56 13.62,8.4 Q13.75,8.08 13.85,7.73 Q13.95,7.39 14.06,7.06 Q14.51,5.76 15.81,5.31 Q16.14,5.2 16.48,5.1 Q16.82,5 17.15,4.87 Q17.31,4.81 17.41,4.68 Q17.5,4.55 17.5,4.38 Q17.5,4.2 17.41,4.07 Q17.31,3.95 17.15,3.88 Q16.83,3.75 16.48,3.65 Q16.14,3.55 15.81,3.44 Q15.21,3.22 14.76,2.78 Q14.31,2.33 14.09,1.73 Q13.97,1.39 13.88,1.04 Q13.78,0.69 13.65,0.35 Q13.59,0.2 13.46,0.1 Q13.32,0 13.15,0 Q12.99,0 12.85,0.09 Q12.71,0.19 12.65,0.35 L12.63,0.41 L12.6,0.54 L12.58,0.6 Q12.43,1.06 12.28,1.5 Q12.13,1.94 11.9,2.31 Q11.67,2.68 11.33,2.97 Q10.99,3.26 10.47,3.44 Q10.13,3.55 9.78,3.65 Q9.43,3.74 9.1,3.88 Q8.95,3.94 8.85,4.07 Z M3.12,6.56 Q3.12,6.17 3.4,5.9 Q3.67,5.62 4.06,5.62 Q4.45,5.62 4.73,5.9 Q5,6.17 5,6.56 Q5,6.95 4.73,7.23 Q4.45,7.5 4.06,7.5 Q3.67,7.5 3.4,7.23 Q3.12,6.95 3.12,6.56 Z M7.15,5.9 Q6.88,6.17 6.88,6.56 Q6.88,6.95 7.15,7.23 Q7.42,7.5 7.81,7.5 Q8.2,7.5 8.48,7.23 Q8.75,6.95 8.75,6.56 Q8.75,6.17 8.48,5.9 Q8.2,5.62 7.81,5.62 Q7.42,5.62 7.15,5.9 Z" />
+                </toolkit:SettingsCard.HeaderIcon>
                 <ToggleSwitch IsOn="{x:Bind ViewModel.OpenWithNitroSenseKey, Mode=TwoWay}" />
             </toolkit:SettingsCard>
-            <toolkit:SettingsCard x:Uid="Settings_StartMinimized" HeaderIcon="{ui:FontIcon Glyph=&#xE921;}">
-                <ToggleSwitch IsOn="{x:Bind ViewModel.StartMinimized, Mode=TwoWay}" />
+            <!-- Click, then press the key or combination; Esc cancels -->
+            <toolkit:SettingsCard
+                x:Uid="Settings_OpenShortcut"
+                Description="{x:Bind ViewModel.ShortcutHelp, Mode=OneWay}"
+                HeaderIcon="{ui:FontIcon Glyph=&#xEDA7;}">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Button
+                        MinWidth="140"
+                        Command="{x:Bind ViewModel.RecordShortcutCommand}"
+                        Content="{x:Bind ViewModel.ShortcutText, Mode=OneWay}"
+                        LostFocus="OnShortcutLostFocus" />
+                    <Button
+                        x:Uid="Settings_ShortcutClear"
+                        Command="{x:Bind ViewModel.ClearShortcutCommand}"
+                        Visibility="{x:Bind ViewModel.HasShortcut, Mode=OneWay}">
+                        <FontIcon FontSize="12" Glyph="&#xE711;" />
+                    </Button>
+                </StackPanel>
             </toolkit:SettingsCard>
-            <toolkit:SettingsCard x:Uid="Settings_CloseToTray" HeaderIcon="{ui:FontIcon Glyph=&#xE8BB;}">
+            <toolkit:SettingsCard x:Uid="Settings_CloseToTray" HeaderIcon="{ui:FontIcon Glyph=&#xE89F;}">
                 <ToggleSwitch IsOn="{x:Bind ViewModel.CloseToTray, Mode=TwoWay}" />
             </toolkit:SettingsCard>
 
@@ -62,18 +86,28 @@
             <toolkit:SettingsCard x:Uid="Settings_Fahrenheit" HeaderIcon="{ui:FontIcon Glyph=&#xE9CA;}">
                 <ToggleSwitch IsOn="{x:Bind ViewModel.UseFahrenheit, Mode=TwoWay}" />
             </toolkit:SettingsCard>
-            <toolkit:SettingsCard x:Uid="Settings_Interval" HeaderIcon="{ui:FontIcon Glyph=&#xE916;}">
-                <ComboBox
-                    MinWidth="120"
-                    ItemsSource="{x:Bind vm:SettingsViewModel.IntervalNames}"
-                    SelectedIndex="{x:Bind ViewModel.IntervalIndex, Mode=TwoWay}" />
-            </toolkit:SettingsCard>
 
             <TextBlock x:Uid="Settings_Laptop" Style="{StaticResource SectionHeaderStyle}" />
-            <toolkit:SettingsCard
+            <!-- Opens to the serial number and SNID, named as on the label and in Acer Care Center -->
+            <toolkit:SettingsExpander
                 Description="{x:Bind ViewModel.BiosVersion, Mode=OneWay}"
                 Header="{x:Bind ViewModel.LaptopModel, Mode=OneWay}"
-                HeaderIcon="{ui:FontIcon Glyph=&#xE7F8;}" />
+                HeaderIcon="{ui:FontIcon Glyph=&#xE7F8;}">
+                <toolkit:SettingsExpander.Items>
+                    <toolkit:SettingsCard Header="SN" Visibility="{x:Bind ViewModel.HasSerialNumber, Mode=OneWay}">
+                        <TextBlock
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            IsTextSelectionEnabled="True"
+                            Text="{x:Bind ViewModel.SerialNumber, Mode=OneWay}" />
+                    </toolkit:SettingsCard>
+                    <toolkit:SettingsCard Header="SNID" Visibility="{x:Bind ViewModel.HasSnid, Mode=OneWay}">
+                        <TextBlock
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            IsTextSelectionEnabled="True"
+                            Text="{x:Bind ViewModel.Snid, Mode=OneWay}" />
+                    </toolkit:SettingsCard>
+                </toolkit:SettingsExpander.Items>
+            </toolkit:SettingsExpander>
             <toolkit:SettingsCard
                 x:Uid="Settings_Sensors"
                 Description="{x:Bind ViewModel.TemperatureSources, Mode=OneWay}"
@@ -92,23 +126,51 @@
             </toolkit:SettingsCard>
 
             <TextBlock x:Uid="Settings_Updates" Style="{StaticResource SectionHeaderStyle}" />
+            <!-- Version and "Check now"; with an update found it opens downward to offer it -->
             <toolkit:SettingsCard
                 Description="{x:Bind Updates.Status, Mode=OneWay}"
                 Header="{x:Bind Updates.CurrentVersionText}"
-                HeaderIcon="{ui:FontIcon Glyph=&#xE895;}">
+                HeaderIcon="{ui:FontIcon Glyph=&#xE895;}"
+                Visibility="{x:Bind Updates.NoUpdate, Mode=OneWay}">
                 <StackPanel Orientation="Horizontal" Spacing="8">
                     <ProgressRing
                         Width="20"
                         Height="20"
                         IsActive="{x:Bind Updates.IsChecking, Mode=OneWay}" />
-                    <Button
-                        x:Uid="Update_Install"
-                        Command="{x:Bind Updates.InstallCommand}"
-                        Style="{StaticResource AccentButtonStyle}"
-                        Visibility="{x:Bind Updates.HasUpdate, Mode=OneWay}" />
                     <Button x:Uid="Settings_CheckNow" Command="{x:Bind Updates.CheckNowCommand}" />
                 </StackPanel>
             </toolkit:SettingsCard>
+            <toolkit:SettingsExpander
+                Description="{x:Bind Updates.Status, Mode=OneWay}"
+                Header="{x:Bind Updates.CurrentVersionText}"
+                HeaderIcon="{ui:FontIcon Glyph=&#xE895;}"
+                IsExpanded="{x:Bind Updates.DetailsOpen, Mode=TwoWay}"
+                Visibility="{x:Bind Updates.HasUpdate, Mode=OneWay}">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <ProgressRing
+                        Width="20"
+                        Height="20"
+                        IsActive="{x:Bind Updates.IsChecking, Mode=OneWay}" />
+                    <Button x:Uid="Settings_CheckNow" Command="{x:Bind Updates.CheckNowCommand}" />
+                </StackPanel>
+                <toolkit:SettingsExpander.Items>
+                    <toolkit:SettingsCard
+                        Description="{x:Bind Updates.BannerMessage, Mode=OneWay}"
+                        Header="{x:Bind Updates.BannerTitle, Mode=OneWay}">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <HyperlinkButton x:Uid="Update_WhatsNew" Command="{x:Bind Updates.OpenReleasePageCommand}" />
+                            <HyperlinkButton x:Uid="Update_Skip" Command="{x:Bind Updates.SkipCommand}" />
+                            <Button
+                                x:Uid="Update_Install"
+                                Command="{x:Bind Updates.InstallCommand}"
+                                Style="{StaticResource AccentButtonStyle}" />
+                        </StackPanel>
+                    </toolkit:SettingsCard>
+                    <toolkit:SettingsCard ContentAlignment="Vertical" HorizontalContentAlignment="Stretch" Visibility="{x:Bind Updates.IsDownloading, Mode=OneWay}">
+                        <ProgressBar Maximum="1" Value="{x:Bind Updates.DownloadProgress, Mode=OneWay}" />
+                    </toolkit:SettingsCard>
+                </toolkit:SettingsExpander.Items>
+            </toolkit:SettingsExpander>
             <toolkit:SettingsCard x:Uid="Settings_AutoUpdate" HeaderIcon="{ui:FontIcon Glyph=&#xE823;}">
                 <ToggleSwitch IsOn="{x:Bind Updates.CheckAutomatically, Mode=TwoWay}" />
             </toolkit:SettingsCard>
@@ -116,7 +178,7 @@
             <TextBlock x:Uid="Settings_Troubleshooting" Style="{StaticResource SectionHeaderStyle}" />
             <toolkit:SettingsCard x:Uid="Settings_Diagnostics" HeaderIcon="{ui:FontIcon Glyph=&#xE9D9;}">
                 <StackPanel Orientation="Horizontal" Spacing="8">
-                    <Button x:Uid="Settings_Copy" Command="{x:Bind ViewModel.CopyDiagnosticsCommand}" />
+                    <Button Command="{x:Bind ViewModel.CopyDiagnosticsCommand}" Content="{x:Bind ViewModel.CopyText, Mode=OneWay}" />
                     <Button
                         x:Uid="Settings_ServiceLogs"
                         Command="{x:Bind ViewModel.OpenServiceLogsCommand}"
@@ -150,5 +212,5 @@
                 </toolkit:SettingsExpander.Items>
             </toolkit:SettingsExpander>
         </StackPanel>
-    </ScrollViewer>
+    </ScrollView>
 </Page>

@@ -17,6 +17,9 @@ public sealed partial class LightingPage : Page
 
     public LightingViewModel ViewModel { get; }
 
+    /// <summary>No more columns than zones, so on a wide window the zones stretch instead of leaving empty columns.</summary>
+    public static int ZoneColumns(int zones) => Math.Max(zones, 1);
+
     /// <summary>Swatches are shared by "all zones" and "effect colour"; the owning repeater's Tag says which.</summary>
     private void OnSwatchClick(object sender, RoutedEventArgs e)
     {

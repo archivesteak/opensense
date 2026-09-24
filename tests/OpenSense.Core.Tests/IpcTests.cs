@@ -43,6 +43,7 @@ public sealed class IpcTests : IAsyncLifetime
         Assert.Equal(EngineState.Ready, snapshot.State);
         Assert.Equal(OpenSensePipe.ProtocolVersion, snapshot.ProtocolVersion);
         Assert.Equal("Nitro AN515-58 (simulated)", snapshot.DeviceName);
+        Assert.Equal("NHQ7PEU00A1230ABCD7600", snapshot.SerialNumber);
         Assert.Equal([FanId.Cpu, FanId.Gpu], snapshot.Capabilities.Fans.Select(f => f.Id));
         Assert.Contains(SensorId.CpuTemperature, snapshot.Detected.Sensors);
         Assert.True(snapshot.Capabilities.HasOperatingModes);

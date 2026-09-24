@@ -87,6 +87,8 @@ public sealed partial class DeviceSession : IDisposable
 
     public string? BiosVersion => _snapshot.BiosVersion;
 
+    public string? SerialNumber => _snapshot.SerialNumber;
+
     public string? CpuName => _snapshot.CpuName;
 
     public string? GpuName => _snapshot.GpuName;
@@ -177,9 +179,6 @@ public sealed partial class DeviceSession : IDisposable
 
     public Task SetKeyboardAsync(KeyboardSettings keyboard) =>
         ChangeAsync(s => s with { Keyboard = keyboard }, service => service.SetKeyboardAsync(keyboard));
-
-    public Task SetPollIntervalAsync(int milliseconds) =>
-        ChangeAsync(s => s with { PollIntervalMs = milliseconds }, service => service.SetPollIntervalAsync(milliseconds));
 
     /// <summary>Rebuilds the session with new overrides; <see cref="Changed"/> follows with <see cref="SessionChange.Rebuilt"/>.</summary>
     public Task SetOverridesAsync(CapabilityOverrides overrides) =>

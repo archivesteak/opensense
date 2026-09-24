@@ -35,8 +35,8 @@ Ayuda a traducir OpenSense y esta página a tu idioma: consulta [Traducciones](#
 ## Características
 
 - **Temperaturas reales.** La CPU y la GPU se leen de los propios chips, como hacen HWiNFO y ThrottleStop, con gráficos de 5 minutos.
-- **Control de ventiladores.** Auto, Máx., una velocidad fija para cada ventilador o curvas de temperatura que dibujas tú mismo.
-- **Seguro por defecto.** Los ventiladores pasan a velocidad máxima al llegar a una temperatura de emergencia, y el firmware vuelve a tomar el control si un sensor u OpenSense deja de funcionar.
+- **Control de ventiladores.** Auto, que OpenSense acelera cuando el portátil se calienta (puedes desactivarlo), Máx. o Manual: velocidad añadida a cada ventilador, fija o siguiendo una curva que dibujas tú mismo.
+- **Seguro por defecto.** Antilimitación térmica sube los ventiladores hasta la máxima velocidad cuando el procesador se acerca a su límite térmico, y el firmware vuelve a tomar el control si un sensor u OpenSense deja de funcionar.
 - **Rendimiento.** Modos de funcionamiento, CoolBoost y planes de energía de Windows.
 - **Iluminación.** Colores estáticos por zona del teclado, o los efectos Respiración, Neón, Ola, Desplazamiento y Zoom.
 - **Teclado y pantalla.** Apagado automático de la retroiluminación, bloqueo de la tecla Windows, overdrive de la pantalla LCD y el conmutador de GPU (MUX).
@@ -58,7 +58,9 @@ Descarga la última versión desde [**Releases**](https://github.com/archivestea
 
 ## Portátiles compatibles
 
-Portátiles Acer con la interfaz de firmware para juegos que usan NitroSense y PredatorSense. OpenSense se desarrolla en un **Nitro 5 AN515-57**.
+Portátiles Acer con la interfaz de firmware para juegos que usan NitroSense y PredatorSense.
+
+OpenSense se desarrolló en un **Nitro 5 AN515-57**.
 
 ¿Lo has probado en otro modelo? [Abre una issue](https://github.com/archivesteak/opensense/issues) y pega los diagnósticos de **Configuración → Solución de problemas → Copiar**.
 

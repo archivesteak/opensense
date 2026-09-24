@@ -115,19 +115,9 @@
     <value>OpenSense'i teenusel on teine versioon ({0}). Selle värskendamiseks installige OpenSense uuesti.</value>
     <comment>{0} = a version number.</comment>
   </data>
-  <data name="Notice_Rebuilt_Title" xml:space="preserve">
-    <value>Funktsioonid on värskendatud</value>
-    <comment>Banner title.</comment>
-  </data>
-  <data name="Notice_Rebuilt_Message" xml:space="preserve">
-    <value>OpenSense taaskäivitas ventilaatorite juhtimise uute sätetega.</value>
-  </data>
   <data name="Notice_Service_Title" xml:space="preserve">
     <value>Teenus</value>
     <comment>Banner title: about the OpenSense background service.</comment>
-  </data>
-  <data name="Notice_Reconnected" xml:space="preserve">
-    <value>Ühendus OpenSense'i teenusega on taastatud.</value>
   </data>
   <data name="Notice_Disconnected" xml:space="preserve">
     <value>Ühendus OpenSense'i teenusega katkes. Ühenduse taastamine…</value>
@@ -203,17 +193,6 @@
     <value>Käivituskirjet ei saanud värskendada: {0}</value>
     <comment>{0} = a technical error message.</comment>
   </data>
-  <data name="Notice_Diagnostics_Title" xml:space="preserve">
-    <value>Diagnostika</value>
-    <comment>Banner title.</comment>
-  </data>
-  <data name="Notice_DiagnosticsCopied" xml:space="preserve">
-    <value>Kopeeritud lõikelauale.</value>
-  </data>
-  <data name="Notice_Updates_Title" xml:space="preserve">
-    <value>Värskendused</value>
-    <comment>Banner title: app updates.</comment>
-  </data>
   <data name="GpuSwitch_DiscreteTitle" xml:space="preserve">
     <value>Kas kasutada ainult eraldi GPU-d?</value>
     <comment>Dialog title. Discrete GPU = the separate NVIDIA graphics chip.</comment>
@@ -264,23 +243,16 @@
   </data>
   <data name="FanMode_Custom" xml:space="preserve">
     <value>Käsitsi</value>
-    <comment>Fan mode: a fixed speed chosen for each fan. Short: a segmented button.</comment>
-  </data>
-  <data name="FanMode_Curve" xml:space="preserve">
-    <value>Kõver</value>
-    <comment>Fan mode: fan speed follows a temperature curve. Short: a segmented button.</comment>
+    <comment>Fan mode: speed added on top of Auto for each fan, fixed or following a curve. Short: a segmented button.</comment>
   </data>
   <data name="FanMode_Auto_Description" xml:space="preserve">
-    <value>Sülearvuti püsivara juhib ventilaatoreid.</value>
+    <value>Sülearvuti püsivara juhib ventilaatoreid; OpenSense saab kuumaga kiirust lisada.</value>
   </data>
   <data name="FanMode_Max_Description" xml:space="preserve">
     <value>Kõik ventilaatorid täiskiirusel.</value>
   </data>
   <data name="FanMode_Custom_Description" xml:space="preserve">
-    <value>Iga ventilaatori jaoks fikseeritud kiirus.</value>
-  </data>
-  <data name="FanMode_Curve_Description" xml:space="preserve">
-    <value>OpenSense järgib teie temperatuurikõveraid.</value>
+    <value>Püsivara kiirusele lisatav kiirus iga ventilaatori jaoks, fikseeritud või kõvera järgi. 0% jätab ventilaatori püsivara hooleks, 100% on täiskiirus.</value>
   </data>
   <data name="FanBehavior_Auto" xml:space="preserve">
     <value>Auto (püsivara)</value>
@@ -290,17 +262,9 @@
     <value>Täiskiirus</value>
     <comment>What a fan is doing right now.</comment>
   </data>
-  <data name="FanBehavior_Emergency" xml:space="preserve">
-    <value>Täiskiirus (hädaolukord)</value>
-    <comment>What a fan is doing right now: forced to full speed because the temperature is too high.</comment>
-  </data>
-  <data name="FanBehavior_Curve" xml:space="preserve">
-    <value>Järgib kõverat</value>
-    <comment>What a fan is doing right now: following the temperature curve.</comment>
-  </data>
-  <data name="FanBehavior_Fixed" xml:space="preserve">
-    <value>Fikseeritud kiirus</value>
-    <comment>What a fan is doing right now.</comment>
+  <data name="FanBehavior_Boost" xml:space="preserve">
+    <value>Auto + {0}</value>
+    <comment>What a fan is doing right now: the firmware's speed plus what OpenSense adds. {0} = the added speed as a percentage. Auto = FanMode_Auto.</comment>
   </data>
   <data name="FanLock_QuietMode" xml:space="preserve">
     <value>Vaikne režiim hoiab ventilaatorid režiimil Auto.</value>
@@ -366,10 +330,6 @@
     <value>{0} p/min</value>
     <comment>{0} = a fan speed number. Same unit as Unit_Rpm.</comment>
   </data>
-  <data name="Unit_Seconds" xml:space="preserve">
-    <value>{0} s</value>
-    <comment>{0} = a number of seconds, e.g. 0.5. Use the usual abbreviation for seconds.</comment>
-  </data>
   <data name="ListSeparator" xml:space="preserve">
     <value>, </value>
     <comment>Separates items in a list inside a sentence, e.g. 'Quiet, Balanced, Performance'. Keep the trailing space if your language uses one.</comment>
@@ -409,10 +369,6 @@
     <value>Unerežiimis · {0}</value>
     <comment>Under the GPU temperature while the graphics chip is powered down: {0} = its model name.</comment>
   </data>
-  <data name="Dashboard_RpmDetail" xml:space="preserve">
-    <value>p/min · töötsükkel {0}</value>
-    <comment>Under a fan speed number: rpm = revolutions per minute (as Unit_Rpm); {0} = the fan's duty cycle as a percentage.</comment>
-  </data>
   <data name="Dashboard_Cooling.Text" xml:space="preserve">
     <value>Jahutus</value>
     <comment>Card title.</comment>
@@ -420,10 +376,6 @@
   <data name="Dashboard_CoolBoost.Text" xml:space="preserve">
     <value>Laseb režiimil Auto ventilaatoreid kiiremini pöörata.</value>
     <comment>Describes CoolBoost (an Acer feature name shown above it). Auto = FanMode_Auto.</comment>
-  </data>
-  <data name="Dashboard_OpenFans.Content" xml:space="preserve">
-    <value>Kohandatud kiirused ja kõverad</value>
-    <comment>Link to the Fans page.</comment>
   </data>
   <data name="Dashboard_Performance.Text" xml:space="preserve">
     <value>Jõudlus</value>
@@ -445,57 +397,37 @@
     <value>Ventilaatorid</value>
     <comment>Page title.</comment>
   </data>
-  <data name="Fans_DutyLabel" xml:space="preserve">
-    <value>Töötsükkel {0}</value>
-    <comment>{0} = the fan's duty cycle as a percentage.</comment>
+  <data name="Fans_AutoBoost.Header" xml:space="preserve">
+    <value>Piiramise vältimine</value>
+    <comment>Name of an on/off setting in Auto mode: OpenSense adds fan speed as the chips heat up, so the processor does not throttle (slow itself down because it is too hot). Short.</comment>
   </data>
-  <data name="Fans_AutoToggle.OnContent" xml:space="preserve">
-    <value>Automaatne</value>
-    <comment>Switch label when on: the firmware controls this fan.</comment>
+  <data name="Fans_AutoBoost.Description" xml:space="preserve">
+    <value>Lisab kiipide soojenedes püsivara kiirusele kiirust ja jõuab täiskiiruseni temperatuuril, mil protsessor hakkab jõudlust piirama.</value>
+    <comment>What the on/off setting does. "Throttle" = the processor slowing itself down because it is too hot.</comment>
   </data>
-  <data name="Fans_AutoToggle.OffContent" xml:space="preserve">
-    <value>Käsitsi</value>
-    <comment>Switch label when off: the speed below is used.</comment>
+  <data name="Fans_CoolBoost.Description" xml:space="preserve">
+    <value>Tõstab püsivara enda ventilaatorikiirusi, mida kasutab režiim Auto ja millele režiim Käsitsi kiirust lisab.</value>
+    <comment>Under the header "CoolBoost" (an Acer feature name). Auto, Custom = FanMode_Auto, FanMode_Custom.</comment>
   </data>
-  <data name="Fans_FanSpeed.Header" xml:space="preserve">
-    <value>Ventilaatori kiirus</value>
-    <comment>Slider label.</comment>
+  <data name="Fans_BoostFixed.Content" xml:space="preserve">
+    <value>Fikseeritud</value>
+    <comment>Segmented button per fan in Custom mode: add a fixed amount of speed (the slider below). Very short.</comment>
   </data>
-  <data name="Fans_Source.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Milline temperatuur seda ventilaatorit juhib</value>
-    <comment>Tooltip.</comment>
+  <data name="Fans_BoostCurve.Content" xml:space="preserve">
+    <value>Kõver</value>
+    <comment>Segmented button per fan in Custom mode: the added speed follows a temperature curve. Very short.</comment>
   </data>
-  <data name="CurveSource_Cpu" xml:space="preserve">
-    <value>CPU temperatuur</value>
-    <comment>Which temperature a fan curve follows.</comment>
-  </data>
-  <data name="CurveSource_Gpu" xml:space="preserve">
-    <value>GPU temperatuur</value>
-    <comment>Which temperature a fan curve follows.</comment>
-  </data>
-  <data name="CurveSource_Hottest" xml:space="preserve">
-    <value>Kahest kõrgem</value>
-    <comment>Which temperature a fan curve follows: the higher of the CPU and GPU temperatures.</comment>
+  <data name="Fans_Boost.Header" xml:space="preserve">
+    <value>Lisatud kiirus</value>
+    <comment>Slider label: speed added on top of the firmware's, from 0% (firmware only) to 100% (full speed).</comment>
   </data>
   <data name="Fans_Presets.Content" xml:space="preserve">
     <value>Eelseaded</value>
     <comment>Button that opens a list of ready-made fan curves.</comment>
   </data>
-  <data name="Fans_PresetSilent.Text" xml:space="preserve">
-    <value>Vaikne</value>
-    <comment>Fan curve preset name.</comment>
-  </data>
-  <data name="Fans_PresetBalanced.Text" xml:space="preserve">
-    <value>Tasakaalus</value>
-    <comment>Fan curve preset name.</comment>
-  </data>
-  <data name="Fans_PresetPerformance.Text" xml:space="preserve">
-    <value>Jõudlus</value>
-    <comment>Fan curve preset name.</comment>
-  </data>
-  <data name="Fans_CopyCurve.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Kasuta seda kõverat ka teiste ventilaatorite jaoks</value>
-    <comment>Tooltip.</comment>
+  <data name="Fans_PresetDefault.Text" xml:space="preserve">
+    <value>Vaikimisi</value>
+    <comment>Fan curve preset name: the curve Auto uses when it speeds up the fans.</comment>
   </data>
   <data name="Fans_CurveHelp.Text" xml:space="preserve">
     <value>Kõvera kujundamiseks lohistage punkte · punkti lisamiseks topeltklõpsake · punkti eemaldamiseks paremklõpsake · nooleklahvid peenhäälestavad valitud punkti</value>
@@ -503,32 +435,11 @@
   </data>
   <data name="CurveEditor_Now" xml:space="preserve">
     <value>Praegu {0} · {1}</value>
-    <comment>Label on the curve editor: {0} = the current temperature, {1} = the current fan speed percentage.</comment>
+    <comment>Label on the curve editor: {0} = the current temperature, {1} = the speed OpenSense adds now, as a percentage.</comment>
   </data>
   <data name="Fans_Safety.Text" xml:space="preserve">
-    <value>Ohutus ja reageerimine</value>
+    <value>Ohutus</value>
     <comment>Section title.</comment>
-  </data>
-  <data name="Fans_Emergency.Header" xml:space="preserve">
-    <value>Hädaolukorra temperatuur</value>
-  </data>
-  <data name="Fans_Emergency.Description" xml:space="preserve">
-    <value>Režiimides Käsitsi ja Kõver lülituvad ventilaatorid täiskiirusele, kui kumbki kiip jõuab selle temperatuurini.</value>
-    <comment>Custom, Curve = FanMode_Custom, FanMode_Curve.</comment>
-  </data>
-  <data name="Fans_MinimumSpeed.Header" xml:space="preserve">
-    <value>Ventilaatori minimaalne kiirus</value>
-  </data>
-  <data name="Fans_MinimumSpeed.Description" xml:space="preserve">
-    <value>Madalaim kiirus, mida OpenSense režiimides Käsitsi ja Kõver küsib.</value>
-  </data>
-  <data name="Fans_SlowDown.Header" xml:space="preserve">
-    <value>Aeglustamise viivitus</value>
-    <comment>How many degrees the temperature must fall before the fans slow down (hysteresis).</comment>
-  </data>
-  <data name="Fans_SlowDown.Description" xml:space="preserve">
-    <value>Kui palju peab temperatuur langema, enne kui kõver ventilaatoreid aeglustab. Suuremad väärtused takistavad ventilaatorite pidevat kiirenemist ja aeglustumist.</value>
-    <comment>'Hunting' = the fans speeding up and slowing down over and over.</comment>
   </data>
   <data name="Fans_HandBack.Header" xml:space="preserve">
     <value>Anna ventilaatorid tagasi, kui OpenSense peatub</value>
@@ -733,8 +644,29 @@
   <data name="Settings_NitroSenseKey.Description" xml:space="preserve">
     <value>Klaviatuuri NitroSense'i klahv avab OpenSense'i samamoodi, nagu see avas NitroSense'i. Töötab, kui OpenSense on teavitusalas.</value>
   </data>
-  <data name="Settings_StartMinimized.Header" xml:space="preserve">
-    <value>Käivita minimeeritult teavitusalas</value>
+  <data name="Settings_OpenShortcut.Header" xml:space="preserve">
+    <value>Ava kiirklahviga</value>
+    <comment>Setting under Settings_NitroSenseKey.Header: a key or key combination chosen by the user opens OpenSense.</comment>
+  </data>
+  <data name="Settings_ShortcutHelp" xml:space="preserve">
+    <value>Klahv või klahvikombinatsioon, mis avab OpenSense'i kõikjalt.</value>
+    <comment>Description of Settings_OpenShortcut.Header.</comment>
+  </data>
+  <data name="Settings_ShortcutTaken" xml:space="preserve">
+    <value>Seda kiirklahvi kasutab juba teine rakendus. Valige mõni muu.</value>
+    <comment>Shown instead of Settings_ShortcutHelp when Windows refuses the chosen shortcut (another app has it).</comment>
+  </data>
+  <data name="Settings_ShortcutNone" xml:space="preserve">
+    <value>Määramata</value>
+    <comment>On the shortcut button when no shortcut is chosen. Short.</comment>
+  </data>
+  <data name="Settings_ShortcutRecording" xml:space="preserve">
+    <value>Vajutage klahvi…</value>
+    <comment>On the shortcut button while it waits for the user to press the key or combination. Short.</comment>
+  </data>
+  <data name="Settings_ShortcutClear.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Eemalda kiirklahv</value>
+    <comment>Tooltip of the ✕ button next to the shortcut.</comment>
   </data>
   <data name="Settings_CloseToTray.Header" xml:space="preserve">
     <value>Jätka töötamist, kui aken suletakse</value>
@@ -783,13 +715,6 @@
   </data>
   <data name="Settings_Fahrenheit.Header" xml:space="preserve">
     <value>Kuva temperatuurid Fahrenheiti kraadides</value>
-  </data>
-  <data name="Settings_Interval.Header" xml:space="preserve">
-    <value>Värskendusintervall</value>
-    <comment>Setting: how often sensors are read.</comment>
-  </data>
-  <data name="Settings_Interval.Description" xml:space="preserve">
-    <value>Kui sageli andureid loetakse ja ventilaatorikõveraid värskendatakse – kõigile selle arvuti kasutajatele.</value>
   </data>
   <data name="Settings_Laptop.Text" xml:space="preserve">
     <value>Teie sülearvuti</value>
@@ -931,6 +856,10 @@ GPU: {1}</value>
     <value>Kopeeri</value>
     <comment>Button: copy the diagnostics to the clipboard.</comment>
   </data>
+  <data name="Settings_Copied" xml:space="preserve">
+    <value>Kopeeritud</value>
+    <comment>Shown on the Copy button (Settings_Copy.Content) for a moment after the diagnostics were copied to the clipboard. Short.</comment>
+  </data>
   <data name="Settings_ServiceLogs.Content" xml:space="preserve">
     <value>Teenuse logid</value>
     <comment>Button: opens the background service's log folder.</comment>
@@ -998,10 +927,6 @@ GPU: {1}</value>
     <value>Ajakohane. {0}</value>
     <comment>{0} = Update_LastChecked or Update_NotChecked.</comment>
   </data>
-  <data name="Update_Latest" xml:space="preserve">
-    <value>{0} on uusim versioon.</value>
-    <comment>{0} = 'OpenSense' and a version number.</comment>
-  </data>
   <data name="Update_Skipped" xml:space="preserve">
     <value>Versioon {0} jäeti vahele. {1}</value>
     <comment>{0} = a version number; {1} = Update_LastChecked or Update_NotChecked.</comment>
@@ -1057,7 +982,7 @@ GPU: {1}</value>
     <comment>{0} = the reason; {1} = a log file path.</comment>
   </data>
   <data name="Tray_Open" xml:space="preserve">
-    <value>Ava OpenSense</value>
+    <value>Ava</value>
     <comment>Menu item of the notification area icon.</comment>
   </data>
   <data name="Tray_FanMode" xml:space="preserve">

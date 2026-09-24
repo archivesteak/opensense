@@ -82,16 +82,12 @@ public sealed partial class ShellViewModel(
             var (title, message) = Names.Notice(notice);
             notifications.Show(title, message, InfoBarSeverity.Warning, notice.Important);
         };
-        session.Changed += change => dispatcher.TryEnqueue(() =>
-        {
-            AttachAll();
-            if (change == SessionChange.Rebuilt)
-                notifications.Show(Strings.Get("Notice_Rebuilt_Title"), Strings.Get("Notice_Rebuilt_Message"), InfoBarSeverity.Informational);
-        });
+        session.Changed += _ => dispatcher.TryEnqueue(AttachAll);
         session.ConnectionChanged += connected =>
         {
+            // Back again is not news: the "reconnecting" notice just goes away.
             if (connected)
-                notifications.Show(Strings.Get("Notice_Service_Title"), Strings.Get("Notice_Reconnected"), InfoBarSeverity.Success);
+                notifications.Dismiss(Strings.Get("Notice_Disconnected"));
             else
                 notifications.Show(Strings.Get("Notice_Service_Title"), Strings.Get("Notice_Disconnected"), InfoBarSeverity.Warning);
         };

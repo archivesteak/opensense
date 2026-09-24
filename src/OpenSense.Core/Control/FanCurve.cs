@@ -2,7 +2,10 @@ namespace OpenSense.Core.Control;
 
 public sealed record CurvePoint(int Temperature, int Percent);
 
-/// <summary>Temperature (°C) → fan duty (%) mapping, linear between points, flat beyond the ends.</summary>
+/// <summary>
+/// Temperature (°C) → boost (%) mapping, linear between points, flat beyond the ends. A boost is how far
+/// the fan goes from the firmware's Auto speed towards full speed: 0 % leaves Auto alone, 100 % is full speed.
+/// </summary>
 public sealed record FanCurve
 {
     public const int MinTemperature = 20;
@@ -50,10 +53,6 @@ public sealed record FanCurve
 
 public static class CurvePresets
 {
-    public static FanCurve Silent { get; } = FanCurve.From((45, 0), (55, 20), (65, 35), (75, 55), (85, 80), (92, 100));
-    public static FanCurve Balanced { get; } = FanCurve.From((40, 15), (50, 25), (60, 40), (70, 55), (80, 75), (88, 100));
-    public static FanCurve Performance { get; } = FanCurve.From((40, 30), (50, 45), (60, 60), (70, 75), (78, 90), (85, 100));
-
-    public static IReadOnlyList<(string Name, FanCurve Curve)> All { get; } =
-        [("Silent", Silent), ("Balanced", Balanced), ("Performance", Performance)];
+    /// <summary>Leaves the fans to the firmware until it gets hot: half way to full speed at 90 °C, full speed at 100 °C. Auto boosts along it.</summary>
+    public static FanCurve Default { get; } = FanCurve.From((70, 0), (80, 20), (90, 50), (100, 100));
 }

@@ -18,8 +18,9 @@ public sealed partial class FanReadingViewModel(FanId id, string name) : Observa
     [ObservableProperty]
     public partial int? Rpm { get; set; }
 
+    /// <summary>Boost on top of the firmware's speed (%): 100 on full speed, null while the firmware alone drives the fan.</summary>
     [ObservableProperty]
-    public partial int? Duty { get; set; }
+    public partial int? Boost { get; set; }
 
     [ObservableProperty]
     public partial string BehaviorText { get; set; } = Strings.Get("FanBehavior_Auto");
@@ -28,11 +29,7 @@ public sealed partial class FanReadingViewModel(FanId id, string name) : Observa
 
     public string RpmText => Units.Rpm(Rpm);
 
-    public string DutyText => Units.Percent(Duty);
-
     partial void OnRpmChanged(int? value) => OnPropertyChanged(nameof(RpmText));
-
-    partial void OnDutyChanged(int? value) => OnPropertyChanged(nameof(DutyText));
 }
 
 /// <summary>Live sensor readings for the dashboard, tray and graphs.</summary>
@@ -185,13 +182,11 @@ public sealed partial class MonitorViewModel : ObservableObject
         {
             var reading = t.Fan(fan.Id);
             fan.Rpm = reading?.Rpm;
-            fan.Duty = reading?.Duty;
-            fan.BehaviorText = (reading?.Behavior, t.EffectiveMode) switch
+            fan.Boost = reading?.Behavior == FanBehavior.Max ? 100 : reading?.BoostPercent;
+            fan.BehaviorText = reading?.Behavior switch
             {
-                (FanBehavior.Max, _) when t.Emergency => Strings.Get("FanBehavior_Emergency"),
-                (FanBehavior.Max, _) => Strings.Get("FanBehavior_Max"),
-                (FanBehavior.Custom, FanControlMode.Curve) => Strings.Get("FanBehavior_Curve"),
-                (FanBehavior.Custom, _) => Strings.Get("FanBehavior_Fixed"),
+                FanBehavior.Max => Strings.Get("FanBehavior_Max"),
+                FanBehavior.Custom when reading.BoostPercent is { } boost => Strings.Format("FanBehavior_Boost", Units.Percent(boost)),
                 _ => Strings.Get("FanBehavior_Auto"),
             };
             fan.RpmHistory.Add(reading?.Rpm);

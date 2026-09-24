@@ -29,9 +29,9 @@ public sealed class AcerDevice(IWmiTransport transport)
     public FanBehavior? GetFanBehavior(FanChannel fan) =>
         Get(GamingClass, "GetGamingFanBehavior", FanBehaviorQuery(fan)) is { } output ? FanBehaviorValue(output, fan) : null;
 
-    /// <summary>Duty (%) the firmware is currently driving the fan at, in any mode.</summary>
-    public int? GetFanDuty(FanChannel fan) =>
-        Get(GamingClass, "GetGamingFanSpeed", fan.SpeedId) is { } output && FanDutyValue(output) is <= 100 and var d ? d : null;
+    /// <summary>The boost last set for the fan, whatever its behaviour now (see <see cref="FanBoostValue"/>).</summary>
+    public int? GetFanBoost(FanChannel fan) =>
+        Get(GamingClass, "GetGamingFanSpeed", fan.SpeedId) is { } output && FanBoostValue(output) is <= 100 and var b ? b : null;
 
     // --- CoolBoost -------------------------------------------------------------------------
 

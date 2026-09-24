@@ -10,12 +10,14 @@ namespace OpenSense.Core.Settings;
 /// <summary>How the app looks and behaves for one Windows user.</summary>
 public sealed record UiSettings
 {
-    public bool StartMinimized { get; init; }
     public bool CloseToTray { get; init; } = true;
     public bool UseFahrenheit { get; init; }
 
     /// <summary>The laptop's NitroSense key opens OpenSense, as it opened NitroSense.</summary>
     public bool OpenWithNitroSenseKey { get; init; } = true;
+
+    /// <summary>Another key or combination that opens OpenSense from anywhere; null for none.</summary>
+    public KeyShortcut? OpenShortcut { get; init; }
 
     /// <summary>0 = follow Windows, 1 = light, 2 = dark.</summary>
     public int Theme { get; init; }
@@ -23,6 +25,9 @@ public sealed record UiSettings
     /// <summary>The app's language (a Strings folder name such as "de-DE"), or null to follow Windows.</summary>
     public string? Language { get; init; }
 }
+
+/// <summary>A key (Windows virtual-key code) and the modifier keys held with it, as RegisterHotKey takes them.</summary>
+public sealed record KeyShortcut(int Key, bool Control = false, bool Alt = false, bool Shift = false, bool Windows = false);
 
 /// <summary>Update checks against GitHub Releases, per user.</summary>
 public sealed record UpdateSettings
@@ -54,7 +59,6 @@ public sealed record MachineSettings
     public ControlProfile Profile { get; init; } = new();
     public KeyboardSettings Keyboard { get; init; } = new();
     public CapabilityOverrides Overrides { get; init; } = new();
-    public int PollIntervalMs { get; init; } = 1000;
 }
 
 public static class SettingsPaths

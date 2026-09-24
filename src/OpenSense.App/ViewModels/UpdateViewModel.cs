@@ -6,7 +6,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using Microsoft.UI.Dispatching;
-using Microsoft.UI.Xaml.Controls;
 using OpenSense.App.Localization;
 using OpenSense.App.Services;
 using OpenSense.Core.Updates;
@@ -15,7 +14,8 @@ namespace OpenSense.App.ViewModels;
 
 /// <summary>
 /// Update checks against GitHub Releases, scheduled like Prism Launcher's: once a day, remembered across
-/// restarts, with "skip this version". Offered in a banner like Parabolic's, with download progress.
+/// restarts, with "skip this version". The daily check offers an update in a banner like Parabolic's; a check
+/// asked for in Settings answers in that card, which opens to show the update. Both show download progress.
 /// </summary>
 public sealed partial class UpdateViewModel : ObservableObject
 {
@@ -52,13 +52,22 @@ public sealed partial class UpdateViewModel : ObservableObject
     public partial bool CheckAutomatically { get; set; }
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(HasUpdate), nameof(BannerTitle), nameof(BannerMessage))]
+    [NotifyPropertyChangedFor(nameof(HasUpdate), nameof(NoUpdate), nameof(BannerTitle), nameof(BannerMessage))]
     [NotifyCanExecuteChangedFor(nameof(InstallCommand), nameof(SkipCommand), nameof(OpenReleasePageCommand))]
     public partial AvailableUpdate? Available { get; set; }
 
-    /// <summary>The banner in the main window; closing it means "later".</summary>
+    /// <summary>The banner in the main window, for updates the daily check found; closing it means "later".</summary>
     [ObservableProperty]
     public partial bool BannerOpen { get; set; }
+
+    /// <summary>The update card in Settings is open.</summary>
+    [ObservableProperty]
+    public partial bool DetailsOpen { get; set; }
+
+    /// <summary>Why the last attempt to install did not go ahead; shown instead of the hint.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(BannerMessage))]
+    public partial string? InstallProblem { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(CheckNowCommand))]
@@ -79,10 +88,13 @@ public sealed partial class UpdateViewModel : ObservableObject
 
     public bool HasUpdate => Available is not null;
 
+    public bool NoUpdate => Available is null;
+
     public string BannerTitle => Available is { } u ? Strings.Format("Update_BannerTitle", u.Version.ToString(3)) : "";
 
     public string BannerMessage => Available is not { } u ? ""
         : IsDownloading ? Strings.Format("Update_Downloading", DownloadProgress.ToString("P0", CultureInfo.CurrentCulture))
+        : InstallProblem is { } problem ? problem
         : u.Asset is null ? Strings.Get("Update_NoAsset")
         : Strings.Get(Kind == InstallKind.Installer ? "Update_InstallerHint" : "Update_PortableHint");
 
@@ -126,8 +138,6 @@ public sealed partial class UpdateViewModel : ObservableObject
                 Available = null;
                 BannerOpen = false;
                 Status = Strings.Format("Update_UpToDate", LastCheckText());
-                if (userInitiated)
-                    _notifications.Show(Strings.Get("Notice_Updates_Title"), Strings.Format("Update_Latest", CurrentVersionText), InfoBarSeverity.Success);
                 return;
             }
 
@@ -139,7 +149,9 @@ public sealed partial class UpdateViewModel : ObservableObject
             }
 
             Available = update;
-            BannerOpen = true;
+            InstallProblem = null;
+            DetailsOpen = true;
+            BannerOpen = !userInitiated; // asked for in Settings: the card there opens instead
             Status = Strings.Format("Update_Available", update.Version.ToString(3), LastCheckText());
             LogAvailable(update.Tag);
             if (!userInitiated && !App.Current.IsWindowVisible)
@@ -149,8 +161,6 @@ public sealed partial class UpdateViewModel : ObservableObject
         {
             LogCheckFailed(ex);
             Status = Strings.Format("Update_CheckFailed", ex.Message);
-            if (userInitiated)
-                _notifications.Show(Strings.Get("Notice_Updates_Title"), Status, InfoBarSeverity.Error);
         }
         finally
         {
@@ -172,6 +182,7 @@ public sealed partial class UpdateViewModel : ObservableObject
 
         IsDownloading = true;
         DownloadProgress = 0;
+        InstallProblem = null;
         try
         {
             var path = Path.Combine(UpdateInstaller.DownloadDirectory, asset.Name);
@@ -181,7 +192,7 @@ public sealed partial class UpdateViewModel : ObservableObject
             {
                 if (!UpdateInstaller.StartSetup(path))
                 {
-                    _notifications.Show(Strings.Get("Notice_Updates_Title"), Strings.Get("Update_Cancelled"), InfoBarSeverity.Informational);
+                    InstallProblem = Strings.Get("Update_Cancelled");
                     return;
                 }
             }
@@ -201,7 +212,7 @@ public sealed partial class UpdateViewModel : ObservableObject
             var reason = ex is UpdateVerificationException verification
                 ? Strings.Get(verification.Failure == VerificationFailure.NoDigest ? "Update_NoDigest" : "Update_DigestMismatch")
                 : ex.Message;
-            _notifications.Show(Strings.Get("Notice_Updates_Title"), Strings.Format("Update_Failed", reason), InfoBarSeverity.Error);
+            InstallProblem = Strings.Format("Update_Failed", reason);
         }
         finally
         {
@@ -218,6 +229,8 @@ public sealed partial class UpdateViewModel : ObservableObject
             return;
         _settings.Update(s => s with { Updates = s.Updates with { SkippedVersion = update.Tag } });
         BannerOpen = false;
+        DetailsOpen = false;
+        Available = null;
         Status = Strings.Format("Update_Skipped", update.Version.ToString(3), LastCheckText());
     }
 

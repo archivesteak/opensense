@@ -33,6 +33,14 @@ public sealed class NotificationService(DispatcherQueue dispatcher)
 
     public void Dismiss(Notice notice) => Notices.Remove(notice);
 
+    /// <summary>Removes the notice showing <paramref name="message"/>, once what it reported is over.</summary>
+    public void Dismiss(string message) =>
+        dispatcher.TryEnqueue(() =>
+        {
+            if (Notices.FirstOrDefault(n => n.Message == message) is { } notice)
+                Notices.Remove(notice);
+        });
+
     /// <summary>A notification-area balloon only, for news shown elsewhere in the window (e.g. the update banner).</summary>
     public void Alert(string title, string message) =>
         dispatcher.TryEnqueue(() => Important?.Invoke(new Notice(title, message, InfoBarSeverity.Informational)));

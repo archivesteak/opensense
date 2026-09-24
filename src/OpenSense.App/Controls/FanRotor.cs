@@ -13,8 +13,8 @@ namespace OpenSense.App.Controls;
 
 /// <summary>
 /// A blower fan whose impeller spins at a speed derived from the RPM and smears as it speeds up,
-/// inside a ring that shows the duty cycle. The spin runs on the compositor thread; the canvases
-/// only redraw when the speed or duty changes.
+/// inside a ring that shows the boost OpenSense adds on top of the firmware's speed. The spin runs on the
+/// compositor thread; the canvases only redraw when the speed or boost changes.
 /// </summary>
 public sealed partial class FanRotor : CanvasElement
 {
@@ -25,11 +25,11 @@ public sealed partial class FanRotor : CanvasElement
     private const float ImpellerScale = 0.76f;
     private const string SpinProperty = nameof(Visual.RotationAngleInDegrees);
     private static readonly TimeSpan RampLength = TimeSpan.FromMilliseconds(800);
-    private static readonly TimeSpan DutyAnimationLength = TimeSpan.FromMilliseconds(450);
+    private static readonly TimeSpan BoostAnimationLength = TimeSpan.FromMilliseconds(450);
 
     private readonly Impeller _impeller = new();
     private readonly Visual _visual;
-    private readonly DispatcherQueueTimer _dutyTimer;
+    private readonly DispatcherQueueTimer _boostTimer;
     private bool _animate = true;
 
     // The impeller eases from _fromSpeed to _toSpeed (turns per second), starting at _rampStart.
@@ -37,8 +37,8 @@ public sealed partial class FanRotor : CanvasElement
     private DateTime _rampStart = DateTime.MinValue;
     private int _generation;
 
-    private double _shownDuty = double.NaN, _dutyFrom, _dutyTo;
-    private DateTime _dutyStart;
+    private double _shownBoost = double.NaN, _boostFrom, _boostTo;
+    private DateTime _boostStart;
 
     public FanRotor()
     {
@@ -50,9 +50,9 @@ public sealed partial class FanRotor : CanvasElement
         _impeller.SizeChanged += (_, e) => _visual.CenterPoint = new Vector3((float)e.NewSize.Width / 2, (float)e.NewSize.Height / 2, 0);
         SizeChanged += (_, e) => _impeller.Width = _impeller.Height = Math.Min(e.NewSize.Width, e.NewSize.Height) * ImpellerScale;
 
-        _dutyTimer = DispatcherQueue.GetForCurrentThread().CreateTimer();
-        _dutyTimer.Interval = TimeSpan.FromMilliseconds(16);
-        _dutyTimer.Tick += (_, _) => StepDuty();
+        _boostTimer = DispatcherQueue.GetForCurrentThread().CreateTimer();
+        _boostTimer.Interval = TimeSpan.FromMilliseconds(16);
+        _boostTimer.Tick += (_, _) => StepBoost();
 
         Loaded += (_, _) =>
         {
@@ -65,15 +65,15 @@ public sealed partial class FanRotor : CanvasElement
             _visual.StopAnimation(SpinProperty);
             _fromSpeed = _toSpeed = 0;
             _rampStart = DateTime.MinValue;
-            _dutyTimer.Stop();
+            _boostTimer.Stop();
         };
     }
 
     public static readonly DependencyProperty RpmProperty = DependencyProperty.Register(
         nameof(Rpm), typeof(int), typeof(FanRotor), new PropertyMetadata(0, (d, _) => ((FanRotor)d).OnRpmChanged()));
 
-    public static readonly DependencyProperty DutyProperty = DependencyProperty.Register(
-        nameof(Duty), typeof(double), typeof(FanRotor), new PropertyMetadata(double.NaN, (d, _) => ((FanRotor)d).AnimateDuty()));
+    public static readonly DependencyProperty BoostProperty = DependencyProperty.Register(
+        nameof(Boost), typeof(double), typeof(FanRotor), new PropertyMetadata(double.NaN, (d, _) => ((FanRotor)d).AnimateBoost()));
 
     public int Rpm
     {
@@ -81,11 +81,11 @@ public sealed partial class FanRotor : CanvasElement
         set => SetValue(RpmProperty, value);
     }
 
-    /// <summary>Duty cycle in percent; NaN when unknown.</summary>
-    public double Duty
+    /// <summary>Boost over Auto in percent (100 = full speed); NaN or 0 for none.</summary>
+    public double Boost
     {
-        get => (double)GetValue(DutyProperty);
-        set => SetValue(DutyProperty, value);
+        get => (double)GetValue(BoostProperty);
+        set => SetValue(BoostProperty, value);
     }
 
     private static double TurnsPerSecond(int rpm) => rpm <= 0 ? 0 : Math.Max(MinTurnsPerSecond, rpm / 60.0 * VisualScale);
@@ -174,26 +174,26 @@ public sealed partial class FanRotor : CanvasElement
         return slope * sum / 2;
     }
 
-    private void AnimateDuty()
+    private void AnimateBoost()
     {
-        if (double.IsNaN(Duty) || double.IsNaN(_shownDuty) || !_animate)
+        if (double.IsNaN(Boost) || double.IsNaN(_shownBoost) || !_animate)
         {
-            _shownDuty = Duty;
+            _shownBoost = Boost;
             Invalidate();
             return;
         }
-        _dutyFrom = _shownDuty;
-        _dutyTo = Duty;
-        _dutyStart = DateTime.UtcNow;
-        _dutyTimer.Start();
+        _boostFrom = _shownBoost;
+        _boostTo = Boost;
+        _boostStart = DateTime.UtcNow;
+        _boostTimer.Start();
     }
 
-    private void StepDuty()
+    private void StepBoost()
     {
-        var t = Math.Min(1, (DateTime.UtcNow - _dutyStart) / DutyAnimationLength);
-        _shownDuty = _dutyFrom + (_dutyTo - _dutyFrom) * (1 - Math.Pow(1 - t, 3));
+        var t = Math.Min(1, (DateTime.UtcNow - _boostStart) / BoostAnimationLength);
+        _shownBoost = _boostFrom + (_boostTo - _boostFrom) * (1 - Math.Pow(1 - t, 3));
         if (t >= 1)
-            _dutyTimer.Stop();
+            _boostTimer.Stop();
         Invalidate();
     }
 
@@ -207,9 +207,9 @@ public sealed partial class FanRotor : CanvasElement
         session.DrawCircle(center, radius, Track, stroke);
         session.DrawCircle(center, radius - stroke * 2.5f, GridLine, 1);
 
-        if (double.IsNaN(_shownDuty) || _shownDuty <= 0)
+        if (double.IsNaN(_shownBoost) || _shownBoost <= 0)
             return;
-        var fraction = (float)Math.Clamp(_shownDuty / 100, 0, 1);
+        var fraction = (float)Math.Clamp(_shownBoost / 100, 0, 1);
         if (fraction >= 0.999f)
         {
             session.DrawCircle(center, radius, Accent, stroke);
