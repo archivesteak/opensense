@@ -56,7 +56,7 @@
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Nav_System" Tag="system">
                     <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE765;" />
+                        <FontIcon Glyph="&#xE770;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>

@@ -12,6 +12,12 @@ public interface ITemperatureSensor : IDisposable
 
     /// <summary>Degrees Celsius, or null when the reading failed.</summary>
     double? Read();
+
+    /// <summary>
+    /// Where the chip starts slowing itself down because it is hot (°C), as it reports it, or null when it doesn't (or
+    /// hasn't been asked yet). Kept up to date by <see cref="Read"/>.
+    /// </summary>
+    int? Limit => null;
 }
 
 /// <summary>
@@ -41,6 +47,10 @@ internal static class CpuTemperatureSensor
         }
     }
 
+    /// <summary>The CPU's own limit where it doesn't report one (<see cref="ITemperatureSensor.Limit"/>).</summary>
+    public static int DefaultLimit() =>
+        X86Base.IsSupported && Vendor() == "AuthenticAMD" ? ThermalLimits.AmdCpuDefault : ThermalLimits.IntelCpuDefault;
+
     private static string Vendor()
     {
         var (_, ebx, ecx, edx) = X86Base.CpuId(0, 0);
@@ -49,10 +59,14 @@ internal static class CpuTemperatureSensor
     }
 }
 
-/// <summary>Intel: package temperature = TjMax − the IA32_PACKAGE_THERM_STATUS digital readout.</summary>
+/// <summary>
+/// Intel: package temperature = TjMax − the IA32_PACKAGE_THERM_STATUS digital readout. The CPU slows down at TjMax less
+/// its TCC offset, which Intel's Dynamic Tuning sets per profile on some Acer boards (8 °C in their Quiet and Default
+/// profiles, none in Extreme and Turbo), so the offset is read along with every temperature.
+/// </summary>
 internal sealed class IntelPackageSensor : ITemperatureSensor
 {
-    private const ulong TemperatureTarget = 0x1A2;  // MSR_TEMPERATURE_TARGET; bits 23:16 = TjMax
+    private const ulong TemperatureTarget = 0x1A2;  // MSR_TEMPERATURE_TARGET; bits 23:16 = TjMax, 29:24 = TCC offset
     private const ulong PackageThermStatus = 0x1B1; // IA32_PACKAGE_THERM_STATUS; bits 22:16 = degrees below TjMax
 
     private readonly PawnIOModule _module;
@@ -65,6 +79,8 @@ internal sealed class IntelPackageSensor : ITemperatureSensor
     }
 
     public SensorStatus Status => new(ChipSensor.IntelPackage, _tjMax);
+
+    public int? Limit { get; private set; }
 
     public static ITemperatureSensor? TryOpen(Action<SensorProblem, string?>? fail)
     {
@@ -98,6 +114,8 @@ internal sealed class IntelPackageSensor : ITemperatureSensor
     {
         if (_module.Call("ioctl_read_msr", PackageThermStatus) is not { } status)
             return null;
+        if (_module.Call("ioctl_read_msr", TemperatureTarget) is { } target)
+            Limit = _tjMax - (int)((target >> 24) & 0x3F);
         var celsius = _tjMax - (int)((status >> 16) & 0x7F);
         return celsius > 0 ? celsius : null;
     }

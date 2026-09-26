@@ -3,6 +3,8 @@ using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
+using Microsoft.Windows.Storage.Pickers;
+using OpenSense.App.Helpers;
 using OpenSense.App.Localization;
 using OpenSense.App.Services;
 using OpenSense.App.ViewModels;
@@ -26,7 +28,7 @@ public sealed partial class MainWindow : Window
     private readonly SettingsService _settings;
 
     public MainWindow(ShellViewModel shell, UpdateViewModel updates, SettingsService settings, SettingsViewModel settingsPage, SystemViewModel system,
-        NavigationService navigation)
+        BatteryViewModel battery, StartupViewModel startup, GpuClocksViewModel gpuClocks, NavigationService navigation)
     {
         Shell = shell;
         Updates = updates;
@@ -44,6 +46,10 @@ public sealed partial class MainWindow : Window
         ApplyTheme(settingsPage.Theme);
         settingsPage.ThemeChanged += ApplyTheme;
         system.ConfirmGpuSwitch = ConfirmGpuSwitchAsync;
+        battery.ConfirmCalibration = ConfirmCalibrationAsync;
+        startup.PickPicture = PickPictureAsync;
+        startup.ConfirmLogo = ConfirmBootLogoAsync;
+        gpuClocks.ConfirmOverclock = ConfirmOverclockAsync;
 
         AppWindow.Closing += OnClosing;
         navigation.Requested += NavigateTo;
@@ -159,20 +165,12 @@ public sealed partial class MainWindow : Window
 
     private async Task<bool?> ConfirmGpuSwitchAsync(GpuMode mode)
     {
-        var dialog = new ContentDialog
-        {
-            XamlRoot = Content.XamlRoot,
-            Title = Strings.Get(mode == GpuMode.Discrete ? "GpuSwitch_DiscreteTitle" : "GpuSwitch_HybridTitle"),
-            Content = Strings.Get(mode == GpuMode.Discrete ? "GpuSwitch_DiscreteMessage" : "GpuSwitch_HybridMessage"),
-            PrimaryButtonText = Strings.Get("GpuSwitch_RestartNow"),
-            SecondaryButtonText = Strings.Get("GpuSwitch_RestartLater"),
-            CloseButtonText = Strings.Get("GpuSwitch_Cancel"),
-            DefaultButton = ContentDialogButton.Secondary,
-            RequestedTheme = RootGrid.ActualTheme,
-            // Dialogs open outside the window's content, so they don't inherit these.
-            Language = RootGrid.Language,
-            FlowDirection = RootGrid.FlowDirection,
-        };
+        var dialog = Dialog(
+            Strings.Get(mode == GpuMode.Discrete ? "GpuSwitch_DiscreteTitle" : "GpuSwitch_HybridTitle"),
+            Strings.Get(mode == GpuMode.Discrete ? "GpuSwitch_DiscreteMessage" : "GpuSwitch_HybridMessage"));
+        dialog.PrimaryButtonText = Strings.Get("GpuSwitch_RestartNow");
+        dialog.SecondaryButtonText = Strings.Get("GpuSwitch_RestartLater");
+        dialog.DefaultButton = ContentDialogButton.Secondary;
         return await dialog.ShowAsync() switch
         {
             ContentDialogResult.Primary => true,
@@ -180,4 +178,61 @@ public sealed partial class MainWindow : Window
             _ => null,
         };
     }
+
+    private async Task<bool> ConfirmCalibrationAsync()
+    {
+        var dialog = Dialog(Strings.Get("Calibration_Confirm_Title"), Strings.Get("Calibration_Confirm_Message"));
+        dialog.PrimaryButtonText = Strings.Get("Calibration_Confirm_Start");
+        dialog.DefaultButton = ContentDialogButton.Primary;
+        return await dialog.ShowAsync() == ContentDialogResult.Primary;
+    }
+
+    private async Task<bool> ConfirmOverclockAsync()
+    {
+        var dialog = Dialog(Strings.Get("GpuClocks_Confirm_Title"), Strings.Get("GpuClocks_Confirm_Message"));
+        dialog.PrimaryButtonText = Strings.Get("GpuClocks_Confirm_Overclock");
+        dialog.DefaultButton = ContentDialogButton.Close;
+        return await dialog.ShowAsync() == ContentDialogResult.Primary;
+    }
+
+    /// <summary>A GIF or JPEG file for the boot logo; null when cancelled.</summary>
+    private async Task<string?> PickPictureAsync()
+    {
+        // The Windows App SDK picker, which also works in an elevated (portable) copy.
+        var picker = new FileOpenPicker(AppWindow.Id)
+        {
+            SuggestedStartLocation = PickerLocationId.PicturesLibrary,
+            ViewMode = PickerViewMode.Thumbnail,
+        };
+        foreach (var type in new[] { ".jpg", ".jpeg", ".gif" })
+            picker.FileTypeFilter.Add(type);
+        return (await picker.PickSingleFileAsync())?.Path;
+    }
+
+    private async Task<bool> ConfirmBootLogoAsync(byte[] picture, bool turnOnAnimation)
+    {
+        var content = new StackPanel { Spacing = 12 };
+        if (await Pictures.FromBytesAsync(picture, 480) is { } preview)
+            content.Children.Add(new Image { Source = preview, MaxHeight = 240, HorizontalAlignment = HorizontalAlignment.Left });
+        var message = turnOnAnimation ? Strings.Get("BootLogo_Confirm_MessageWithAnimation") : Strings.Get("BootLogo_Confirm_Message");
+        content.Children.Add(new TextBlock { Text = message, TextWrapping = TextWrapping.Wrap });
+
+        var dialog = Dialog(Strings.Get("BootLogo_Confirm_Title"), content);
+        dialog.PrimaryButtonText = Strings.Get("BootLogo_Confirm_Use");
+        dialog.DefaultButton = ContentDialogButton.Primary;
+        return await dialog.ShowAsync() == ContentDialogResult.Primary;
+    }
+
+    /// <summary>A dialog over this window, with Cancel as its close button.</summary>
+    private ContentDialog Dialog(string title, object content) => new()
+    {
+        XamlRoot = Content.XamlRoot,
+        Title = title,
+        Content = content,
+        CloseButtonText = Strings.Get("GpuSwitch_Cancel"),
+        RequestedTheme = RootGrid.ActualTheme,
+        // Dialogs open outside the window's content, so they don't inherit these.
+        Language = RootGrid.Language,
+        FlowDirection = RootGrid.FlowDirection,
+    };
 }

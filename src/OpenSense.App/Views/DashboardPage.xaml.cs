@@ -32,8 +32,6 @@ public sealed partial class DashboardPage : Page
 
     public static double FanBoost(int? boost) => boost ?? double.NaN;
 
-    public static Visibility Present(object? item) => item is null ? Visibility.Collapsed : Visibility.Visible;
-
     public static SolidColorBrush TemperatureBrush(double celsius) =>
         new(double.IsNaN(celsius) ? UnknownTemperature : TemperatureScale.ColorFor(celsius));
 

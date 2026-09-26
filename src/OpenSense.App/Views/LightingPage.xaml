@@ -32,13 +32,37 @@
             Spacing="16">
             <TextBlock x:Uid="Lighting_Title" Style="{StaticResource PageTitleStyle}" />
 
+            <!-- One light at a time; the bar is filled from ViewModel.Devices in code-behind. -->
+            <SelectorBar
+                x:Name="DeviceBar"
+                Margin="-12,-8,0,0"
+                SelectionChanged="OnDeviceSelected"
+                Visibility="{x:Bind ViewModel.HasSeveralDevices, Mode=OneWay}" />
+
             <!-- Preview + brightness -->
             <Border Padding="24" Style="{StaticResource CardStyle}">
                 <StackPanel Spacing="20">
                     <controls:KeyboardPreview
                         Height="230"
                         Revision="{x:Bind ViewModel.PreviewRevision, Mode=OneWay}"
-                        Source="{x:Bind ViewModel}" />
+                        Source="{x:Bind ViewModel}"
+                        Visibility="{x:Bind ViewModel.IsKeyboard, Mode=OneWay}" />
+                    <controls:LightBarPreview
+                        Height="120"
+                        Revision="{x:Bind ViewModel.PreviewRevision, Mode=OneWay}"
+                        Source="{x:Bind ViewModel}"
+                        Visibility="{x:Bind ViewModel.IsLightBar, Mode=OneWay}" />
+                    <controls:LogoPreview
+                        Height="180"
+                        Revision="{x:Bind ViewModel.PreviewRevision, Mode=OneWay}"
+                        Source="{x:Bind ViewModel}"
+                        Visibility="{x:Bind ViewModel.IsLogo, Mode=OneWay}" />
+                    <!-- Keyboards with a light per key: the preview is also where keys are picked -->
+                    <controls:PerKeyKeyboard
+                        Height="260"
+                        Revision="{x:Bind ViewModel.PreviewRevision, Mode=OneWay}"
+                        Source="{x:Bind ViewModel}"
+                        Visibility="{x:Bind ViewModel.HasKeys, Mode=OneWay}" />
                     <Grid ColumnSpacing="16">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -48,30 +72,110 @@
                         <toolkit:Segmented
                             Grid.Column="1"
                             HorizontalAlignment="Stretch"
-                            ItemsSource="{x:Bind vm:LightingViewModel.BrightnessNames}"
+                            ItemsSource="{x:Bind ViewModel.BrightnessNames, Mode=OneWay}"
                             SelectedIndex="{x:Bind ViewModel.BrightnessIndex, Mode=TwoWay}" />
                     </Grid>
+                    <Button
+                        x:Uid="Lighting_ApplyToAll"
+                        HorizontalAlignment="Right"
+                        Command="{x:Bind ViewModel.ApplyToAllCommand}"
+                        Visibility="{x:Bind ViewModel.HasSeveralDevices, Mode=OneWay}" />
                 </StackPanel>
             </Border>
 
             <toolkit:Segmented
                 HorizontalAlignment="Stretch"
-                SelectedIndex="{x:Bind ViewModel.ModeIndex, Mode=TwoWay}">
+                SelectedIndex="{x:Bind ViewModel.ModeIndex, Mode=TwoWay}"
+                Visibility="{x:Bind ViewModel.HasModes, Mode=OneWay}">
                 <toolkit:SegmentedItem x:Uid="Lighting_Static">
                     <toolkit:SegmentedItem.Icon>
                         <FontIcon Glyph="&#xE790;" />
                     </toolkit:SegmentedItem.Icon>
                 </toolkit:SegmentedItem>
-                <toolkit:SegmentedItem x:Uid="Lighting_Effect">
+                <toolkit:SegmentedItem x:Uid="Lighting_Effect" Visibility="{x:Bind ViewModel.HasEffects, Mode=OneWay}">
                     <toolkit:SegmentedItem.Icon>
                         <FontIcon Glyph="&#xE945;" />
                     </toolkit:SegmentedItem.Icon>
                 </toolkit:SegmentedItem>
+                <toolkit:SegmentedItem x:Uid="Lighting_PerKey" Visibility="{x:Bind ViewModel.HasPerKey, Mode=OneWay}">
+                    <toolkit:SegmentedItem.Icon>
+                        <FontIcon Glyph="&#xE765;" />
+                    </toolkit:SegmentedItem.Icon>
+                </toolkit:SegmentedItem>
             </toolkit:Segmented>
+
+            <!-- A colour per key -->
+            <Border Style="{StaticResource CardStyle}" Visibility="{x:Bind ViewModel.IsPerKey, Mode=OneWay}">
+                <StackPanel Spacing="14">
+                    <TextBlock
+                        x:Uid="Lighting_PerKeyHint"
+                        Style="{StaticResource CaptionMutedStyle}"
+                        TextWrapping="Wrap" />
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button
+                            x:Uid="Lighting_SelectWasd"
+                            Command="{x:Bind ViewModel.SelectKeysCommand}"
+                            CommandParameter="wasd" />
+                        <Button
+                            x:Uid="Lighting_SelectArrows"
+                            Command="{x:Bind ViewModel.SelectKeysCommand}"
+                            CommandParameter="arrows" />
+                        <Button
+                            x:Uid="Lighting_SelectFunctionKeys"
+                            Command="{x:Bind ViewModel.SelectKeysCommand}"
+                            CommandParameter="functions" />
+                        <Button
+                            x:Uid="Lighting_SelectNumbers"
+                            Command="{x:Bind ViewModel.SelectKeysCommand}"
+                            CommandParameter="numbers" />
+                        <Button
+                            x:Uid="Lighting_SelectAll"
+                            Command="{x:Bind ViewModel.SelectKeysCommand}"
+                            CommandParameter="all" />
+                        <Button
+                            x:Uid="Lighting_SelectNone"
+                            Command="{x:Bind ViewModel.ClearKeySelectionCommand}"
+                            IsEnabled="{x:Bind ViewModel.HasSelection, Mode=OneWay}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <ItemsRepeater ItemTemplate="{StaticResource SwatchTemplate}" ItemsSource="{x:Bind vm:LightingViewModel.Swatches}" Tag="keys">
+                            <ItemsRepeater.Layout>
+                                <StackLayout Orientation="Horizontal" Spacing="10" />
+                            </ItemsRepeater.Layout>
+                        </ItemsRepeater>
+                        <Button
+                            x:Uid="Lighting_AnyColor"
+                            Width="30"
+                            Height="30"
+                            Padding="0"
+                            CornerRadius="15">
+                            <FontIcon FontSize="12" Glyph="&#xE710;" />
+                            <Button.Flyout>
+                                <Flyout>
+                                    <ColorPicker
+                                        ColorSpectrumShape="Ring"
+                                        IsAlphaEnabled="False"
+                                        IsColorChannelTextInputVisible="True"
+                                        IsHexInputVisible="True"
+                                        IsMoreButtonVisible="False"
+                                        Color="{x:Bind ViewModel.KeysColor, Mode=TwoWay}" />
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
+                        <Button x:Uid="Lighting_TurnOffKeys" Command="{x:Bind ViewModel.TurnOffKeysCommand}" />
+                    </StackPanel>
+                    <ComboBox
+                        x:Uid="Lighting_Layout"
+                        MinWidth="220"
+                        ItemsSource="{x:Bind ViewModel.LayoutNames}"
+                        SelectedIndex="{x:Bind ViewModel.LayoutIndex, Mode=TwoWay}"
+                        Visibility="{x:Bind ViewModel.LayoutChoice, Mode=OneWay}" />
+                </StackPanel>
+            </Border>
 
             <!-- Static zones -->
             <StackPanel Spacing="16" Visibility="{x:Bind ViewModel.IsStatic, Mode=OneWay}">
-                <ItemsRepeater ItemsSource="{x:Bind ViewModel.Zones}">
+                <ItemsRepeater ItemsSource="{x:Bind ViewModel.Zones}" Visibility="{x:Bind ViewModel.HasZones, Mode=OneWay}">
                     <ItemsRepeater.Layout>
                         <UniformGridLayout
                             ItemsStretch="Fill"
@@ -94,7 +198,8 @@
                                             HorizontalAlignment="Right"
                                             IsOn="{x:Bind On, Mode=TwoWay}"
                                             OffContent=""
-                                            OnContent="" />
+                                            OnContent=""
+                                            Visibility="{x:Bind Switchable}" />
                                     </Grid>
                                     <Button
                                         x:Uid="Lighting_ZoneColor"
@@ -104,7 +209,7 @@
                                         IsEnabled="{x:Bind On, Mode=OneWay}"
                                         Style="{StaticResource ColorButtonStyle}">
                                         <Button.Background>
-                                            <SolidColorBrush Color="{x:Bind Color, Mode=OneWay}" />
+                                            <SolidColorBrush Color="{x:Bind ShownColor, Mode=OneWay}" />
                                         </Button.Background>
                                         <Button.Flyout>
                                             <Flyout>
@@ -126,7 +231,14 @@
 
                 <Border Style="{StaticResource CardStyle}">
                     <StackPanel Spacing="10">
-                        <TextBlock x:Uid="Lighting_AllZones" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                        <TextBlock
+                            x:Uid="Lighting_AllZones"
+                            Style="{StaticResource BodyStrongTextBlockStyle}"
+                            Visibility="{x:Bind ViewModel.HasZones, Mode=OneWay}" />
+                        <TextBlock
+                            x:Uid="Lighting_Color"
+                            Style="{StaticResource BodyStrongTextBlockStyle}"
+                            Visibility="{x:Bind ViewModel.IsSingleColor, Mode=OneWay}" />
                         <StackPanel Orientation="Horizontal" Spacing="10">
                             <ItemsRepeater ItemTemplate="{StaticResource SwatchTemplate}" ItemsSource="{x:Bind vm:LightingViewModel.Swatches}" Tag="all">
                                 <ItemsRepeater.Layout>
@@ -161,17 +273,29 @@
             <StackPanel Spacing="16" Visibility="{x:Bind ViewModel.IsEffect, Mode=OneWay}">
                 <Border Style="{StaticResource CardStyle}">
                     <StackPanel Spacing="16">
-                        <toolkit:Segmented
-                            HorizontalAlignment="Stretch"
-                            ItemsSource="{x:Bind vm:LightingViewModel.Effects}"
-                            SelectedIndex="{x:Bind ViewModel.EffectIndex, Mode=TwoWay}">
-                            <toolkit:Segmented.ItemTemplate>
-                                <DataTemplate x:DataType="vm:EffectOption">
-                                    <TextBlock Text="{x:Bind Name}" />
-                                </DataTemplate>
-                            </toolkit:Segmented.ItemTemplate>
-                        </toolkit:Segmented>
-                        <TextBlock Style="{StaticResource CaptionMutedStyle}" Text="{x:Bind ViewModel.EffectDescription, Mode=OneWay}" />
+                        <Grid ColumnSpacing="16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <ComboBox
+                                x:Uid="Lighting_EffectList"
+                                MinWidth="220"
+                                VerticalAlignment="Center"
+                                ItemsSource="{x:Bind ViewModel.Effects, Mode=OneWay}"
+                                SelectedIndex="{x:Bind ViewModel.EffectIndex, Mode=TwoWay}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:EffectOption">
+                                        <TextBlock Text="{x:Bind Name}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <TextBlock
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource CaptionMutedStyle}"
+                                Text="{x:Bind ViewModel.EffectDescription, Mode=OneWay}" />
+                        </Grid>
 
                         <Grid ColumnSpacing="24">
                             <Grid.ColumnDefinitions>
@@ -180,11 +304,12 @@
                             </Grid.ColumnDefinitions>
                             <Slider
                                 x:Uid="Lighting_Speed"
-                                Maximum="9"
-                                Minimum="1"
+                                Maximum="{x:Bind ViewModel.SpeedMaximum, Mode=OneWay}"
+                                Minimum="{x:Bind ViewModel.SpeedMinimum, Mode=OneWay}"
                                 StepFrequency="1"
                                 TickFrequency="1"
                                 TickPlacement="Outside"
+                                Visibility="{x:Bind ViewModel.EffectUsesSpeed, Mode=OneWay}"
                                 Value="{x:Bind ViewModel.Speed, Mode=TwoWay}" />
                             <StackPanel
                                 Grid.Column="1"
@@ -193,7 +318,7 @@
                                 <TextBlock x:Uid="Lighting_Direction" />
                                 <toolkit:Segmented
                                     HorizontalAlignment="Stretch"
-                                    ItemsSource="{x:Bind vm:LightingViewModel.Directions}"
+                                    ItemsSource="{x:Bind ViewModel.Directions, Mode=OneWay}"
                                     SelectedIndex="{x:Bind ViewModel.DirectionIndex, Mode=TwoWay}" />
                             </StackPanel>
                         </Grid>
@@ -202,8 +327,22 @@
 
                 <Border Style="{StaticResource CardStyle}" Visibility="{x:Bind ViewModel.EffectUsesColor, Mode=OneWay}">
                     <StackPanel Spacing="10">
-                        <TextBlock x:Uid="Lighting_EffectColor" Style="{StaticResource BodyStrongTextBlockStyle}" />
-                        <StackPanel Orientation="Horizontal" Spacing="10">
+                        <Grid>
+                            <TextBlock
+                                x:Uid="Lighting_EffectColor"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyStrongTextBlockStyle}" />
+                            <CheckBox
+                                x:Uid="Lighting_RandomColor"
+                                MinWidth="0"
+                                HorizontalAlignment="Right"
+                                IsChecked="{x:Bind ViewModel.RandomColor, Mode=TwoWay}"
+                                Visibility="{x:Bind ViewModel.EffectTakesRandomColor, Mode=OneWay}" />
+                        </Grid>
+                        <StackPanel
+                            Orientation="Horizontal"
+                            Spacing="10"
+                            Visibility="{x:Bind ViewModel.EffectColorChosen, Mode=OneWay}">
                             <ItemsRepeater ItemTemplate="{StaticResource SwatchTemplate}" ItemsSource="{x:Bind vm:LightingViewModel.Swatches}" Tag="effect">
                                 <ItemsRepeater.Layout>
                                     <StackLayout Orientation="Horizontal" Spacing="10" />

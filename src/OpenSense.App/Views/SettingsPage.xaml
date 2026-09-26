@@ -124,6 +124,12 @@
                 Visibility="{x:Bind ViewModel.OperatingModesSwitchAvailable, Mode=OneWay}">
                 <ToggleSwitch IsOn="{x:Bind ViewModel.OperatingModesOn, Mode=TwoWay}" />
             </toolkit:SettingsCard>
+            <toolkit:SettingsCard
+                x:Uid="Settings_MagKey"
+                HeaderIcon="{ui:FontIcon Glyph=&#xE765;}"
+                Visibility="{x:Bind ViewModel.MagKeySwitchAvailable, Mode=OneWay}">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.MagKeyOn, Mode=TwoWay}" />
+            </toolkit:SettingsCard>
 
             <TextBlock x:Uid="Settings_Updates" Style="{StaticResource SectionHeaderStyle}" />
             <!-- Version and "Check now"; with an update found it opens downward to offer it -->

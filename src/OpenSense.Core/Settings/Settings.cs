@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using OpenSense.Core.Control;
 using OpenSense.Core.Hardware;
+using OpenSense.Core.Lighting;
 
 namespace OpenSense.Core.Settings;
 
@@ -55,10 +56,35 @@ public sealed record UserSettings
 /// </summary>
 public sealed record MachineSettings
 {
-    public int Version { get; init; } = 1;
+    /// <summary>What <see cref="Upgrade"/> brings settings to.</summary>
+    public const int CurrentVersion = 2;
+
+    /// <summary>2: lighting per light in <see cref="Lighting"/> (version 1 kept the keyboard's in <see cref="Keyboard"/>).</summary>
+    public int Version { get; init; } = CurrentVersion;
     public ControlProfile Profile { get; init; } = new();
     public KeyboardSettings Keyboard { get; init; } = new();
+    public LightingConfig Lighting { get; init; } = new();
+    public PowerSettings Power { get; init; } = new();
     public CapabilityOverrides Overrides { get; init; } = new();
+
+    /// <summary>Settings written by an older version, in today's form.</summary>
+    public MachineSettings Upgrade()
+    {
+        if (Version >= CurrentVersion)
+            return this;
+        var settings = this;
+        if (settings.Version < 2)
+        {
+            settings = settings with
+            {
+                Keyboard = settings.Keyboard with { LegacyLighting = null },
+                Lighting = settings.Keyboard.LegacyLighting is { } keyboard
+                    ? settings.Lighting.With(EcKeyboardBackend.Id, keyboard)
+                    : settings.Lighting,
+            };
+        }
+        return settings with { Version = CurrentVersion };
+    }
 }
 
 public static class SettingsPaths

@@ -110,6 +110,34 @@
                 <ToggleSwitch IsOn="{x:Bind Fans.CoolBoost, Mode=TwoWay}" />
             </toolkit:SettingsCard>
 
+            <!-- The embedded controller's own fan curve (Acer's software picks it with the GPU overclock level) -->
+            <toolkit:SettingsCard
+                x:Uid="Fans_FanTable"
+                HeaderIcon="{ui:FontIcon Glyph=&#xE9D9;}"
+                Visibility="{x:Bind Fans.ShowFanTable, Mode=OneWay}">
+                <ComboBox MinWidth="160" SelectedIndex="{x:Bind Fans.FanTableIndex, Mode=TwoWay}">
+                    <ComboBoxItem x:Uid="Fans_FanTableStandard" />
+                    <ComboBoxItem x:Uid="Fans_FanTableFaster" />
+                    <ComboBoxItem x:Uid="Fans_FanTableFastest" />
+                </ComboBox>
+            </toolkit:SettingsCard>
+
+            <!-- Dust Defender: the firmware runs the fans backwards for a moment; fan control waits meanwhile -->
+            <toolkit:SettingsCard
+                Description="{x:Bind Fans.DustDefenderStatus, Mode=OneWay}"
+                Header="DustDefender"
+                HeaderIcon="{ui:FontIcon Glyph=&#xEA99;}"
+                Visibility="{x:Bind Fans.DustDefenderAvailable, Mode=OneWay}">
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                    <ProgressRing
+                        Width="20"
+                        Height="20"
+                        IsActive="{x:Bind Fans.DustDefenderRunning, Mode=OneWay}"
+                        Visibility="{x:Bind Fans.DustDefenderRunning, Mode=OneWay}" />
+                    <Button x:Uid="Fans_CleanNow" Command="{x:Bind Fans.CleanFansCommand}" />
+                </StackPanel>
+            </toolkit:SettingsCard>
+
             <!-- Custom: per fan, a fixed boost or a curve -->
             <ItemsControl ItemsSource="{x:Bind Fans.ManualFans}" Visibility="{x:Bind Fans.IsCustom, Mode=OneWay}">
                 <ItemsControl.ItemsPanel>
@@ -147,7 +175,8 @@
                                         x:Uid="Fans_Boost"
                                         Maximum="100"
                                         Minimum="0"
-                                        StepFrequency="5"
+                                        SmallChange="10"
+                                        StepFrequency="10"
                                         TickFrequency="10"
                                         TickPlacement="Outside"
                                         Value="{x:Bind Percent, Mode=TwoWay}" />

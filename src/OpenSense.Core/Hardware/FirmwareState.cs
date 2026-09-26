@@ -10,12 +10,30 @@ public sealed record FirmwareState(
     bool? CoolBoost,
     GpuMode? GpuMode)
 {
+    /// <summary>Whether charging stops at 80 %; follows later changes.</summary>
+    public bool? ChargeLimit { get; init; }
+
+    /// <summary>Power-off USB charging; follows later changes.</summary>
+    public UsbChargingState? UsbCharging { get; init; }
+
+    /// <summary>The boot animation and sound; follows later changes.</summary>
+    public bool? BootAnimation { get; init; }
+
+    /// <summary>The embedded controller's fan curve; null when none has been picked.</summary>
+    public FanTable? FanTable { get; init; }
+
     public static FirmwareState Read(AcerDevice device, DeviceCapabilities caps) => new(
-        caps.Fans.ToDictionary(f => f.Id, f => device.GetFanBehavior(f)),
-        caps.Fans.ToDictionary(f => f.Id, f => device.GetFanBoost(f)),
+        caps.ControllableFans.ToDictionary(f => f.Id, f => device.GetFanBehavior(f)),
+        caps.ControllableFans.ToDictionary(f => f.Id, f => device.GetFanBoost(f)),
         caps.HasOperatingModes ? device.GetOperatingMode() : null,
         caps.CoolBoost ? device.GetCoolBoost() : null,
-        caps.GpuModeSwitch ? device.GetGpuMode() : null);
+        caps.GpuModeSwitch ? device.GetGpuMode() : null)
+    {
+        ChargeLimit = caps.Battery.ChargeLimit ? device.GetBatteryHealth()?.HealthMode : null,
+        UsbCharging = caps.UsbCharging ? device.GetUsbCharging() : null,
+        BootAnimation = caps.BootAnimation ? device.GetBootAnimation() : null,
+        FanTable = caps.FanTable ? device.GetFanTable() : null,
+    };
 
     /// <summary>
     /// A profile that keeps the machine as it is, so the first launch of OpenSense changes nothing.
@@ -45,6 +63,7 @@ public sealed record FirmwareState(
             Manual = mode == FanControlMode.Custom ? manual : defaults.Manual,
             OperatingMode = OperatingMode ?? defaults.OperatingMode,
             CoolBoost = CoolBoost ?? defaults.CoolBoost,
+            FanTable = FanTable ?? defaults.FanTable,
         };
     }
 }

@@ -43,6 +43,7 @@ SetCompressorDictSize 64
 !include LogicLib.nsh
 !include Sections.nsh
 !include FileFunc.nsh
+!include WordFunc.nsh
 
 Name "${APP_NAME}"
 OutFile "${OUTPUT}"
@@ -170,6 +171,42 @@ VIAddVersionKey "LegalCopyright" "OpenSense contributors. GNU GPL v3 or later."
   Pop $0
 !macroend
 
+; Sets _RESULT to 1 when _VALUE has the form {xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}, else 0.
+!macro IsGuid _VALUE _RESULT
+  StrCpy ${_RESULT} 0
+  StrLen $R9 "${_VALUE}"
+  ${If} $R9 = 38
+    StrCpy $R8 "${_VALUE}" 1
+    StrCpy $R7 "${_VALUE}" 1 -1
+    ${If} $R8 == "{"
+    ${AndIf} $R7 == "}"
+      StrCpy ${_RESULT} 1
+    ${EndIf}
+  ${EndIf}
+!macroend
+
+; The installed app registers for app notifications (Windows App SDK) for each user who runs it: a key named after
+; its path ("\" written as ".") holds a random app id, which names the app's key (with a random COM class for clicks)
+; and the keys Windows keeps for it. Removed for the user running the uninstaller; only keys named by the ids read
+; from that registration are touched.
+!macro RemoveNotificationRegistration
+  ${WordReplace} "$INSTDIR\${APP_EXE}" "\" "." "+" $R0
+  StrCpy $R0 "Software\Classes\AppUserModelId\$R0"
+  ReadRegStr $R1 HKCU "$R0" "NotificationGUID"
+  !insertmacro IsGuid $R1 $R3
+  ${If} $R3 = 1
+    ReadRegStr $R2 HKCU "Software\Classes\AppUserModelId\$R1" "CustomActivator"
+    !insertmacro IsGuid $R2 $R3
+    ${If} $R3 = 1
+      DeleteRegKey HKCU "Software\Classes\CLSID\$R2"
+    ${EndIf}
+    DeleteRegKey HKCU "Software\Classes\AppUserModelId\$R1"
+    DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\PushNotifications\Backup\$R1"
+    DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\$R1"
+  ${EndIf}
+  DeleteRegKey HKCU "$R0"
+!macroend
+
 Function LaunchApp
   ; Setup runs as administrator and the app does not need to: Explorer starts it as the signed-in user.
   Exec '"$WINDIR\explorer.exe" "$INSTDIR\${APP_EXE}"'
@@ -186,9 +223,15 @@ Section "-Remove installed version"
   ${EndIf}
 
   DetailPrint "$(Inst_RemovingOld)"
+  ; /Update (same folder only) keeps what the new version takes over as it is: the users' app-notification
+  ; registration and their Windows notification settings for OpenSense.
+  StrCpy $2 ""
+  ${If} $0 == $INSTDIR
+    StrCpy $2 "/Update "
+  ${EndIf}
   ClearErrors
   ; _?= runs the uninstaller in place instead of from a temporary copy, so ExecWait really waits.
-  ExecWait '"$0\Uninstall.exe" /S _?=$0' $1
+  ExecWait '"$0\Uninstall.exe" /S $2_?=$0' $1
   ${If} ${Errors}
   ${OrIf} $1 != 0
     MessageBox MB_YESNO|MB_ICONEXCLAMATION "$(Inst_RemoveFailed)" /SD IDYES IDYES +2
@@ -359,6 +402,13 @@ Section "Uninstall"
   SetShellVarContext all
   Delete "$SMPROGRAMS\${APP_NAME}.lnk"
   Delete "$DESKTOP\${APP_NAME}.lnk"
+
+  ${GetParameters} $R0
+  ClearErrors
+  ${GetOptions} $R0 "/Update" $R1
+  ${If} ${Errors}
+    !insertmacro RemoveNotificationRegistration
+  ${EndIf}
 
   ; Exactly the files setup installed (listed at build time), never the whole folder: it may hold
   ; other things if the user picked an existing folder. Files another user's open window still

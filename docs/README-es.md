@@ -3,11 +3,11 @@
 ![OpenSense](../resources/banner.png)
 
 **Control de ventiladores, rendimiento e iluminación para portátiles Acer Nitro y Predator.**<br>
-Una alternativa de código abierto a NitroSense.
+Una alternativa de código abierto a NitroSense y PredatorSense.
 
 [![Build](https://github.com/archivesteak/opensense/actions/workflows/build.yml/badge.svg)](https://github.com/archivesteak/opensense/actions/workflows/build.yml)
 [![Release](https://img.shields.io/github/v/release/archivesteak/opensense?label=Release&color=E4473C)](https://github.com/archivesteak/opensense/releases/latest)
-[![License](https://img.shields.io/github/license/archivesteak/opensense?label=License&color=E4473C)](../LICENSE)
+[![License](https://img.shields.io/github/license/archivesteak/opensense?label=License&logo=gnu&color=C4282D)](../LICENSE)
 
 [**Descargar**](https://github.com/archivesteak/opensense/releases/latest) •
 [Características](#características) •
@@ -35,11 +35,13 @@ Ayuda a traducir OpenSense y esta página a tu idioma: consulta [Traducciones](#
 ## Características
 
 - **Temperaturas reales.** La CPU y la GPU se leen de los propios chips, como hacen HWiNFO y ThrottleStop, con gráficos de 5 minutos.
-- **Control de ventiladores.** Auto, que OpenSense acelera cuando el portátil se calienta (puedes desactivarlo), Máx. o Manual: velocidad añadida a cada ventilador, fija o siguiendo una curva que dibujas tú mismo.
+- **Control de ventiladores.** Auto, que OpenSense acelera cuando el portátil se calienta (puedes desactivarlo), Máx. o Manual: velocidad añadida a cada ventilador, fija o siguiendo una curva que dibujas tú mismo. En los portátiles que los tienen, la curva de los ventiladores del propio firmware puede ser más rápida y DustDefender expulsa el polvo.
 - **Seguro por defecto.** Antilimitación térmica sube los ventiladores hasta la máxima velocidad cuando el procesador se acerca a su límite térmico, y el firmware vuelve a tomar el control si un sensor u OpenSense deja de funcionar.
-- **Rendimiento.** Modos de funcionamiento, CoolBoost y planes de energía de Windows.
-- **Iluminación.** Colores estáticos por zona del teclado, o los efectos Respiración, Neón, Ola, Desplazamiento y Zoom.
+- **Rendimiento.** Modos de funcionamiento, CoolBoost, overclock de la GPU para cada modo y planes de energía de Windows. La tecla de modo cambia entre los modos, y con batería se usa un modo propio. En los Predator de 2024 en adelante se suma el overclock de la GPU que Acer fija para cada modo.
+- **Iluminación.** Colores estáticos por zona del teclado, o los efectos Respiración, Neón, Ola, Desplazamiento, Zoom, Meteoro y Centelleo. También las barras de luz, el Infinity Mirror, el InfiniteRing, el logotipo y las teclas Turbo y de modo, cada uno con sus propios efectos. Los teclados con iluminación por tecla y las teclas MagForce admiten un color para cada tecla y efectos propios.
 - **Teclado y pantalla.** Apagado automático de la retroiluminación, bloqueo de la tecla Windows, overdrive de la pantalla LCD y el conmutador de GPU (MUX).
+- **Batería.** Estado de la batería (capacidad restante y ciclos de carga), carga solo hasta el 80 %, calibración de la batería y carga de dispositivos USB con el portátil apagado.
+- **Arranque.** La animación y el sonido de arranque, y tu propio logotipo de arranque en los portátiles que lo admiten.
 - **Sin avisos de administrador.** Un pequeño servicio en segundo plano aplica tu configuración desde el inicio, y la tecla NitroSense abre la aplicación.
 - **Tu idioma.** 36 idiomas, según Windows o elegido en la configuración.
 
@@ -63,6 +65,19 @@ Portátiles Acer con la interfaz de firmware para juegos que usan NitroSense y P
 OpenSense se desarrolló en un **Nitro 5 AN515-57**.
 
 ¿Lo has probado en otro modelo? [Abre una issue](https://github.com/archivesteak/opensense/issues) y pega los diagnósticos de **Configuración → Solución de problemas → Copiar**.
+
+### Volcados del firmware
+
+¿Falta algo o no funciona bien en tu portátil? Envía una copia de su firmware y se analizará para averiguar cómo funciona en tu modelo. Así se averiguó cómo funcionan los ventiladores del AN515-57: su firmware mostró que solo se aceleran en pasos del 10 % y que la curva de los ventiladores del firmware no hace nada. [Esta guía](firmware/dump-firmware-es.md) explica cómo hacer la copia desde una memoria USB con Linux sin cambiar nada en el portátil.
+
+La copia sale solo del chip del firmware del portátil: no contiene ninguno de tus archivos, cuentas ni nada más de Windows. Los únicos datos personales que incluye son el número de serie del portátil y la clave de licencia de Windows que Acer guardó en el firmware. Si prefieres no publicarlos, la guía explica cómo enviar la copia en privado.
+
+Los modelos que más ayudarían:
+
+- **Nitro AN515-46, AN515-47, AN515-58, AN517-42, AN517-43 y AN517-55**: los únicos modelos en los que el software de Acer ajusta la **Curva de los ventiladores**, y por eso los únicos en los que OpenSense la muestra. Nadie ha comprobado todavía qué cambia en ellos.
+- **Predator Helios 16 y 18 de 2024 y 2025 (PH16-72, PH18-72, PH16-73, PH18-73) y Helios Neo 16 (PHN16-72)**: en los Predator de 2024 en adelante, los modos de funcionamiento y el overclock de la GPU de Acer pasan por la interfaz HID del controlador integrado, que OpenSense maneja basándose solo en el software de Acer.
+- **Predator Helios 16 y 18 de 2023 (PH16-71, PH18-71) y Helios 3D 15 (PH3D15-71)**: la barra de luz trasera, cuyos efectos genera el controlador integrado.
+- **Cualquier otro modelo**: OpenSense acelera los ventiladores en pasos del 10 % en todos los portátiles, porque el controlador del AN515-57 descarta todo lo intermedio. Un volcado muestra si el tuyo hace lo mismo.
 
 ## Traducciones
 

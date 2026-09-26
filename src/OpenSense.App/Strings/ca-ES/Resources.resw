@@ -71,8 +71,8 @@
     <comment>Navigation menu item: the RGB keyboard lighting page.</comment>
   </data>
   <data name="Nav_System.Content" xml:space="preserve">
-    <value>Teclat i pantalla</value>
-    <comment>Navigation menu item: keyboard, display, GPU and power settings.</comment>
+    <value>Sistema</value>
+    <comment>Navigation menu item: the laptop's keyboard, display, graphics, battery, startup and power settings. Like Windows Settings' System page.</comment>
   </data>
   <data name="Startup_Connecting.Text" xml:space="preserve">
     <value>S'està connectant amb el portàtil…</value>
@@ -134,6 +134,10 @@
     <value>Teclat</value>
     <comment>Banner title.</comment>
   </data>
+  <data name="Notice_Lighting_Title" xml:space="preserve">
+    <value>Il·luminació</value>
+    <comment>Title of a banner about the light bars or the logo.</comment>
+  </data>
   <data name="Notice_Display_Title" xml:space="preserve">
     <value>Pantalla</value>
     <comment>Banner title: the laptop screen.</comment>
@@ -153,12 +157,25 @@
     <value>El microprogramari ha rebutjat el canvi del CoolBoost.</value>
     <comment>CoolBoost is an Acer feature name: keep it.</comment>
   </data>
+  <data name="Notice_FanTableRejected" xml:space="preserve">
+    <value>El microprogramari ha rebutjat el canvi de la corba dels ventiladors.</value>
+  </data>
   <data name="Notice_FansHandedBack" xml:space="preserve">
     <value>La temperatura de la CPU no està disponible, així que els ventiladors han tornat a Auto.</value>
     <comment>Auto = the automatic fan mode, as in FanMode_Auto.</comment>
   </data>
   <data name="Notice_LightingRejected" xml:space="preserve">
     <value>El teclat ha rebutjat el canvi d'il·luminació.</value>
+  </data>
+  <data name="Notice_LightBarRejected" xml:space="preserve">
+    <value>La barra de llum ha rebutjat el canvi d'il·luminació.</value>
+  </data>
+  <data name="Notice_LogoRejected" xml:space="preserve">
+    <value>El logotip ha rebutjat el canvi d'il·luminació.</value>
+  </data>
+  <data name="Notice_LightRejected" xml:space="preserve">
+    <value>{0}: s'ha rebutjat el canvi d'il·luminació.</value>
+    <comment>Notice when a light other than the keyboard, the light bar and the logo refused a change. {0} = its name (e.g. "Lid logo").</comment>
   </data>
   <data name="Notice_BacklightTimeoutRejected" xml:space="preserve">
     <value>El teclat ha rebutjat el canvi del temps d'apagada de la retroil·luminació.</value>
@@ -184,6 +201,41 @@
   </data>
   <data name="Notice_GpuModeRejected" xml:space="preserve">
     <value>El microprogramari ha rebutjat el canvi de mode de la GPU.</value>
+  </data>
+  <data name="Notice_GpuClocks_Title" xml:space="preserve">
+    <value>Overclock de la GPU</value>
+    <comment>Notice title for problems with the GPU overclock.</comment>
+  </data>
+  <data name="Notice_GpuClocksRejected" xml:space="preserve">
+    <value>El controlador de NVIDIA ha rebutjat els desplaçaments de freqüència.</value>
+  </data>
+  <data name="Notice_OperatingMode_Title" xml:space="preserve">
+    <value>Mode de funcionament</value>
+    <comment>Title of the toast shown when the Mode key or the power supply changes the operating mode.</comment>
+  </data>
+  <data name="Notice_ModeOnBattery" xml:space="preserve">
+    <value>Amb bateria: {0}</value>
+    <comment>Toast text: the laptop runs on battery, in operating mode {0} (e.g. "Eco").</comment>
+  </data>
+  <data name="Notice_ModePluggedIn" xml:space="preserve">
+    <value>Amb el carregador: {0}</value>
+    <comment>Toast text: the adapter was plugged in, so operating mode {0} runs again (e.g. "Turbo").</comment>
+  </data>
+  <data name="Notice_ModeLowBattery" xml:space="preserve">
+    <value>Bateria baixa: {0} fins que es carregui</value>
+    <comment>Toast text: on AC, but the battery is too low to help the adapter, so operating mode {0} (Balanced or Quiet) runs until it charges.</comment>
+  </data>
+  <data name="Notice_ModeAdapter" xml:space="preserve">
+    <value>Carregador massa feble: {0}</value>
+    <comment>Toast when the operating mode changed because the adapter can't power every mode (a USB-C charger that is too weak, or the laptop's own limit). {0} = the mode now in use.</comment>
+  </data>
+  <data name="Notice_TurboUnavailable" xml:space="preserve">
+    <value>Turbo necessita el carregador i la bateria carregada.</value>
+    <comment>Toast text when the Mode key is set to Turbo on and off, but the laptop is on battery or its battery is too low.</comment>
+  </data>
+  <data name="Notice_TurboNeedsAdapter" xml:space="preserve">
+    <value>Turbo necessita un carregador més potent, com el del portàtil.</value>
+    <comment>Toast when the Mode key (set to Turbo) is pressed while the adapter can't power Turbo.</comment>
   </data>
   <data name="Notice_Autostart_Title" xml:space="preserve">
     <value>Inicia amb el Windows</value>
@@ -227,11 +279,51 @@
     <value>GPU</value>
     <comment>The graphics chip. Short: used in labels like 'GPU 45°'.</comment>
   </data>
+  <data name="Chip_System" xml:space="preserve">
+    <value>Sistema</value>
+    <comment>Short name of a system (chassis) fan where space is tight, e.g. the tray tooltip: "System 2,000 rpm".</comment>
+  </data>
   <data name="Fan_Cpu" xml:space="preserve">
     <value>Ventilador de la CPU</value>
   </data>
   <data name="Fan_Gpu" xml:space="preserve">
     <value>Ventilador de la GPU</value>
+  </data>
+  <data name="Fan_Gpu1" xml:space="preserve">
+    <value>Ventilador 1 de la GPU</value>
+    <comment>The first of two GPU fans, on laptops that have two (Acer's software numbers them the same way).</comment>
+  </data>
+  <data name="Fan_Gpu2" xml:space="preserve">
+    <value>Ventilador 2 de la GPU</value>
+    <comment>The second GPU fan.</comment>
+  </data>
+  <data name="Fan_System" xml:space="preserve">
+    <value>Ventilador del sistema</value>
+    <comment>A fan in the chassis, not on the CPU or GPU. OpenSense only shows its speed.</comment>
+  </data>
+  <data name="Fan_System1" xml:space="preserve">
+    <value>Ventilador 1 del sistema</value>
+    <comment>The first of two system fans.</comment>
+  </data>
+  <data name="Fan_System2" xml:space="preserve">
+    <value>Ventilador 2 del sistema</value>
+    <comment>The second system fan.</comment>
+  </data>
+  <data name="FanShort_Gpu1" xml:space="preserve">
+    <value>GPU 1</value>
+    <comment>Short name of the first GPU fan where space is tight (the tray tooltip), on laptops with two.</comment>
+  </data>
+  <data name="FanShort_Gpu2" xml:space="preserve">
+    <value>GPU 2</value>
+    <comment>Short name of the second GPU fan.</comment>
+  </data>
+  <data name="FanShort_System1" xml:space="preserve">
+    <value>Sistema 1</value>
+    <comment>Short name of the first of two system fans.</comment>
+  </data>
+  <data name="FanShort_System2" xml:space="preserve">
+    <value>Sistema 2</value>
+    <comment>Short name of the second system fan.</comment>
   </data>
   <data name="FanMode_Auto" xml:space="preserve">
     <value>Auto</value>
@@ -270,6 +362,34 @@
     <value>El mode Silenciós manté els ventiladors en Auto.</value>
     <comment>Quiet = OperatingMode_Quiet; Auto = FanMode_Auto.</comment>
   </data>
+  <data name="FanLock_EcoMode" xml:space="preserve">
+    <value>El mode Eco manté els ventiladors en Auto.</value>
+    <comment>Banner on the Fans page: in the Eco operating mode the fans stay on Auto (as Acer's software has it).</comment>
+  </data>
+  <data name="FanLock_DustDefender" xml:space="preserve">
+    <value>Els ventiladors giren al revés per treure la pols. El control dels ventiladors es reprèn quan acaben.</value>
+    <comment>Banner on the Fans page while the laptop's DustDefender runs the fans backwards; OpenSense leaves the fans alone meanwhile.</comment>
+  </data>
+  <data name="DustDefender_Description" xml:space="preserve">
+    <value>Fa girar els ventiladors al revés una estona per treure la pols dels dissipadors.</value>
+    <comment>The DustDefender card's description on the Fans page ("DustDefender" is Acer's name for the feature and stays in English).</comment>
+  </data>
+  <data name="DustDefender_Running" xml:space="preserve">
+    <value>S'està netejant: els ventiladors giren al revés una estona.</value>
+    <comment>The DustDefender card's description while a run is going.</comment>
+  </data>
+  <data name="DustDefender_Busy" xml:space="preserve">
+    <value>El portàtil ho ha rebutjat de moment, com fa amb molta càrrega. Torna-ho a provar quan estigui inactiu.</value>
+    <comment>The DustDefender card's description when the laptop's embedded controller turned a start down (Acer: it does under heavy load).</comment>
+  </data>
+  <data name="DustDefender_Failed" xml:space="preserve">
+    <value>El portàtil no ha començat la neteja.</value>
+    <comment>The DustDefender card's description when the firmware refused a start.</comment>
+  </data>
+  <data name="Fans_CleanNow.Content" xml:space="preserve">
+    <value>Neteja ara</value>
+    <comment>Button on the DustDefender card: the fans run backwards for a moment to blow dust out.</comment>
+  </data>
   <data name="OperatingMode_Eco" xml:space="preserve">
     <value>Eco</value>
     <comment>Acer operating mode name. Short: a segmented button.</comment>
@@ -306,9 +426,17 @@
   <data name="OperatingMode_Turbo_Description" xml:space="preserve">
     <value>Màxima potència i refrigeració. Cal corrent altern.</value>
   </data>
-  <data name="OperatingMode_BatteryNote" xml:space="preserve">
-    <value>Amb bateria, {0} i {1} funcionen com a {2} fins que connectis el carregador.</value>
-    <comment>{0}, {1}, {2} = operating mode names (Performance, Turbo, Balanced).</comment>
+  <data name="OperatingMode_BatteryModeNote" xml:space="preserve">
+    <value>Amb bateria: es fa servir el mode triat aquí fins que connectis el carregador.</value>
+    <comment>Under the operating mode list while on battery: the list shows the battery's own mode.</comment>
+  </data>
+  <data name="OperatingMode_LowBatteryNote" xml:space="preserve">
+    <value>La bateria està massa baixa per ajudar el carregador, així que els modes de rendiment tornaran quan es carregui.</value>
+    <comment>Under the operating mode list on AC when the battery is too low to help the adapter (only Quiet and Balanced are listed then).</comment>
+  </data>
+  <data name="OperatingMode_AdapterNote" xml:space="preserve">
+    <value>Aquest carregador no pot alimentar els modes de rendiment; tornaran amb un de més potent, com el del portàtil.</value>
+    <comment>Under the operating modes when the adapter can't power every mode (a USB-C charger that is too weak, or the laptop's own limit), so only the quieter ones are offered.</comment>
   </data>
   <data name="PowerSource_PluggedIn" xml:space="preserve">
     <value>Endollat</value>
@@ -351,14 +479,6 @@
   </data>
   <data name="Dashboard_GpuTemperature.Text" xml:space="preserve">
     <value>Temperatura de la GPU</value>
-    <comment>Tile caption.</comment>
-  </data>
-  <data name="Dashboard_CpuFan.Text" xml:space="preserve">
-    <value>Ventilador de la CPU</value>
-    <comment>Tile caption.</comment>
-  </data>
-  <data name="Dashboard_GpuFan.Text" xml:space="preserve">
-    <value>Ventilador de la GPU</value>
     <comment>Tile caption.</comment>
   </data>
   <data name="Dashboard_LoadDetail" xml:space="preserve">
@@ -408,6 +528,21 @@
   <data name="Fans_CoolBoost.Description" xml:space="preserve">
     <value>Augmenta les velocitats pròpies dels ventiladors del microprogramari, que el mode Auto fa servir i a les quals el mode Manual afegeix velocitat.</value>
     <comment>Under the header "CoolBoost" (an Acer feature name). Auto, Custom = FanMode_Auto, FanMode_Custom.</comment>
+  </data>
+  <data name="Fans_FanTable.Header" xml:space="preserve">
+    <value>Corba dels ventiladors</value>
+  </data>
+  <data name="Fans_FanTable.Description" xml:space="preserve">
+    <value>Les velocitats pròpies dels ventiladors del microprogramari, que el mode Auto fa servir i a les quals el mode Manual afegeix velocitat. El programari d'Acer tria una corba més ràpida per fer overclocking de la GPU.</value>
+  </data>
+  <data name="Fans_FanTableStandard.Content" xml:space="preserve">
+    <value>Estàndard</value>
+  </data>
+  <data name="Fans_FanTableFaster.Content" xml:space="preserve">
+    <value>Més ràpida</value>
+  </data>
+  <data name="Fans_FanTableFastest.Content" xml:space="preserve">
+    <value>La més ràpida</value>
   </data>
   <data name="Fans_BoostFixed.Content" xml:space="preserve">
     <value>Fixa</value>
@@ -459,9 +594,125 @@
     <value>Efecte</value>
     <comment>Lighting mode: an animated effect.</comment>
   </data>
+  <data name="Lighting_PerKey.Content" xml:space="preserve">
+    <value>Per tecla</value>
+    <comment>Lighting mode: a colour for each key (next to "Static colours" and "Effect").</comment>
+  </data>
+  <data name="Lighting_PerKeyHint.Text" xml:space="preserve">
+    <value>Un clic en una tecla la selecciona, Ctrl+clic n'afegeix o en treu una i arrossegar-ne en selecciona diverses. Aleshores el color s'aplica a les tecles seleccionades, o a totes si no n'hi ha cap.</value>
+    <comment>Help above the per-key editor's buttons.</comment>
+  </data>
+  <data name="Lighting_SelectWasd.Content" xml:space="preserve">
+    <value>WASD</value>
+    <comment>Button that selects the W, A, S and D keys (the name of the key group; keep as is).</comment>
+  </data>
+  <data name="Lighting_SelectArrows.Content" xml:space="preserve">
+    <value>Fletxes</value>
+    <comment>Button that selects the four arrow keys.</comment>
+  </data>
+  <data name="Lighting_SelectFunctionKeys.Content" xml:space="preserve">
+    <value>F1–F12</value>
+    <comment>Button that selects the function keys F1 to F12.</comment>
+  </data>
+  <data name="Lighting_SelectNumbers.Content" xml:space="preserve">
+    <value>Fila de números</value>
+    <comment>Button that selects the row of digit keys 1 to 0.</comment>
+  </data>
+  <data name="Lighting_SelectAll.Content" xml:space="preserve">
+    <value>Totes les tecles</value>
+    <comment>Button that selects every key.</comment>
+  </data>
+  <data name="Lighting_SelectNone.Content" xml:space="preserve">
+    <value>Treu la selecció</value>
+    <comment>Button that deselects every key in the per-key editor.</comment>
+  </data>
+  <data name="Lighting_TurnOffKeys.Content" xml:space="preserve">
+    <value>Apaga</value>
+    <comment>Button that makes the selected keys (or all, with none selected) dark.</comment>
+  </data>
+  <data name="Lighting_Layout.Header" xml:space="preserve">
+    <value>Disposició</value>
+    <comment>Which keyboard layout the per-key editor draws (US, UK and Europe, Japanese).</comment>
+  </data>
+  <data name="Layout_Ansi" xml:space="preserve">
+    <value>EUA (ANSI)</value>
+    <comment>Keyboard layout name in the per-key editor.</comment>
+  </data>
+  <data name="Layout_Iso" xml:space="preserve">
+    <value>Regne Unit i Europa (ISO)</value>
+    <comment>Keyboard layout name in the per-key editor.</comment>
+  </data>
+  <data name="Layout_Jis" xml:space="preserve">
+    <value>Japonès (JIS)</value>
+    <comment>Keyboard layout name in the per-key editor.</comment>
+  </data>
+  <data name="Lighting_EffectList.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Efecte</value>
+    <comment>Screen-reader name of the list of lighting effects.</comment>
+  </data>
   <data name="Lighting_Zone" xml:space="preserve">
     <value>Zona {0}</value>
     <comment>A keyboard lighting zone: {0} = its number.</comment>
+  </data>
+  <data name="Lighting_NumberedLight" xml:space="preserve">
+    <value>{0} {1}</value>
+    <comment>A light's name when the laptop has two of that kind: {0} = its name (e.g. "Light bar"), {1} = 1 or 2.</comment>
+  </data>
+  <data name="Light_Keyboard" xml:space="preserve">
+    <value>Teclat</value>
+    <comment>Name of the keyboard backlight in the Lighting page's list of lights.</comment>
+  </data>
+  <data name="Light_LightBar" xml:space="preserve">
+    <value>Barra de llum</value>
+    <comment>Name of the laptop's light bar(s) in the Lighting page's list of lights.</comment>
+  </data>
+  <data name="Light_InfinityMirror" xml:space="preserve">
+    <value>Infinity Mirror</value>
+    <comment>Acer's name for the rear light bar of Predator Helios 16/18 (2024). A product name: keep it as it is.</comment>
+  </data>
+  <data name="Light_Logo" xml:space="preserve">
+    <value>Logotip</value>
+    <comment>Name of the lit logo on the laptop's lid in the Lighting page's list of lights.</comment>
+  </data>
+  <data name="Light_FrontLightBar" xml:space="preserve">
+    <value>Barra de llum frontal</value>
+    <comment>A light's name (the page's light selector).</comment>
+  </data>
+  <data name="Light_LeftLightBar" xml:space="preserve">
+    <value>Barra de llum esquerra</value>
+    <comment>A light's name (the page's light selector).</comment>
+  </data>
+  <data name="Light_RightLightBar" xml:space="preserve">
+    <value>Barra de llum dreta</value>
+    <comment>A light's name (the page's light selector).</comment>
+  </data>
+  <data name="Light_RearLightBar" xml:space="preserve">
+    <value>Barra de llum posterior</value>
+    <comment>A light's name (the page's light selector).</comment>
+  </data>
+  <data name="Light_TurboKey" xml:space="preserve">
+    <value>Tecla Turbo</value>
+    <comment>A light's name: the light in the laptop's Turbo key.</comment>
+  </data>
+  <data name="Light_ModeKey" xml:space="preserve">
+    <value>Tecla de mode</value>
+    <comment>A light's name: the light in the laptop's Mode key (switches operating modes).</comment>
+  </data>
+  <data name="Light_CoverLogo" xml:space="preserve">
+    <value>Logotip de la tapa</value>
+    <comment>A light's name: the logo on the outside of the lid.</comment>
+  </data>
+  <data name="Light_BaseLogo" xml:space="preserve">
+    <value>Logotip de la base</value>
+    <comment>A light's name: a logo on the laptop's base.</comment>
+  </data>
+  <data name="Light_MagKey" xml:space="preserve">
+    <value>Tecles MagForce</value>
+    <comment>A light's name: the lights under the W, A, S and D keys of Predator Helios models (Acer calls these keys MagForce keys; keep "MagForce").</comment>
+  </data>
+  <data name="Light_InfiniteRing" xml:space="preserve">
+    <value>InfiniteRing</value>
+    <comment>A light's name: a ring of light on some Predator laptops (Acer's name for it; keep as is).</comment>
   </data>
   <data name="Lighting_ZoneColor.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Tria un color</value>
@@ -469,6 +720,14 @@
   </data>
   <data name="Lighting_AllZones.Text" xml:space="preserve">
     <value>Un color per a totes les zones</value>
+  </data>
+  <data name="Lighting_ApplyToAll.Content" xml:space="preserve">
+    <value>Aplica a tots els llums</value>
+    <comment>Button: gives every other light the nearest look it can show to the one being edited.</comment>
+  </data>
+  <data name="Lighting_Color.Text" xml:space="preserve">
+    <value>Color</value>
+    <comment>Heading of the colour picker for a light with a single colour (the logo).</comment>
   </data>
   <data name="Lighting_Speed.Header" xml:space="preserve">
     <value>Velocitat</value>
@@ -480,6 +739,10 @@
   </data>
   <data name="Lighting_EffectColor.Text" xml:space="preserve">
     <value>Color de l'efecte</value>
+  </data>
+  <data name="Lighting_RandomColor.Content" xml:space="preserve">
+    <value>Colors aleatoris</value>
+    <comment>Check box next to "Effect colour": the effect picks random colours instead.</comment>
   </data>
   <data name="Lighting_AnyColor.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Qualsevol color</value>
@@ -511,6 +774,10 @@
   <data name="Effect_Neon_Description" xml:space="preserve">
     <value>Recorre els colors de l'arc de Sant Martí.</value>
   </data>
+  <data name="Effect_NeonKeyboard_Description" xml:space="preserve">
+    <value>El teclat s'encén i s'apaga suaument en vermell, després en verd i després en blau.</value>
+    <comment>Description of the Neon effect on a keyboard lit by zones (the embedded controller's), under the effect list. The whole keyboard fades in and out in one colour at a time.</comment>
+  </data>
   <data name="Effect_Wave_Description" xml:space="preserve">
     <value>Una onada de color recorre les tecles.</value>
   </data>
@@ -519,6 +786,224 @@
   </data>
   <data name="Effect_Zoom_Description" xml:space="preserve">
     <value>El color s'expandeix des del centre.</value>
+  </data>
+  <data name="Effect_Meteor" xml:space="preserve">
+    <value>Meteor</value>
+    <comment>Keyboard lighting effect: streaks of colour move across the keyboard.</comment>
+  </data>
+  <data name="Effect_Meteor_Description" xml:space="preserve">
+    <value>Rastres de color travessen el teclat.</value>
+  </data>
+  <data name="Effect_MeteorKeyboard_Description" xml:space="preserve">
+    <value>Un pols de color recorre el teclat d'anada i tornada.</value>
+    <comment>Description of the Meteor effect on a keyboard lit by zones (the embedded controller's), under the effect list. The colour lights one zone after the other to the far end, then comes back the same way.</comment>
+  </data>
+  <data name="Effect_Twinkling" xml:space="preserve">
+    <value>Centelleig</value>
+    <comment>Keyboard lighting effect: parts of the keyboard light up at random and fade.</comment>
+  </data>
+  <data name="Effect_Snake" xml:space="preserve">
+    <value>Serp</value>
+    <comment>Light bar effect (Infinity Mirror): a band of rainbow colours runs along the bar.</comment>
+  </data>
+  <data name="Effect_Lightning" xml:space="preserve">
+    <value>Llamp</value>
+    <comment>Light bar effect (Infinity Mirror).</comment>
+  </data>
+  <data name="Effect_Stack" xml:space="preserve">
+    <value>Pila</value>
+    <comment>Light bar effect (Infinity Mirror): light builds up zone by zone.</comment>
+  </data>
+  <data name="Effect_MotionPoint" xml:space="preserve">
+    <value>Punt en moviment</value>
+    <comment>Light bar effect (Infinity Mirror): a point of light moves along the bar.</comment>
+  </data>
+  <data name="Effect_Ripple" xml:space="preserve">
+    <value>Ones</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Raindrop" xml:space="preserve">
+    <value>Gotes de pluja</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Fireball" xml:space="preserve">
+    <value>Bola de foc</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Snow" xml:space="preserve">
+    <value>Neu</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Heartbeat" xml:space="preserve">
+    <value>Batec</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Dazzling" xml:space="preserve">
+    <value>Enlluernador</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Matrix" xml:space="preserve">
+    <value>Matriu</value>
+    <comment>Lighting effect name (after the film's falling green code).</comment>
+  </data>
+  <data name="Effect_Swiping" xml:space="preserve">
+    <value>Escombrat</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_RowWave" xml:space="preserve">
+    <value>Ona per files</value>
+    <comment>Lighting effect name: a wave that moves row by row.</comment>
+  </data>
+  <data name="Effect_Racing" xml:space="preserve">
+    <value>Cursa</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Sprouting" xml:space="preserve">
+    <value>Brotada</value>
+    <comment>Lighting effect name: light grows like a sprout.</comment>
+  </data>
+  <data name="Effect_Disco" xml:space="preserve">
+    <value>Disco</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_PingPong" xml:space="preserve">
+    <value>Ping-pong</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_LightShow" xml:space="preserve">
+    <value>Espectacle de llum</value>
+    <comment>Lighting effect name: the light's effects in turn.</comment>
+  </data>
+  <data name="Effect_FollowOperatingMode" xml:space="preserve">
+    <value>Mode de funcionament</value>
+    <comment>Lighting effect name: the firmware colours the light by the operating mode (Quiet, Balanced, Performance, ...).</comment>
+  </data>
+  <data name="Effect_Combo" xml:space="preserve">
+    <value>Combinat</value>
+    <comment>Lighting effect name: several effects at once.</comment>
+  </data>
+  <data name="Effect_Rainbow" xml:space="preserve">
+    <value>Arc de Sant Martí</value>
+    <comment>Lighting effect name (MagForce keys).</comment>
+  </data>
+  <data name="Effect_Slash" xml:space="preserve">
+    <value>Tall</value>
+    <comment>Lighting effect name (MagForce keys): a slash of light across the keys.</comment>
+  </data>
+  <data name="Effect_Star" xml:space="preserve">
+    <value>Estrelles</value>
+    <comment>Lighting effect name (MagForce keys).</comment>
+  </data>
+  <data name="Effect_Blasting" xml:space="preserve">
+    <value>Esclat</value>
+    <comment>Lighting effect name (MagForce keys): colour bursts out.</comment>
+  </data>
+  <data name="Effect_Twinkling_Description" xml:space="preserve">
+    <value>Parts del teclat s'il·luminen a l'atzar i s'esvaeixen.</value>
+  </data>
+  <data name="Effect_TwinklingKeyboard_Description" xml:space="preserve">
+    <value>Tot el teclat parpelleja: s'encén i s'apaga.</value>
+    <comment>Description of the Twinkling effect on a keyboard lit by zones (the embedded controller's), under the effect list. All zones switch on and off together, with no fading.</comment>
+  </data>
+  <data name="Effect_Snake_Description" xml:space="preserve">
+    <value>Una franja amb els colors de l'arc de Sant Martí recorre la barra de llum.</value>
+  </data>
+  <data name="Effect_SnakeColor_Description" xml:space="preserve">
+    <value>Una línia de color serpenteja per la llum.</value>
+    <comment>Description of the Snake effect where it takes a colour (keyboards, logos), under the effect list.</comment>
+  </data>
+  <data name="Effect_Lightning_Description" xml:space="preserve">
+    <value>La llum fa pampallugues com un llamp.</value>
+  </data>
+  <data name="Effect_Stack_Description" xml:space="preserve">
+    <value>La llum s'acumula zona a zona.</value>
+  </data>
+  <data name="Effect_MotionPoint_Description" xml:space="preserve">
+    <value>Un punt de llum es mou per la barra de llum.</value>
+  </data>
+  <data name="Effect_ZoomIn_Description" xml:space="preserve">
+    <value>La llum es desplaça cap al centre.</value>
+    <comment>The Infinity Mirror's Zoom (Acer names it Zoom there too).</comment>
+  </data>
+  <data name="Effect_Ripple_Description" xml:space="preserve">
+    <value>Anells de color s'escampen cap enfora.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Raindrop_Description" xml:space="preserve">
+    <value>Gotes de color cauen i s'esvaeixen.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Fireball_Description" xml:space="preserve">
+    <value>Una bola de foc travessa la llum.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Snow_Description" xml:space="preserve">
+    <value>Flocs de llum cauen a poc a poc.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Heartbeat_Description" xml:space="preserve">
+    <value>La llum batega com un cor.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Dazzling_Description" xml:space="preserve">
+    <value>Espurnes brillants llampeguen per tot arreu.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Matrix_Description" xml:space="preserve">
+    <value>Rierols de llum cauen com pluja.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Swiping_Description" xml:space="preserve">
+    <value>El color escombra d'anada i tornada.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_RowWave_Description" xml:space="preserve">
+    <value>El color avança fila per fila.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Racing_Description" xml:space="preserve">
+    <value>Llums que es persegueixen.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Sprouting_Description" xml:space="preserve">
+    <value>La llum creix des de baix.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Disco_Description" xml:space="preserve">
+    <value>Els colors llampeguen com en una pista de ball.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_PingPong_Description" xml:space="preserve">
+    <value>Un punt de llum rebota d'un costat a l'altre.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_LightShow_Description" xml:space="preserve">
+    <value>Els efectes es reprodueixen l'un rere l'altre.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_FollowOperatingMode_Description" xml:space="preserve">
+    <value>El color mostra el mode de funcionament actual.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Combo_Description" xml:space="preserve">
+    <value>Diversos efectes alhora.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Rainbow_Description" xml:space="preserve">
+    <value>Les tecles brillen amb els colors de l'arc de Sant Martí.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Slash_Description" xml:space="preserve">
+    <value>La llum talla les tecles d'una passada.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Star_Description" xml:space="preserve">
+    <value>Les tecles centellegen com estrelles.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Blasting_Description" xml:space="preserve">
+    <value>El color esclata i s'esvaeix.</value>
+    <comment>Effect description, under the effect list.</comment>
   </data>
   <data name="Direction_Left" xml:space="preserve">
     <value>Esquerra</value>
@@ -541,7 +1026,7 @@
     <comment>Keyboard backlight brightness: off. Short: shown next to 25%, 50%...</comment>
   </data>
   <data name="System_Title.Text" xml:space="preserve">
-    <value>Teclat i pantalla</value>
+    <value>Sistema</value>
     <comment>Page title, same as Nav_System.Content.</comment>
   </data>
   <data name="System_Keyboard.Text" xml:space="preserve">
@@ -561,6 +1046,22 @@
   </data>
   <data name="System_WindowsKey.Description" xml:space="preserve">
     <value>Desactiva-ho perquè les tecles Windows i Menú no interrompin els jocs.</value>
+  </data>
+  <data name="System_ModeKey.Header" xml:space="preserve">
+    <value>Tecla de mode</value>
+    <comment>System page, Keyboard section: the laptop's Mode key (it switches the operating mode). Shown once the key has been pressed.</comment>
+  </data>
+  <data name="System_ModeKey.Description" xml:space="preserve">
+    <value>Què fa la tecla de mode del portàtil.</value>
+    <comment>Description of the Mode key setting.</comment>
+  </data>
+  <data name="System_ModeKeyCycle.Content" xml:space="preserve">
+    <value>Recórrer els modes</value>
+    <comment>Mode key choice: each press goes to the next operating mode (Balanced, Performance, Turbo, Quiet; on battery Balanced and Eco).</comment>
+  </data>
+  <data name="System_ModeKeyTurbo.Content" xml:space="preserve">
+    <value>Activar i desactivar Turbo</value>
+    <comment>Mode key choice: a press turns Turbo on, the next one goes back to the mode before.</comment>
   </data>
   <data name="System_StickyKeys.Header" xml:space="preserve">
     <value>Tecles permanents</value>
@@ -610,6 +1111,261 @@
   <data name="System_RestartNow.Content" xml:space="preserve">
     <value>Reinicia ara</value>
     <comment>Button: restart Windows now.</comment>
+  </data>
+  <data name="System_GpuClocks.Header" xml:space="preserve">
+    <value>Overclock de la GPU</value>
+    <comment>Expander on the System page: clock offsets for the NVIDIA GPU, per operating mode.</comment>
+  </data>
+  <data name="GpuClocks_Reset.Content" xml:space="preserve">
+    <value>Restableix</value>
+    <comment>Button next to "GPU overclock": sets every offset back to 0.</comment>
+  </data>
+  <data name="GpuClocks_FollowFirmware.Header" xml:space="preserve">
+    <value>Overclock d'Acer</value>
+    <comment>Switch in the GPU overclock section, on laptops whose firmware has its own GPU overclock for each operating mode (2024+ Predators). Keep "Acer".</comment>
+  </data>
+  <data name="GpuClocks_Core.Header" xml:space="preserve">
+    <value>Nucli (MHz)</value>
+    <comment>Number box label: the GPU core clock offset, in MHz.</comment>
+  </data>
+  <data name="GpuClocks_Memory.Header" xml:space="preserve">
+    <value>Memòria (MHz)</value>
+    <comment>Number box label: the GPU memory clock offset, in MHz.</comment>
+  </data>
+  <data name="GpuClocks_Footer.Text" xml:space="preserve">
+    <value>Els desplaçaments de memòria compten el doble, com a l'MSI Afterburner: +100 apuja la freqüència de la memòria 50 MHz.</value>
+    <comment>Note under the GPU overclock rows. MSI Afterburner is a product name.</comment>
+  </data>
+  <data name="GpuClocks_Always" xml:space="preserve">
+    <value>Sempre</value>
+    <comment>The only row of GPU offsets on laptops without operating modes: they apply all the time.</comment>
+  </data>
+  <data name="GpuClocks_InUse" xml:space="preserve">
+    <value>En ús ara</value>
+    <comment>Under the operating mode whose GPU offsets apply right now.</comment>
+  </data>
+  <data name="GpuClocks_Firmware" xml:space="preserve">
+    <value>D'Acer: nucli {0} MHz, memòria {1} MHz</value>
+    <comment>Under an operating mode in the GPU overclock section: the firmware's own offsets for that mode. {0} = core offset, {1} = memory offset (signed numbers, e.g. +150).</comment>
+  </data>
+  <data name="GpuClocks_Description" xml:space="preserve">
+    <value>Augmenta les freqüències de rellotge de la GPU.</value>
+    <comment>Under "GPU overclock" while no offsets are set in the operating mode in force.</comment>
+  </data>
+  <data name="GpuClocks_WaitingForLimits" xml:space="preserve">
+    <value>Els límits de la GPU apareixen quan s'ha fet servir.</value>
+    <comment>Under "GPU overclock" until the NVIDIA driver has reported which offsets it accepts (it is only asked while the GPU is on).</comment>
+  </data>
+  <data name="GpuClocks_Pending" xml:space="preserve">
+    <value>S'aplica la propera vegada que es faci servir la GPU.</value>
+    <comment>Under "GPU overclock" while offsets are set but the GPU is powered down (it is not woken to apply them).</comment>
+  </data>
+  <data name="GpuClocks_Applied" xml:space="preserve">
+    <value>En ús: nucli {0} MHz, memòria {1} MHz</value>
+    <comment>Under "GPU overclock": the offsets in force. {0} = core, {1} = memory offset, with their sign (e.g. +150, 0).</comment>
+  </data>
+  <data name="GpuClocks_NotApplied" xml:space="preserve">
+    <value>El controlador de NVIDIA no ha acceptat aquests desplaçaments.</value>
+    <comment>Under "GPU overclock" when the driver did not take the offsets.</comment>
+  </data>
+  <data name="GpuClocks_Confirm_Title" xml:space="preserve">
+    <value>Vols fer overclock a la GPU?</value>
+    <comment>Dialog title before the first GPU offset is set.</comment>
+  </data>
+  <data name="GpuClocks_Confirm_Message" xml:space="preserve">
+    <value>Unes freqüències per sobre de les de NVIDIA poden fer que els jocs es pengin o que el portàtil es bloquegi o es reiniciï. Si passa, abaixa els desplaçaments.</value>
+    <comment>Dialog text before the first GPU offset is set.</comment>
+  </data>
+  <data name="GpuClocks_Confirm_Overclock" xml:space="preserve">
+    <value>Fes overclock</value>
+    <comment>The dialog's button that goes ahead with the overclock.</comment>
+  </data>
+  <data name="System_Battery.Text" xml:space="preserve">
+    <value>Bateria</value>
+    <comment>Section header on the System page.</comment>
+  </data>
+  <data name="System_BatteryHealth.Header" xml:space="preserve">
+    <value>Estat de la bateria</value>
+  </data>
+  <data name="BatteryHealth_Capacity" xml:space="preserve">
+    <value>{0} % de la capacitat original ({1} de {2} Wh)</value>
+    <comment>{0} = percent, {1} = what it holds now, {2} = what it held new (watt-hours).</comment>
+  </data>
+  <data name="BatteryHealth_CapacityRelative" xml:space="preserve">
+    <value>{0} % de la capacitat original</value>
+    <comment>{0} = percent. For batteries that don't report watt-hours.</comment>
+  </data>
+  <data name="BatteryHealth_Cycles" xml:space="preserve">
+    <value>Cicles de càrrega: {0}</value>
+    <comment>{0} = how many times the battery has been fully charged, as it counts.</comment>
+  </data>
+  <data name="System_ChargeLimit.Header" xml:space="preserve">
+    <value>Aturada de la càrrega al 80 %</value>
+  </data>
+  <data name="System_ChargeLimit.Description" xml:space="preserve">
+    <value>Tenir la bateria sempre plena la desgasta més de pressa. Val la pena activar-ho si el portàtil està endollat la major part del temps.</value>
+  </data>
+  <data name="System_Calibration.Header" xml:space="preserve">
+    <value>Calibratge de la bateria</value>
+  </data>
+  <data name="System_Calibration.Description" xml:space="preserve">
+    <value>Carrega la bateria del tot, la descarrega i la torna a carregar, perquè la càrrega que es mostra sigui exacta. Triga diverses hores.</value>
+  </data>
+  <data name="System_CalibrationStart.Content" xml:space="preserve">
+    <value>Calibra</value>
+  </data>
+  <data name="System_CalibrationStop.Content" xml:space="preserve">
+    <value>Atura</value>
+  </data>
+  <data name="System_UsbCharging.Header" xml:space="preserve">
+    <value>Càrrega de dispositius USB amb el portàtil apagat</value>
+  </data>
+  <data name="System_UsbCharging.Description" xml:space="preserve">
+    <value>Els ports USB continuen carregant mòbils i altres dispositius amb el portàtil apagat, fins que la bateria baixa al nivell triat aquí.</value>
+  </data>
+  <data name="UsbCharging_Floor" xml:space="preserve">
+    <value>Fins al {0} % de bateria</value>
+    <comment>An item of the list next to "Charge USB devices while off": charging stops when the battery falls to {0} percent.</comment>
+  </data>
+  <data name="System_Startup.Text" xml:space="preserve">
+    <value>Arrencada</value>
+    <comment>Section header on the System page: what the laptop does when it is switched on (boot), not apps that start with Windows.</comment>
+  </data>
+  <data name="System_BootAnimation.Header" xml:space="preserve">
+    <value>Animació i so d'arrencada</value>
+  </data>
+  <data name="System_BootAnimation.Description" xml:space="preserve">
+    <value>L'animació i el so en engegar el portàtil, als models que en tenen. S'aplica la pròxima vegada que s'engegui.</value>
+    <comment>Not every laptop has an animation or a sound, and OpenSense can't tell which do, so the text says so.</comment>
+  </data>
+  <data name="System_BootLogo.Header" xml:space="preserve">
+    <value>Logotip d'arrencada</value>
+  </data>
+  <data name="System_BootLogoAcer.Text" xml:space="preserve">
+    <value>Logotip d'Acer</value>
+    <comment>Shown in place of a thumbnail while the firmware shows Acer's own logo.</comment>
+  </data>
+  <data name="System_BootLogoRestore.Content" xml:space="preserve">
+    <value>Usa el logotip d'Acer</value>
+    <comment>Button: removes the custom picture so Acer's logo shows again.</comment>
+  </data>
+  <data name="System_BootLogoChoose.Content" xml:space="preserve">
+    <value>Tria una imatge</value>
+  </data>
+  <data name="Calibration_Charging" xml:space="preserve">
+    <value>Calibrant des de les {0}: s'està carregant, {1} %</value>
+    <comment>Next to the Stop button while the battery calibrates. {0} = when it started (a time), {1} = battery percent.</comment>
+  </data>
+  <data name="Calibration_Discharging" xml:space="preserve">
+    <value>Calibrant des de les {0}: s'està descarregant, {1} %</value>
+    <comment>Next to the Stop button while the battery calibrates. {0} = when it started (a time), {1} = battery percent.</comment>
+  </data>
+  <data name="Calibration_Running" xml:space="preserve">
+    <value>Calibrant des de les {0}</value>
+    <comment>Next to the Stop button while the battery calibrates and Windows can't tell the battery's charge. {0} = when it started (a time).</comment>
+  </data>
+  <data name="Calibration_Confirm_Title" xml:space="preserve">
+    <value>Vols calibrar la bateria?</value>
+  </data>
+  <data name="Calibration_Confirm_Message" xml:space="preserve">
+    <value>Això triga diverses hores. Mantén l'adaptador endollat tota l'estona: si el desendolles, s'atura el calibratge. El portàtil no entrarà en repòs fins que acabi, ni tan sols amb la tapa tancada.</value>
+  </data>
+  <data name="Calibration_Confirm_Start" xml:space="preserve">
+    <value>Comença el calibratge</value>
+    <comment>The dialog's button that starts the calibration.</comment>
+  </data>
+  <data name="Calibration_NeedsAc" xml:space="preserve">
+    <value>Endolla l'adaptador per calibrar la bateria.</value>
+  </data>
+  <data name="Calibration_AlreadyRunning" xml:space="preserve">
+    <value>La bateria ja s'està calibrant.</value>
+  </data>
+  <data name="Calibration_Rejected" xml:space="preserve">
+    <value>El microprogramari ha rebutjat el calibratge de la bateria.</value>
+  </data>
+  <data name="BootLogo_Description" xml:space="preserve">
+    <value>Una imatge GIF o JPEG que es mostra en engegar el portàtil, de fins a {0} × {1} píxels, 35 MB i color de 24 bits. Cada fotograma d'un GIF es mostra com a mínim 30 ms.</value>
+    <comment>Under "Boot logo". {0} × {1} = the largest width and height, in pixels (40 % of the laptop screen's). 35 MB is Acer's file limit (35,000,000 bytes); the BIOS shows each frame of an animated GIF for 30 ms or longer.</comment>
+  </data>
+  <data name="BootLogo_DescriptionAnySize" xml:space="preserve">
+    <value>Una imatge GIF o JPEG que es mostra en engegar el portàtil, de fins al 40 % de l'amplada i l'alçada de la pantalla, 35 MB i color de 24 bits. Cada fotograma d'un GIF es mostra com a mínim 30 ms.</value>
+    <comment>Under "Boot logo" while the laptop screen's resolution is unknown (e.g. the lid is closed). 35 MB is Acer's file limit (35,000,000 bytes); the BIOS shows each frame of an animated GIF for 30 ms or longer.</comment>
+  </data>
+  <data name="BootLogo_BiosDefaults" xml:space="preserve">
+    <value>Carregar la configuració per defecte a la BIOS elimina la imatge.</value>
+  </data>
+  <data name="BootLogo_Confirm_Title" xml:space="preserve">
+    <value>Vols fer servir aquest logotip d'arrencada?</value>
+  </data>
+  <data name="BootLogo_Confirm_Message" xml:space="preserve">
+    <value>Es mostrarà la pròxima vegada que s'engegui el portàtil.</value>
+  </data>
+  <data name="BootLogo_Confirm_MessageWithAnimation" xml:space="preserve">
+    <value>Es mostrarà la pròxima vegada que s'engegui el portàtil. S'activarà l'animació d'arrencada, que és on es mostra el logotip.</value>
+    <comment>Used instead of BootLogo_Confirm_Message while the boot animation is off: the firmware shows the logo as part of it.</comment>
+  </data>
+  <data name="BootLogo_Confirm_Use" xml:space="preserve">
+    <value>Usa la imatge</value>
+    <comment>The dialog's button that makes the picture the boot logo.</comment>
+  </data>
+  <data name="BootLogo_NotGifOrJpeg" xml:space="preserve">
+    <value>Tria una imatge GIF o JPEG.</value>
+  </data>
+  <data name="BootLogo_FileTooLarge" xml:space="preserve">
+    <value>El fitxer de la imatge ocupa més de 35 MB.</value>
+    <comment>Acer's limit is 35,000,000 bytes.</comment>
+  </data>
+  <data name="BootLogo_TooManyPixels" xml:space="preserve">
+    <value>La imatge fa {0} × {1} píxels. El logotip d'arrencada d'aquest portàtil pot fer com a màxim {2} × {3} píxels.</value>
+    <comment>{0} × {1} = the picture's width and height; {2} × {3} = the largest this laptop's boot logo can be.</comment>
+  </data>
+  <data name="BootLogo_ColorDepth" xml:space="preserve">
+    <value>La imatge fa servir color de 32 bits o més. Desa-la amb color de 24 bits (RGB) i torna-ho a provar.</value>
+    <comment>The firmware takes pictures with fewer than 32 bits per pixel (e.g. not CMYK JPEGs).</comment>
+  </data>
+  <data name="BootLogo_NotBaseline" xml:space="preserve">
+    <value>La BIOS només mostra JPEG estàndard (baseline), i Windows no ha pogut convertir aquest. Desa'l com a JPEG estàndard i torna-ho a provar.</value>
+  </data>
+  <data name="BootLogo_ScreenUnknown" xml:space="preserve">
+    <value>L'OpenSense no pot llegir la resolució de la pantalla del portàtil per comprovar la mida de la imatge. Obre la tapa i torna-ho a provar.</value>
+    <comment>Windows doesn't list the built-in screen, usually because the lid is closed.</comment>
+  </data>
+  <data name="BootLogo_NoSpace" xml:space="preserve">
+    <value>No hi ha prou espai lliure a la partició del sistema EFI per a aquesta imatge.</value>
+  </data>
+  <data name="BootLogo_WriteFailed" xml:space="preserve">
+    <value>No s'ha pogut desar el logotip d'arrencada.</value>
+  </data>
+  <data name="BootLogo_RestoreFailed" xml:space="preserve">
+    <value>No s'ha pogut restaurar el logotip d'Acer.</value>
+  </data>
+  <data name="BootLogo_ReadFailed" xml:space="preserve">
+    <value>No s'ha pogut llegir la imatge: {0}</value>
+    <comment>{0} = the error from Windows.</comment>
+  </data>
+  <data name="Notice_Battery_Title" xml:space="preserve">
+    <value>Bateria</value>
+  </data>
+  <data name="Notice_ChargeLimitRejected" xml:space="preserve">
+    <value>El microprogramari ha rebutjat el canvi del límit de càrrega.</value>
+  </data>
+  <data name="Notice_UsbChargingRejected" xml:space="preserve">
+    <value>El microprogramari ha rebutjat el canvi de la càrrega per USB.</value>
+  </data>
+  <data name="Notice_CalibrationFinished" xml:space="preserve">
+    <value>El calibratge de la bateria ha acabat.</value>
+  </data>
+  <data name="Notice_CalibrationInterrupted" xml:space="preserve">
+    <value>El calibratge de la bateria s'ha aturat perquè el portàtil ha entrat en repòs o s'ha apagat.</value>
+  </data>
+  <data name="Notice_CalibrationStoppedUnplugged" xml:space="preserve">
+    <value>El calibratge de la bateria s'ha aturat perquè s'ha desendollat l'adaptador.</value>
+  </data>
+  <data name="Notice_Startup_Title" xml:space="preserve">
+    <value>Arrencada</value>
+  </data>
+  <data name="Notice_BootAnimationRejected" xml:space="preserve">
+    <value>El microprogramari ha rebutjat el canvi de l'animació d'arrencada.</value>
   </data>
   <data name="System_Power.Text" xml:space="preserve">
     <value>Energia</value>
@@ -815,6 +1571,14 @@ GPU: {1}</value>
     <value>Modes de funcionament</value>
     <comment>Setting: use Acer's operating modes (Eco, Quiet, Balanced...).</comment>
   </data>
+  <data name="Settings_MagKey.Header" xml:space="preserve">
+    <value>Llums de les tecles MagForce</value>
+    <comment>Setting in "Your laptop": whether the W, A, S and D keys' own lights (Acer's MagForce keys) are offered on the Lighting page.</comment>
+  </data>
+  <data name="Settings_MagKey.Description" xml:space="preserve">
+    <value>Llums pròpies sota la W, la A, la S i la D, detectades pel nom del model del portàtil. Canvieu-ho si no és correcte per al vostre.</value>
+    <comment>Under "MagForce key lights".</comment>
+  </data>
   <data name="Settings_OperatingModes_Supported" xml:space="preserve">
     <value>{0}, tal com els ofereix el programari d'Acer en aquest model. {1}</value>
     <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
@@ -1000,5 +1764,9 @@ Detalls: {1}</value>
   <data name="Tray_Exit" xml:space="preserve">
     <value>Surt</value>
     <comment>Menu item: quit OpenSense.</comment>
+  </data>
+  <data name="GpuClocks_FollowFirmware.Description" xml:space="preserve">
+    <value>L'overclock que el firmware fixa per a cada mode, sumat als desplaçaments de sota.</value>
+    <comment>Under "Acer's overclocking": the firmware's own overclock for each mode is added to the user's offsets set below it.</comment>
   </data>
 </root>

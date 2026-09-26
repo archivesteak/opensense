@@ -65,4 +65,33 @@ public sealed class OperatingModeTests
         Assert.Equal(OperatingMode.Balanced, firmware.Mode);
         Assert.Null(service.Latest!.FanLock); // no Quiet-style fan lock either
     }
+
+    [Theory]
+    [InlineData(OperatingMode.Quiet)]
+    [InlineData(OperatingMode.Performance)]
+    [InlineData(OperatingMode.Turbo)]
+    public void A_mode_is_set_from_balanced(OperatingMode mode)
+    {
+        // The BIOS steps its power table from the one in force (Quiet one down, Performance one up, Turbo two up), so
+        // mode after mode would drift; from Balanced, each lands where it should.
+        var firmware = new FakeFirmware { SupportsModes = true };
+        var device = new AcerDevice(firmware);
+
+        Assert.True(device.SetOperatingMode(mode));
+
+        Assert.Equal([Misc(OperatingMode.Balanced), Misc(mode)], firmware.Writes);
+        Assert.Equal(mode, firmware.Mode);
+    }
+
+    [Fact]
+    public void Balanced_is_set_alone()
+    {
+        var firmware = new FakeFirmware { SupportsModes = true };
+
+        Assert.True(new AcerDevice(firmware).SetOperatingMode(OperatingMode.Balanced));
+
+        Assert.Equal([Misc(OperatingMode.Balanced)], firmware.Writes);
+    }
+
+    private static (string, ulong) Misc(OperatingMode mode) => ("SetGamingMiscSetting", 0x0BUL | ((ulong)mode << 8));
 }

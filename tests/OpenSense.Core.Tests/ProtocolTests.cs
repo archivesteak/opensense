@@ -32,6 +32,20 @@ public class ProtocolTests
     public void Gpu_fan_speed_uses_id_4() =>
         Assert.Equal(0x3204UL, AcerProtocol.FanSpeedInput(FanChannel.Gpu, 50));
 
+    [Theory]
+    [InlineData(0, 0)]
+    [InlineData(4, 0)]
+    [InlineData(5, 10)]
+    [InlineData(14, 10)]
+    [InlineData(24, 20)]
+    [InlineData(25, 30)]
+    [InlineData(95, 100)]
+    [InlineData(100, 100)]
+    [InlineData(-5, 0)]
+    [InlineData(130, 100)]
+    public void A_boost_goes_to_the_nearest_ten_the_firmware_does(int percent, int expected) =>
+        Assert.Equal(expected, AcerProtocol.NearestFanSpeed(percent));
+
     [Fact]
     public void Sensor_read_encoding()
     {

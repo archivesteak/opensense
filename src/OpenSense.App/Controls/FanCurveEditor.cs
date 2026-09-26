@@ -12,6 +12,7 @@ using Microsoft.UI.Xaml.Media;
 using OpenSense.App.Helpers;
 using OpenSense.App.Localization;
 using OpenSense.Core.Control;
+using OpenSense.Core.Hardware;
 using Windows.Foundation;
 using Windows.System;
 
@@ -19,7 +20,8 @@ namespace OpenSense.App.Controls;
 
 /// <summary>
 /// Interactive temperature → fan duty curve. Drag points, double-click to add, right-click to remove,
-/// arrow keys to nudge the selected point (Shift for bigger steps).
+/// arrow keys to nudge the selected point (Shift for bigger temperature steps). Boosts snap to the firmware's
+/// steps (<see cref="AcerProtocol.FanSpeedStep"/> %).
 /// </summary>
 public sealed partial class FanCurveEditor : CanvasElement
 {
@@ -224,7 +226,7 @@ public sealed partial class FanCurveEditor : CanvasElement
         if (double.IsNaN(LiveTemperature))
             return;
         var temperature = Math.Clamp(LiveTemperature, FanCurve.MinTemperature, FanCurve.MaxTemperature);
-        var percent = double.IsNaN(LivePercent) ? new FanCurve { Points = _points }.Evaluate(temperature) : LivePercent;
+        var percent = double.IsNaN(LivePercent) ? AcerProtocol.NearestFanSpeed(new FanCurve { Points = _points }.Evaluate(temperature)) : LivePercent;
         var x = X(plot, temperature);
         var y = Y(plot, percent);
         var color = TemperatureScale.ColorFor(LiveTemperature);
@@ -362,7 +364,7 @@ public sealed partial class FanCurveEditor : CanvasElement
         var temperature = (int)Math.Round(Math.Clamp(TemperatureAt(plot, position.X), FanCurve.MinTemperature, FanCurve.MaxTemperature));
         if (_points.Any(p => p.Temperature == temperature))
             return;
-        var percent = (int)Math.Round(Math.Clamp(PercentAt(plot, position.Y), 0, 100));
+        var percent = AcerProtocol.NearestFanSpeed((int)Math.Round(PercentAt(plot, position.Y)));
         _points = [.. _points.Append(new CurvePoint(temperature, percent)).OrderBy(p => p.Temperature)];
         SelectedIndex = _points.FindIndex(p => p.Temperature == temperature);
         Commit();
@@ -397,8 +399,8 @@ public sealed partial class FanCurveEditor : CanvasElement
         {
             case VirtualKey.Left: MovePoint(SelectedIndex, p.Temperature - step, p.Percent, commit: true); break;
             case VirtualKey.Right: MovePoint(SelectedIndex, p.Temperature + step, p.Percent, commit: true); break;
-            case VirtualKey.Up: MovePoint(SelectedIndex, p.Temperature, p.Percent + step, commit: true); break;
-            case VirtualKey.Down: MovePoint(SelectedIndex, p.Temperature, p.Percent - step, commit: true); break;
+            case VirtualKey.Up: MovePoint(SelectedIndex, p.Temperature, p.Percent + AcerProtocol.FanSpeedStep, commit: true); break;
+            case VirtualKey.Down: MovePoint(SelectedIndex, p.Temperature, p.Percent - AcerProtocol.FanSpeedStep, commit: true); break;
             case VirtualKey.Tab when _points.Count > 1:
                 SelectedIndex = (SelectedIndex + 1) % _points.Count;
                 break;
@@ -407,14 +409,14 @@ public sealed partial class FanCurveEditor : CanvasElement
         e.Handled = true;
     }
 
-    /// <summary>Moves a point, keeping it between its neighbours (1 °C apart) and inside the chart.</summary>
+    /// <summary>Moves a point, keeping it between its neighbours (1 °C apart) and inside the chart, on a boost the firmware does.</summary>
     private void MovePoint(int index, double temperature, double percent, bool commit)
     {
         var low = index > 0 ? _points[index - 1].Temperature + 1 : FanCurve.MinTemperature;
         var high = index < _points.Count - 1 ? _points[index + 1].Temperature - 1 : FanCurve.MaxTemperature;
         _points[index] = new CurvePoint(
             (int)Math.Round(Math.Clamp(temperature, low, high)),
-            (int)Math.Round(Math.Clamp(percent, 0, 100)));
+            AcerProtocol.NearestFanSpeed((int)Math.Round(Math.Clamp(percent, 0, 100))));
         if (commit)
             Commit();
         else

@@ -8,6 +8,7 @@ using OpenSense.App.Helpers;
 using OpenSense.App.Localization;
 using OpenSense.App.Services;
 using OpenSense.Core.Hardware;
+using OpenSense.Core.Lighting;
 using OpenSense.Core.Settings;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.System;
@@ -65,8 +66,12 @@ public sealed partial class SettingsViewModel(SettingsService settings, DeviceSe
     [ObservableProperty]
     public partial string OperatingModesDescription { get; set; } = "";
 
+    /// <summary>A Sunrex per-key keyboard, which may have the MagForce keys' lights (told by the model name, so the user can say otherwise).</summary>
     [ObservableProperty]
-    public partial string Diagnostics { get; set; } = "";
+    public partial bool MagKeySwitchAvailable { get; set; }
+
+    [ObservableProperty]
+    public partial bool MagKeyOn { get; set; }
 
     [ObservableProperty]
     public partial string LaptopModel { get; set; } = "";
@@ -125,8 +130,9 @@ public sealed partial class SettingsViewModel(SettingsService settings, DeviceSe
         OperatingModesSwitchAvailable = detected.FirmwareOperatingModes.Count > 0 || detected.HasOperatingModes;
         OperatingModesOn = session.Capabilities.HasOperatingModes;
         OperatingModesDescription = DescribeOperatingModes(detected);
+        MagKeySwitchAvailable = detected.MagKeyLight is not null;
+        MagKeyOn = session.Capabilities.Lights.Any(l => l.Location == LightingLocation.MagKey);
 
-        Diagnostics = detected.Diagnostics;
         LaptopModel = session.DeviceName ?? Strings.Get("Settings_UnknownModel");
         BiosVersion = session.BiosVersion is { } bios ? Strings.Format("Settings_Bios", bios) : Strings.Get("Settings_BiosUnknown");
         SerialNumber = session.SerialNumber ?? "";
@@ -275,6 +281,14 @@ public sealed partial class SettingsViewModel(SettingsService settings, DeviceSe
         _ = session.SetOverridesAsync(session.Settings.Overrides with { OperatingModes = choice });
     }
 
+    partial void OnMagKeyOnChanged(bool value)
+    {
+        if (_loading)
+            return;
+        var detected = session.Detected.Lights.Any(l => l.Location == LightingLocation.MagKey);
+        _ = session.SetOverridesAsync(session.Settings.Overrides with { MagKey = value == detected ? null : value });
+    }
+
     private static string DescribeOperatingModes(DeviceCapabilities detected)
     {
         var modes = detected.FirmwareOperatingModes.Count > 0 ? detected.FirmwareOperatingModes : detected.OperatingModes;
@@ -293,7 +307,7 @@ public sealed partial class SettingsViewModel(SettingsService settings, DeviceSe
     private async Task CopyDiagnosticsAsync()
     {
         var package = new DataPackage();
-        package.SetText(Diagnostics);
+        package.SetText(await session.GetDiagnosticsAsync());
         Clipboard.SetContent(package);
 
         // Said on the button rather than with a notice.

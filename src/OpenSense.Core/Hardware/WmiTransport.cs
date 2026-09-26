@@ -8,6 +8,24 @@ namespace OpenSense.Core.Hardware;
 /// <param name="Data">The byte-array output parameter, if the method has one.</param>
 public readonly record struct WmiArrayResult(ulong Status, byte[]? Data);
 
+/// <summary>A named input parameter: an integer (converted to the parameter's declared type) or a byte array.</summary>
+public readonly record struct WmiArgument(string Name, object Value);
+
+/// <summary>The output parameters of a method called with <see cref="IWmiTransport.InvokeNamed"/>, by name.</summary>
+public sealed class WmiOutputs(IEnumerable<KeyValuePair<string, object>> values)
+{
+    private readonly Dictionary<string, object> _values = new(values, StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>An integer output, or null if the method has none by that name.</summary>
+    public ulong? Value(string name) => _values.TryGetValue(name, out var value) && value is ulong integer ? integer : null;
+
+    /// <summary>A byte-array output, or null if the method has none by that name.</summary>
+    public byte[]? Bytes(string name) => _values.TryGetValue(name, out var value) ? value as byte[] : null;
+
+    public override string ToString() => string.Join(" ", _values.OrderBy(v => v.Key, StringComparer.Ordinal).Select(v =>
+        v.Value is byte[] bytes ? $"{v.Key}=[{Convert.ToHexString(bytes)}]" : $"{v.Key}=0x{v.Value:X}"));
+}
+
 /// <summary>Invokes methods on the Acer ACPI-WMI classes.</summary>
 public interface IWmiTransport : IDisposable
 {
@@ -20,6 +38,12 @@ public interface IWmiTransport : IDisposable
     /// <summary>Calls a method whose input is a byte array (or that has no input) and returns its outputs.</summary>
     /// <exception cref="AcerWmiException">The class is missing, access was denied, or the call failed.</exception>
     WmiArrayResult InvokeArray(string className, string method, byte[]? input);
+
+    /// <summary>Calls a method that takes several parameters, by name, and returns all of its outputs.</summary>
+    /// <exception cref="AcerWmiException">
+    /// The class is missing, a parameter name is unknown or its value does not fit, access was denied, or the call failed.
+    /// </exception>
+    WmiOutputs InvokeNamed(string className, string method, IReadOnlyList<WmiArgument> inputs);
 
     /// <summary>Whether the method's input parameter is declared as an array (firmware-version dependent for some methods).</summary>
     bool HasArrayInput(string className, string method);
@@ -74,6 +98,29 @@ public sealed class WmiTransport : IWmiTransport
             }, outParams => new WmiArrayResult(
                 Scalar(outParams) ?? 0,
                 outParams.Properties.Cast<PropertyData>().Select(p => p.Value).OfType<byte[]>().FirstOrDefault()));
+        }
+    }
+
+    public WmiOutputs InvokeNamed(string className, string method, IReadOnlyList<WmiArgument> inputs)
+    {
+        lock (_gate)
+        {
+            return Call(className, method, inParams =>
+            {
+                var declared = new Dictionary<string, PropertyData>(StringComparer.OrdinalIgnoreCase);
+                foreach (var p in inParams?.Properties.Cast<PropertyData>() ?? [])
+                    declared[p.Name] = p;
+                foreach (var (name, value) in inputs)
+                {
+                    if (!declared.TryGetValue(name, out var parameter))
+                        throw new AcerWmiException($"{className}.{method} has no parameter {name}.");
+                    inParams![parameter.Name] = WmiValues.ToCim(parameter.Type, parameter.IsArray, value);
+                }
+            }, outParams => new WmiOutputs(outParams.Properties.Cast<PropertyData>()
+                .Where(p => p.Name != "ReturnValue")
+                .Select(p => (p.Name, Value: WmiValues.FromCim(p.Value)))
+                .Where(p => p.Value is not null)
+                .Select(p => KeyValuePair.Create(p.Name, p.Value!))));
         }
     }
 
@@ -151,4 +198,39 @@ public sealed class WmiTransport : IWmiTransport
             _instances.Clear();
         }
     }
+}
+
+/// <summary>Conversions between .NET values and the types WMI methods declare for their parameters.</summary>
+internal static class WmiValues
+{
+    /// <summary>A value for a parameter of type <paramref name="type"/>: integers in range, byte arrays copied.</summary>
+    /// <exception cref="AcerWmiException">The value does not fit the parameter.</exception>
+    public static object ToCim(CimType type, bool isArray, object value)
+    {
+        try
+        {
+            return (type, isArray, value) switch
+            {
+                (CimType.UInt8, true, byte[] bytes) => bytes.ToArray(),
+                (_, true, _) => throw new AcerWmiException($"Cannot pass {value.GetType().Name} as a {type} array."),
+                (CimType.UInt8, false, _) => Convert.ToByte(value, CultureInfo.InvariantCulture),
+                (CimType.UInt16, false, _) => Convert.ToUInt16(value, CultureInfo.InvariantCulture),
+                (CimType.UInt32, false, _) => Convert.ToUInt32(value, CultureInfo.InvariantCulture),
+                (CimType.UInt64, false, _) => Convert.ToUInt64(value, CultureInfo.InvariantCulture),
+                _ => throw new AcerWmiException($"Parameters of type {type} are not supported."),
+            };
+        }
+        catch (Exception ex) when (ex is OverflowException or InvalidCastException or FormatException)
+        {
+            throw new AcerWmiException($"{value} does not fit a {type} parameter.", ex);
+        }
+    }
+
+    /// <summary>An output value as the caller reads it: integers as <see cref="ulong"/>, byte arrays copied, anything else null.</summary>
+    public static object? FromCim(object? value) => value switch
+    {
+        byte[] bytes => bytes.ToArray(),
+        byte or ushort or uint or ulong => Convert.ToUInt64(value, CultureInfo.InvariantCulture),
+        _ => null,
+    };
 }

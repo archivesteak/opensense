@@ -4,14 +4,30 @@ using System.Security.Principal;
 
 namespace OpenSense.Core.Hardware;
 
+/// <summary>Where the laptop's power comes from, as Windows reports it.</summary>
+/// <param name="BatteryPercent">Null without a battery or when Windows does not know.</param>
+/// <param name="Charging">Null without a battery or when Windows does not know.</param>
+public readonly record struct PowerStatus(bool OnAc, int? BatteryPercent = null, bool? Charging = null);
+
 public interface IPowerSource
 {
-    bool IsOnAcPower { get; }
+    PowerStatus Read();
 }
 
 public sealed class SystemPowerSource : IPowerSource
 {
-    public bool IsOnAcPower => !Windows.Win32.PInvoke.GetSystemPowerStatus(out var status) || status.ACLineStatus != 0;
+    private const byte Unknown = 255, NoBattery = 128, ChargingFlag = 8;
+
+    public PowerStatus Read()
+    {
+        if (!Windows.Win32.PInvoke.GetSystemPowerStatus(out var status))
+            return new PowerStatus(true);
+        var battery = status.BatteryFlag != Unknown && (status.BatteryFlag & NoBattery) == 0;
+        return new PowerStatus(
+            status.ACLineStatus != 0,
+            battery && status.BatteryLifePercent <= 100 ? status.BatteryLifePercent : null,
+            battery ? (status.BatteryFlag & ChargingFlag) != 0 : null);
+    }
 }
 
 public static class SystemInfo

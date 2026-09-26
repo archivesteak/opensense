@@ -7,6 +7,22 @@ namespace OpenSense.Core.Hardware;
 /// <summary>A 3-byte record in the Acer gaming SMBIOS structure (type 0xAC).</summary>
 public readonly record struct AcerSmbiosRecord(byte Id, ushort Value);
 
+/// <summary>Records of the gaming structure that describe hardware (ids as Acer's software reads them).</summary>
+public enum GamingRecord : byte
+{
+    /// <summary>1, 3 or 4: a keyboard driven by the embedded controller (AN515-57: 4).</summary>
+    KeyboardType = 0x08,
+
+    /// <summary>1 single colour, 2 RGB.</summary>
+    KeyboardColor = 0x0A,
+
+    /// <summary>1: the firmware shows a custom boot logo from the EFI system partition.</summary>
+    CustomBootLogo = 0x0D,
+
+    /// <summary>1: light bars on the embedded controller, 2: on USB.</summary>
+    LightBar = 0x17,
+}
+
 /// <summary>
 /// Acer's OEM SMBIOS structures. Readable without elevation.
 /// Type 0xAC carries the gaming interface version (which selects some firmware encodings);
@@ -23,10 +39,28 @@ public sealed record AcerSmbios(
     /// <summary>E.g. 2.83 on AN515-57 (bytes 02 53).</summary>
     public double? GamingVersion => GamingMajor is { } major && GamingMinor is { } minor ? major + minor / 100.0 : null;
 
-    /// <summary>Firmware from interface 2.86 on takes <c>SetGamingLED</c> as a byte array.</summary>
-    public bool UsesArrayLedBehavior => GamingMajor is { } major && GamingMinor is { } minor && (major > 2 || (major == 2 && minor >= 0x56));
+    /// <summary>
+    /// What <c>SetGamingLED</c> takes: 8 bytes, a plain integer, before interface 2.86; a 12-byte array up to 2.90;
+    /// a 16-byte array from 2.91 (the minor byte is decimal: 2.86 is 0x56). <c>GetGamingLED(0x10)</c> answers in the
+    /// 16-byte layout from 2.91 too.
+    /// </summary>
+    public int LedArrayLength => (GamingMajor, GamingMinor) switch
+    {
+        (> 2, not null) or (2, >= 0x5B) => 16,
+        (2, >= 0x56) => 12,
+        _ => 8,
+    };
+
+    /// <summary>1: light bars on the embedded controller (2 would be USB ones).</summary>
+    public bool HasEcLightBars => Gaming(GamingRecord.LightBar) == 1;
 
     public bool HasHotkeyFunction(byte function) => HotkeyFunctions.Any(r => r.Id == function);
+
+    /// <summary>A record's value; null when the record is missing or reads 0xFF ("not present").</summary>
+    public ushort? Gaming(GamingRecord record) =>
+        GamingRecords.Where(r => r.Id == (byte)record).Select(r => (ushort?)r.Value).FirstOrDefault() is { } value and not 0xFF
+            ? value
+            : null;
 
     public static unsafe AcerSmbios Read()
     {

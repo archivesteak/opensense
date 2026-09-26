@@ -2,6 +2,7 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using OpenSense.Core.Control;
 using OpenSense.Core.Hardware;
+using OpenSense.Core.Hardware.Hid;
 using OpenSense.Core.Ipc;
 using OpenSense.Core.Monitoring;
 using OpenSense.Core.Settings;
@@ -22,12 +23,17 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
     private readonly IMachine _machine;
     private readonly ILogger<OpenSenseEngine> _log;
     private readonly SettingsStore<MachineSettings> _store;
+    private readonly SettingsStore<RuntimeState> _runtimeStore;
     private readonly Timer _saveTimer;
     private readonly object _settingsGate = new();
+    private readonly object _runtimeGate = new();
     private readonly SemaphoreSlim _sessionGate = new(1, 1);
 
     private MachineSettings _settings;
+    private RuntimeState _runtime;
     private IWmiTransport? _transport;
+    private EcHidDevice? _ecHid;
+    private IPowerSource? _power;
     private ILoadMonitor? _load;
     private DirectSensors _sensors = DirectSensors.None;
     private FanControlService? _controller;
@@ -42,6 +48,7 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
     private DeviceCapabilities _capabilities = DeviceCapabilities.None;
     private FirmwareState? _firmware;
     private KeyboardState? _keyboardAtStart;
+    private volatile Telemetry? _latest;
     private int _disposed;
 
     /// <param name="settingsPath">Where the machine settings live (<see cref="SettingsPaths.Machine"/>).</param>
@@ -50,7 +57,9 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
         _machine = machine;
         _log = log;
         _store = new SettingsStore<MachineSettings>(settingsPath);
-        _settings = _store.Load();
+        _settings = _store.Load().Upgrade();
+        _runtimeStore = new SettingsStore<RuntimeState>(Path.Combine(Path.GetDirectoryName(settingsPath)!, "state.json"));
+        _runtime = _runtimeStore.Load();
         _saveTimer = new Timer(_ => Flush(), null, Timeout.Infinite, Timeout.Infinite);
     }
 
@@ -71,25 +80,32 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
         try
         {
             _transport = _machine.OpenFirmware();
-            var device = new AcerDevice(_transport);
-            if (!device.IsPresent)
+            if (!new AcerDevice(_transport).IsPresent)
             {
                 _state = EngineState.Unsupported;
                 LogUnsupported();
                 return;
             }
+            _hid = _machine.OpenHid();
+            _ecHid = EcHidDevice.Open(_hid);
+            var device = Device();
 
             _deviceName = _machine.Model;
             _biosVersion = _machine.BiosVersion;
             _serialNumber = _machine.SerialNumber;
-            _detected = CapabilityProbe.Probe(device, _machine.ReadHints(), _machine.ReadSmbios());
+            _probed = DetectBootLogo(CapabilityProbe.Probe(device, _machine.ReadHints(), _machine.ReadSmbios(), _deviceName)) with
+            {
+                ModeKey = Runtime.ModeKeySeen,
+            };
+            _detected = DetectHidLights(_probed);
             LogDetected(_deviceName ?? "Unknown model", _detected.Diagnostics);
             _capabilities = Current.Overrides.Apply(_detected);
 
             _firmware = FirmwareState.Read(device, _capabilities);
-            _keyboardAtStart = KeyboardState.Read(device, _capabilities.Keyboard);
+            _keyboardAtStart = KeyboardState.Read(device, _capabilities.Keyboard, _hidLights.KeyboardSettings ? _hidLights.Keyboard : null);
             _load = _machine.OpenLoadMonitor();
             _sensors = _machine.OpenSensors();
+            _power = _machine.OpenPowerSource();
             LogSensors(_sensors.CpuStatus, _sensors.GpuStatus);
 
             // First start on this machine: keep whatever NitroSense (or the firmware) is set to.
@@ -97,6 +113,8 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
                 AdoptFirmwareState();
 
             StartControl(device);
+            StartFirmwareEvents();
+            WatchHid();
             _state = EngineState.Ready;
         }
         catch (Exception ex) when (ex is not OutOfMemoryException)
@@ -111,11 +129,16 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
         }
     }
 
-    /// <summary>The machine woke from sleep. (Services do not get SystemEvents; the host forwards power events.)</summary>
+    /// <summary>The machine is going to sleep. (Services do not get SystemEvents; the host forwards power events.)</summary>
+    public void NotifySuspend() => _powerService?.OnSuspend();
+
+    /// <summary>The machine woke from sleep.</summary>
     public void NotifyResume()
     {
         _controller?.OnResume();
         _keyboard?.OnResume();
+        _lighting?.OnResume();
+        _powerService?.OnResume();
     }
 
     /// <summary>AC power was connected or removed.</summary>
@@ -161,7 +184,7 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
             {
                 StopControl();
                 _capabilities = capabilityOverrides.Apply(_detected);
-                StartControl(new AcerDevice(_transport));
+                StartControl(Device());
             }, cancellationToken).ConfigureAwait(false);
             rebuilt = Snapshot();
         }
@@ -184,6 +207,15 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
         return ok;
     }
 
+    public async Task<DustDefenderStart> StartDustDefenderAsync(CancellationToken cancellationToken = default)
+    {
+        if (_controller is not { } controller || !_capabilities.DustDefender)
+            return DustDefenderStart.Failed;
+        var result = await controller.StartDustDefenderAsync().ConfigureAwait(false);
+        LogDustDefender(result);
+        return result;
+    }
+
     public async Task<KeyboardState?> ReadKeyboardAsync(CancellationToken cancellationToken = default) =>
         _keyboard is { } keyboard ? await keyboard.ReadStateAsync().ConfigureAwait(false) : null;
 
@@ -193,6 +225,35 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
         {
             lock (_settingsGate)
                 return _settings;
+        }
+    }
+
+    /// <summary>The firmware through both of its interfaces: WMI, and the embedded controller's HID one where there is one.</summary>
+    private AcerDevice Device() => new(_transport!) { EcHid = _ecHid };
+
+    private RuntimeState Runtime
+    {
+        get
+        {
+            lock (_runtimeGate)
+                return _runtime;
+        }
+    }
+
+    /// <summary>Changes the runtime state and saves it at once: it has to survive a crash.</summary>
+    private void UpdateRuntime(Func<RuntimeState, RuntimeState> change)
+    {
+        lock (_runtimeGate)
+        {
+            _runtime = change(_runtime);
+            try
+            {
+                _runtimeStore.Save(_runtime);
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+            {
+                LogSaveFailed(ex, _runtimeStore.Path);
+            }
         }
     }
 
@@ -210,43 +271,55 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
         Capabilities = _capabilities,
         Firmware = _firmware,
         Keyboard = _keyboardAtStart,
+        Lighting = _lightingAtStart,
         Settings = Current,
         TemperatureSources = new TemperatureSources(_sensors.CpuStatus, _sensors.GpuStatus),
-        Latest = _controller?.Latest,
+        Latest = _latest,
     };
 
     private void StartControl(AcerDevice device)
     {
         var settings = Current;
-        _controller = new FanControlService(device, _capabilities, _load!, new SystemPowerSource(), settings.Profile, _sensors);
+        _controller = new FanControlService(device, _capabilities, _load!, _power!, settings.Profile, _sensors, knownGpuClocks: KnownGpuClocks());
         _controller.TelemetryUpdated += OnTelemetry;
         _controller.Notice += OnNotice;
+        _controller.GpuClockLimitsChanged += OnGpuClockLimits;
         _controller.Start();
 
-        _keyboard = new KeyboardService(_controller, _capabilities.Keyboard);
-        _keyboard.Notice += OnNotice;
-        _ = _keyboard.ApplyAsync(settings.Keyboard);
+        StartKeyboard(_controller, settings.Keyboard);
+        StartLighting(_controller, settings.Lighting);
+
+        StartPower(settings);
     }
 
     private void StopControl()
     {
-        if (_keyboard is { } keyboard)
-            keyboard.Notice -= OnNotice;
-        _keyboard = null;
+        StopPower();
+        StopLighting();
+        StopKeyboard();
         if (_controller is { } controller)
         {
             controller.TelemetryUpdated -= OnTelemetry;
             controller.Notice -= OnNotice;
-            controller.Dispose(); // hands the fans back to the firmware if configured
+            controller.GpuClockLimitsChanged -= OnGpuClockLimits;
+            controller.Dispose(); // hands the fans back to the firmware if configured, and resets the GPU's clocks
         }
         _controller = null;
     }
 
-    private void OnTelemetry(Telemetry telemetry) => TelemetryUpdated?.Invoke(this, telemetry);
+    private void OnTelemetry(Telemetry telemetry)
+    {
+        var latest = telemetry with { Battery = _powerService?.Telemetry() };
+        _latest = latest;
+        TelemetryUpdated?.Invoke(this, latest);
+    }
 
     private void OnNotice(ControlNotice notice)
     {
-        LogNotice(notice.Kind, notice.OperatingMode, notice.Detail);
+        if (notice.Kind is NoticeKind.OperatingModeChangedByPower or NoticeKind.CalibrationFinished)
+            LogNews(notice.Kind, notice.OperatingMode, notice.PowerLimit);
+        else
+            LogNotice(notice.Kind, notice.OperatingMode, notice.Detail);
         NoticeRaised?.Invoke(this, notice);
     }
 
@@ -300,11 +373,14 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
         _sessionGate.Wait();
         try
         {
+            StopFirmwareEvents();
             StopControl();
+            StopHid();
             _saveTimer.Dispose();
             Flush();
             _sensors.Dispose();
             _load?.Dispose();
+            _ecHid?.Dispose();
             _transport?.Dispose();
         }
         finally
@@ -332,8 +408,14 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
     [LoggerMessage(Level = LogLevel.Information, Message = "GPU mode {Mode} requested, accepted: {Accepted}")]
     private partial void LogGpuMode(GpuMode mode, bool accepted);
 
+    [LoggerMessage(Level = LogLevel.Information, Message = "Dust Defender requested: {Result}")]
+    private partial void LogDustDefender(DustDefenderStart result);
+
     [LoggerMessage(Level = LogLevel.Warning, Message = "Notice {Kind} {Mode} {Detail}")]
     private partial void LogNotice(NoticeKind kind, OperatingMode? mode, string? detail);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Notice {Kind} {Mode} {Power}")]
+    private partial void LogNews(NoticeKind kind, OperatingMode? mode, PowerLimit? power);
 
     [LoggerMessage(Level = LogLevel.Error, Message = "Could not save settings to {Path}")]
     private partial void LogSaveFailed(Exception ex, string path);

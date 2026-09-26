@@ -1,4 +1,5 @@
 using OpenSense.Core.Hardware;
+using OpenSense.Core.Hardware.Hid;
 
 namespace OpenSense.Core.Control;
 
@@ -9,8 +10,9 @@ public interface IDeviceDispatcher
 }
 
 /// <summary>
-/// Applies <see cref="KeyboardSettings"/> to the firmware: only what changed, latest request wins,
-/// and everything again after resume (Acer's agent restores its own lighting when the machine wakes).
+/// Applies <see cref="KeyboardSettings"/> (backlight auto-off, Windows key, LCD overdrive) to the firmware: only what
+/// changed, latest request wins, and everything again after resume. The backlight's colours are
+/// <see cref="LightingService"/>'s.
 /// </summary>
 public sealed class KeyboardService
 {
@@ -18,6 +20,7 @@ public sealed class KeyboardService
 
     private readonly IDeviceDispatcher _dispatcher;
     private readonly KeyboardCapabilities _caps;
+    private readonly UsbKeyboardDevice? _usb;
     private readonly object _gate = new();
 
     private KeyboardSettings? _pending;
@@ -25,13 +28,14 @@ public sealed class KeyboardService
     private Task _pump = Task.CompletedTask;
 
     // What the firmware was last told (only touched on the dispatcher thread).
-    private LightingSettings? _appliedLighting;
     private bool? _appliedAutoOff, _appliedWindowsKey, _appliedOverdrive;
 
-    public KeyboardService(IDeviceDispatcher dispatcher, KeyboardCapabilities capabilities)
+    /// <param name="usb">A USB keyboard that keeps the Windows key or auto-off itself (<see cref="KeyboardCapabilities.UsbWindowsKey"/>).</param>
+    public KeyboardService(IDeviceDispatcher dispatcher, KeyboardCapabilities capabilities, UsbKeyboardDevice? usb = null)
     {
         _dispatcher = dispatcher;
         _caps = capabilities;
+        _usb = usb;
     }
 
     public KeyboardSettings Current { get; private set; } = new();
@@ -39,7 +43,7 @@ public sealed class KeyboardService
     /// <summary>Raised (on a worker thread) when the firmware rejects a change.</summary>
     public event Action<ControlNotice>? Notice;
 
-    public Task<KeyboardState> ReadStateAsync() => _dispatcher.InvokeAsync(d => KeyboardState.Read(d, _caps));
+    public Task<KeyboardState> ReadStateAsync() => _dispatcher.InvokeAsync(d => KeyboardState.Read(d, _caps, _usb));
 
     /// <summary>Applies the members of <paramref name="settings"/> that differ from what was last applied.</summary>
     public Task ApplyAsync(KeyboardSettings settings)
@@ -62,7 +66,6 @@ public sealed class KeyboardService
     {
         return _dispatcher.InvokeAsync(_ =>
         {
-            _appliedLighting = null;
             _appliedAutoOff = _appliedWindowsKey = _appliedOverdrive = null;
             return true;
         }).ContinueWith(_ => ApplyAsync(Current), TaskScheduler.Default).Unwrap();
@@ -93,18 +96,20 @@ public sealed class KeyboardService
     {
         var failures = new List<NoticeKind>();
 
-        if (_caps.RgbBacklight && settings.Lighting is { } lighting && !SameLighting(lighting, _appliedLighting))
+        if (_caps.BacklightAutoOff && settings.BacklightAutoOff is { } autoOff && autoOff != _appliedAutoOff)
         {
-            if (ApplyLighting(device, lighting))
-                _appliedLighting = lighting;
+            bool ok;
+            if (_caps.UsbBacklightTimeout)
+            {
+                ok = _usb?.WriteAutoOff(autoOff) == true;
+            }
             else
-                failures.Add(NoticeKind.LightingRejected);
-        }
-
-        if (_caps.BacklightHotkey is { } hotkey && settings.BacklightAutoOff is { } autoOff && autoOff != _appliedAutoOff)
-        {
-            var brightness = device.GetBacklightTimeout(hotkey)?.Brightness ?? 100;
-            if (device.SetBacklightTimeout(hotkey, brightness, autoOff ? KeyboardProtocol.AutoOffSeconds : 0))
+            {
+                // Only the timeout changes: the brightness goes back as it is.
+                var brightness = device.GetBacklightTimeout(_caps)?.Brightness ?? 100;
+                ok = device.SetBacklightTimeout(_caps, brightness, autoOff ? KeyboardProtocol.AutoOffSeconds : 0);
+            }
+            if (ok)
                 _appliedAutoOff = autoOff;
             else
                 failures.Add(NoticeKind.BacklightTimeoutRejected);
@@ -112,7 +117,7 @@ public sealed class KeyboardService
 
         if (_caps.WindowsKey && settings.WindowsKey is { } winKey && winKey != _appliedWindowsKey)
         {
-            if (device.SetWindowsKeyEnabled(winKey))
+            if (_caps.UsbWindowsKey ? _usb?.WriteWindowsKeyEnabled(winKey) == true : device.SetWindowsKeyEnabled(winKey))
                 _appliedWindowsKey = winKey;
             else
                 failures.Add(NoticeKind.WindowsKeyRejected);
@@ -129,36 +134,6 @@ public sealed class KeyboardService
         return failures;
     }
 
-    private bool ApplyLighting(AcerDevice device, LightingSettings lighting)
-    {
-        if (lighting.Effect != KeyboardEffect.Static)
-        {
-            return device.SetKeyboardBacklight(lighting.Effect, lighting.Speed, lighting.Brightness, lighting.Direction,
-                Adjust(RgbColor.FromHex(lighting.EffectColor)));
-        }
-
-        var zones = Enumerable.Range(0, _caps.Zones).Select(lighting.Zone).ToList();
-        var ok = device.SetZonesEnabled([.. zones.Select(z => z.On)], _caps.ArrayZoneCommand);
-        ok &= device.SetKeyboardBacklight(KeyboardEffect.Static, 0, lighting.Brightness, KeyboardDirection.Right, default);
-        for (var i = 0; i < zones.Count; i++)
-        {
-            if (zones[i].On)
-                ok &= device.SetZoneColor(i + 1, Adjust(RgbColor.FromHex(zones[i].Color)));
-        }
-        return ok;
-    }
-
-    /// <summary>NitroSense's per-model colour correction.</summary>
-    private RgbColor Adjust(RgbColor color)
-    {
-        static byte Scale(byte channel, double factor) => (byte)Math.Clamp(Math.Floor(channel * factor), 0, 255);
-        var a = _caps.ColorAdjust;
-        return a.Count < 3 ? color : new RgbColor(Scale(color.R, a[0]), Scale(color.G, a[1]), Scale(color.B, a[2]));
-    }
-
-    private static bool SameLighting(LightingSettings a, LightingSettings? b) =>
-        b is not null && a with { Zones = b.Zones } == b && a.Zones.SequenceEqual(b.Zones);
-
-    /// <summary>The machine woke up: Acer's agent restores its own lighting, so send ours again after it.</summary>
+    /// <summary>The machine woke up: Acer's agent restores its own settings, so send ours again after it.</summary>
     public void OnResume() => _ = Task.Delay(ResumeDelay).ContinueWith(_ => ReapplyAsync(), TaskScheduler.Default).Unwrap();
 }

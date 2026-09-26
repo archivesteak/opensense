@@ -1,9 +1,11 @@
 using System.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using H.NotifyIcon;
+using H.NotifyIcon.Core;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media.Imaging;
+using OpenSense.App.Helpers;
 using OpenSense.App.Localization;
 using OpenSense.App.ViewModels;
 using OpenSense.Core.Control;
@@ -12,8 +14,11 @@ using OpenSense.Core.Hardware;
 namespace OpenSense.App.Services;
 
 /// <summary>Notification-area icon: the OpenSense icon, a tooltip with the temperatures, and quick controls.</summary>
-public sealed class TrayService(MonitorViewModel monitor, FanControlViewModel fans, NotificationService notifications) : IDisposable
+public sealed class TrayService(MonitorViewModel monitor, FanControlViewModel fans) : IDisposable
 {
+    /// <summary>Windows shows at most this many characters of a notification-area tooltip.</summary>
+    private const int ToolTipLimit = 127;
+
     private TaskbarIcon? _icon;
     private readonly List<RadioMenuFlyoutItem> _modeItems = [];
     private MenuFlyoutSubItem? _operatingModeMenu;
@@ -35,17 +40,14 @@ public sealed class TrayService(MonitorViewModel monitor, FanControlViewModel fa
         fans.PropertyChanged += (_, e) =>
         {
             if (e.PropertyName is nameof(FanControlViewModel.ModeIndex) or nameof(FanControlViewModel.OperatingModeIndex)
-                or nameof(FanControlViewModel.OperatingModesAvailable))
+                or nameof(FanControlViewModel.OperatingModesAvailable) or nameof(FanControlViewModel.OperatingModes))
                 SyncMenu();
         };
-        notifications.Important += notice =>
-        {
-            if (!App.Current.IsExiting)
-                _icon?.ShowNotification(notice.Title, notice.Message, notice.Severity == InfoBarSeverity.Informational
-                    ? H.NotifyIcon.Core.NotificationIcon.Info
-                    : H.NotifyIcon.Core.NotificationIcon.Warning);
-        };
     }
+
+    /// <summary>A balloon from the icon, which Windows shows as a toast: see <see cref="ToastService"/>.</summary>
+    public void ShowBalloon(string title, string message, bool warning) =>
+        _icon?.ShowNotification(title, message, warning ? NotificationIcon.Warning : NotificationIcon.Info);
 
     private MenuFlyout BuildMenu()
     {
@@ -112,10 +114,17 @@ public sealed class TrayService(MonitorViewModel monitor, FanControlViewModel fa
         if (e.PropertyName != nameof(MonitorViewModel.Latest) || _icon is null || monitor.Latest is not { } t)
             return;
 
-        var cpu = Names.Chip(FanId.Cpu);
-        var gpu = Names.Chip(FanId.Gpu);
-        var fanText = string.Join("  ", monitor.Fans.Select(f => $"{Names.Chip(f.Id)} {f.RpmText}"));
-        var tooltip = $"OpenSense · {Names.FanMode(t.EffectiveMode)}\n{cpu} {monitor.CpuTemperatureText}  {gpu} {monitor.GpuTemperatureText}\n{fanText}";
+        var cpu = Names.Chip(FanChip.Cpu);
+        var gpu = Names.Chip(FanChip.Gpu);
+        var header = $"OpenSense · {Names.FanMode(t.EffectiveMode)}\n{cpu} {monitor.CpuTemperatureText}  {gpu} {monitor.GpuTemperatureText}";
+        var tooltip = $"{header}\n{string.Join("  ", monitor.Fans.Select(f => $"{f.ShortName} {f.RpmText}"))}";
+        if (tooltip.Length > ToolTipLimit)
+        {
+            // Many fans: their speeds alone, in the order the window lists them.
+            tooltip = $"{header}\n{string.Join(" · ", monitor.Fans.Select(f => Units.RpmNumber(f.Rpm)))}{Units.RpmSuffix}";
+            if (tooltip.Length > ToolTipLimit)
+                tooltip = tooltip[..ToolTipLimit];
+        }
         if (_icon.ToolTipText != tooltip)
             _icon.ToolTipText = tooltip;
     }

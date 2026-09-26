@@ -8,6 +8,7 @@ using OpenSense.App.Localization;
 using OpenSense.App.Services;
 using OpenSense.Core.Control;
 using OpenSense.Core.Hardware;
+using OpenSense.Core.Monitoring;
 
 namespace OpenSense.App.ViewModels;
 
@@ -38,15 +39,20 @@ public sealed partial class ManualFanViewModel(FanId id, string name, CurveFanVi
     public ManualFanSetting ToSetting() => new((int)Math.Round(Percent), UseCurve);
 }
 
-/// <summary>A fan's curve; it follows the fan's own chip (CPU fan: CPU, GPU fan: GPU).</summary>
-public sealed partial class CurveFanViewModel(FanId id, string name) : ObservableObject
+/// <summary>A fan's curve; it follows the fan's own chip (CPU fan: CPU, GPU fans: GPU).</summary>
+public sealed partial class CurveFanViewModel(FanId id, FanChip chip, string name) : ObservableObject
 {
     public FanId Id { get; } = id;
+
+    public FanChip Chip { get; } = chip;
 
     public string Name { get; } = name;
 
     [ObservableProperty]
-    public partial FanCurve Curve { get; set; } = CurvePresets.Default;
+    public partial FanCurve Curve { get; set; } = AntiThrottle.For(chip, ThermalLimits.Default);
+
+    /// <summary>Where the chips start slowing down, as the engine last said: the Default preset goes by them.</summary>
+    public ThermalLimits Limits { get; set; } = ThermalLimits.Default;
 
     /// <summary>Current source temperature (°C) for the editor's live marker; NaN when unknown.</summary>
     [ObservableProperty]
@@ -59,35 +65,43 @@ public sealed partial class CurveFanViewModel(FanId id, string name) : Observabl
     [ObservableProperty]
     public partial bool UseFahrenheit { get; set; }
 
+    /// <summary>Auto's curve for this fan's chip.</summary>
     [RelayCommand]
-    private void ApplyDefault() => Curve = CurvePresets.Default;
+    private void ApplyDefault() => Curve = AntiThrottle.For(Chip, Limits);
 
     public CurveFanSetting ToSetting() => new(Curve);
 }
 
-public sealed record OperatingModeOption(OperatingMode Mode, string Name, string Description, bool NeedsAc);
+public sealed record OperatingModeOption(OperatingMode Mode, string Name, string Description);
 
 /// <summary>Fan mode, Auto's boost, Custom boosts and curves, CoolBoost and operating modes.</summary>
 public sealed partial class FanControlViewModel : ObservableObject
 {
     private static readonly TimeSpan PushDelay = TimeSpan.FromMilliseconds(120);
 
-    private static readonly OperatingModeOption[] AllModes =
+    /// <summary>Every operating mode, in the order they are listed.</summary>
+    internal static readonly OperatingModeOption[] AllModes =
     [
-        Option(OperatingMode.Eco, needsAc: false),
-        Option(OperatingMode.Quiet, needsAc: false),
-        Option(OperatingMode.Balanced, needsAc: false),
-        Option(OperatingMode.Performance, needsAc: true),
-        Option(OperatingMode.Turbo, needsAc: true),
+        Option(OperatingMode.Eco),
+        Option(OperatingMode.Quiet),
+        Option(OperatingMode.Balanced),
+        Option(OperatingMode.Performance),
+        Option(OperatingMode.Turbo),
     ];
 
-    private static OperatingModeOption Option(OperatingMode mode, bool needsAc) =>
-        new(mode, Names.OperatingMode(mode), Names.OperatingModeDescription(mode), needsAc);
+    private static OperatingModeOption Option(OperatingMode mode) => new(mode, Names.OperatingMode(mode), Names.OperatingModeDescription(mode));
 
     private readonly DeviceSession _session;
     private readonly MonitorViewModel _monitor;
     private readonly DispatcherQueueTimer _pushTimer;
     private bool _loading;
+    private PowerLimit _limit;
+
+    /// <summary>The user picked an operating mode since the last push.</summary>
+    private bool _modeChosen;
+
+    /// <summary>The user picked a fan curve since the last push.</summary>
+    private bool _fanTableChosen;
 
     public FanControlViewModel(DispatcherQueue dispatcher, DeviceSession session, MonitorViewModel monitor)
     {
@@ -110,7 +124,7 @@ public sealed partial class FanControlViewModel : ObservableObject
     public ObservableCollection<OperatingModeOption> OperatingModes { get; } = [];
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(Mode), nameof(ModeDescription), nameof(IsAuto), nameof(IsCustom), nameof(ShowCoolBoost))]
+    [NotifyPropertyChangedFor(nameof(Mode), nameof(ModeDescription), nameof(IsAuto), nameof(IsCustom), nameof(ShowCoolBoost), nameof(ShowFanTable))]
     public partial int ModeIndex { get; set; }
 
     public FanControlMode Mode => (FanControlMode)ModeIndex;
@@ -121,7 +135,7 @@ public sealed partial class FanControlViewModel : ObservableObject
 
     public string ModeDescription => Names.FanModeDescription(Mode);
 
-    /// <summary>Auto boosts the fans when it gets hot (<see cref="ControlProfile.AutoBoostCurve"/>).</summary>
+    /// <summary>Auto boosts the fans near the chips' limits (<see cref="AntiThrottle"/>).</summary>
     [ObservableProperty]
     public partial bool AutoBoostEnabled { get; set; } = true;
 
@@ -148,6 +162,17 @@ public sealed partial class FanControlViewModel : ObservableObject
     public partial bool CoolBoost { get; set; }
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ShowFanTable))]
+    public partial bool FanTableAvailable { get; set; }
+
+    /// <summary>The fan curve is the firmware's own speed, like CoolBoost's: Auto follows it and Custom adds to it.</summary>
+    public bool ShowFanTable => FanTableAvailable && Mode != FanControlMode.Max;
+
+    /// <summary>The embedded controller's fan curve: 0 Standard, 1 Faster, 2 Fastest.</summary>
+    [ObservableProperty]
+    public partial int FanTableIndex { get; set; }
+
+    [ObservableProperty]
     public partial bool OperatingModesAvailable { get; set; }
 
     [ObservableProperty]
@@ -163,6 +188,31 @@ public sealed partial class FanControlViewModel : ObservableObject
     [ObservableProperty]
     public partial bool RestoreAutoOnExit { get; set; } = true;
 
+    /// <summary>The laptop can run its fans backwards to blow dust out (Dust Defender).</summary>
+    [ObservableProperty]
+    public partial bool DustDefenderAvailable { get; set; }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(DustDefenderStatus))]
+    [NotifyCanExecuteChangedFor(nameof(CleanFansCommand))]
+    public partial bool DustDefenderRunning { get; set; }
+
+    /// <summary>Why the last start didn't happen; cleared when a run starts.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(DustDefenderStatus))]
+    public partial string? DustDefenderRefusal { get; set; }
+
+    public string DustDefenderStatus => DustDefenderRunning ? Strings.Get("DustDefender_Running")
+        : DustDefenderRefusal ?? Strings.Get("DustDefender_Description");
+
+    /// <summary>The laptop has a Mode key (seen once) and Turbo, so the key can be set to Turbo on and off.</summary>
+    [ObservableProperty]
+    public partial bool ModeKeyAvailable { get; set; }
+
+    /// <summary>In <see cref="ModeKeyAction"/> order.</summary>
+    [ObservableProperty]
+    public partial int ModeKeyIndex { get; set; }
+
     /// <summary>Called on the UI thread once the device session is ready, and whenever it changes.</summary>
     public void Attach()
     {
@@ -171,15 +221,16 @@ public sealed partial class FanControlViewModel : ObservableObject
         var caps = _session.Capabilities;
         var profile = _session.Settings.Profile;
 
-        HasFans = caps.Fans.Count > 0;
+        HasFans = caps.ControllableFans.Count > 0;
         ModeIndex = (int)profile.Mode;
         AutoBoostEnabled = profile.AutoBoost;
 
         ManualFans.Clear();
-        foreach (var fan in caps.Fans)
+        foreach (var fan in caps.ControllableFans)
         {
             var manual = profile.ManualFor(fan.Id);
-            var custom = new ManualFanViewModel(fan.Id, Names.Fan(fan.Id), CreateCurve(fan.Id, profile.CurveFor(fan.Id)))
+            var name = Names.Fan(fan.Id, caps.Fans);
+            var custom = new ManualFanViewModel(fan.Id, name, CreateCurve(fan, name, profile.CurveFor(fan.Id)))
             {
                 KindIndex = manual.UseCurve ? 1 : 0,
                 Percent = manual.Percent,
@@ -195,22 +246,56 @@ public sealed partial class FanControlViewModel : ObservableObject
         CoolBoostAvailable = caps.CoolBoost;
         CoolBoost = profile.CoolBoost ?? _session.Firmware?.CoolBoost ?? false;
 
-        OperatingModes.Clear();
-        foreach (var option in AllModes.Where(m => caps.OperatingModes.Contains(m.Mode)))
-            OperatingModes.Add(option);
-        OperatingModesAvailable = OperatingModes.Count > 0;
-        var currentMode = profile.OperatingMode ?? _session.Firmware?.OperatingMode;
-        OperatingModeIndex = currentMode is { } mode ? IndexOf(mode) : -1;
+        // A controller where nothing has picked a curve yet runs the standard one.
+        FanTableAvailable = caps.FanTable;
+        FanTableIndex = (int)(profile.FanTable ?? _session.Firmware?.FanTable ?? FanTable.Standard) - 1;
+
+        _limit = _session.Latest?.PowerLimit ?? PowerLimit.None;
+        ListOperatingModes();
 
         RestoreAutoOnExit = profile.Safety.RestoreAutoOnExit;
+        DustDefenderAvailable = caps.DustDefender;
+        DustDefenderRunning = _session.Latest?.DustDefenderRunning == true;
+        DustDefenderRefusal = null;
+        ModeKeyAvailable = caps.ModeKey && caps.OperatingModes.Contains(OperatingMode.Turbo);
+        ModeKeyIndex = (int)profile.ModeKey;
         _loading = false;
     }
 
-    private CurveFanViewModel CreateCurve(FanId id, CurveFanSetting setting)
+    /// <summary>
+    /// The modes the power supply allows now, with the one chosen for it selected: on battery the battery mode, else
+    /// the AC mode (or, where the supply rules that out, the mode that runs instead).
+    /// </summary>
+    private void ListOperatingModes()
     {
-        var curve = new CurveFanViewModel(id, Names.Fan(id))
+        var loading = _loading;
+        _loading = true;
+        var caps = _session.Capabilities;
+        var profile = _session.Settings.Profile;
+        var allowed = OperatingModePolicy.Allowed(caps.OperatingModes, _limit, caps.ModeRules);
+        OperatingModes.Clear();
+        foreach (var option in AllModes.Where(m => allowed.Contains(m.Mode)))
+            OperatingModes.Add(option);
+        OperatingModesAvailable = OperatingModes.Count > 0;
+        var shown = OperatingModePolicy.Target(profile, caps.OperatingModes, _limit, caps.ModeRules) ?? _session.Firmware?.OperatingMode;
+        OperatingModeIndex = shown is { } mode ? IndexOf(mode) : -1;
+        OperatingModeNote = _limit switch
+        {
+            PowerLimit.Battery => Strings.Get("OperatingMode_BatteryModeNote"),
+            PowerLimit.LowBattery => Strings.Get("OperatingMode_LowBatteryNote"),
+            PowerLimit.Adapter => Strings.Get("OperatingMode_AdapterNote"),
+            _ => null,
+        };
+        _loading = loading;
+        OnPropertyChanged(nameof(OperatingModes)); // the tray menu lists them too
+    }
+
+    private CurveFanViewModel CreateCurve(FanChannel fan, string name, CurveFanSetting setting)
+    {
+        var curve = new CurveFanViewModel(fan.Id, fan.Chip, name)
         {
             Curve = setting.Curve,
+            Limits = _monitor.Latest?.Limits ?? ThermalLimits.Default,
             UseFahrenheit = _monitor.UseFahrenheit,
         };
         curve.PropertyChanged += (_, e) =>
@@ -243,7 +328,23 @@ public sealed partial class FanControlViewModel : ObservableObject
 
     partial void OnCoolBoostChanged(bool value) => SchedulePush();
 
-    partial void OnOperatingModeIndexChanged(int value) => SchedulePush();
+    partial void OnFanTableIndexChanged(int value)
+    {
+        if (_loading || value < 0)
+            return;
+        _fanTableChosen = true;
+        SchedulePush();
+    }
+
+    partial void OnOperatingModeIndexChanged(int value)
+    {
+        if (_loading || value < 0)
+            return;
+        _modeChosen = true;
+        SchedulePush();
+    }
+
+    partial void OnModeKeyIndexChanged(int value) => SchedulePush();
 
     partial void OnRestoreAutoOnExitChanged(bool value) => SchedulePush();
 
@@ -253,6 +354,24 @@ public sealed partial class FanControlViewModel : ObservableObject
         if (Enum.TryParse<FanControlMode>(mode, out var parsed))
             ModeIndex = (int)parsed;
     }
+
+    /// <summary>Has the firmware blow the dust out now; the telemetry shows the run.</summary>
+    [RelayCommand(CanExecute = nameof(CanCleanFans))]
+    private async Task CleanFansAsync()
+    {
+        DustDefenderRefusal = null;
+        var result = await _session.StartDustDefenderAsync();
+        DustDefenderRefusal = result switch
+        {
+            DustDefenderStart.Busy => Strings.Get("DustDefender_Busy"),
+            DustDefenderStart.Failed => Strings.Get("DustDefender_Failed"),
+            _ => null,
+        };
+        if (result is DustDefenderStart.Started or DustDefenderStart.Running)
+            DustDefenderRunning = true;
+    }
+
+    private bool CanCleanFans() => !DustDefenderRunning;
 
     private void SchedulePush()
     {
@@ -272,14 +391,22 @@ public sealed partial class FanControlViewModel : ObservableObject
             Manual = ManualFans.ToDictionary(f => f.Id, f => f.ToSetting()),
             Curves = ManualFans.ToDictionary(f => f.Id, f => f.Curve.ToSetting()),
             CoolBoost = CoolBoostAvailable ? CoolBoost : current.CoolBoost,
-            OperatingMode = OperatingModeIndex >= 0 && OperatingModeIndex < OperatingModes.Count
-                ? OperatingModes[OperatingModeIndex].Mode
-                : current.OperatingMode,
+            // Only a curve the user picked is written: until then the firmware keeps its own.
+            FanTable = _fanTableChosen && FanTableAvailable && FanTableIndex >= 0 ? (FanTable)(FanTableIndex + 1) : current.FanTable,
+            ModeKey = ModeKeyAvailable ? (ModeKeyAction)ModeKeyIndex : current.ModeKey,
             Safety = current.Safety with
             {
                 RestoreAutoOnExit = RestoreAutoOnExit,
             },
         };
+        // Only a mode the user picked is stored: the list shows what runs, which the supply may have chosen instead.
+        if (_modeChosen && OperatingModeIndex >= 0 && OperatingModeIndex < OperatingModes.Count)
+        {
+            var chosen = OperatingModes[OperatingModeIndex].Mode;
+            profile = _limit == PowerLimit.Battery ? profile with { BatteryOperatingMode = chosen } : profile with { OperatingMode = chosen };
+        }
+        _modeChosen = false;
+        _fanTableChosen = false;
         _ = _session.SetProfileAsync(profile);
     }
 
@@ -295,18 +422,21 @@ public sealed partial class FanControlViewModel : ObservableObject
 
         LockReason = t.FanLock is { } fanLock ? Names.FanLock(fanLock) : null;
         Failsafe = t.Failsafe;
-        OperatingModeNote = !t.OnAcPower && OperatingModes.Any(m => m.NeedsAc)
-            ? Strings.Format("OperatingMode_BatteryNote", Names.OperatingMode(OperatingMode.Performance), Names.OperatingMode(OperatingMode.Turbo),
-                Names.OperatingMode(OperatingMode.Balanced))
-            : null;
+        DustDefenderRunning = t.DustDefenderRunning == true;
+        if (t.PowerLimit != _limit)
+        {
+            _limit = t.PowerLimit;
+            ListOperatingModes();
+        }
 
         foreach (var curve in AllCurves)
         {
             // As the engine does: a sleeping GPU has no temperature; one without a sensor follows the CPU.
-            var temperature = curve.Id == FanId.Gpu
+            var temperature = curve.Chip == FanChip.Gpu
                 ? t.GpuTemperature ?? (t.GpuAsleep ? null : t.CpuTemperature)
                 : t.CpuTemperature;
             curve.LiveTemperature = temperature ?? double.NaN;
+            curve.Limits = t.Limits;
             curve.LivePercent = t.Fan(curve.Id) is { } fan
                 ? fan.Behavior == FanBehavior.Max ? 100 : fan.BoostPercent ?? 0
                 : double.NaN;

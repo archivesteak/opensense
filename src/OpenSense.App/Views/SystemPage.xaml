@@ -4,6 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:toolkit="using:CommunityToolkit.WinUI.Controls"
     xmlns:ui="using:CommunityToolkit.WinUI"
+    xmlns:views="using:OpenSense.App.Views"
+    xmlns:vm="using:OpenSense.App.ViewModels"
     NavigationCacheMode="Required">
 
     <ScrollView>
@@ -26,6 +28,16 @@
                 Visibility="{x:Bind ViewModel.WindowsKeyAvailable, Mode=OneWay}">
                 <ToggleSwitch IsOn="{x:Bind ViewModel.WindowsKey, Mode=TwoWay}" />
             </toolkit:SettingsCard>
+            <!-- Shown once the laptop's Mode key has been pressed: nothing else tells that it has one -->
+            <toolkit:SettingsCard
+                x:Uid="System_ModeKey"
+                HeaderIcon="{ui:FontIcon Glyph=&#xE945;}"
+                Visibility="{x:Bind Fans.ModeKeyAvailable, Mode=OneWay}">
+                <ComboBox MinWidth="200" SelectedIndex="{x:Bind Fans.ModeKeyIndex, Mode=TwoWay}">
+                    <ComboBoxItem x:Uid="System_ModeKeyCycle" />
+                    <ComboBoxItem x:Uid="System_ModeKeyTurbo" />
+                </ComboBox>
+            </toolkit:SettingsCard>
             <toolkit:SettingsCard
                 x:Uid="System_StickyKeys"
                 HeaderIcon="{ui:FontIcon Glyph=&#xE765;}">
@@ -41,11 +53,12 @@
                 </toolkit:SettingsCard>
             </StackPanel>
 
-            <StackPanel Spacing="4" Visibility="{x:Bind ViewModel.GpuSwitchAvailable, Mode=OneWay}">
+            <StackPanel Spacing="4" Visibility="{x:Bind views:SystemPage.Either(ViewModel.GpuSwitchAvailable, GpuClocks.Available), Mode=OneWay}">
                 <TextBlock x:Uid="System_Graphics" Style="{StaticResource SectionHeaderStyle}" />
                 <toolkit:SettingsCard
                     x:Uid="System_GpuMode"
-                    HeaderIcon="{ui:FontIcon Glyph=&#xE7F4;}">
+                    HeaderIcon="{ui:FontIcon Glyph=&#xE7F4;}"
+                    Visibility="{x:Bind ViewModel.GpuSwitchAvailable, Mode=OneWay}">
                     <toolkit:Segmented SelectedIndex="{x:Bind ViewModel.GpuModeIndex, Mode=TwoWay}">
                         <toolkit:SegmentedItem x:Uid="System_GpuHybrid" />
                         <toolkit:SegmentedItem x:Uid="System_GpuDiscrete" />
@@ -60,6 +73,157 @@
                         <Button x:Uid="System_RestartNow" Command="{x:Bind ViewModel.RestartNowCommand}" />
                     </InfoBar.ActionButton>
                 </InfoBar>
+                <!-- Offsets per operating mode, within the limits the driver reported -->
+                <toolkit:SettingsExpander
+                    x:Uid="System_GpuClocks"
+                    Description="{x:Bind GpuClocks.Status, Mode=OneWay}"
+                    HeaderIcon="{ui:FontIcon Glyph=&#xEC4A;}"
+                    ItemsSource="{x:Bind GpuClocks.Rows}"
+                    Visibility="{x:Bind GpuClocks.Available, Mode=OneWay}">
+                    <Button
+                        x:Uid="GpuClocks_Reset"
+                        Command="{x:Bind GpuClocks.ResetCommand}"
+                        IsEnabled="{x:Bind GpuClocks.Overclocked, Mode=OneWay}" />
+                    <!-- The firmware's own overclock per mode (2024+ Predators), added to the offsets below -->
+                    <toolkit:SettingsExpander.ItemsHeader>
+                        <toolkit:SettingsCard x:Uid="GpuClocks_FollowFirmware" Visibility="{x:Bind GpuClocks.FirmwareOverclock, Mode=OneWay}">
+                            <ToggleSwitch IsOn="{x:Bind GpuClocks.FollowFirmware, Mode=TwoWay}" />
+                        </toolkit:SettingsCard>
+                    </toolkit:SettingsExpander.ItemsHeader>
+                    <toolkit:SettingsExpander.ItemTemplate>
+                        <DataTemplate x:DataType="vm:GpuClockRowViewModel">
+                            <toolkit:SettingsCard Description="{x:Bind Status, Mode=OneWay}" Header="{x:Bind Name}">
+                                <StackPanel Orientation="Horizontal" Spacing="12">
+                                    <NumberBox
+                                        x:Uid="GpuClocks_Core"
+                                        MinWidth="140"
+                                        IsEnabled="{x:Bind LimitsKnown, Mode=OneWay}"
+                                        LargeChange="100"
+                                        Maximum="{x:Bind CoreMaximum, Mode=OneWay}"
+                                        Minimum="{x:Bind CoreMinimum, Mode=OneWay}"
+                                        SmallChange="15"
+                                        SpinButtonPlacementMode="Compact"
+                                        Value="{x:Bind Core, Mode=TwoWay}" />
+                                    <NumberBox
+                                        x:Uid="GpuClocks_Memory"
+                                        MinWidth="140"
+                                        IsEnabled="{x:Bind LimitsKnown, Mode=OneWay}"
+                                        LargeChange="500"
+                                        Maximum="{x:Bind MemoryMaximum, Mode=OneWay}"
+                                        Minimum="{x:Bind MemoryMinimum, Mode=OneWay}"
+                                        SmallChange="50"
+                                        SpinButtonPlacementMode="Compact"
+                                        Value="{x:Bind Memory, Mode=TwoWay}" />
+                                </StackPanel>
+                            </toolkit:SettingsCard>
+                        </DataTemplate>
+                    </toolkit:SettingsExpander.ItemTemplate>
+                    <toolkit:SettingsExpander.ItemsFooter>
+                        <TextBlock
+                            x:Uid="GpuClocks_Footer"
+                            Margin="16,8,16,12"
+                            Style="{StaticResource CaptionMutedStyle}"
+                            TextWrapping="Wrap" />
+                    </toolkit:SettingsExpander.ItemsFooter>
+                </toolkit:SettingsExpander>
+            </StackPanel>
+
+            <StackPanel Spacing="4" Visibility="{x:Bind Battery.Available, Mode=OneWay}">
+                <TextBlock x:Uid="System_Battery" Style="{StaticResource SectionHeaderStyle}" />
+                <!-- Wear, as the battery reports it to Windows -->
+                <toolkit:SettingsCard
+                    x:Uid="System_BatteryHealth"
+                    Description="{x:Bind Battery.HealthSummary, Mode=OneWay}"
+                    HeaderIcon="{ui:FontIcon Glyph=&#xEB51;}"
+                    Visibility="{x:Bind Battery.HealthAvailable, Mode=OneWay}">
+                    <StackPanel HorizontalAlignment="Right">
+                        <TextBlock
+                            HorizontalAlignment="Right"
+                            Style="{StaticResource BodyTextBlockStyle}"
+                            Text="{x:Bind Battery.HealthCycles, Mode=OneWay}" />
+                        <TextBlock
+                            HorizontalAlignment="Right"
+                            Style="{StaticResource CaptionMutedStyle}"
+                            Text="{x:Bind Battery.HealthBattery, Mode=OneWay}" />
+                    </StackPanel>
+                </toolkit:SettingsCard>
+                <toolkit:SettingsCard
+                    x:Uid="System_ChargeLimit"
+                    HeaderIcon="{ui:FontIcon Glyph=&#xE83F;}"
+                    IsEnabled="{x:Bind Battery.NotCalibrating, Mode=OneWay}"
+                    Visibility="{x:Bind Battery.ChargeLimitAvailable, Mode=OneWay}">
+                    <ToggleSwitch IsOn="{x:Bind Battery.ChargeLimit, Mode=TwoWay}" />
+                </toolkit:SettingsCard>
+                <toolkit:SettingsCard
+                    x:Uid="System_Calibration"
+                    HeaderIcon="{ui:FontIcon Glyph=&#xE895;}"
+                    Visibility="{x:Bind Battery.CalibrationAvailable, Mode=OneWay}">
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            Style="{StaticResource CaptionTextBlockStyle}"
+                            Text="{x:Bind Battery.CalibrationStatus, Mode=OneWay}"
+                            Visibility="{x:Bind Battery.Calibrating, Mode=OneWay}" />
+                        <Button
+                            x:Uid="System_CalibrationStart"
+                            Command="{x:Bind Battery.StartCalibrationCommand}"
+                            Visibility="{x:Bind Battery.NotCalibrating, Mode=OneWay}" />
+                        <Button
+                            x:Uid="System_CalibrationStop"
+                            Command="{x:Bind Battery.StopCalibrationCommand}"
+                            Visibility="{x:Bind Battery.Calibrating, Mode=OneWay}" />
+                    </StackPanel>
+                </toolkit:SettingsCard>
+                <toolkit:SettingsCard
+                    x:Uid="System_UsbCharging"
+                    HeaderIcon="{ui:FontIcon Glyph=&#xE88E;}"
+                    Visibility="{x:Bind Battery.UsbChargingAvailable, Mode=OneWay}">
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <ComboBox
+                            MinWidth="200"
+                            IsEnabled="{x:Bind Battery.UsbCharging, Mode=OneWay}"
+                            ItemsSource="{x:Bind Battery.UsbFloors}"
+                            SelectedIndex="{x:Bind Battery.UsbFloorIndex, Mode=TwoWay}" />
+                        <ToggleSwitch IsOn="{x:Bind Battery.UsbCharging, Mode=TwoWay}" />
+                    </StackPanel>
+                </toolkit:SettingsCard>
+            </StackPanel>
+
+            <StackPanel Spacing="4" Visibility="{x:Bind Startup.Available, Mode=OneWay}">
+                <TextBlock x:Uid="System_Startup" Style="{StaticResource SectionHeaderStyle}" />
+                <toolkit:SettingsCard
+                    x:Uid="System_BootAnimation"
+                    HeaderIcon="{ui:FontIcon Glyph=&#xE7E8;}"
+                    Visibility="{x:Bind Startup.BootAnimationAvailable, Mode=OneWay}">
+                    <ToggleSwitch IsOn="{x:Bind Startup.BootAnimation, Mode=TwoWay}" />
+                </toolkit:SettingsCard>
+                <toolkit:SettingsCard
+                    x:Uid="System_BootLogo"
+                    Description="{x:Bind Startup.BootLogoDescription, Mode=OneWay}"
+                    HeaderIcon="{ui:FontIcon Glyph=&#xE91B;}"
+                    Visibility="{x:Bind Startup.BootLogoAvailable, Mode=OneWay}">
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <Image
+                            MaxWidth="160"
+                            Height="48"
+                            Source="{x:Bind Startup.Logo, Mode=OneWay}"
+                            Visibility="{x:Bind Startup.CustomLogo, Mode=OneWay}" />
+                        <TextBlock
+                            x:Uid="System_BootLogoAcer"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource CaptionTextBlockStyle}"
+                            Visibility="{x:Bind Startup.AcerLogo, Mode=OneWay}" />
+                        <Button
+                            x:Uid="System_BootLogoRestore"
+                            Command="{x:Bind Startup.RestoreLogoCommand}"
+                            IsEnabled="{x:Bind Startup.Idle, Mode=OneWay}"
+                            Visibility="{x:Bind Startup.CustomLogo, Mode=OneWay}" />
+                        <Button
+                            x:Uid="System_BootLogoChoose"
+                            Command="{x:Bind Startup.ChooseLogoCommand}"
+                            IsEnabled="{x:Bind Startup.Idle, Mode=OneWay}" />
+                    </StackPanel>
+                </toolkit:SettingsCard>
             </StackPanel>
 
             <StackPanel Spacing="4" Visibility="{x:Bind ViewModel.PowerPlansAvailable, Mode=OneWay}">

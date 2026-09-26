@@ -71,8 +71,8 @@
     <comment>Navigation menu item: the RGB keyboard lighting page.</comment>
   </data>
   <data name="Nav_System.Content" xml:space="preserve">
-    <value>Klawiatura i ekran</value>
-    <comment>Navigation menu item: keyboard, display, GPU and power settings.</comment>
+    <value>System</value>
+    <comment>Navigation menu item: the laptop's keyboard, display, graphics, battery, startup and power settings. Like Windows Settings' System page.</comment>
   </data>
   <data name="Startup_Connecting.Text" xml:space="preserve">
     <value>Łączenie z laptopem…</value>
@@ -134,6 +134,10 @@
     <value>Klawiatura</value>
     <comment>Banner title.</comment>
   </data>
+  <data name="Notice_Lighting_Title" xml:space="preserve">
+    <value>Podświetlenie</value>
+    <comment>Title of a banner about the light bars or the logo.</comment>
+  </data>
   <data name="Notice_Display_Title" xml:space="preserve">
     <value>Ekran</value>
     <comment>Banner title: the laptop screen.</comment>
@@ -153,12 +157,25 @@
     <value>Oprogramowanie układowe odrzuciło zmianę CoolBoost.</value>
     <comment>CoolBoost is an Acer feature name: keep it.</comment>
   </data>
+  <data name="Notice_FanTableRejected" xml:space="preserve">
+    <value>Oprogramowanie układowe odrzuciło zmianę krzywej wentylatorów.</value>
+  </data>
   <data name="Notice_FansHandedBack" xml:space="preserve">
     <value>Temperatura procesora jest niedostępna, więc wentylatory przełączono z powrotem na tryb Auto.</value>
     <comment>Auto = the automatic fan mode, as in FanMode_Auto.</comment>
   </data>
   <data name="Notice_LightingRejected" xml:space="preserve">
     <value>Klawiatura odrzuciła zmianę podświetlenia.</value>
+  </data>
+  <data name="Notice_LightBarRejected" xml:space="preserve">
+    <value>Listwa świetlna odrzuciła zmianę podświetlenia.</value>
+  </data>
+  <data name="Notice_LogoRejected" xml:space="preserve">
+    <value>Logo odrzuciło zmianę podświetlenia.</value>
+  </data>
+  <data name="Notice_LightRejected" xml:space="preserve">
+    <value>{0}: zmiana podświetlenia została odrzucona.</value>
+    <comment>Notice when a light other than the keyboard, the light bar and the logo refused a change. {0} = its name (e.g. "Lid logo").</comment>
   </data>
   <data name="Notice_BacklightTimeoutRejected" xml:space="preserve">
     <value>Klawiatura odrzuciła zmianę czasu wyłączania podświetlenia.</value>
@@ -184,6 +201,41 @@
   </data>
   <data name="Notice_GpuModeRejected" xml:space="preserve">
     <value>Oprogramowanie układowe odrzuciło zmianę trybu GPU.</value>
+  </data>
+  <data name="Notice_GpuClocks_Title" xml:space="preserve">
+    <value>Podkręcanie GPU</value>
+    <comment>Notice title for problems with the GPU overclock.</comment>
+  </data>
+  <data name="Notice_GpuClocksRejected" xml:space="preserve">
+    <value>Sterownik NVIDIA odrzucił przesunięcia taktowania.</value>
+  </data>
+  <data name="Notice_OperatingMode_Title" xml:space="preserve">
+    <value>Tryb pracy</value>
+    <comment>Title of the toast shown when the Mode key or the power supply changes the operating mode.</comment>
+  </data>
+  <data name="Notice_ModeOnBattery" xml:space="preserve">
+    <value>Na baterii: {0}</value>
+    <comment>Toast text: the laptop runs on battery, in operating mode {0} (e.g. "Eco").</comment>
+  </data>
+  <data name="Notice_ModePluggedIn" xml:space="preserve">
+    <value>Ładowarka podłączona: {0}</value>
+    <comment>Toast text: the adapter was plugged in, so operating mode {0} runs again (e.g. "Turbo").</comment>
+  </data>
+  <data name="Notice_ModeLowBattery" xml:space="preserve">
+    <value>Słaba bateria: {0}, dopóki się nie naładuje</value>
+    <comment>Toast text: on AC, but the battery is too low to help the adapter, so operating mode {0} (Balanced or Quiet) runs until it charges.</comment>
+  </data>
+  <data name="Notice_ModeAdapter" xml:space="preserve">
+    <value>Zbyt słaba ładowarka: {0}</value>
+    <comment>Toast when the operating mode changed because the adapter can't power every mode (a USB-C charger that is too weak, or the laptop's own limit). {0} = the mode now in use.</comment>
+  </data>
+  <data name="Notice_TurboUnavailable" xml:space="preserve">
+    <value>Tryb Turbo wymaga ładowarki i naładowanej baterii.</value>
+    <comment>Toast text when the Mode key is set to Turbo on and off, but the laptop is on battery or its battery is too low.</comment>
+  </data>
+  <data name="Notice_TurboNeedsAdapter" xml:space="preserve">
+    <value>Tryb Turbo wymaga mocniejszej ładowarki, na przykład tej od laptopa.</value>
+    <comment>Toast when the Mode key (set to Turbo) is pressed while the adapter can't power Turbo.</comment>
   </data>
   <data name="Notice_Autostart_Title" xml:space="preserve">
     <value>Uruchamiaj z systemem Windows</value>
@@ -227,11 +279,51 @@
     <value>GPU</value>
     <comment>The graphics chip. Short: used in labels like 'GPU 45°'.</comment>
   </data>
+  <data name="Chip_System" xml:space="preserve">
+    <value>System</value>
+    <comment>Short name of a system (chassis) fan where space is tight, e.g. the tray tooltip: "System 2,000 rpm".</comment>
+  </data>
   <data name="Fan_Cpu" xml:space="preserve">
     <value>Wentylator CPU</value>
   </data>
   <data name="Fan_Gpu" xml:space="preserve">
     <value>Wentylator GPU</value>
+  </data>
+  <data name="Fan_Gpu1" xml:space="preserve">
+    <value>Wentylator GPU 1</value>
+    <comment>The first of two GPU fans, on laptops that have two (Acer's software numbers them the same way).</comment>
+  </data>
+  <data name="Fan_Gpu2" xml:space="preserve">
+    <value>Wentylator GPU 2</value>
+    <comment>The second GPU fan.</comment>
+  </data>
+  <data name="Fan_System" xml:space="preserve">
+    <value>Wentylator systemowy</value>
+    <comment>A fan in the chassis, not on the CPU or GPU. OpenSense only shows its speed.</comment>
+  </data>
+  <data name="Fan_System1" xml:space="preserve">
+    <value>Wentylator systemowy 1</value>
+    <comment>The first of two system fans.</comment>
+  </data>
+  <data name="Fan_System2" xml:space="preserve">
+    <value>Wentylator systemowy 2</value>
+    <comment>The second system fan.</comment>
+  </data>
+  <data name="FanShort_Gpu1" xml:space="preserve">
+    <value>GPU 1</value>
+    <comment>Short name of the first GPU fan where space is tight (the tray tooltip), on laptops with two.</comment>
+  </data>
+  <data name="FanShort_Gpu2" xml:space="preserve">
+    <value>GPU 2</value>
+    <comment>Short name of the second GPU fan.</comment>
+  </data>
+  <data name="FanShort_System1" xml:space="preserve">
+    <value>System 1</value>
+    <comment>Short name of the first of two system fans.</comment>
+  </data>
+  <data name="FanShort_System2" xml:space="preserve">
+    <value>System 2</value>
+    <comment>Short name of the second system fan.</comment>
   </data>
   <data name="FanMode_Auto" xml:space="preserve">
     <value>Auto</value>
@@ -270,6 +362,34 @@
     <value>Tryb Cichy utrzymuje wentylatory w trybie Auto.</value>
     <comment>Quiet = OperatingMode_Quiet; Auto = FanMode_Auto.</comment>
   </data>
+  <data name="FanLock_EcoMode" xml:space="preserve">
+    <value>Tryb Eco utrzymuje wentylatory w trybie Auto.</value>
+    <comment>Banner on the Fans page: in the Eco operating mode the fans stay on Auto (as Acer's software has it).</comment>
+  </data>
+  <data name="FanLock_DustDefender" xml:space="preserve">
+    <value>Wentylatory obracają się wstecz, aby wydmuchać kurz. Sterowanie wentylatorami zostanie wznowione po zakończeniu.</value>
+    <comment>Banner on the Fans page while the laptop's DustDefender runs the fans backwards; OpenSense leaves the fans alone meanwhile.</comment>
+  </data>
+  <data name="DustDefender_Description" xml:space="preserve">
+    <value>Na chwilę obraca wentylatory wstecz, aby wydmuchać kurz z radiatorów.</value>
+    <comment>The DustDefender card's description on the Fans page ("DustDefender" is Acer's name for the feature and stays in English).</comment>
+  </data>
+  <data name="DustDefender_Running" xml:space="preserve">
+    <value>Czyszczenie: wentylatory przez chwilę obracają się wstecz.</value>
+    <comment>The DustDefender card's description while a run is going.</comment>
+  </data>
+  <data name="DustDefender_Busy" xml:space="preserve">
+    <value>Laptop na razie odmówił, jak przy dużym obciążeniu. Spróbuj ponownie, gdy będzie bezczynny.</value>
+    <comment>The DustDefender card's description when the laptop's embedded controller turned a start down (Acer: it does under heavy load).</comment>
+  </data>
+  <data name="DustDefender_Failed" xml:space="preserve">
+    <value>Laptop nie rozpoczął czyszczenia.</value>
+    <comment>The DustDefender card's description when the firmware refused a start.</comment>
+  </data>
+  <data name="Fans_CleanNow.Content" xml:space="preserve">
+    <value>Wyczyść teraz</value>
+    <comment>Button on the DustDefender card: the fans run backwards for a moment to blow dust out.</comment>
+  </data>
   <data name="OperatingMode_Eco" xml:space="preserve">
     <value>Eco</value>
     <comment>Acer operating mode name. Short: a segmented button.</comment>
@@ -306,9 +426,17 @@
   <data name="OperatingMode_Turbo_Description" xml:space="preserve">
     <value>Maksymalna moc i chłodzenie. Wymaga zasilania sieciowego.</value>
   </data>
-  <data name="OperatingMode_BatteryNote" xml:space="preserve">
-    <value>Na baterii tryby {0} i {1} działają jak tryb {2}, dopóki nie podłączysz ładowarki.</value>
-    <comment>{0}, {1}, {2} = operating mode names (Performance, Turbo, Balanced).</comment>
+  <data name="OperatingMode_BatteryModeNote" xml:space="preserve">
+    <value>Na baterii: używany jest tryb wybrany tutaj, dopóki nie podłączysz ładowarki.</value>
+    <comment>Under the operating mode list while on battery: the list shows the battery's own mode.</comment>
+  </data>
+  <data name="OperatingMode_LowBatteryNote" xml:space="preserve">
+    <value>Bateria jest zbyt rozładowana, by wspomagać ładowarkę, więc tryby wydajności wrócą, gdy się naładuje.</value>
+    <comment>Under the operating mode list on AC when the battery is too low to help the adapter (only Quiet and Balanced are listed then).</comment>
+  </data>
+  <data name="OperatingMode_AdapterNote" xml:space="preserve">
+    <value>Ta ładowarka nie wystarcza do trybów wydajności; wrócą z mocniejszą, na przykład tą od laptopa.</value>
+    <comment>Under the operating modes when the adapter can't power every mode (a USB-C charger that is too weak, or the laptop's own limit), so only the quieter ones are offered.</comment>
   </data>
   <data name="PowerSource_PluggedIn" xml:space="preserve">
     <value>Podłączony</value>
@@ -351,14 +479,6 @@
   </data>
   <data name="Dashboard_GpuTemperature.Text" xml:space="preserve">
     <value>Temperatura GPU</value>
-    <comment>Tile caption.</comment>
-  </data>
-  <data name="Dashboard_CpuFan.Text" xml:space="preserve">
-    <value>Wentylator CPU</value>
-    <comment>Tile caption.</comment>
-  </data>
-  <data name="Dashboard_GpuFan.Text" xml:space="preserve">
-    <value>Wentylator GPU</value>
     <comment>Tile caption.</comment>
   </data>
   <data name="Dashboard_LoadDetail" xml:space="preserve">
@@ -408,6 +528,21 @@
   <data name="Fans_CoolBoost.Description" xml:space="preserve">
     <value>Podnosi własne prędkości wentylatorów oprogramowania układowego, z których korzysta tryb Auto i do których tryb Ręczny dodaje prędkość.</value>
     <comment>Under the header "CoolBoost" (an Acer feature name). Auto, Custom = FanMode_Auto, FanMode_Custom.</comment>
+  </data>
+  <data name="Fans_FanTable.Header" xml:space="preserve">
+    <value>Krzywa wentylatorów</value>
+  </data>
+  <data name="Fans_FanTable.Description" xml:space="preserve">
+    <value>Własne prędkości wentylatorów oprogramowania układowego, z których korzysta tryb Auto i do których tryb Ręczny dodaje prędkość. Oprogramowanie Acer wybiera szybszą krzywą przy podkręcaniu GPU.</value>
+  </data>
+  <data name="Fans_FanTableStandard.Content" xml:space="preserve">
+    <value>Standardowa</value>
+  </data>
+  <data name="Fans_FanTableFaster.Content" xml:space="preserve">
+    <value>Szybsza</value>
+  </data>
+  <data name="Fans_FanTableFastest.Content" xml:space="preserve">
+    <value>Najszybsza</value>
   </data>
   <data name="Fans_BoostFixed.Content" xml:space="preserve">
     <value>Stała</value>
@@ -459,9 +594,125 @@
     <value>Efekt</value>
     <comment>Lighting mode: an animated effect.</comment>
   </data>
+  <data name="Lighting_PerKey.Content" xml:space="preserve">
+    <value>Każdy klawisz osobno</value>
+    <comment>Lighting mode: a colour for each key (next to "Static colours" and "Effect").</comment>
+  </data>
+  <data name="Lighting_PerKeyHint.Text" xml:space="preserve">
+    <value>Kliknięcie klawisza zaznacza go, Ctrl+kliknięcie dodaje lub usuwa klawisz, a przeciąganie zaznacza kilka. Kolor trafia potem do zaznaczonych klawiszy albo do wszystkich, gdy żaden nie jest zaznaczony.</value>
+    <comment>Help above the per-key editor's buttons.</comment>
+  </data>
+  <data name="Lighting_SelectWasd.Content" xml:space="preserve">
+    <value>WASD</value>
+    <comment>Button that selects the W, A, S and D keys (the name of the key group; keep as is).</comment>
+  </data>
+  <data name="Lighting_SelectArrows.Content" xml:space="preserve">
+    <value>Strzałki</value>
+    <comment>Button that selects the four arrow keys.</comment>
+  </data>
+  <data name="Lighting_SelectFunctionKeys.Content" xml:space="preserve">
+    <value>F1–F12</value>
+    <comment>Button that selects the function keys F1 to F12.</comment>
+  </data>
+  <data name="Lighting_SelectNumbers.Content" xml:space="preserve">
+    <value>Rząd cyfr</value>
+    <comment>Button that selects the row of digit keys 1 to 0.</comment>
+  </data>
+  <data name="Lighting_SelectAll.Content" xml:space="preserve">
+    <value>Wszystkie klawisze</value>
+    <comment>Button that selects every key.</comment>
+  </data>
+  <data name="Lighting_SelectNone.Content" xml:space="preserve">
+    <value>Wyczyść zaznaczenie</value>
+    <comment>Button that deselects every key in the per-key editor.</comment>
+  </data>
+  <data name="Lighting_TurnOffKeys.Content" xml:space="preserve">
+    <value>Wyłącz</value>
+    <comment>Button that makes the selected keys (or all, with none selected) dark.</comment>
+  </data>
+  <data name="Lighting_Layout.Header" xml:space="preserve">
+    <value>Układ</value>
+    <comment>Which keyboard layout the per-key editor draws (US, UK and Europe, Japanese).</comment>
+  </data>
+  <data name="Layout_Ansi" xml:space="preserve">
+    <value>USA (ANSI)</value>
+    <comment>Keyboard layout name in the per-key editor.</comment>
+  </data>
+  <data name="Layout_Iso" xml:space="preserve">
+    <value>Wielka Brytania i Europa (ISO)</value>
+    <comment>Keyboard layout name in the per-key editor.</comment>
+  </data>
+  <data name="Layout_Jis" xml:space="preserve">
+    <value>Japoński (JIS)</value>
+    <comment>Keyboard layout name in the per-key editor.</comment>
+  </data>
+  <data name="Lighting_EffectList.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Efekt</value>
+    <comment>Screen-reader name of the list of lighting effects.</comment>
+  </data>
   <data name="Lighting_Zone" xml:space="preserve">
     <value>Strefa {0}</value>
     <comment>A keyboard lighting zone: {0} = its number.</comment>
+  </data>
+  <data name="Lighting_NumberedLight" xml:space="preserve">
+    <value>{0} {1}</value>
+    <comment>A light's name when the laptop has two of that kind: {0} = its name (e.g. "Light bar"), {1} = 1 or 2.</comment>
+  </data>
+  <data name="Light_Keyboard" xml:space="preserve">
+    <value>Klawiatura</value>
+    <comment>Name of the keyboard backlight in the Lighting page's list of lights.</comment>
+  </data>
+  <data name="Light_LightBar" xml:space="preserve">
+    <value>Listwa świetlna</value>
+    <comment>Name of the laptop's light bar(s) in the Lighting page's list of lights.</comment>
+  </data>
+  <data name="Light_InfinityMirror" xml:space="preserve">
+    <value>Infinity Mirror</value>
+    <comment>Acer's name for the rear light bar of Predator Helios 16/18 (2024). A product name: keep it as it is.</comment>
+  </data>
+  <data name="Light_Logo" xml:space="preserve">
+    <value>Logo</value>
+    <comment>Name of the lit logo on the laptop's lid in the Lighting page's list of lights.</comment>
+  </data>
+  <data name="Light_FrontLightBar" xml:space="preserve">
+    <value>Przednia listwa świetlna</value>
+    <comment>A light's name (the page's light selector).</comment>
+  </data>
+  <data name="Light_LeftLightBar" xml:space="preserve">
+    <value>Lewa listwa świetlna</value>
+    <comment>A light's name (the page's light selector).</comment>
+  </data>
+  <data name="Light_RightLightBar" xml:space="preserve">
+    <value>Prawa listwa świetlna</value>
+    <comment>A light's name (the page's light selector).</comment>
+  </data>
+  <data name="Light_RearLightBar" xml:space="preserve">
+    <value>Tylna listwa świetlna</value>
+    <comment>A light's name (the page's light selector).</comment>
+  </data>
+  <data name="Light_TurboKey" xml:space="preserve">
+    <value>Klawisz Turbo</value>
+    <comment>A light's name: the light in the laptop's Turbo key.</comment>
+  </data>
+  <data name="Light_ModeKey" xml:space="preserve">
+    <value>Klawisz trybu</value>
+    <comment>A light's name: the light in the laptop's Mode key (switches operating modes).</comment>
+  </data>
+  <data name="Light_CoverLogo" xml:space="preserve">
+    <value>Logo na pokrywie</value>
+    <comment>A light's name: the logo on the outside of the lid.</comment>
+  </data>
+  <data name="Light_BaseLogo" xml:space="preserve">
+    <value>Logo na obudowie</value>
+    <comment>A light's name: a logo on the laptop's base.</comment>
+  </data>
+  <data name="Light_MagKey" xml:space="preserve">
+    <value>Klawisze MagForce</value>
+    <comment>A light's name: the lights under the W, A, S and D keys of Predator Helios models (Acer calls these keys MagForce keys; keep "MagForce").</comment>
+  </data>
+  <data name="Light_InfiniteRing" xml:space="preserve">
+    <value>InfiniteRing</value>
+    <comment>A light's name: a ring of light on some Predator laptops (Acer's name for it; keep as is).</comment>
   </data>
   <data name="Lighting_ZoneColor.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Wybierz kolor</value>
@@ -469,6 +720,14 @@
   </data>
   <data name="Lighting_AllZones.Text" xml:space="preserve">
     <value>Jeden kolor dla wszystkich stref</value>
+  </data>
+  <data name="Lighting_ApplyToAll.Content" xml:space="preserve">
+    <value>Zastosuj do wszystkich świateł</value>
+    <comment>Button: gives every other light the nearest look it can show to the one being edited.</comment>
+  </data>
+  <data name="Lighting_Color.Text" xml:space="preserve">
+    <value>Kolor</value>
+    <comment>Heading of the colour picker for a light with a single colour (the logo).</comment>
   </data>
   <data name="Lighting_Speed.Header" xml:space="preserve">
     <value>Szybkość</value>
@@ -480,6 +739,10 @@
   </data>
   <data name="Lighting_EffectColor.Text" xml:space="preserve">
     <value>Kolor efektu</value>
+  </data>
+  <data name="Lighting_RandomColor.Content" xml:space="preserve">
+    <value>Losowe kolory</value>
+    <comment>Check box next to "Effect colour": the effect picks random colours instead.</comment>
   </data>
   <data name="Lighting_AnyColor.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Dowolny kolor</value>
@@ -511,6 +774,10 @@
   <data name="Effect_Neon_Description" xml:space="preserve">
     <value>Przechodzi przez kolory tęczy.</value>
   </data>
+  <data name="Effect_NeonKeyboard_Description" xml:space="preserve">
+    <value>Klawiatura płynnie rozświetla się i przygasa na czerwono, potem na zielono, potem na niebiesko.</value>
+    <comment>Description of the Neon effect on a keyboard lit by zones (the embedded controller's), under the effect list. The whole keyboard fades in and out in one colour at a time.</comment>
+  </data>
   <data name="Effect_Wave_Description" xml:space="preserve">
     <value>Fala koloru przesuwa się po klawiszach.</value>
   </data>
@@ -519,6 +786,224 @@
   </data>
   <data name="Effect_Zoom_Description" xml:space="preserve">
     <value>Kolor rozchodzi się od środka.</value>
+  </data>
+  <data name="Effect_Meteor" xml:space="preserve">
+    <value>Meteor</value>
+    <comment>Keyboard lighting effect: streaks of colour move across the keyboard.</comment>
+  </data>
+  <data name="Effect_Meteor_Description" xml:space="preserve">
+    <value>Smugi koloru przelatują po klawiaturze.</value>
+  </data>
+  <data name="Effect_MeteorKeyboard_Description" xml:space="preserve">
+    <value>Impuls koloru przebiega przez klawiaturę i z powrotem.</value>
+    <comment>Description of the Meteor effect on a keyboard lit by zones (the embedded controller's), under the effect list. The colour lights one zone after the other to the far end, then comes back the same way.</comment>
+  </data>
+  <data name="Effect_Twinkling" xml:space="preserve">
+    <value>Migotanie</value>
+    <comment>Keyboard lighting effect: parts of the keyboard light up at random and fade.</comment>
+  </data>
+  <data name="Effect_Snake" xml:space="preserve">
+    <value>Wąż</value>
+    <comment>Light bar effect (Infinity Mirror): a band of rainbow colours runs along the bar.</comment>
+  </data>
+  <data name="Effect_Lightning" xml:space="preserve">
+    <value>Błyskawica</value>
+    <comment>Light bar effect (Infinity Mirror).</comment>
+  </data>
+  <data name="Effect_Stack" xml:space="preserve">
+    <value>Stos</value>
+    <comment>Light bar effect (Infinity Mirror): light builds up zone by zone.</comment>
+  </data>
+  <data name="Effect_MotionPoint" xml:space="preserve">
+    <value>Ruchomy punkt</value>
+    <comment>Light bar effect (Infinity Mirror): a point of light moves along the bar.</comment>
+  </data>
+  <data name="Effect_Ripple" xml:space="preserve">
+    <value>Fale</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Raindrop" xml:space="preserve">
+    <value>Krople deszczu</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Fireball" xml:space="preserve">
+    <value>Kula ognia</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Snow" xml:space="preserve">
+    <value>Śnieg</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Heartbeat" xml:space="preserve">
+    <value>Bicie serca</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Dazzling" xml:space="preserve">
+    <value>Olśnienie</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Matrix" xml:space="preserve">
+    <value>Matrix</value>
+    <comment>Lighting effect name (after the film's falling green code).</comment>
+  </data>
+  <data name="Effect_Swiping" xml:space="preserve">
+    <value>Przesuwanie</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_RowWave" xml:space="preserve">
+    <value>Fala rzędami</value>
+    <comment>Lighting effect name: a wave that moves row by row.</comment>
+  </data>
+  <data name="Effect_Racing" xml:space="preserve">
+    <value>Wyścig</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Sprouting" xml:space="preserve">
+    <value>Kiełkowanie</value>
+    <comment>Lighting effect name: light grows like a sprout.</comment>
+  </data>
+  <data name="Effect_Disco" xml:space="preserve">
+    <value>Disco</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_PingPong" xml:space="preserve">
+    <value>Ping-pong</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_LightShow" xml:space="preserve">
+    <value>Pokaz świateł</value>
+    <comment>Lighting effect name: the light's effects in turn.</comment>
+  </data>
+  <data name="Effect_FollowOperatingMode" xml:space="preserve">
+    <value>Tryb pracy</value>
+    <comment>Lighting effect name: the firmware colours the light by the operating mode (Quiet, Balanced, Performance, ...).</comment>
+  </data>
+  <data name="Effect_Combo" xml:space="preserve">
+    <value>Kombinacja</value>
+    <comment>Lighting effect name: several effects at once.</comment>
+  </data>
+  <data name="Effect_Rainbow" xml:space="preserve">
+    <value>Tęcza</value>
+    <comment>Lighting effect name (MagForce keys).</comment>
+  </data>
+  <data name="Effect_Slash" xml:space="preserve">
+    <value>Cięcie</value>
+    <comment>Lighting effect name (MagForce keys): a slash of light across the keys.</comment>
+  </data>
+  <data name="Effect_Star" xml:space="preserve">
+    <value>Gwiazdy</value>
+    <comment>Lighting effect name (MagForce keys).</comment>
+  </data>
+  <data name="Effect_Blasting" xml:space="preserve">
+    <value>Wybuch</value>
+    <comment>Lighting effect name (MagForce keys): colour bursts out.</comment>
+  </data>
+  <data name="Effect_Twinkling_Description" xml:space="preserve">
+    <value>Fragmenty klawiatury rozświetlają się losowo i przygasają.</value>
+  </data>
+  <data name="Effect_TwinklingKeyboard_Description" xml:space="preserve">
+    <value>Cała klawiatura miga.</value>
+    <comment>Description of the Twinkling effect on a keyboard lit by zones (the embedded controller's), under the effect list. All zones switch on and off together, with no fading.</comment>
+  </data>
+  <data name="Effect_Snake_Description" xml:space="preserve">
+    <value>Pas w kolorach tęczy biegnie wzdłuż listwy świetlnej.</value>
+  </data>
+  <data name="Effect_SnakeColor_Description" xml:space="preserve">
+    <value>Kolorowa linia wije się po podświetleniu.</value>
+    <comment>Description of the Snake effect where it takes a colour (keyboards, logos), under the effect list.</comment>
+  </data>
+  <data name="Effect_Lightning_Description" xml:space="preserve">
+    <value>Światło błyska jak błyskawica.</value>
+  </data>
+  <data name="Effect_Stack_Description" xml:space="preserve">
+    <value>Światło narasta strefa po strefie.</value>
+  </data>
+  <data name="Effect_MotionPoint_Description" xml:space="preserve">
+    <value>Punkt świetlny przesuwa się wzdłuż listwy świetlnej.</value>
+  </data>
+  <data name="Effect_ZoomIn_Description" xml:space="preserve">
+    <value>Światło zbiega się do środka.</value>
+    <comment>The Infinity Mirror's Zoom (Acer names it Zoom there too).</comment>
+  </data>
+  <data name="Effect_Ripple_Description" xml:space="preserve">
+    <value>Kolorowe kręgi rozchodzą się na zewnątrz.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Raindrop_Description" xml:space="preserve">
+    <value>Kolorowe krople spadają i gasną.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Fireball_Description" xml:space="preserve">
+    <value>Kula ognia przelatuje przez podświetlenie.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Snow_Description" xml:space="preserve">
+    <value>Płatki światła powoli opadają.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Heartbeat_Description" xml:space="preserve">
+    <value>Światło bije jak serce.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Dazzling_Description" xml:space="preserve">
+    <value>Jasne iskry błyskają wszędzie.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Matrix_Description" xml:space="preserve">
+    <value>Strumienie światła spływają w dół.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Swiping_Description" xml:space="preserve">
+    <value>Kolor przesuwa się tam i z powrotem.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_RowWave_Description" xml:space="preserve">
+    <value>Kolor toczy się rząd po rzędzie.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Racing_Description" xml:space="preserve">
+    <value>Światła gonią się nawzajem.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Sprouting_Description" xml:space="preserve">
+    <value>Światło wyrasta od dołu.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Disco_Description" xml:space="preserve">
+    <value>Kolory błyskają jak na parkiecie.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_PingPong_Description" xml:space="preserve">
+    <value>Punkt światła odbija się od boku do boku.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_LightShow_Description" xml:space="preserve">
+    <value>Efekty odtwarzają się jeden po drugim.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_FollowOperatingMode_Description" xml:space="preserve">
+    <value>Kolor pokazuje używany tryb pracy.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Combo_Description" xml:space="preserve">
+    <value>Kilka efektów naraz.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Rainbow_Description" xml:space="preserve">
+    <value>Klawisze świecą kolorami tęczy.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Slash_Description" xml:space="preserve">
+    <value>Światło przecina klawisze.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Star_Description" xml:space="preserve">
+    <value>Klawisze migoczą jak gwiazdy.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Blasting_Description" xml:space="preserve">
+    <value>Kolor wybucha i gaśnie.</value>
+    <comment>Effect description, under the effect list.</comment>
   </data>
   <data name="Direction_Left" xml:space="preserve">
     <value>W lewo</value>
@@ -541,7 +1026,7 @@
     <comment>Keyboard backlight brightness: off. Short: shown next to 25%, 50%...</comment>
   </data>
   <data name="System_Title.Text" xml:space="preserve">
-    <value>Klawiatura i ekran</value>
+    <value>System</value>
     <comment>Page title, same as Nav_System.Content.</comment>
   </data>
   <data name="System_Keyboard.Text" xml:space="preserve">
@@ -561,6 +1046,22 @@
   </data>
   <data name="System_WindowsKey.Description" xml:space="preserve">
     <value>Wyłącz, aby klawisze Windows i Menu nie przerywały gier.</value>
+  </data>
+  <data name="System_ModeKey.Header" xml:space="preserve">
+    <value>Klawisz trybu</value>
+    <comment>System page, Keyboard section: the laptop's Mode key (it switches the operating mode). Shown once the key has been pressed.</comment>
+  </data>
+  <data name="System_ModeKey.Description" xml:space="preserve">
+    <value>Co robi klawisz trybu w laptopie.</value>
+    <comment>Description of the Mode key setting.</comment>
+  </data>
+  <data name="System_ModeKeyCycle.Content" xml:space="preserve">
+    <value>Przełączaj tryby po kolei</value>
+    <comment>Mode key choice: each press goes to the next operating mode (Balanced, Performance, Turbo, Quiet; on battery Balanced and Eco).</comment>
+  </data>
+  <data name="System_ModeKeyTurbo.Content" xml:space="preserve">
+    <value>Włączaj i wyłączaj Turbo</value>
+    <comment>Mode key choice: a press turns Turbo on, the next one goes back to the mode before.</comment>
   </data>
   <data name="System_StickyKeys.Header" xml:space="preserve">
     <value>Klawisze trwałe</value>
@@ -610,6 +1111,261 @@
   <data name="System_RestartNow.Content" xml:space="preserve">
     <value>Uruchom ponownie teraz</value>
     <comment>Button: restart Windows now.</comment>
+  </data>
+  <data name="System_GpuClocks.Header" xml:space="preserve">
+    <value>Podkręcanie GPU</value>
+    <comment>Expander on the System page: clock offsets for the NVIDIA GPU, per operating mode.</comment>
+  </data>
+  <data name="GpuClocks_Reset.Content" xml:space="preserve">
+    <value>Zresetuj</value>
+    <comment>Button next to "GPU overclock": sets every offset back to 0.</comment>
+  </data>
+  <data name="GpuClocks_FollowFirmware.Header" xml:space="preserve">
+    <value>Podkręcanie Acera</value>
+    <comment>Switch in the GPU overclock section, on laptops whose firmware has its own GPU overclock for each operating mode (2024+ Predators). Keep "Acer".</comment>
+  </data>
+  <data name="GpuClocks_Core.Header" xml:space="preserve">
+    <value>Rdzeń (MHz)</value>
+    <comment>Number box label: the GPU core clock offset, in MHz.</comment>
+  </data>
+  <data name="GpuClocks_Memory.Header" xml:space="preserve">
+    <value>Pamięć (MHz)</value>
+    <comment>Number box label: the GPU memory clock offset, in MHz.</comment>
+  </data>
+  <data name="GpuClocks_Footer.Text" xml:space="preserve">
+    <value>Przesunięcia pamięci liczą się podwójnie, jak w MSI Afterburner: +100 podnosi taktowanie pamięci o 50 MHz.</value>
+    <comment>Note under the GPU overclock rows. MSI Afterburner is a product name.</comment>
+  </data>
+  <data name="GpuClocks_Always" xml:space="preserve">
+    <value>Zawsze</value>
+    <comment>The only row of GPU offsets on laptops without operating modes: they apply all the time.</comment>
+  </data>
+  <data name="GpuClocks_InUse" xml:space="preserve">
+    <value>Teraz w użyciu</value>
+    <comment>Under the operating mode whose GPU offsets apply right now.</comment>
+  </data>
+  <data name="GpuClocks_Firmware" xml:space="preserve">
+    <value>Od Acera: rdzeń {0} MHz, pamięć {1} MHz</value>
+    <comment>Under an operating mode in the GPU overclock section: the firmware's own offsets for that mode. {0} = core offset, {1} = memory offset (signed numbers, e.g. +150).</comment>
+  </data>
+  <data name="GpuClocks_Description" xml:space="preserve">
+    <value>Zwiększa taktowanie GPU.</value>
+    <comment>Under "GPU overclock" while no offsets are set in the operating mode in force.</comment>
+  </data>
+  <data name="GpuClocks_WaitingForLimits" xml:space="preserve">
+    <value>Limity GPU pojawią się, gdy GPU zostanie użyty.</value>
+    <comment>Under "GPU overclock" until the NVIDIA driver has reported which offsets it accepts (it is only asked while the GPU is on).</comment>
+  </data>
+  <data name="GpuClocks_Pending" xml:space="preserve">
+    <value>Zostanie zastosowane, gdy GPU będzie znowu używany.</value>
+    <comment>Under "GPU overclock" while offsets are set but the GPU is powered down (it is not woken to apply them).</comment>
+  </data>
+  <data name="GpuClocks_Applied" xml:space="preserve">
+    <value>W użyciu: rdzeń {0} MHz, pamięć {1} MHz</value>
+    <comment>Under "GPU overclock": the offsets in force. {0} = core, {1} = memory offset, with their sign (e.g. +150, 0).</comment>
+  </data>
+  <data name="GpuClocks_NotApplied" xml:space="preserve">
+    <value>Sterownik NVIDIA nie przyjął tych przesunięć.</value>
+    <comment>Under "GPU overclock" when the driver did not take the offsets.</comment>
+  </data>
+  <data name="GpuClocks_Confirm_Title" xml:space="preserve">
+    <value>Podkręcić GPU?</value>
+    <comment>Dialog title before the first GPU offset is set.</comment>
+  </data>
+  <data name="GpuClocks_Confirm_Message" xml:space="preserve">
+    <value>Taktowanie powyżej ustawień NVIDIA może powodować awarie gier albo zawieszanie się lub ponowne uruchamianie laptopa. Jeśli tak się stanie, zmniejsz przesunięcia.</value>
+    <comment>Dialog text before the first GPU offset is set.</comment>
+  </data>
+  <data name="GpuClocks_Confirm_Overclock" xml:space="preserve">
+    <value>Podkręć</value>
+    <comment>The dialog's button that goes ahead with the overclock.</comment>
+  </data>
+  <data name="System_Battery.Text" xml:space="preserve">
+    <value>Bateria</value>
+    <comment>Section header on the System page.</comment>
+  </data>
+  <data name="System_BatteryHealth.Header" xml:space="preserve">
+    <value>Kondycja baterii</value>
+  </data>
+  <data name="BatteryHealth_Capacity" xml:space="preserve">
+    <value>{0}% pierwotnej pojemności ({1} z {2} Wh)</value>
+    <comment>{0} = percent, {1} = what it holds now, {2} = what it held new (watt-hours).</comment>
+  </data>
+  <data name="BatteryHealth_CapacityRelative" xml:space="preserve">
+    <value>{0}% pierwotnej pojemności</value>
+    <comment>{0} = percent. For batteries that don't report watt-hours.</comment>
+  </data>
+  <data name="BatteryHealth_Cycles" xml:space="preserve">
+    <value>Cykle ładowania: {0}</value>
+    <comment>{0} = how many times the battery has been fully charged, as it counts.</comment>
+  </data>
+  <data name="System_ChargeLimit.Header" xml:space="preserve">
+    <value>Zatrzymywanie ładowania na 80%</value>
+  </data>
+  <data name="System_ChargeLimit.Description" xml:space="preserve">
+    <value>Stale pełna bateria szybciej się zużywa. Warto włączyć, jeśli laptop przez większość czasu jest podłączony do zasilania.</value>
+  </data>
+  <data name="System_Calibration.Header" xml:space="preserve">
+    <value>Kalibracja baterii</value>
+  </data>
+  <data name="System_Calibration.Description" xml:space="preserve">
+    <value>Ładuje baterię do pełna, rozładowuje ją i ładuje ponownie, aby wyświetlany poziom naładowania był dokładny. Trwa kilka godzin.</value>
+  </data>
+  <data name="System_CalibrationStart.Content" xml:space="preserve">
+    <value>Kalibruj</value>
+  </data>
+  <data name="System_CalibrationStop.Content" xml:space="preserve">
+    <value>Zatrzymaj</value>
+  </data>
+  <data name="System_UsbCharging.Header" xml:space="preserve">
+    <value>Ładowanie urządzeń USB po wyłączeniu</value>
+  </data>
+  <data name="System_UsbCharging.Description" xml:space="preserve">
+    <value>Porty USB ładują telefony i inne urządzenia także po wyłączeniu laptopa, dopóki bateria nie spadnie do wybranego tu poziomu.</value>
+  </data>
+  <data name="UsbCharging_Floor" xml:space="preserve">
+    <value>Do {0}% baterii</value>
+    <comment>An item of the list next to "Charge USB devices while off": charging stops when the battery falls to {0} percent.</comment>
+  </data>
+  <data name="System_Startup.Text" xml:space="preserve">
+    <value>Uruchamianie</value>
+    <comment>Section header on the System page: what the laptop does when it is switched on (boot), not apps that start with Windows.</comment>
+  </data>
+  <data name="System_BootAnimation.Header" xml:space="preserve">
+    <value>Animacja i dźwięk uruchamiania</value>
+  </data>
+  <data name="System_BootAnimation.Description" xml:space="preserve">
+    <value>Animacja i dźwięk przy włączaniu laptopa, w modelach, które je mają. Zadziała przy następnym uruchomieniu.</value>
+    <comment>Not every laptop has an animation or a sound, and OpenSense can't tell which do, so the text says so.</comment>
+  </data>
+  <data name="System_BootLogo.Header" xml:space="preserve">
+    <value>Logo uruchamiania</value>
+  </data>
+  <data name="System_BootLogoAcer.Text" xml:space="preserve">
+    <value>Logo Acer</value>
+    <comment>Shown in place of a thumbnail while the firmware shows Acer's own logo.</comment>
+  </data>
+  <data name="System_BootLogoRestore.Content" xml:space="preserve">
+    <value>Użyj logo Acer</value>
+    <comment>Button: removes the custom picture so Acer's logo shows again.</comment>
+  </data>
+  <data name="System_BootLogoChoose.Content" xml:space="preserve">
+    <value>Wybierz obraz</value>
+  </data>
+  <data name="Calibration_Charging" xml:space="preserve">
+    <value>Kalibracja od {0}: ładowanie, {1}%</value>
+    <comment>Next to the Stop button while the battery calibrates. {0} = when it started (a time), {1} = battery percent.</comment>
+  </data>
+  <data name="Calibration_Discharging" xml:space="preserve">
+    <value>Kalibracja od {0}: rozładowywanie, {1}%</value>
+    <comment>Next to the Stop button while the battery calibrates. {0} = when it started (a time), {1} = battery percent.</comment>
+  </data>
+  <data name="Calibration_Running" xml:space="preserve">
+    <value>Kalibracja od {0}</value>
+    <comment>Next to the Stop button while the battery calibrates and Windows can't tell the battery's charge. {0} = when it started (a time).</comment>
+  </data>
+  <data name="Calibration_Confirm_Title" xml:space="preserve">
+    <value>Skalibrować baterię?</value>
+  </data>
+  <data name="Calibration_Confirm_Message" xml:space="preserve">
+    <value>To trwa kilka godzin. Nie odłączaj zasilacza przez cały czas: jego odłączenie przerywa kalibrację. Do jej końca laptop nie przejdzie w stan uśpienia, nawet po zamknięciu pokrywy.</value>
+  </data>
+  <data name="Calibration_Confirm_Start" xml:space="preserve">
+    <value>Rozpocznij kalibrację</value>
+    <comment>The dialog's button that starts the calibration.</comment>
+  </data>
+  <data name="Calibration_NeedsAc" xml:space="preserve">
+    <value>Aby skalibrować baterię, podłącz zasilacz.</value>
+  </data>
+  <data name="Calibration_AlreadyRunning" xml:space="preserve">
+    <value>Bateria jest już kalibrowana.</value>
+  </data>
+  <data name="Calibration_Rejected" xml:space="preserve">
+    <value>Oprogramowanie układowe odrzuciło kalibrację baterii.</value>
+  </data>
+  <data name="BootLogo_Description" xml:space="preserve">
+    <value>Obraz GIF lub JPEG wyświetlany przy włączaniu laptopa, maksymalnie {0} × {1} pikseli, 35 MB i kolor 24-bitowy. Każda klatka GIF-a jest wyświetlana przez co najmniej 30 ms.</value>
+    <comment>Under "Boot logo". {0} × {1} = the largest width and height, in pixels (40 % of the laptop screen's). 35 MB is Acer's file limit (35,000,000 bytes); the BIOS shows each frame of an animated GIF for 30 ms or longer.</comment>
+  </data>
+  <data name="BootLogo_DescriptionAnySize" xml:space="preserve">
+    <value>Obraz GIF lub JPEG wyświetlany przy włączaniu laptopa, maksymalnie 40% szerokości i wysokości ekranu, 35 MB i kolor 24-bitowy. Każda klatka GIF-a jest wyświetlana przez co najmniej 30 ms.</value>
+    <comment>Under "Boot logo" while the laptop screen's resolution is unknown (e.g. the lid is closed). 35 MB is Acer's file limit (35,000,000 bytes); the BIOS shows each frame of an animated GIF for 30 ms or longer.</comment>
+  </data>
+  <data name="BootLogo_BiosDefaults" xml:space="preserve">
+    <value>Wczytanie ustawień domyślnych w BIOS-ie usuwa obraz.</value>
+  </data>
+  <data name="BootLogo_Confirm_Title" xml:space="preserve">
+    <value>Użyć tego logo uruchamiania?</value>
+  </data>
+  <data name="BootLogo_Confirm_Message" xml:space="preserve">
+    <value>Pojawi się przy następnym włączeniu laptopa.</value>
+  </data>
+  <data name="BootLogo_Confirm_MessageWithAnimation" xml:space="preserve">
+    <value>Pojawi się przy następnym włączeniu laptopa. Zostanie włączona animacja uruchamiania, w której wyświetla się logo.</value>
+    <comment>Used instead of BootLogo_Confirm_Message while the boot animation is off: the firmware shows the logo as part of it.</comment>
+  </data>
+  <data name="BootLogo_Confirm_Use" xml:space="preserve">
+    <value>Użyj obrazu</value>
+    <comment>The dialog's button that makes the picture the boot logo.</comment>
+  </data>
+  <data name="BootLogo_NotGifOrJpeg" xml:space="preserve">
+    <value>Wybierz obraz GIF lub JPEG.</value>
+  </data>
+  <data name="BootLogo_FileTooLarge" xml:space="preserve">
+    <value>Plik obrazu jest większy niż 35 MB.</value>
+    <comment>Acer's limit is 35,000,000 bytes.</comment>
+  </data>
+  <data name="BootLogo_TooManyPixels" xml:space="preserve">
+    <value>Obraz ma {0} × {1} pikseli. Logo uruchamiania tego laptopa może mieć najwyżej {2} × {3} pikseli.</value>
+    <comment>{0} × {1} = the picture's width and height; {2} × {3} = the largest this laptop's boot logo can be.</comment>
+  </data>
+  <data name="BootLogo_ColorDepth" xml:space="preserve">
+    <value>Obraz używa koloru 32-bitowego lub głębszego. Zapisz go z kolorem 24-bitowym (RGB) i spróbuj ponownie.</value>
+    <comment>The firmware takes pictures with fewer than 32 bits per pixel (e.g. not CMYK JPEGs).</comment>
+  </data>
+  <data name="BootLogo_NotBaseline" xml:space="preserve">
+    <value>BIOS wyświetla tylko standardowe (baseline) pliki JPEG, a system Windows nie zdołał przekonwertować tego. Zapisz go jako standardowy JPEG i spróbuj ponownie.</value>
+  </data>
+  <data name="BootLogo_ScreenUnknown" xml:space="preserve">
+    <value>OpenSense nie może odczytać rozdzielczości ekranu laptopa, aby sprawdzić rozmiar obrazu. Otwórz pokrywę i spróbuj ponownie.</value>
+    <comment>Windows doesn't list the built-in screen, usually because the lid is closed.</comment>
+  </data>
+  <data name="BootLogo_NoSpace" xml:space="preserve">
+    <value>Na partycji systemowej EFI brakuje wolnego miejsca na ten obraz.</value>
+  </data>
+  <data name="BootLogo_WriteFailed" xml:space="preserve">
+    <value>Nie udało się zapisać logo uruchamiania.</value>
+  </data>
+  <data name="BootLogo_RestoreFailed" xml:space="preserve">
+    <value>Nie udało się przywrócić logo Acer.</value>
+  </data>
+  <data name="BootLogo_ReadFailed" xml:space="preserve">
+    <value>Nie udało się odczytać obrazu: {0}</value>
+    <comment>{0} = the error from Windows.</comment>
+  </data>
+  <data name="Notice_Battery_Title" xml:space="preserve">
+    <value>Bateria</value>
+  </data>
+  <data name="Notice_ChargeLimitRejected" xml:space="preserve">
+    <value>Oprogramowanie układowe odrzuciło zmianę limitu ładowania.</value>
+  </data>
+  <data name="Notice_UsbChargingRejected" xml:space="preserve">
+    <value>Oprogramowanie układowe odrzuciło zmianę ładowania przez USB.</value>
+  </data>
+  <data name="Notice_CalibrationFinished" xml:space="preserve">
+    <value>Kalibracja baterii zakończyła się.</value>
+  </data>
+  <data name="Notice_CalibrationInterrupted" xml:space="preserve">
+    <value>Kalibracja baterii została przerwana, bo laptop przeszedł w stan uśpienia lub został wyłączony.</value>
+  </data>
+  <data name="Notice_CalibrationStoppedUnplugged" xml:space="preserve">
+    <value>Kalibracja baterii została przerwana, bo odłączono zasilacz.</value>
+  </data>
+  <data name="Notice_Startup_Title" xml:space="preserve">
+    <value>Uruchamianie</value>
+  </data>
+  <data name="Notice_BootAnimationRejected" xml:space="preserve">
+    <value>Oprogramowanie układowe odrzuciło zmianę animacji uruchamiania.</value>
   </data>
   <data name="System_Power.Text" xml:space="preserve">
     <value>Zasilanie</value>
@@ -815,6 +1571,14 @@ GPU: {1}</value>
     <value>Tryby pracy</value>
     <comment>Setting: use Acer's operating modes (Eco, Quiet, Balanced...).</comment>
   </data>
+  <data name="Settings_MagKey.Header" xml:space="preserve">
+    <value>Podświetlenie klawiszy MagForce</value>
+    <comment>Setting in "Your laptop": whether the W, A, S and D keys' own lights (Acer's MagForce keys) are offered on the Lighting page.</comment>
+  </data>
+  <data name="Settings_MagKey.Description" xml:space="preserve">
+    <value>Własne światła pod W, A, S i D, wykrywane po nazwie modelu laptopa. Przełącz, jeśli u Ciebie jest inaczej.</value>
+    <comment>Under "MagForce key lights".</comment>
+  </data>
   <data name="Settings_OperatingModes_Supported" xml:space="preserve">
     <value>{0}, tak jak oferuje je oprogramowanie Acer na tym modelu. {1}</value>
     <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
@@ -1000,5 +1764,9 @@ Szczegóły: {1}</value>
   <data name="Tray_Exit" xml:space="preserve">
     <value>Zakończ</value>
     <comment>Menu item: quit OpenSense.</comment>
+  </data>
+  <data name="GpuClocks_FollowFirmware.Description" xml:space="preserve">
+    <value>Podkręcenie, które oprogramowanie układowe ustawia dla każdego trybu, dodane do przesunięć poniżej.</value>
+    <comment>Under "Acer's overclocking": the firmware's own overclock for each mode is added to the user's offsets set below it.</comment>
   </data>
 </root>

@@ -9,11 +9,14 @@ using OpenSense.Core.Hardware;
 
 namespace OpenSense.App.ViewModels;
 
-public sealed partial class FanReadingViewModel(FanId id, string name) : ObservableObject
+/// <param name="shortName">For tight spaces such as the tray's tooltip.</param>
+public sealed partial class FanReadingViewModel(FanId id, string name, string shortName) : ObservableObject
 {
     public FanId Id { get; } = id;
 
     public string Name { get; } = name;
+
+    public string ShortName { get; } = shortName;
 
     [ObservableProperty]
     public partial int? Rpm { get; set; }
@@ -106,16 +109,10 @@ public sealed partial class MonitorViewModel : ObservableObject
     public partial bool HasSystemTemperature { get; set; }
 
     [ObservableProperty]
-    public partial FanReadingViewModel? CpuFan { get; set; }
+    public partial string CpuName { get; set; } = Names.Chip(FanChip.Cpu);
 
     [ObservableProperty]
-    public partial FanReadingViewModel? GpuFan { get; set; }
-
-    [ObservableProperty]
-    public partial string CpuName { get; set; } = Names.Chip(FanId.Cpu);
-
-    [ObservableProperty]
-    public partial string GpuName { get; set; } = Names.Chip(FanId.Gpu);
+    public partial string GpuName { get; set; } = Names.Chip(FanChip.Gpu);
 
     public double? Hottest => Latest?.Hottest;
 
@@ -150,13 +147,11 @@ public sealed partial class MonitorViewModel : ObservableObject
         var caps = _session.Capabilities;
         Fans.Clear();
         foreach (var fan in caps.Fans)
-            Fans.Add(new FanReadingViewModel(fan.Id, Names.Fan(fan.Id)));
-        CpuFan = Fans.FirstOrDefault(f => f.Id == FanId.Cpu);
-        GpuFan = Fans.FirstOrDefault(f => f.Id == FanId.Gpu);
+            Fans.Add(new FanReadingViewModel(fan.Id, Names.Fan(fan.Id, caps.Fans), Names.FanShort(fan.Id, caps.Fans)));
         HasGpu = caps.Has(SensorId.GpuTemperature) || caps.Has(SensorId.GpuFanSpeed) || _session.TemperatureSources.Gpu.Sensor is not null;
         HasSystemTemperature = caps.Has(SensorId.SystemTemperature);
-        CpuName = _session.CpuName ?? Names.Chip(FanId.Cpu);
-        GpuName = _session.GpuName ?? Names.Chip(FanId.Gpu);
+        CpuName = _session.CpuName ?? Names.Chip(FanChip.Cpu);
+        GpuName = _session.GpuName ?? Names.Chip(FanChip.Gpu);
         if (_session.Latest is { } latest)
             Apply(latest);
     }

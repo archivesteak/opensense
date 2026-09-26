@@ -17,8 +17,16 @@ public sealed partial class ShellViewModel(
     FanControlViewModel fans,
     LightingViewModel lighting,
     SystemViewModel system,
-    SettingsViewModel settings) : ObservableObject
+    BatteryViewModel battery,
+    StartupViewModel startup,
+    GpuClocksViewModel gpuClocks,
+    SettingsViewModel settings,
+    ToastService toasts) : ObservableObject
 {
+    /// <summary>Operating-mode toasts replace each other, and leave the notification centre after a minute.</summary>
+    private const string ModeToastTag = "opmode";
+    private static readonly TimeSpan ModeToastLifetime = TimeSpan.FromMinutes(1);
+
     private bool _subscribed;
 
     [ObservableProperty]
@@ -80,7 +88,14 @@ public sealed partial class ShellViewModel(
         session.Notice += notice =>
         {
             var (title, message) = Names.Notice(notice);
-            notifications.Show(title, message, InfoBarSeverity.Warning, notice.Important);
+            if (Names.IsModeToast(notice.Kind))
+            {
+                // Like Acer's on-screen display for the Mode key and the adapter: a toast, not a banner.
+                dispatcher.TryEnqueue(() => toasts.Show(title, message, ModeToastTag, ModeToastLifetime));
+                return;
+            }
+            var severity = notice.Kind == Core.Control.NoticeKind.CalibrationFinished ? InfoBarSeverity.Success : InfoBarSeverity.Warning;
+            notifications.Show(title, message, severity, notice.Important);
         };
         session.Changed += _ => dispatcher.TryEnqueue(AttachAll);
         session.ConnectionChanged += connected =>
@@ -99,6 +114,9 @@ public sealed partial class ShellViewModel(
         fans.Attach();
         lighting.Attach();
         system.Attach();
+        battery.Attach();
+        startup.Attach();
+        gpuClocks.Attach();
         settings.Attach();
         LightingAvailable = lighting.Available;
     }

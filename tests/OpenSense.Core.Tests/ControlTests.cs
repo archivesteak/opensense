@@ -7,13 +7,31 @@ namespace OpenSense.Core.Tests;
 public class CurveTests
 {
     [Theory]
-    [InlineData(30, 0)]
-    [InlineData(70, 0)]
-    [InlineData(75, 10)]
-    [InlineData(85, 35)]
-    [InlineData(100, 100)]
-    public void Default_curve_interpolates_and_clamps(double temperature, int expected) =>
-        Assert.Equal(expected, CurvePresets.Default.Evaluate(temperature));
+    [InlineData(60, 0)]
+    [InlineData(88, 0)]
+    [InlineData(91, 50)]
+    [InlineData(94, 100)]
+    [InlineData(99, 100)]
+    public void Anti_throttle_brings_the_cpu_fan_to_full_speed_six_degrees_under_the_limit(double temperature, int expected) =>
+        Assert.Equal(expected, AntiThrottle.Cpu(100).Evaluate(temperature));
+
+    [Theory]
+    [InlineData(60, 0)]
+    [InlineData(81, 0)]
+    [InlineData(84, 50)]
+    [InlineData(87, 100)]
+    public void Anti_throttle_brings_a_gpu_fan_to_full_speed_at_the_limit(double temperature, int expected) =>
+        Assert.Equal(expected, AntiThrottle.Gpu(87).Evaluate(temperature));
+
+    [Fact]
+    public void Anti_throttle_moves_with_the_limits()
+    {
+        var limits = new ThermalLimits(Cpu: 92, Gpu: 83); // a TCC offset of 8 °C; a GPU held under 83 °C
+        Assert.Equal(0, AntiThrottle.For(FanChip.Cpu, limits).Evaluate(80));
+        Assert.Equal(100, AntiThrottle.For(FanChip.Cpu, limits).Evaluate(86));
+        Assert.Equal(50, AntiThrottle.For(FanChip.Gpu, limits).Evaluate(80));
+        Assert.Equal(100, AntiThrottle.For(FanChip.Gpu, limits).Evaluate(83));
+    }
 
     [Fact]
     public void Points_are_sorted_and_clamped()
@@ -153,6 +171,41 @@ public class FanControlServiceTests
     }
 
     [Fact]
+    public void A_fixed_boost_goes_out_in_tens_and_one_that_rounds_to_nothing_stays_on_auto()
+    {
+        var profile = new ControlProfile
+        {
+            Mode = FanControlMode.Custom,
+            Manual = new Dictionary<FanId, ManualFanSetting> { [FanId.Cpu] = new(25), [FanId.Gpu] = new(4) },
+        };
+        var (service, fw, _) = Create(profile);
+
+        service.Tick();
+
+        Assert.Equal(30, fw.Speed[1]);
+        Assert.Equal(30, service.Latest!.Fan(FanId.Cpu)!.BoostPercent);
+        Assert.Equal(FanBehavior.Auto, fw.Behavior[3]);
+        Assert.False(fw.Speed.ContainsKey(4));
+    }
+
+    [Fact]
+    public void A_curve_between_tens_sends_the_nearest_one()
+    {
+        var profile = new ControlProfile
+        {
+            Mode = FanControlMode.Custom,
+            Manual = new Dictionary<FanId, ManualFanSetting> { [FanId.Cpu] = new(UseCurve: true), [FanId.Gpu] = new(0) },
+            Curves = new Dictionary<FanId, CurveFanSetting> { [FanId.Cpu] = new(FanCurve.From((40, 0), (80, 80))) },
+        };
+        var (service, fw, _) = Create(profile);
+        fw.CpuTemp = 52; // 24 % on the curve
+
+        service.Tick();
+
+        Assert.Equal(20, fw.Speed[1]);
+    }
+
+    [Fact]
     public void Auto_boosts_only_when_hot()
     {
         var now = new DateTime(2026, 9, 24, 12, 0, 0, DateTimeKind.Utc);
@@ -165,12 +218,42 @@ public class FanControlServiceTests
         Assert.Equal(FanBehavior.Auto, fw.Behavior[3]);
         Assert.Empty(fw.Speed);
 
-        fw.CpuTemp = 90; // Default: 50 % at 90 °C
+        fw.CpuTemp = 91; // half way from 88 to 94 °C, for TjMax 100 °C
         now += FanControlService.CurveInterval;
         service.Tick();
         Assert.Equal(FanBehavior.Custom, fw.Behavior[0]);
         Assert.Equal(50, fw.Speed[1]);
         Assert.Equal(FanBehavior.Auto, fw.Behavior[3]); // the GPU fan follows the GPU, still cool
+    }
+
+    [Fact]
+    public void Auto_boosts_by_the_limits_the_chips_report()
+    {
+        var cpu = new FakeCpuSensor { Temperature = 89, Limit = 92 }; // a TCC offset of 8 °C: full speed from 86 °C
+        var gpu = new FakeGpuSensor { Temperature = 80, Limit = 83 };
+        var sensors = new DirectSensors(cpu, gpu, new FakeGpuPowerState { On = true }, cpu.Status, gpu.Status);
+        var (service, fw, _) = Create(new ControlProfile(), sensors: sensors);
+
+        service.Tick();
+
+        Assert.Equal(100, fw.Speed[1]);
+        Assert.Equal(50, fw.Speed[4]); // 3 °C under the GPU's limit
+        Assert.Equal(new ThermalLimits(92, 83), service.Latest!.Limits);
+    }
+
+    [Fact]
+    public void Without_reported_limits_auto_goes_by_the_usual_ones()
+    {
+        var gpu = new FakeGpuSensor { Temperature = 84 };
+        var sensors = new DirectSensors(new FakeCpuSensor { Temperature = 89 }, gpu, new FakeGpuPowerState { On = true }, SensorStatus.NotUsed, gpu.Status,
+            cpuDefaultLimit: ThermalLimits.AmdCpuDefault);
+        var (service, fw, _) = Create(new ControlProfile(), sensors: sensors);
+
+        service.Tick();
+
+        Assert.Equal(100, fw.Speed[1]); // AMD's lowest limit, 95 °C: full speed from 89 °C
+        Assert.Equal(50, fw.Speed[4]); // NVIDIA's 87 °C
+        Assert.Equal(new ThermalLimits(ThermalLimits.AmdCpuDefault, ThermalLimits.GpuDefault), service.Latest!.Limits);
     }
 
     [Fact]
@@ -314,7 +397,7 @@ public class FanControlServiceTests
             if (temperature != 78)
                 Assert.Equal(40, fw.Speed[1]); // held between steps
         }
-        Assert.Equal(68, fw.Speed[1]); // (70 + 74 + 78) / 3 = 74 °C
+        Assert.Equal(70, fw.Speed[1]); // (70 + 74 + 78) / 3 = 74 °C: 68 %, sent as 70 (78 °C alone would be 80)
     }
 
     [Fact]
@@ -345,6 +428,102 @@ public class FanControlServiceTests
         Assert.Equal(new ManualFanSetting(100), profile.ManualFor(FanId.Cpu));
         Assert.Equal(new ManualFanSetting(0), profile.ManualFor(FanId.Gpu)); // left on Auto = no boost
     }
+
+    /// <summary>A model NitroSense sets the fan table on.</summary>
+    private const string FanTableModel = "Acer Nitro AN515-58";
+
+    private static (FanControlService Service, FakeFirmware Firmware) CreateWithFanTable(ControlProfile profile, byte table = 0)
+    {
+        var firmware = new FakeFirmware { SupportsFanTable = true, FanTable = table };
+        var device = new AcerDevice(firmware);
+        var caps = CapabilityProbe.Probe(device, model: FanTableModel);
+        Assert.True(caps.FanTable);
+        return (new FanControlService(device, caps, new FakeLoad(), new FakePower(), profile), firmware);
+    }
+
+    [Fact]
+    public void Fan_table_is_set_once_and_again_when_reapplied()
+    {
+        var (service, fw) = CreateWithFanTable(new ControlProfile { FanTable = FanTable.Faster });
+
+        service.Tick();
+        Assert.Equal((byte)FanTable.Faster, fw.FanTable);
+
+        fw.Calls.Clear();
+        service.Tick();
+        Assert.DoesNotContain(fw.Writes, c => c.Method == "SetGamingFanTable");
+
+        fw.FanTable = 0; // e.g. Acer's agent after resume
+        service.ReapplyAfter(TimeSpan.Zero);
+        service.Tick();
+        Assert.Equal((byte)FanTable.Faster, fw.FanTable);
+    }
+
+    [Fact]
+    public void Without_a_fan_table_setting_the_firmware_keeps_its_own()
+    {
+        var (service, fw) = CreateWithFanTable(new ControlProfile(), table: 3);
+
+        service.Tick();
+
+        Assert.DoesNotContain(fw.Writes, c => c.Method == "SetGamingFanTable");
+        Assert.Equal(3, fw.FanTable);
+    }
+
+    [Fact]
+    public void A_refused_fan_table_raises_a_notice()
+    {
+        var (service, fw) = CreateWithFanTable(new ControlProfile { FanTable = FanTable.Fastest });
+        var notices = new List<ControlNotice>();
+        service.Notice += notices.Add;
+        fw.RejectEverything = true;
+
+        service.Tick();
+
+        Assert.Contains(notices, n => n.Kind == NoticeKind.FanTableRejected);
+    }
+
+    [Theory]
+    [InlineData(2, FanTable.Faster)]
+    [InlineData(0, null)] // none picked, as on the AN515-57: left alone
+    public void First_run_profile_keeps_the_firmwares_fan_table(byte table, FanTable? expected)
+    {
+        var fw = new FakeFirmware { SupportsFanTable = true, FanTable = table };
+        var device = new AcerDevice(fw);
+
+        var profile = FirmwareState.Read(device, CapabilityProbe.Probe(device, model: FanTableModel)).ToProfile(new ControlProfile());
+
+        Assert.Equal(expected, profile.FanTable);
+    }
+
+    [Fact]
+    public void Firmware_without_the_fan_table_methods_has_none()
+    {
+        Assert.False(CapabilityProbe.Probe(new AcerDevice(new FakeFirmware()), model: FanTableModel).FanTable);
+    }
+
+    [Theory]
+    [InlineData("Acer Nitro AN515-57")] // answers the calls, but its controller never reads the table
+    [InlineData("Acer Predator PHN16-72")]
+    [InlineData(null)]
+    public void Models_acers_software_sets_no_fan_table_on_have_none(string? model)
+    {
+        var device = new AcerDevice(new FakeFirmware { SupportsFanTable = true });
+
+        Assert.False(CapabilityProbe.Probe(device, model: model).FanTable);
+    }
+
+    [Theory]
+    [InlineData("Acer Nitro AN515-46", true)]
+    [InlineData("Acer Nitro AN515-47", true)]
+    [InlineData("Acer Nitro AN515-58", true)]
+    [InlineData("Acer Nitro AN517-42", true)]
+    [InlineData("Acer Nitro AN517-43", true)]
+    [InlineData("acer nitro an517-55", true)]
+    [InlineData("Acer Nitro AN515-57", false)]
+    [InlineData("Acer Nitro AN515-45", false)]
+    public void The_fan_table_follows_nitrosenses_models(string model, bool expected) =>
+        Assert.Equal(expected, AcerProtocol.UsesFanTable(model));
 
     /// <summary>Tick() only re-reads sensors once per interval; tests move faster than that.</summary>
     private static void SkipSampleThrottle(FanControlService service) => service.Interval = TimeSpan.Zero;

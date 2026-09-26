@@ -71,8 +71,8 @@
     <comment>Navigation menu item: the RGB keyboard lighting page.</comment>
   </data>
   <data name="Nav_System.Content" xml:space="preserve">
-    <value>Tastatură și afișaj</value>
-    <comment>Navigation menu item: keyboard, display, GPU and power settings.</comment>
+    <value>Sistem</value>
+    <comment>Navigation menu item: the laptop's keyboard, display, graphics, battery, startup and power settings. Like Windows Settings' System page.</comment>
   </data>
   <data name="Startup_Connecting.Text" xml:space="preserve">
     <value>Se conectează la laptop…</value>
@@ -134,6 +134,10 @@
     <value>Tastatură</value>
     <comment>Banner title.</comment>
   </data>
+  <data name="Notice_Lighting_Title" xml:space="preserve">
+    <value>Iluminare</value>
+    <comment>Title of a banner about the light bars or the logo.</comment>
+  </data>
   <data name="Notice_Display_Title" xml:space="preserve">
     <value>Afișaj</value>
     <comment>Banner title: the laptop screen.</comment>
@@ -153,12 +157,25 @@
     <value>Firmware-ul a respins modificarea CoolBoost.</value>
     <comment>CoolBoost is an Acer feature name: keep it.</comment>
   </data>
+  <data name="Notice_FanTableRejected" xml:space="preserve">
+    <value>Firmware-ul a respins modificarea curbei ventilatoarelor.</value>
+  </data>
   <data name="Notice_FansHandedBack" xml:space="preserve">
     <value>Temperatura procesorului nu este disponibilă, așa că ventilatoarele au revenit la Auto.</value>
     <comment>Auto = the automatic fan mode, as in FanMode_Auto.</comment>
   </data>
   <data name="Notice_LightingRejected" xml:space="preserve">
     <value>Tastatura a respins modificarea iluminării.</value>
+  </data>
+  <data name="Notice_LightBarRejected" xml:space="preserve">
+    <value>Bara luminoasă a respins modificarea iluminării.</value>
+  </data>
+  <data name="Notice_LogoRejected" xml:space="preserve">
+    <value>Logoul a respins modificarea iluminării.</value>
+  </data>
+  <data name="Notice_LightRejected" xml:space="preserve">
+    <value>{0}: schimbarea iluminării a fost respinsă.</value>
+    <comment>Notice when a light other than the keyboard, the light bar and the logo refused a change. {0} = its name (e.g. "Lid logo").</comment>
   </data>
   <data name="Notice_BacklightTimeoutRejected" xml:space="preserve">
     <value>Tastatura a respins modificarea timpului de oprire a iluminării de fundal.</value>
@@ -184,6 +201,41 @@
   </data>
   <data name="Notice_GpuModeRejected" xml:space="preserve">
     <value>Firmware-ul a respins schimbarea modului GPU.</value>
+  </data>
+  <data name="Notice_GpuClocks_Title" xml:space="preserve">
+    <value>Overclocking GPU</value>
+    <comment>Notice title for problems with the GPU overclock.</comment>
+  </data>
+  <data name="Notice_GpuClocksRejected" xml:space="preserve">
+    <value>Driverul NVIDIA a refuzat decalajele de frecvență.</value>
+  </data>
+  <data name="Notice_OperatingMode_Title" xml:space="preserve">
+    <value>Mod de funcționare</value>
+    <comment>Title of the toast shown when the Mode key or the power supply changes the operating mode.</comment>
+  </data>
+  <data name="Notice_ModeOnBattery" xml:space="preserve">
+    <value>Pe baterie: {0}</value>
+    <comment>Toast text: the laptop runs on battery, in operating mode {0} (e.g. "Eco").</comment>
+  </data>
+  <data name="Notice_ModePluggedIn" xml:space="preserve">
+    <value>Încărcător conectat: {0}</value>
+    <comment>Toast text: the adapter was plugged in, so operating mode {0} runs again (e.g. "Turbo").</comment>
+  </data>
+  <data name="Notice_ModeLowBattery" xml:space="preserve">
+    <value>Baterie descărcată: {0} până se încarcă</value>
+    <comment>Toast text: on AC, but the battery is too low to help the adapter, so operating mode {0} (Balanced or Quiet) runs until it charges.</comment>
+  </data>
+  <data name="Notice_ModeAdapter" xml:space="preserve">
+    <value>Încărcător prea slab: {0}</value>
+    <comment>Toast when the operating mode changed because the adapter can't power every mode (a USB-C charger that is too weak, or the laptop's own limit). {0} = the mode now in use.</comment>
+  </data>
+  <data name="Notice_TurboUnavailable" xml:space="preserve">
+    <value>Turbo are nevoie de încărcător și de o baterie încărcată.</value>
+    <comment>Toast text when the Mode key is set to Turbo on and off, but the laptop is on battery or its battery is too low.</comment>
+  </data>
+  <data name="Notice_TurboNeedsAdapter" xml:space="preserve">
+    <value>Turbo are nevoie de un încărcător mai puternic, cum este cel al laptopului.</value>
+    <comment>Toast when the Mode key (set to Turbo) is pressed while the adapter can't power Turbo.</comment>
   </data>
   <data name="Notice_Autostart_Title" xml:space="preserve">
     <value>Pornire odată cu Windows</value>
@@ -227,11 +279,51 @@
     <value>GPU</value>
     <comment>The graphics chip. Short: used in labels like 'GPU 45°'.</comment>
   </data>
+  <data name="Chip_System" xml:space="preserve">
+    <value>Sistem</value>
+    <comment>Short name of a system (chassis) fan where space is tight, e.g. the tray tooltip: "System 2,000 rpm".</comment>
+  </data>
   <data name="Fan_Cpu" xml:space="preserve">
     <value>Ventilator CPU</value>
   </data>
   <data name="Fan_Gpu" xml:space="preserve">
     <value>Ventilator GPU</value>
+  </data>
+  <data name="Fan_Gpu1" xml:space="preserve">
+    <value>Ventilator GPU 1</value>
+    <comment>The first of two GPU fans, on laptops that have two (Acer's software numbers them the same way).</comment>
+  </data>
+  <data name="Fan_Gpu2" xml:space="preserve">
+    <value>Ventilator GPU 2</value>
+    <comment>The second GPU fan.</comment>
+  </data>
+  <data name="Fan_System" xml:space="preserve">
+    <value>Ventilator de sistem</value>
+    <comment>A fan in the chassis, not on the CPU or GPU. OpenSense only shows its speed.</comment>
+  </data>
+  <data name="Fan_System1" xml:space="preserve">
+    <value>Ventilator de sistem 1</value>
+    <comment>The first of two system fans.</comment>
+  </data>
+  <data name="Fan_System2" xml:space="preserve">
+    <value>Ventilator de sistem 2</value>
+    <comment>The second system fan.</comment>
+  </data>
+  <data name="FanShort_Gpu1" xml:space="preserve">
+    <value>GPU 1</value>
+    <comment>Short name of the first GPU fan where space is tight (the tray tooltip), on laptops with two.</comment>
+  </data>
+  <data name="FanShort_Gpu2" xml:space="preserve">
+    <value>GPU 2</value>
+    <comment>Short name of the second GPU fan.</comment>
+  </data>
+  <data name="FanShort_System1" xml:space="preserve">
+    <value>Sistem 1</value>
+    <comment>Short name of the first of two system fans.</comment>
+  </data>
+  <data name="FanShort_System2" xml:space="preserve">
+    <value>Sistem 2</value>
+    <comment>Short name of the second system fan.</comment>
   </data>
   <data name="FanMode_Auto" xml:space="preserve">
     <value>Auto</value>
@@ -270,6 +362,34 @@
     <value>Modul Silențios menține ventilatoarele pe Auto.</value>
     <comment>Quiet = OperatingMode_Quiet; Auto = FanMode_Auto.</comment>
   </data>
+  <data name="FanLock_EcoMode" xml:space="preserve">
+    <value>Modul Eco menține ventilatoarele pe Auto.</value>
+    <comment>Banner on the Fans page: in the Eco operating mode the fans stay on Auto (as Acer's software has it).</comment>
+  </data>
+  <data name="FanLock_DustDefender" xml:space="preserve">
+    <value>Ventilatoarele se rotesc invers pentru a elimina praful. Controlul ventilatoarelor se reia după ce se termină.</value>
+    <comment>Banner on the Fans page while the laptop's DustDefender runs the fans backwards; OpenSense leaves the fans alone meanwhile.</comment>
+  </data>
+  <data name="DustDefender_Description" xml:space="preserve">
+    <value>Rotește ventilatoarele invers pentru scurt timp, ca să sufle praful din radiatoare.</value>
+    <comment>The DustDefender card's description on the Fans page ("DustDefender" is Acer's name for the feature and stays in English).</comment>
+  </data>
+  <data name="DustDefender_Running" xml:space="preserve">
+    <value>Curățare: ventilatoarele se rotesc invers pentru scurt timp.</value>
+    <comment>The DustDefender card's description while a run is going.</comment>
+  </data>
+  <data name="DustDefender_Busy" xml:space="preserve">
+    <value>Laptopul a refuzat deocamdată, cum face la încărcare mare. Încercați din nou când este inactiv.</value>
+    <comment>The DustDefender card's description when the laptop's embedded controller turned a start down (Acer: it does under heavy load).</comment>
+  </data>
+  <data name="DustDefender_Failed" xml:space="preserve">
+    <value>Laptopul nu a pornit curățarea.</value>
+    <comment>The DustDefender card's description when the firmware refused a start.</comment>
+  </data>
+  <data name="Fans_CleanNow.Content" xml:space="preserve">
+    <value>Curăță acum</value>
+    <comment>Button on the DustDefender card: the fans run backwards for a moment to blow dust out.</comment>
+  </data>
   <data name="OperatingMode_Eco" xml:space="preserve">
     <value>Eco</value>
     <comment>Acer operating mode name. Short: a segmented button.</comment>
@@ -306,9 +426,17 @@
   <data name="OperatingMode_Turbo_Description" xml:space="preserve">
     <value>Putere și răcire maxime. Necesită alimentare de la rețea.</value>
   </data>
-  <data name="OperatingMode_BatteryNote" xml:space="preserve">
-    <value>Pe baterie, {0} și {1} funcționează ca {2} până când conectați încărcătorul.</value>
-    <comment>{0}, {1}, {2} = operating mode names (Performance, Turbo, Balanced).</comment>
+  <data name="OperatingMode_BatteryModeNote" xml:space="preserve">
+    <value>Pe baterie: se folosește modul ales aici până când conectați încărcătorul.</value>
+    <comment>Under the operating mode list while on battery: the list shows the battery's own mode.</comment>
+  </data>
+  <data name="OperatingMode_LowBatteryNote" xml:space="preserve">
+    <value>Bateria este prea descărcată pentru a ajuta încărcătorul, așa că modurile de performanță revin după ce se încarcă.</value>
+    <comment>Under the operating mode list on AC when the battery is too low to help the adapter (only Quiet and Balanced are listed then).</comment>
+  </data>
+  <data name="OperatingMode_AdapterNote" xml:space="preserve">
+    <value>Acest încărcător nu poate alimenta modurile de performanță; revin cu unul mai puternic, cum este cel al laptopului.</value>
+    <comment>Under the operating modes when the adapter can't power every mode (a USB-C charger that is too weak, or the laptop's own limit), so only the quieter ones are offered.</comment>
   </data>
   <data name="PowerSource_PluggedIn" xml:space="preserve">
     <value>Conectat la priză</value>
@@ -351,14 +479,6 @@
   </data>
   <data name="Dashboard_GpuTemperature.Text" xml:space="preserve">
     <value>Temperatură GPU</value>
-    <comment>Tile caption.</comment>
-  </data>
-  <data name="Dashboard_CpuFan.Text" xml:space="preserve">
-    <value>Ventilator CPU</value>
-    <comment>Tile caption.</comment>
-  </data>
-  <data name="Dashboard_GpuFan.Text" xml:space="preserve">
-    <value>Ventilator GPU</value>
     <comment>Tile caption.</comment>
   </data>
   <data name="Dashboard_LoadDetail" xml:space="preserve">
@@ -408,6 +528,21 @@
   <data name="Fans_CoolBoost.Description" xml:space="preserve">
     <value>Mărește vitezele proprii ale ventilatoarelor stabilite de firmware, pe care modul Auto le folosește și la care modul Manual adaugă viteză.</value>
     <comment>Under the header "CoolBoost" (an Acer feature name). Auto, Custom = FanMode_Auto, FanMode_Custom.</comment>
+  </data>
+  <data name="Fans_FanTable.Header" xml:space="preserve">
+    <value>Curba ventilatoarelor</value>
+  </data>
+  <data name="Fans_FanTable.Description" xml:space="preserve">
+    <value>Vitezele proprii ale ventilatoarelor stabilite de firmware, pe care modul Auto le folosește și la care modul Manual adaugă viteză. Software-ul Acer alege o curbă mai rapidă pentru overclockarea GPU-ului.</value>
+  </data>
+  <data name="Fans_FanTableStandard.Content" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="Fans_FanTableFaster.Content" xml:space="preserve">
+    <value>Mai rapidă</value>
+  </data>
+  <data name="Fans_FanTableFastest.Content" xml:space="preserve">
+    <value>Cea mai rapidă</value>
   </data>
   <data name="Fans_BoostFixed.Content" xml:space="preserve">
     <value>Fixă</value>
@@ -459,9 +594,125 @@
     <value>Efect</value>
     <comment>Lighting mode: an animated effect.</comment>
   </data>
+  <data name="Lighting_PerKey.Content" xml:space="preserve">
+    <value>Pe taste</value>
+    <comment>Lighting mode: a colour for each key (next to "Static colours" and "Effect").</comment>
+  </data>
+  <data name="Lighting_PerKeyHint.Text" xml:space="preserve">
+    <value>Un clic pe o tastă o selectează, Ctrl+clic adaugă sau scoate o tastă, iar tragerea selectează mai multe. Culoarea se aplică apoi tastelor selectate sau tuturor, dacă nu e selectată niciuna.</value>
+    <comment>Help above the per-key editor's buttons.</comment>
+  </data>
+  <data name="Lighting_SelectWasd.Content" xml:space="preserve">
+    <value>WASD</value>
+    <comment>Button that selects the W, A, S and D keys (the name of the key group; keep as is).</comment>
+  </data>
+  <data name="Lighting_SelectArrows.Content" xml:space="preserve">
+    <value>Săgeți</value>
+    <comment>Button that selects the four arrow keys.</comment>
+  </data>
+  <data name="Lighting_SelectFunctionKeys.Content" xml:space="preserve">
+    <value>F1–F12</value>
+    <comment>Button that selects the function keys F1 to F12.</comment>
+  </data>
+  <data name="Lighting_SelectNumbers.Content" xml:space="preserve">
+    <value>Rândul de cifre</value>
+    <comment>Button that selects the row of digit keys 1 to 0.</comment>
+  </data>
+  <data name="Lighting_SelectAll.Content" xml:space="preserve">
+    <value>Toate tastele</value>
+    <comment>Button that selects every key.</comment>
+  </data>
+  <data name="Lighting_SelectNone.Content" xml:space="preserve">
+    <value>Golește selecția</value>
+    <comment>Button that deselects every key in the per-key editor.</comment>
+  </data>
+  <data name="Lighting_TurnOffKeys.Content" xml:space="preserve">
+    <value>Stinge</value>
+    <comment>Button that makes the selected keys (or all, with none selected) dark.</comment>
+  </data>
+  <data name="Lighting_Layout.Header" xml:space="preserve">
+    <value>Aranjament</value>
+    <comment>Which keyboard layout the per-key editor draws (US, UK and Europe, Japanese).</comment>
+  </data>
+  <data name="Layout_Ansi" xml:space="preserve">
+    <value>SUA (ANSI)</value>
+    <comment>Keyboard layout name in the per-key editor.</comment>
+  </data>
+  <data name="Layout_Iso" xml:space="preserve">
+    <value>Marea Britanie și Europa (ISO)</value>
+    <comment>Keyboard layout name in the per-key editor.</comment>
+  </data>
+  <data name="Layout_Jis" xml:space="preserve">
+    <value>Japonez (JIS)</value>
+    <comment>Keyboard layout name in the per-key editor.</comment>
+  </data>
+  <data name="Lighting_EffectList.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Efect</value>
+    <comment>Screen-reader name of the list of lighting effects.</comment>
+  </data>
   <data name="Lighting_Zone" xml:space="preserve">
     <value>Zona {0}</value>
     <comment>A keyboard lighting zone: {0} = its number.</comment>
+  </data>
+  <data name="Lighting_NumberedLight" xml:space="preserve">
+    <value>{0} {1}</value>
+    <comment>A light's name when the laptop has two of that kind: {0} = its name (e.g. "Light bar"), {1} = 1 or 2.</comment>
+  </data>
+  <data name="Light_Keyboard" xml:space="preserve">
+    <value>Tastatură</value>
+    <comment>Name of the keyboard backlight in the Lighting page's list of lights.</comment>
+  </data>
+  <data name="Light_LightBar" xml:space="preserve">
+    <value>Bară luminoasă</value>
+    <comment>Name of the laptop's light bar(s) in the Lighting page's list of lights.</comment>
+  </data>
+  <data name="Light_InfinityMirror" xml:space="preserve">
+    <value>Infinity Mirror</value>
+    <comment>Acer's name for the rear light bar of Predator Helios 16/18 (2024). A product name: keep it as it is.</comment>
+  </data>
+  <data name="Light_Logo" xml:space="preserve">
+    <value>Logo</value>
+    <comment>Name of the lit logo on the laptop's lid in the Lighting page's list of lights.</comment>
+  </data>
+  <data name="Light_FrontLightBar" xml:space="preserve">
+    <value>Bară luminoasă frontală</value>
+    <comment>A light's name (the page's light selector).</comment>
+  </data>
+  <data name="Light_LeftLightBar" xml:space="preserve">
+    <value>Bară luminoasă stânga</value>
+    <comment>A light's name (the page's light selector).</comment>
+  </data>
+  <data name="Light_RightLightBar" xml:space="preserve">
+    <value>Bară luminoasă dreapta</value>
+    <comment>A light's name (the page's light selector).</comment>
+  </data>
+  <data name="Light_RearLightBar" xml:space="preserve">
+    <value>Bară luminoasă spate</value>
+    <comment>A light's name (the page's light selector).</comment>
+  </data>
+  <data name="Light_TurboKey" xml:space="preserve">
+    <value>Tasta Turbo</value>
+    <comment>A light's name: the light in the laptop's Turbo key.</comment>
+  </data>
+  <data name="Light_ModeKey" xml:space="preserve">
+    <value>Tasta de mod</value>
+    <comment>A light's name: the light in the laptop's Mode key (switches operating modes).</comment>
+  </data>
+  <data name="Light_CoverLogo" xml:space="preserve">
+    <value>Sigla de pe capac</value>
+    <comment>A light's name: the logo on the outside of the lid.</comment>
+  </data>
+  <data name="Light_BaseLogo" xml:space="preserve">
+    <value>Sigla de pe carcasă</value>
+    <comment>A light's name: a logo on the laptop's base.</comment>
+  </data>
+  <data name="Light_MagKey" xml:space="preserve">
+    <value>Taste MagForce</value>
+    <comment>A light's name: the lights under the W, A, S and D keys of Predator Helios models (Acer calls these keys MagForce keys; keep "MagForce").</comment>
+  </data>
+  <data name="Light_InfiniteRing" xml:space="preserve">
+    <value>InfiniteRing</value>
+    <comment>A light's name: a ring of light on some Predator laptops (Acer's name for it; keep as is).</comment>
   </data>
   <data name="Lighting_ZoneColor.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Alegeți o culoare</value>
@@ -469,6 +720,14 @@
   </data>
   <data name="Lighting_AllZones.Text" xml:space="preserve">
     <value>O singură culoare pentru toate zonele</value>
+  </data>
+  <data name="Lighting_ApplyToAll.Content" xml:space="preserve">
+    <value>Aplică tuturor luminilor</value>
+    <comment>Button: gives every other light the nearest look it can show to the one being edited.</comment>
+  </data>
+  <data name="Lighting_Color.Text" xml:space="preserve">
+    <value>Culoare</value>
+    <comment>Heading of the colour picker for a light with a single colour (the logo).</comment>
   </data>
   <data name="Lighting_Speed.Header" xml:space="preserve">
     <value>Viteză</value>
@@ -480,6 +739,10 @@
   </data>
   <data name="Lighting_EffectColor.Text" xml:space="preserve">
     <value>Culoarea efectului</value>
+  </data>
+  <data name="Lighting_RandomColor.Content" xml:space="preserve">
+    <value>Culori aleatorii</value>
+    <comment>Check box next to "Effect colour": the effect picks random colours instead.</comment>
   </data>
   <data name="Lighting_AnyColor.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Orice culoare</value>
@@ -511,6 +774,10 @@
   <data name="Effect_Neon_Description" xml:space="preserve">
     <value>Trece prin culorile curcubeului.</value>
   </data>
+  <data name="Effect_NeonKeyboard_Description" xml:space="preserve">
+    <value>Tastatura se aprinde și se stinge treptat în roșu, apoi în verde, apoi în albastru.</value>
+    <comment>Description of the Neon effect on a keyboard lit by zones (the embedded controller's), under the effect list. The whole keyboard fades in and out in one colour at a time.</comment>
+  </data>
   <data name="Effect_Wave_Description" xml:space="preserve">
     <value>Un val de culoare trece peste taste.</value>
   </data>
@@ -519,6 +786,224 @@
   </data>
   <data name="Effect_Zoom_Description" xml:space="preserve">
     <value>Culoarea se extinde din centru.</value>
+  </data>
+  <data name="Effect_Meteor" xml:space="preserve">
+    <value>Meteor</value>
+    <comment>Keyboard lighting effect: streaks of colour move across the keyboard.</comment>
+  </data>
+  <data name="Effect_Meteor_Description" xml:space="preserve">
+    <value>Dâre de culoare traversează tastatura.</value>
+  </data>
+  <data name="Effect_MeteorKeyboard_Description" xml:space="preserve">
+    <value>Un puls de culoare traversează tastatura și se întoarce.</value>
+    <comment>Description of the Meteor effect on a keyboard lit by zones (the embedded controller's), under the effect list. The colour lights one zone after the other to the far end, then comes back the same way.</comment>
+  </data>
+  <data name="Effect_Twinkling" xml:space="preserve">
+    <value>Sclipire</value>
+    <comment>Keyboard lighting effect: parts of the keyboard light up at random and fade.</comment>
+  </data>
+  <data name="Effect_Snake" xml:space="preserve">
+    <value>Șarpe</value>
+    <comment>Light bar effect (Infinity Mirror): a band of rainbow colours runs along the bar.</comment>
+  </data>
+  <data name="Effect_Lightning" xml:space="preserve">
+    <value>Fulger</value>
+    <comment>Light bar effect (Infinity Mirror).</comment>
+  </data>
+  <data name="Effect_Stack" xml:space="preserve">
+    <value>Stivă</value>
+    <comment>Light bar effect (Infinity Mirror): light builds up zone by zone.</comment>
+  </data>
+  <data name="Effect_MotionPoint" xml:space="preserve">
+    <value>Punct în mișcare</value>
+    <comment>Light bar effect (Infinity Mirror): a point of light moves along the bar.</comment>
+  </data>
+  <data name="Effect_Ripple" xml:space="preserve">
+    <value>Unde</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Raindrop" xml:space="preserve">
+    <value>Picături de ploaie</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Fireball" xml:space="preserve">
+    <value>Minge de foc</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Snow" xml:space="preserve">
+    <value>Zăpadă</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Heartbeat" xml:space="preserve">
+    <value>Bătăi de inimă</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Dazzling" xml:space="preserve">
+    <value>Orbitor</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Matrix" xml:space="preserve">
+    <value>Matrix</value>
+    <comment>Lighting effect name (after the film's falling green code).</comment>
+  </data>
+  <data name="Effect_Swiping" xml:space="preserve">
+    <value>Baleiaj</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_RowWave" xml:space="preserve">
+    <value>Val pe rânduri</value>
+    <comment>Lighting effect name: a wave that moves row by row.</comment>
+  </data>
+  <data name="Effect_Racing" xml:space="preserve">
+    <value>Cursă</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Sprouting" xml:space="preserve">
+    <value>Încolțire</value>
+    <comment>Lighting effect name: light grows like a sprout.</comment>
+  </data>
+  <data name="Effect_Disco" xml:space="preserve">
+    <value>Disco</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_PingPong" xml:space="preserve">
+    <value>Ping-pong</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_LightShow" xml:space="preserve">
+    <value>Spectacol de lumini</value>
+    <comment>Lighting effect name: the light's effects in turn.</comment>
+  </data>
+  <data name="Effect_FollowOperatingMode" xml:space="preserve">
+    <value>Mod de funcționare</value>
+    <comment>Lighting effect name: the firmware colours the light by the operating mode (Quiet, Balanced, Performance, ...).</comment>
+  </data>
+  <data name="Effect_Combo" xml:space="preserve">
+    <value>Combinat</value>
+    <comment>Lighting effect name: several effects at once.</comment>
+  </data>
+  <data name="Effect_Rainbow" xml:space="preserve">
+    <value>Curcubeu</value>
+    <comment>Lighting effect name (MagForce keys).</comment>
+  </data>
+  <data name="Effect_Slash" xml:space="preserve">
+    <value>Tăietură</value>
+    <comment>Lighting effect name (MagForce keys): a slash of light across the keys.</comment>
+  </data>
+  <data name="Effect_Star" xml:space="preserve">
+    <value>Stele</value>
+    <comment>Lighting effect name (MagForce keys).</comment>
+  </data>
+  <data name="Effect_Blasting" xml:space="preserve">
+    <value>Explozie</value>
+    <comment>Lighting effect name (MagForce keys): colour bursts out.</comment>
+  </data>
+  <data name="Effect_Twinkling_Description" xml:space="preserve">
+    <value>Părți ale tastaturii se aprind la întâmplare și se estompează.</value>
+  </data>
+  <data name="Effect_TwinklingKeyboard_Description" xml:space="preserve">
+    <value>Întreaga tastatură clipește.</value>
+    <comment>Description of the Twinkling effect on a keyboard lit by zones (the embedded controller's), under the effect list. All zones switch on and off together, with no fading.</comment>
+  </data>
+  <data name="Effect_Snake_Description" xml:space="preserve">
+    <value>O bandă în culorile curcubeului parcurge bara luminoasă.</value>
+  </data>
+  <data name="Effect_SnakeColor_Description" xml:space="preserve">
+    <value>O linie colorată șerpuiește peste lumină.</value>
+    <comment>Description of the Snake effect where it takes a colour (keyboards, logos), under the effect list.</comment>
+  </data>
+  <data name="Effect_Lightning_Description" xml:space="preserve">
+    <value>Lumina scapără ca un fulger.</value>
+  </data>
+  <data name="Effect_Stack_Description" xml:space="preserve">
+    <value>Lumina se adună zonă cu zonă.</value>
+  </data>
+  <data name="Effect_MotionPoint_Description" xml:space="preserve">
+    <value>Un punct de lumină se deplasează de-a lungul barei luminoase.</value>
+  </data>
+  <data name="Effect_ZoomIn_Description" xml:space="preserve">
+    <value>Lumina se strânge spre centru.</value>
+    <comment>The Infinity Mirror's Zoom (Acer names it Zoom there too).</comment>
+  </data>
+  <data name="Effect_Ripple_Description" xml:space="preserve">
+    <value>Inele colorate se răspândesc spre exterior.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Raindrop_Description" xml:space="preserve">
+    <value>Picături colorate cad și se estompează.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Fireball_Description" xml:space="preserve">
+    <value>O minge de foc traversează lumina.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Snow_Description" xml:space="preserve">
+    <value>Fulgi de lumină cad încet.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Heartbeat_Description" xml:space="preserve">
+    <value>Lumina bate ca o inimă.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Dazzling_Description" xml:space="preserve">
+    <value>Scântei strălucitoare sclipesc peste tot.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Matrix_Description" xml:space="preserve">
+    <value>Șiroaie de lumină plouă în jos.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Swiping_Description" xml:space="preserve">
+    <value>Culoarea baleiază înainte și înapoi.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_RowWave_Description" xml:space="preserve">
+    <value>Culoarea se rostogolește rând cu rând.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Racing_Description" xml:space="preserve">
+    <value>Lumini care se urmăresc.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Sprouting_Description" xml:space="preserve">
+    <value>Lumina crește de jos în sus.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Disco_Description" xml:space="preserve">
+    <value>Culorile clipesc ca pe un ring de dans.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_PingPong_Description" xml:space="preserve">
+    <value>Un punct de lumină sare dintr-o parte în alta.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_LightShow_Description" xml:space="preserve">
+    <value>Efectele rulează unul după altul.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_FollowOperatingMode_Description" xml:space="preserve">
+    <value>Culoarea arată modul de funcționare folosit.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Combo_Description" xml:space="preserve">
+    <value>Mai multe efecte deodată.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Rainbow_Description" xml:space="preserve">
+    <value>Tastele strălucesc în culorile curcubeului.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Slash_Description" xml:space="preserve">
+    <value>Lumina taie tastele.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Star_Description" xml:space="preserve">
+    <value>Tastele sclipesc ca stelele.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Blasting_Description" xml:space="preserve">
+    <value>Culoarea explodează și se estompează.</value>
+    <comment>Effect description, under the effect list.</comment>
   </data>
   <data name="Direction_Left" xml:space="preserve">
     <value>Stânga</value>
@@ -541,7 +1026,7 @@
     <comment>Keyboard backlight brightness: off. Short: shown next to 25%, 50%...</comment>
   </data>
   <data name="System_Title.Text" xml:space="preserve">
-    <value>Tastatură și afișaj</value>
+    <value>Sistem</value>
     <comment>Page title, same as Nav_System.Content.</comment>
   </data>
   <data name="System_Keyboard.Text" xml:space="preserve">
@@ -561,6 +1046,22 @@
   </data>
   <data name="System_WindowsKey.Description" xml:space="preserve">
     <value>Dezactivați pentru ca tastele Windows și Meniu să nu întrerupă jocurile.</value>
+  </data>
+  <data name="System_ModeKey.Header" xml:space="preserve">
+    <value>Tasta de mod</value>
+    <comment>System page, Keyboard section: the laptop's Mode key (it switches the operating mode). Shown once the key has been pressed.</comment>
+  </data>
+  <data name="System_ModeKey.Description" xml:space="preserve">
+    <value>Ce face tasta de mod a laptopului.</value>
+    <comment>Description of the Mode key setting.</comment>
+  </data>
+  <data name="System_ModeKeyCycle.Content" xml:space="preserve">
+    <value>Parcurge modurile pe rând</value>
+    <comment>Mode key choice: each press goes to the next operating mode (Balanced, Performance, Turbo, Quiet; on battery Balanced and Eco).</comment>
+  </data>
+  <data name="System_ModeKeyTurbo.Content" xml:space="preserve">
+    <value>Pornește și oprește Turbo</value>
+    <comment>Mode key choice: a press turns Turbo on, the next one goes back to the mode before.</comment>
   </data>
   <data name="System_StickyKeys.Header" xml:space="preserve">
     <value>Taste adezive</value>
@@ -610,6 +1111,261 @@
   <data name="System_RestartNow.Content" xml:space="preserve">
     <value>Reporniți acum</value>
     <comment>Button: restart Windows now.</comment>
+  </data>
+  <data name="System_GpuClocks.Header" xml:space="preserve">
+    <value>Overclocking GPU</value>
+    <comment>Expander on the System page: clock offsets for the NVIDIA GPU, per operating mode.</comment>
+  </data>
+  <data name="GpuClocks_Reset.Content" xml:space="preserve">
+    <value>Resetare</value>
+    <comment>Button next to "GPU overclock": sets every offset back to 0.</comment>
+  </data>
+  <data name="GpuClocks_FollowFirmware.Header" xml:space="preserve">
+    <value>Overclocking-ul Acer</value>
+    <comment>Switch in the GPU overclock section, on laptops whose firmware has its own GPU overclock for each operating mode (2024+ Predators). Keep "Acer".</comment>
+  </data>
+  <data name="GpuClocks_Core.Header" xml:space="preserve">
+    <value>Nucleu (MHz)</value>
+    <comment>Number box label: the GPU core clock offset, in MHz.</comment>
+  </data>
+  <data name="GpuClocks_Memory.Header" xml:space="preserve">
+    <value>Memorie (MHz)</value>
+    <comment>Number box label: the GPU memory clock offset, in MHz.</comment>
+  </data>
+  <data name="GpuClocks_Footer.Text" xml:space="preserve">
+    <value>Decalajele memoriei se numără dublu, ca în MSI Afterburner: +100 crește frecvența memoriei cu 50 MHz.</value>
+    <comment>Note under the GPU overclock rows. MSI Afterburner is a product name.</comment>
+  </data>
+  <data name="GpuClocks_Always" xml:space="preserve">
+    <value>Întotdeauna</value>
+    <comment>The only row of GPU offsets on laptops without operating modes: they apply all the time.</comment>
+  </data>
+  <data name="GpuClocks_InUse" xml:space="preserve">
+    <value>În uz acum</value>
+    <comment>Under the operating mode whose GPU offsets apply right now.</comment>
+  </data>
+  <data name="GpuClocks_Firmware" xml:space="preserve">
+    <value>De la Acer: nucleu {0} MHz, memorie {1} MHz</value>
+    <comment>Under an operating mode in the GPU overclock section: the firmware's own offsets for that mode. {0} = core offset, {1} = memory offset (signed numbers, e.g. +150).</comment>
+  </data>
+  <data name="GpuClocks_Description" xml:space="preserve">
+    <value>Mărește frecvențele de ceas ale GPU-ului.</value>
+    <comment>Under "GPU overclock" while no offsets are set in the operating mode in force.</comment>
+  </data>
+  <data name="GpuClocks_WaitingForLimits" xml:space="preserve">
+    <value>Limitele GPU-ului apar după ce a fost folosit.</value>
+    <comment>Under "GPU overclock" until the NVIDIA driver has reported which offsets it accepts (it is only asked while the GPU is on).</comment>
+  </data>
+  <data name="GpuClocks_Pending" xml:space="preserve">
+    <value>Se aplică data viitoare când GPU-ul este folosit.</value>
+    <comment>Under "GPU overclock" while offsets are set but the GPU is powered down (it is not woken to apply them).</comment>
+  </data>
+  <data name="GpuClocks_Applied" xml:space="preserve">
+    <value>În uz: nucleu {0} MHz, memorie {1} MHz</value>
+    <comment>Under "GPU overclock": the offsets in force. {0} = core, {1} = memory offset, with their sign (e.g. +150, 0).</comment>
+  </data>
+  <data name="GpuClocks_NotApplied" xml:space="preserve">
+    <value>Driverul NVIDIA nu a acceptat aceste decalaje.</value>
+    <comment>Under "GPU overclock" when the driver did not take the offsets.</comment>
+  </data>
+  <data name="GpuClocks_Confirm_Title" xml:space="preserve">
+    <value>Faceți overclocking la GPU?</value>
+    <comment>Dialog title before the first GPU offset is set.</comment>
+  </data>
+  <data name="GpuClocks_Confirm_Message" xml:space="preserve">
+    <value>Frecvențele peste cele ale NVIDIA pot face jocurile să se blocheze sau laptopul să înghețe ori să repornească. Dacă se întâmplă, micșorați decalajele.</value>
+    <comment>Dialog text before the first GPU offset is set.</comment>
+  </data>
+  <data name="GpuClocks_Confirm_Overclock" xml:space="preserve">
+    <value>Overclocking</value>
+    <comment>The dialog's button that goes ahead with the overclock.</comment>
+  </data>
+  <data name="System_Battery.Text" xml:space="preserve">
+    <value>Baterie</value>
+    <comment>Section header on the System page.</comment>
+  </data>
+  <data name="System_BatteryHealth.Header" xml:space="preserve">
+    <value>Starea bateriei</value>
+  </data>
+  <data name="BatteryHealth_Capacity" xml:space="preserve">
+    <value>{0}% din capacitatea inițială ({1} din {2} Wh)</value>
+    <comment>{0} = percent, {1} = what it holds now, {2} = what it held new (watt-hours).</comment>
+  </data>
+  <data name="BatteryHealth_CapacityRelative" xml:space="preserve">
+    <value>{0}% din capacitatea inițială</value>
+    <comment>{0} = percent. For batteries that don't report watt-hours.</comment>
+  </data>
+  <data name="BatteryHealth_Cycles" xml:space="preserve">
+    <value>Cicluri de încărcare: {0}</value>
+    <comment>{0} = how many times the battery has been fully charged, as it counts.</comment>
+  </data>
+  <data name="System_ChargeLimit.Header" xml:space="preserve">
+    <value>Oprirea încărcării la 80%</value>
+  </data>
+  <data name="System_ChargeLimit.Description" xml:space="preserve">
+    <value>O baterie ținută plină se uzează mai repede. Merită activat dacă laptopul stă conectat la priză aproape tot timpul.</value>
+  </data>
+  <data name="System_Calibration.Header" xml:space="preserve">
+    <value>Calibrarea bateriei</value>
+  </data>
+  <data name="System_Calibration.Description" xml:space="preserve">
+    <value>Încarcă bateria complet, o descarcă și o încarcă din nou, ca nivelul afișat să fie corect. Durează câteva ore.</value>
+  </data>
+  <data name="System_CalibrationStart.Content" xml:space="preserve">
+    <value>Calibrare</value>
+  </data>
+  <data name="System_CalibrationStop.Content" xml:space="preserve">
+    <value>Oprire</value>
+  </data>
+  <data name="System_UsbCharging.Header" xml:space="preserve">
+    <value>Încărcarea dispozitivelor USB cu laptopul oprit</value>
+  </data>
+  <data name="System_UsbCharging.Description" xml:space="preserve">
+    <value>Porturile USB continuă să încarce telefoane și alte dispozitive cât laptopul e oprit, până când bateria scade la nivelul ales aici.</value>
+  </data>
+  <data name="UsbCharging_Floor" xml:space="preserve">
+    <value>Până la {0}% baterie</value>
+    <comment>An item of the list next to "Charge USB devices while off": charging stops when the battery falls to {0} percent.</comment>
+  </data>
+  <data name="System_Startup.Text" xml:space="preserve">
+    <value>Pornire</value>
+    <comment>Section header on the System page: what the laptop does when it is switched on (boot), not apps that start with Windows.</comment>
+  </data>
+  <data name="System_BootAnimation.Header" xml:space="preserve">
+    <value>Animație și sunet la pornire</value>
+  </data>
+  <data name="System_BootAnimation.Description" xml:space="preserve">
+    <value>Animația și sunetul la pornirea laptopului, pe modelele care le au. Se aplică de la următoarea pornire.</value>
+    <comment>Not every laptop has an animation or a sound, and OpenSense can't tell which do, so the text says so.</comment>
+  </data>
+  <data name="System_BootLogo.Header" xml:space="preserve">
+    <value>Siglă la pornire</value>
+  </data>
+  <data name="System_BootLogoAcer.Text" xml:space="preserve">
+    <value>Sigla Acer</value>
+    <comment>Shown in place of a thumbnail while the firmware shows Acer's own logo.</comment>
+  </data>
+  <data name="System_BootLogoRestore.Content" xml:space="preserve">
+    <value>Revenire la sigla Acer</value>
+    <comment>Button: removes the custom picture so Acer's logo shows again.</comment>
+  </data>
+  <data name="System_BootLogoChoose.Content" xml:space="preserve">
+    <value>Alegere imagine</value>
+  </data>
+  <data name="Calibration_Charging" xml:space="preserve">
+    <value>Calibrare din {0}: se încarcă, {1}%</value>
+    <comment>Next to the Stop button while the battery calibrates. {0} = when it started (a time), {1} = battery percent.</comment>
+  </data>
+  <data name="Calibration_Discharging" xml:space="preserve">
+    <value>Calibrare din {0}: se descarcă, {1}%</value>
+    <comment>Next to the Stop button while the battery calibrates. {0} = when it started (a time), {1} = battery percent.</comment>
+  </data>
+  <data name="Calibration_Running" xml:space="preserve">
+    <value>Calibrare din {0}</value>
+    <comment>Next to the Stop button while the battery calibrates and Windows can't tell the battery's charge. {0} = when it started (a time).</comment>
+  </data>
+  <data name="Calibration_Confirm_Title" xml:space="preserve">
+    <value>Calibrați bateria?</value>
+  </data>
+  <data name="Calibration_Confirm_Message" xml:space="preserve">
+    <value>Durează câteva ore. Țineți adaptorul conectat tot timpul: deconectarea lui oprește calibrarea. Laptopul nu va intra în repaus până la final, nici cu capacul închis.</value>
+  </data>
+  <data name="Calibration_Confirm_Start" xml:space="preserve">
+    <value>Începeți calibrarea</value>
+    <comment>The dialog's button that starts the calibration.</comment>
+  </data>
+  <data name="Calibration_NeedsAc" xml:space="preserve">
+    <value>Conectați adaptorul pentru a calibra bateria.</value>
+  </data>
+  <data name="Calibration_AlreadyRunning" xml:space="preserve">
+    <value>Bateria se calibrează deja.</value>
+  </data>
+  <data name="Calibration_Rejected" xml:space="preserve">
+    <value>Firmware-ul a respins calibrarea bateriei.</value>
+  </data>
+  <data name="BootLogo_Description" xml:space="preserve">
+    <value>O imagine GIF sau JPEG afișată la pornirea laptopului, de cel mult {0} × {1} pixeli, 35 MB și culori pe 24 de biți. Fiecare cadru al unui GIF se afișează cel puțin 30 ms.</value>
+    <comment>Under "Boot logo". {0} × {1} = the largest width and height, in pixels (40 % of the laptop screen's). 35 MB is Acer's file limit (35,000,000 bytes); the BIOS shows each frame of an animated GIF for 30 ms or longer.</comment>
+  </data>
+  <data name="BootLogo_DescriptionAnySize" xml:space="preserve">
+    <value>O imagine GIF sau JPEG afișată la pornirea laptopului, de cel mult 40 % din lățimea și înălțimea ecranului, 35 MB și culori pe 24 de biți. Fiecare cadru al unui GIF se afișează cel puțin 30 ms.</value>
+    <comment>Under "Boot logo" while the laptop screen's resolution is unknown (e.g. the lid is closed). 35 MB is Acer's file limit (35,000,000 bytes); the BIOS shows each frame of an animated GIF for 30 ms or longer.</comment>
+  </data>
+  <data name="BootLogo_BiosDefaults" xml:space="preserve">
+    <value>Încărcarea setărilor implicite în BIOS elimină imaginea.</value>
+  </data>
+  <data name="BootLogo_Confirm_Title" xml:space="preserve">
+    <value>Folosiți această siglă la pornire?</value>
+  </data>
+  <data name="BootLogo_Confirm_Message" xml:space="preserve">
+    <value>Apare la următoarea pornire a laptopului.</value>
+  </data>
+  <data name="BootLogo_Confirm_MessageWithAnimation" xml:space="preserve">
+    <value>Apare la următoarea pornire a laptopului. Animația de pornire, în care apare sigla, va fi activată.</value>
+    <comment>Used instead of BootLogo_Confirm_Message while the boot animation is off: the firmware shows the logo as part of it.</comment>
+  </data>
+  <data name="BootLogo_Confirm_Use" xml:space="preserve">
+    <value>Folosiți imaginea</value>
+    <comment>The dialog's button that makes the picture the boot logo.</comment>
+  </data>
+  <data name="BootLogo_NotGifOrJpeg" xml:space="preserve">
+    <value>Alegeți o imagine GIF sau JPEG.</value>
+  </data>
+  <data name="BootLogo_FileTooLarge" xml:space="preserve">
+    <value>Fișierul imaginii depășește 35 MB.</value>
+    <comment>Acer's limit is 35,000,000 bytes.</comment>
+  </data>
+  <data name="BootLogo_TooManyPixels" xml:space="preserve">
+    <value>Imaginea are {0} × {1} pixeli. Sigla la pornire a acestui laptop poate avea cel mult {2} × {3} pixeli.</value>
+    <comment>{0} × {1} = the picture's width and height; {2} × {3} = the largest this laptop's boot logo can be.</comment>
+  </data>
+  <data name="BootLogo_ColorDepth" xml:space="preserve">
+    <value>Imaginea folosește culori pe 32 de biți sau mai mult. Salvați-o cu culori pe 24 de biți (RGB) și încercați din nou.</value>
+    <comment>The firmware takes pictures with fewer than 32 bits per pixel (e.g. not CMYK JPEGs).</comment>
+  </data>
+  <data name="BootLogo_NotBaseline" xml:space="preserve">
+    <value>BIOS-ul afișează doar imagini JPEG standard (baseline), iar Windows nu a putut converti aceasta. Salvați-o ca JPEG standard și încercați din nou.</value>
+  </data>
+  <data name="BootLogo_ScreenUnknown" xml:space="preserve">
+    <value>OpenSense nu poate citi rezoluția ecranului laptopului pentru a verifica dimensiunea imaginii. Deschideți capacul și încercați din nou.</value>
+    <comment>Windows doesn't list the built-in screen, usually because the lid is closed.</comment>
+  </data>
+  <data name="BootLogo_NoSpace" xml:space="preserve">
+    <value>Nu există suficient spațiu liber pe partiția de sistem EFI pentru această imagine.</value>
+  </data>
+  <data name="BootLogo_WriteFailed" xml:space="preserve">
+    <value>Sigla la pornire nu a putut fi salvată.</value>
+  </data>
+  <data name="BootLogo_RestoreFailed" xml:space="preserve">
+    <value>Sigla Acer nu a putut fi restabilită.</value>
+  </data>
+  <data name="BootLogo_ReadFailed" xml:space="preserve">
+    <value>Imaginea nu a putut fi citită: {0}</value>
+    <comment>{0} = the error from Windows.</comment>
+  </data>
+  <data name="Notice_Battery_Title" xml:space="preserve">
+    <value>Baterie</value>
+  </data>
+  <data name="Notice_ChargeLimitRejected" xml:space="preserve">
+    <value>Firmware-ul a respins modificarea limitei de încărcare.</value>
+  </data>
+  <data name="Notice_UsbChargingRejected" xml:space="preserve">
+    <value>Firmware-ul a respins modificarea încărcării prin USB.</value>
+  </data>
+  <data name="Notice_CalibrationFinished" xml:space="preserve">
+    <value>Calibrarea bateriei s-a încheiat.</value>
+  </data>
+  <data name="Notice_CalibrationInterrupted" xml:space="preserve">
+    <value>Calibrarea bateriei s-a oprit pentru că laptopul a intrat în repaus sau a fost oprit.</value>
+  </data>
+  <data name="Notice_CalibrationStoppedUnplugged" xml:space="preserve">
+    <value>Calibrarea bateriei s-a oprit pentru că adaptorul a fost deconectat.</value>
+  </data>
+  <data name="Notice_Startup_Title" xml:space="preserve">
+    <value>Pornire</value>
+  </data>
+  <data name="Notice_BootAnimationRejected" xml:space="preserve">
+    <value>Firmware-ul a respins modificarea animației de pornire.</value>
   </data>
   <data name="System_Power.Text" xml:space="preserve">
     <value>Alimentare</value>
@@ -815,6 +1571,14 @@ GPU: {1}</value>
     <value>Moduri de funcționare</value>
     <comment>Setting: use Acer's operating modes (Eco, Quiet, Balanced...).</comment>
   </data>
+  <data name="Settings_MagKey.Header" xml:space="preserve">
+    <value>Luminile tastelor MagForce</value>
+    <comment>Setting in "Your laptop": whether the W, A, S and D keys' own lights (Acer's MagForce keys) are offered on the Lighting page.</comment>
+  </data>
+  <data name="Settings_MagKey.Description" xml:space="preserve">
+    <value>Lumini proprii sub W, A, S și D, recunoscute după numele modelului laptopului. Comutați dacă nu e corect pentru al dvs.</value>
+    <comment>Under "MagForce key lights".</comment>
+  </data>
   <data name="Settings_OperatingModes_Supported" xml:space="preserve">
     <value>{0}, așa cum le oferă software-ul Acer pe acest model. {1}</value>
     <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
@@ -1000,5 +1764,9 @@ Detalii: {1}</value>
   <data name="Tray_Exit" xml:space="preserve">
     <value>Ieșire</value>
     <comment>Menu item: quit OpenSense.</comment>
+  </data>
+  <data name="GpuClocks_FollowFirmware.Description" xml:space="preserve">
+    <value>Overclocking-ul pe care firmware-ul îl setează pentru fiecare mod, adăugat la decalajele de mai jos.</value>
+    <comment>Under "Acer's overclocking": the firmware's own overclock for each mode is added to the user's offsets set below it.</comment>
   </data>
 </root>

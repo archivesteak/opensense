@@ -7,7 +7,7 @@
     <LangVersion>latest</LangVersion>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <Version>0.2.0</Version>
+    <Version>0.3.0</Version>
     <Authors>OpenSense contributors</Authors>
     <Product>OpenSense</Product>
     <Copyright>OpenSense contributors</Copyright>

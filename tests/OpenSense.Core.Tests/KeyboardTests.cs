@@ -16,8 +16,8 @@ public class KeyboardProtocolTests
     [Fact]
     public void Wave_payload_carries_flag_and_direction_but_no_colour()
     {
-        var payload = KeyboardProtocol.BacklightPayload(KeyboardEffect.Wave, 4, 100, KeyboardDirection.Up, new RgbColor(0x10, 0x20, 0x30));
-        Assert.Equal(new byte[] { 3, 4, 100, 0x08, 3, 0, 0, 0, 3, 1, 100, 0x08, 3, 0, 0, 0 }, payload);
+        var payload = KeyboardProtocol.BacklightPayload(KeyboardEffect.Wave, 4, 100, KeyboardDirection.Left, new RgbColor(0x10, 0x20, 0x30));
+        Assert.Equal(new byte[] { 3, 4, 100, 0x08, 2, 0, 0, 0, 3, 1, 100, 0x08, 2, 0, 0, 0 }, payload);
     }
 
     [Fact]
@@ -27,15 +27,26 @@ public class KeyboardProtocolTests
         Assert.Equal(new byte[] { 2, 9, 50, 0, 0, 0, 0, 0 }, payload[..8]);
     }
 
+    [Theory]
+    [InlineData(KeyboardEffect.Meteor)]
+    [InlineData(KeyboardEffect.Twinkling)]
+    public void Meteor_and_twinkling_use_predatorsense_layout(KeyboardEffect effect)
+    {
+        // Speed and colour but no direction; bytes 8-15 are 03 01 and zeros, as PredatorSense sends them.
+        var payload = KeyboardProtocol.BacklightPayload(effect, 5, 100, KeyboardDirection.Left, new RgbColor(0x00, 0xA0, 0xFF));
+        Assert.Equal(new byte[] { (byte)effect, 5, 100, 0, 0, 0x00, 0xA0, 0xFF, 0x03, 0x01, 0, 0, 0, 0, 0, 0 }, payload);
+    }
+
     [Fact]
     public void Zone_encodings()
     {
         Assert.Equal(0x30201004UL, KeyboardProtocol.ZoneColorInput(3, new RgbColor(0x10, 0x20, 0x30)));
         Assert.Equal(0x08UL | (1UL << 40) | (1UL << 43), KeyboardProtocol.ZoneEnableInput([true, false, false, true]));
 
-        var array = KeyboardProtocol.ZoneEnableArray(0x0000_0900_0000_0008UL);
-        Assert.Equal(12, array.Length);
-        Assert.Equal(array[..4], array[8..12]);
+        // PredatorSense's array forms: the integer's bytes, then zeros (not NitroSense's repeat, which lands on light bars).
+        var input = KeyboardProtocol.ZoneEnableInput([true, false, false, true]);
+        Assert.Equal(Convert.FromHexString("080000000009000000000000"), KeyboardProtocol.ZoneEnableArray(input, 12));
+        Assert.Equal(Convert.FromHexString("08000000000900000000000000000000"), KeyboardProtocol.ZoneEnableArray(input, 16));
     }
 
     [Fact]
@@ -49,6 +60,41 @@ public class KeyboardProtocolTests
         const ulong an515Profile = 0xFFFF000103FF00; // real AN515-57 answer
         Assert.True(KeyboardProtocol.WindowsKeyValue(an515Profile));
         Assert.False(KeyboardProtocol.LcdOverdriveValue(an515Profile));
+        Assert.False(KeyboardProtocol.LcdOverdriveSupported(an515Profile)); // 0xFF: its panel has none
+        Assert.True(KeyboardProtocol.LcdOverdriveSupported(0x0001_0000_0103_FF00));
+    }
+
+    [Theory]
+    [InlineData(100, 100)]
+    [InlineData(90, 100)]
+    [InlineData(62, 50)]
+    [InlineData(63, 75)]
+    [InlineData(10, 0)]
+    public void Backlight_timeout_brightness_goes_out_as_a_level_the_firmware_keeps(int percent, int level)
+    {
+        Assert.Equal((ulong)level, (KeyboardProtocol.BacklightTimeoutInput(0x84, percent, 30) >> 32) & 0xFF);
+    }
+
+    [Fact]
+    public void Zone_read_back_encodings()
+    {
+        Assert.Equal(0x1u, KeyboardProtocol.ZoneColorQuery(1));
+        Assert.Equal(0x8u, KeyboardProtocol.ZoneColorQuery(4));
+        Assert.Equal(new RgbColor(0xFF, 0x2D, 0x55), KeyboardProtocol.ZoneColorValue(0x552DFF00)); // AN515-57
+        Assert.Equal([true, true, true, true], KeyboardProtocol.ZoneEnableValue(0xF00_0000_0000, 4)); // AN515-57
+        Assert.Equal([true, false, false, true], KeyboardProtocol.ZoneEnableValue(KeyboardProtocol.ZoneEnableInput([true, false, false, true]), 4));
+        Assert.Equal([true, false], KeyboardProtocol.ZoneEnableValue(0x100_0000_0000, 2));
+    }
+
+    [Fact]
+    public void Overdrive_needs_the_firmwares_answer_even_where_nitrosense_lists_it()
+    {
+        var hints = new NitroSenseHints { KeyboardColor = 2, KeyboardZones = 4, AdvancedSettings = ["LCD"] };
+        var none = CapabilityProbe.Probe(new AcerDevice(new FakeFirmware { Profile = 0xFFFF000103FF00 }), hints);
+        var some = CapabilityProbe.Probe(new AcerDevice(new FakeFirmware { Profile = 0x0000_0001_0103_FF00 }), hints);
+
+        Assert.False(none.Keyboard.LcdOverdrive);
+        Assert.True(some.Keyboard.LcdOverdrive);
     }
 }
 
@@ -68,24 +114,33 @@ public class SmbiosTests
         Assert.Equal((byte)2, smbios.GamingMajor);
         Assert.Equal((byte)0x53, smbios.GamingMinor);
         Assert.Equal(2.83, smbios.GamingVersion!.Value, 2);
-        Assert.False(smbios.UsesArrayLedBehavior);
+        Assert.Equal(8, smbios.LedArrayLength);
+        Assert.False(smbios.HasEcLightBars);
         Assert.Equal(17, smbios.GamingRecords.Count);
         Assert.Contains(new AcerSmbiosRecord(0x05, 0x0F), smbios.GamingRecords);
         Assert.True(smbios.HasHotkeyFunction(0x84));
     }
 
+    [Theory]
+    [InlineData(2, 0x55, 8)]
+    [InlineData(2, 0x56, 12)]
+    [InlineData(2, 0x5A, 12)]
+    [InlineData(2, 0x5B, 16)]
+    [InlineData(3, 0x00, 16)]
+    [InlineData(1, 0x63, 8)]
+    public void Interface_version_picks_the_led_array_length(byte major, byte minor, int length) =>
+        Assert.Equal(length, new AcerSmbios(major, minor, [], []).LedArrayLength);
+
     [Fact]
-    public void Version_286_switches_to_array_zone_command() =>
-        Assert.True(new AcerSmbios(2, 0x56, [], []).UsesArrayLedBehavior);
+    public void Record_0x17_of_1_means_light_bars_on_the_embedded_controller()
+    {
+        Assert.True(new AcerSmbios(2, 0x5B, [new(0x17, 1)], []).HasEcLightBars);
+        Assert.False(new AcerSmbios(2, 0x5B, [new(0x17, 2)], []).HasEcLightBars); // USB light bars
+    }
 }
 
 public class KeyboardServiceTests
 {
-    private sealed class ImmediateDispatcher(AcerDevice device) : IDeviceDispatcher
-    {
-        public Task<T> InvokeAsync<T>(Func<AcerDevice, T> action) => Task.FromResult(action(device));
-    }
-
     private static (KeyboardService Service, SimulatedTransport Laptop) Create()
     {
         var laptop = new SimulatedTransport(SimulatedModel.Nitro2021);
@@ -95,45 +150,13 @@ public class KeyboardServiceTests
     }
 
     [Fact]
-    public async Task Static_lighting_sets_zones_brightness_and_colours()
-    {
-        var (service, laptop) = Create();
-
-        await service.ApplyAsync(new KeyboardSettings
-        {
-            Lighting = new LightingSettings
-            {
-                Brightness = 50,
-                Zones = [new(true, "#102030"), new(false, "#FFFFFF"), new(true, "#00FF00"), new(true, "#0000FF")],
-            },
-        });
-
-        Assert.Equal(new RgbColor(0x10, 0x20, 0x30), laptop.ZoneColor(1));
-        Assert.Null(laptop.ZoneColor(2));
-        Assert.Equal(new RgbColor(0, 255, 0), laptop.ZoneColor(3));
-        Assert.Equal((byte)KeyboardEffect.Static, laptop.Backlight[0]);
-        Assert.Equal(50, laptop.Backlight[2]);
-    }
-
-    [Fact]
-    public async Task Effect_round_trips_through_firmware_state()
+    public async Task Settings_round_trip_through_firmware_state()
     {
         var (service, _) = Create();
 
-        await service.ApplyAsync(new KeyboardSettings
-        {
-            Lighting = new LightingSettings { Effect = KeyboardEffect.Shifting, Speed = 3, Brightness = 75, Direction = KeyboardDirection.Left, EffectColor = "#FF8000" },
-            WindowsKey = false,
-            LcdOverdrive = true,
-            BacklightAutoOff = false,
-        });
+        await service.ApplyAsync(new KeyboardSettings { WindowsKey = false, LcdOverdrive = true, BacklightAutoOff = false });
         var state = await service.ReadStateAsync();
 
-        Assert.Equal(KeyboardEffect.Shifting, state.Effect);
-        Assert.Equal(3, state.Speed);
-        Assert.Equal(75, state.Brightness);
-        Assert.Equal(KeyboardDirection.Left, state.Direction);
-        Assert.Equal(new RgbColor(0xFF, 0x80, 0x00), state.EffectColor);
         Assert.False(state.WindowsKey);
         Assert.True(state.LcdOverdrive);
         Assert.False(state.BacklightAutoOff);
@@ -143,10 +166,11 @@ public class KeyboardServiceTests
     public async Task Null_settings_leave_firmware_untouched()
     {
         var (service, laptop) = Create();
-        var before = laptop.Backlight;
+        var before = await service.ReadStateAsync();
 
         await service.ApplyAsync(new KeyboardSettings());
 
-        Assert.Equal(before, laptop.Backlight);
+        Assert.Equal(before, await service.ReadStateAsync());
+        Assert.Equal((byte)KeyboardEffect.Static, laptop.Backlight[0]);
     }
 }

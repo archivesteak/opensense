@@ -9,7 +9,7 @@ namespace OpenSense.Service;
 
 /// <summary>
 /// The standard Windows service lifetime, plus power events: services do not receive SystemEvents, so
-/// resume and AC/battery changes arrive here and go to the engine.
+/// suspend, resume and AC/battery changes arrive here and go to the engine.
 /// </summary>
 internal sealed class PowerAwareServiceLifetime : WindowsServiceLifetime
 {
@@ -32,6 +32,9 @@ internal sealed class PowerAwareServiceLifetime : WindowsServiceLifetime
     {
         switch (powerStatus)
         {
+            case PowerBroadcastStatus.Suspend:
+                _engine.NotifySuspend();
+                break;
             // Sent on every resume (ResumeSuspend only follows when the user is present).
             case PowerBroadcastStatus.ResumeAutomatic:
                 _engine.NotifyResume();

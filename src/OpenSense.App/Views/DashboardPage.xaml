@@ -9,6 +9,48 @@
     xmlns:vm="using:OpenSense.App.ViewModels"
     NavigationCacheMode="Required">
 
+    <Page.Resources>
+        <!-- A fan: its speed and what drives it, and a rotor that shrinks to fit when the tile is narrow -->
+        <DataTemplate x:Key="FanTileTemplate" x:DataType="vm:FanReadingViewModel">
+            <Border Padding="16" Style="{StaticResource CardStyle}">
+                <Grid RowSpacing="4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Style="{StaticResource CaptionMutedStyle}" Text="{x:Bind Name}" />
+                    <Grid Grid.Row="1" ColumnSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock LineHeight="40">
+                                <Run
+                                    CharacterSpacing="-10"
+                                    FontFamily="Segoe UI Variable Display"
+                                    FontSize="32"
+                                    FontWeight="SemiBold"
+                                    Text="{x:Bind helpers:Units.RpmNumber(Rpm), Mode=OneWay}" />
+                                <Run Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind helpers:Units.RpmSuffix}" />
+                            </TextBlock>
+                            <TextBlock
+                                Style="{StaticResource CaptionMutedStyle}"
+                                Text="{x:Bind BehaviorText, Mode=OneWay}"
+                                TextTrimming="CharacterEllipsis" />
+                        </StackPanel>
+                        <controls:FanRotor
+                            Grid.Column="1"
+                            Height="150"
+                            VerticalAlignment="Center"
+                            Boost="{x:Bind local:DashboardPage.FanBoost(Boost), Mode=OneWay}"
+                            Rpm="{x:Bind local:DashboardPage.FanRpm(Rpm), Mode=OneWay}" />
+                    </Grid>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </Page.Resources>
+
     <ScrollView>
         <StackPanel
             MaxWidth="{StaticResource PageMaxWidth}"
@@ -24,7 +66,10 @@
                 Severity="Warning" />
 
             <!-- Temperatures and fans -->
-            <controls:TileGrid MinColumnWidth="240">
+            <controls:TileGrid
+                ItemTemplate="{StaticResource FanTileTemplate}"
+                ItemsSource="{x:Bind Monitor.Fans}"
+                MinColumnWidth="240">
                 <!-- CPU temperature -->
                 <Border Padding="16" Style="{StaticResource CardStyle}">
                     <Grid RowSpacing="2">
@@ -112,89 +157,7 @@
                     </Grid>
                 </Border>
 
-                <!-- CPU fan -->
-                <Border
-                    Padding="16"
-                    Style="{StaticResource CardStyle}"
-                    Visibility="{x:Bind local:DashboardPage.Present(Monitor.CpuFan), Mode=OneWay}">
-                    <Grid RowSpacing="4">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <TextBlock x:Uid="Dashboard_CpuFan" Style="{StaticResource CaptionMutedStyle}" />
-                        <Grid Grid.Row="1" ColumnSpacing="12">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel VerticalAlignment="Center">
-                                <TextBlock LineHeight="40">
-                                    <Run
-                                        CharacterSpacing="-10"
-                                        FontFamily="Segoe UI Variable Display"
-                                        FontSize="32"
-                                        FontWeight="SemiBold"
-                                        Text="{x:Bind helpers:Units.RpmNumber(Monitor.CpuFan.Rpm), Mode=OneWay, FallbackValue='--'}" />
-                                    <Run Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind helpers:Units.RpmSuffix}" />
-                                </TextBlock>
-                                <TextBlock
-                                    Style="{StaticResource CaptionMutedStyle}"
-                                    Text="{x:Bind Monitor.CpuFan.BehaviorText, Mode=OneWay, FallbackValue=''}"
-                                    TextTrimming="CharacterEllipsis" />
-                            </StackPanel>
-                            <!-- Shrinks to fit when the tile is narrow -->
-                            <controls:FanRotor
-                                Grid.Column="1"
-                                Height="150"
-                                VerticalAlignment="Center"
-                                Boost="{x:Bind local:DashboardPage.FanBoost(Monitor.CpuFan.Boost), Mode=OneWay}"
-                                Rpm="{x:Bind local:DashboardPage.FanRpm(Monitor.CpuFan.Rpm), Mode=OneWay}" />
-                        </Grid>
-                    </Grid>
-                </Border>
-
-                <!-- GPU fan -->
-                <Border
-                    Padding="16"
-                    Style="{StaticResource CardStyle}"
-                    Visibility="{x:Bind local:DashboardPage.Present(Monitor.GpuFan), Mode=OneWay}">
-                    <Grid RowSpacing="4">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <TextBlock x:Uid="Dashboard_GpuFan" Style="{StaticResource CaptionMutedStyle}" />
-                        <Grid Grid.Row="1" ColumnSpacing="12">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel VerticalAlignment="Center">
-                                <TextBlock LineHeight="40">
-                                    <Run
-                                        CharacterSpacing="-10"
-                                        FontFamily="Segoe UI Variable Display"
-                                        FontSize="32"
-                                        FontWeight="SemiBold"
-                                        Text="{x:Bind helpers:Units.RpmNumber(Monitor.GpuFan.Rpm), Mode=OneWay, FallbackValue='--'}" />
-                                    <Run Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind helpers:Units.RpmSuffix}" />
-                                </TextBlock>
-                                <TextBlock
-                                    Style="{StaticResource CaptionMutedStyle}"
-                                    Text="{x:Bind Monitor.GpuFan.BehaviorText, Mode=OneWay, FallbackValue=''}"
-                                    TextTrimming="CharacterEllipsis" />
-                            </StackPanel>
-                            <!-- Shrinks to fit when the tile is narrow -->
-                            <controls:FanRotor
-                                Grid.Column="1"
-                                Height="150"
-                                VerticalAlignment="Center"
-                                Boost="{x:Bind local:DashboardPage.FanBoost(Monitor.GpuFan.Boost), Mode=OneWay}"
-                                Rpm="{x:Bind local:DashboardPage.FanRpm(Monitor.GpuFan.Rpm), Mode=OneWay}" />
-                        </Grid>
-                    </Grid>
-                </Border>
+                <!-- Then a tile per fan (FanTileTemplate) -->
             </controls:TileGrid>
 
             <!-- Controls -->

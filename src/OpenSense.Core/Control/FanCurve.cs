@@ -50,9 +50,3 @@ public sealed record FanCurve
 
     public override int GetHashCode() => _points.Aggregate(17, (h, p) => HashCode.Combine(h, p));
 }
-
-public static class CurvePresets
-{
-    /// <summary>Leaves the fans to the firmware until it gets hot: half way to full speed at 90 °C, full speed at 100 °C. Auto boosts along it.</summary>
-    public static FanCurve Default { get; } = FanCurve.From((70, 0), (80, 20), (90, 50), (100, 100));
-}

@@ -70,4 +70,26 @@
     <Content Include="Assets\**" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
+  <!--
+    The Windows App SDK 2.x component packages leave out Microsoft.WindowsAppRuntime.Insights.Resource.dll, which holds
+    the runtime's version information. Without it the runtime's self-contained check fails, and with it
+    AppNotificationManager.Register ("The specified module could not be found", microsoft/WindowsAppSDK#6071). The file
+    ships in the SDK's own framework package, so it is taken from there, for the same SDK version and architecture.
+    Remove this once a Microsoft.WindowsAppSDK.Foundation release contains microsoft/WindowsAppSDK#6725.
+  -->
+  <Target Name="AddWindowsAppRuntimeVersionInfo" BeforeTargets="AssignTargetPaths">
+    <PropertyGroup>
+      <WindowsAppRuntimeFrameworkMsix>$(MicrosoftWindowsAppSDKPackageDir)tools\MSIX\win10-$(Platform.ToLowerInvariant())\Microsoft.WindowsAppRuntime.2.msix</WindowsAppRuntimeFrameworkMsix>
+      <WindowsAppRuntimeVersionInfoDirectory>$(IntermediateOutputPath)WindowsAppRuntime\</WindowsAppRuntimeVersionInfoDirectory>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(WindowsAppRuntimeFrameworkMsix)')" Text="Windows App SDK framework package not found: $(WindowsAppRuntimeFrameworkMsix)" />
+    <Unzip SourceFiles="$(WindowsAppRuntimeFrameworkMsix)" DestinationFolder="$(WindowsAppRuntimeVersionInfoDirectory)"
+           Include="Microsoft.WindowsAppRuntime.Insights.Resource.dll" SkipUnchangedFiles="true" />
+    <ItemGroup>
+      <None Include="$(WindowsAppRuntimeVersionInfoDirectory)Microsoft.WindowsAppRuntime.Insights.Resource.dll"
+            Link="Microsoft.WindowsAppRuntime.Insights.Resource.dll"
+            CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    </ItemGroup>
+  </Target>
+
 </Project>

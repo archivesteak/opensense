@@ -71,8 +71,8 @@
     <comment>Navigation menu item: the RGB keyboard lighting page.</comment>
   </data>
   <data name="Nav_System.Content" xml:space="preserve">
-    <value>Näppäimistö ja näyttö</value>
-    <comment>Navigation menu item: keyboard, display, GPU and power settings.</comment>
+    <value>Järjestelmä</value>
+    <comment>Navigation menu item: the laptop's keyboard, display, graphics, battery, startup and power settings. Like Windows Settings' System page.</comment>
   </data>
   <data name="Startup_Connecting.Text" xml:space="preserve">
     <value>Muodostetaan yhteyttä kannettavaan…</value>
@@ -134,6 +134,10 @@
     <value>Näppäimistö</value>
     <comment>Banner title.</comment>
   </data>
+  <data name="Notice_Lighting_Title" xml:space="preserve">
+    <value>Valaistus</value>
+    <comment>Title of a banner about the light bars or the logo.</comment>
+  </data>
   <data name="Notice_Display_Title" xml:space="preserve">
     <value>Näyttö</value>
     <comment>Banner title: the laptop screen.</comment>
@@ -153,12 +157,25 @@
     <value>Laiteohjelmisto hylkäsi CoolBoost-muutoksen.</value>
     <comment>CoolBoost is an Acer feature name: keep it.</comment>
   </data>
+  <data name="Notice_FanTableRejected" xml:space="preserve">
+    <value>Laiteohjelmisto hylkäsi tuuletinkäyrän muutoksen.</value>
+  </data>
   <data name="Notice_FansHandedBack" xml:space="preserve">
     <value>Suorittimen lämpötila ei ole käytettävissä, joten tuulettimet palautettiin Auto-tilaan.</value>
     <comment>Auto = the automatic fan mode, as in FanMode_Auto.</comment>
   </data>
   <data name="Notice_LightingRejected" xml:space="preserve">
     <value>Näppäimistö hylkäsi valaistuksen muutoksen.</value>
+  </data>
+  <data name="Notice_LightBarRejected" xml:space="preserve">
+    <value>Valopalkki hylkäsi valaistuksen muutoksen.</value>
+  </data>
+  <data name="Notice_LogoRejected" xml:space="preserve">
+    <value>Logo hylkäsi valaistuksen muutoksen.</value>
+  </data>
+  <data name="Notice_LightRejected" xml:space="preserve">
+    <value>{0}: valaistuksen muutos hylättiin.</value>
+    <comment>Notice when a light other than the keyboard, the light bar and the logo refused a change. {0} = its name (e.g. "Lid logo").</comment>
   </data>
   <data name="Notice_BacklightTimeoutRejected" xml:space="preserve">
     <value>Näppäimistö hylkäsi taustavalon aikakatkaisun muutoksen.</value>
@@ -184,6 +201,41 @@
   </data>
   <data name="Notice_GpuModeRejected" xml:space="preserve">
     <value>Laiteohjelmisto hylkäsi GPU-tilan vaihdon.</value>
+  </data>
+  <data name="Notice_GpuClocks_Title" xml:space="preserve">
+    <value>GPU:n ylikellotus</value>
+    <comment>Notice title for problems with the GPU overclock.</comment>
+  </data>
+  <data name="Notice_GpuClocksRejected" xml:space="preserve">
+    <value>NVIDIA-ohjain hylkäsi kellotaajuuksien siirtymät.</value>
+  </data>
+  <data name="Notice_OperatingMode_Title" xml:space="preserve">
+    <value>Toimintatila</value>
+    <comment>Title of the toast shown when the Mode key or the power supply changes the operating mode.</comment>
+  </data>
+  <data name="Notice_ModeOnBattery" xml:space="preserve">
+    <value>Akkukäytössä: {0}</value>
+    <comment>Toast text: the laptop runs on battery, in operating mode {0} (e.g. "Eco").</comment>
+  </data>
+  <data name="Notice_ModePluggedIn" xml:space="preserve">
+    <value>Laturi kytketty: {0}</value>
+    <comment>Toast text: the adapter was plugged in, so operating mode {0} runs again (e.g. "Turbo").</comment>
+  </data>
+  <data name="Notice_ModeLowBattery" xml:space="preserve">
+    <value>Akku vähissä: {0}, kunnes se latautuu</value>
+    <comment>Toast text: on AC, but the battery is too low to help the adapter, so operating mode {0} (Balanced or Quiet) runs until it charges.</comment>
+  </data>
+  <data name="Notice_ModeAdapter" xml:space="preserve">
+    <value>Laturi liian heikko: {0}</value>
+    <comment>Toast when the operating mode changed because the adapter can't power every mode (a USB-C charger that is too weak, or the laptop's own limit). {0} = the mode now in use.</comment>
+  </data>
+  <data name="Notice_TurboUnavailable" xml:space="preserve">
+    <value>Turbo tarvitsee laturin ja ladatun akun.</value>
+    <comment>Toast text when the Mode key is set to Turbo on and off, but the laptop is on battery or its battery is too low.</comment>
+  </data>
+  <data name="Notice_TurboNeedsAdapter" xml:space="preserve">
+    <value>Turbo tarvitsee tehokkaamman laturin, kuten kannettavan oman laturin.</value>
+    <comment>Toast when the Mode key (set to Turbo) is pressed while the adapter can't power Turbo.</comment>
   </data>
   <data name="Notice_Autostart_Title" xml:space="preserve">
     <value>Käynnistä Windowsin mukana</value>
@@ -227,11 +279,51 @@
     <value>GPU</value>
     <comment>The graphics chip. Short: used in labels like 'GPU 45°'.</comment>
   </data>
+  <data name="Chip_System" xml:space="preserve">
+    <value>Järjestelmä</value>
+    <comment>Short name of a system (chassis) fan where space is tight, e.g. the tray tooltip: "System 2,000 rpm".</comment>
+  </data>
   <data name="Fan_Cpu" xml:space="preserve">
     <value>CPU-tuuletin</value>
   </data>
   <data name="Fan_Gpu" xml:space="preserve">
     <value>GPU-tuuletin</value>
+  </data>
+  <data name="Fan_Gpu1" xml:space="preserve">
+    <value>GPU-tuuletin 1</value>
+    <comment>The first of two GPU fans, on laptops that have two (Acer's software numbers them the same way).</comment>
+  </data>
+  <data name="Fan_Gpu2" xml:space="preserve">
+    <value>GPU-tuuletin 2</value>
+    <comment>The second GPU fan.</comment>
+  </data>
+  <data name="Fan_System" xml:space="preserve">
+    <value>Järjestelmätuuletin</value>
+    <comment>A fan in the chassis, not on the CPU or GPU. OpenSense only shows its speed.</comment>
+  </data>
+  <data name="Fan_System1" xml:space="preserve">
+    <value>Järjestelmätuuletin 1</value>
+    <comment>The first of two system fans.</comment>
+  </data>
+  <data name="Fan_System2" xml:space="preserve">
+    <value>Järjestelmätuuletin 2</value>
+    <comment>The second system fan.</comment>
+  </data>
+  <data name="FanShort_Gpu1" xml:space="preserve">
+    <value>GPU 1</value>
+    <comment>Short name of the first GPU fan where space is tight (the tray tooltip), on laptops with two.</comment>
+  </data>
+  <data name="FanShort_Gpu2" xml:space="preserve">
+    <value>GPU 2</value>
+    <comment>Short name of the second GPU fan.</comment>
+  </data>
+  <data name="FanShort_System1" xml:space="preserve">
+    <value>Järjestelmä 1</value>
+    <comment>Short name of the first of two system fans.</comment>
+  </data>
+  <data name="FanShort_System2" xml:space="preserve">
+    <value>Järjestelmä 2</value>
+    <comment>Short name of the second system fan.</comment>
   </data>
   <data name="FanMode_Auto" xml:space="preserve">
     <value>Auto</value>
@@ -270,6 +362,34 @@
     <value>Hiljainen-tila pitää tuulettimet Auto-tilassa.</value>
     <comment>Quiet = OperatingMode_Quiet; Auto = FanMode_Auto.</comment>
   </data>
+  <data name="FanLock_EcoMode" xml:space="preserve">
+    <value>Eco-tila pitää tuulettimet Auto-tilassa.</value>
+    <comment>Banner on the Fans page: in the Eco operating mode the fans stay on Auto (as Acer's software has it).</comment>
+  </data>
+  <data name="FanLock_DustDefender" xml:space="preserve">
+    <value>Tuulettimet pyörivät takaperin pölyn poistamiseksi. Tuuletinohjaus jatkuu, kun se on valmis.</value>
+    <comment>Banner on the Fans page while the laptop's DustDefender runs the fans backwards; OpenSense leaves the fans alone meanwhile.</comment>
+  </data>
+  <data name="DustDefender_Description" xml:space="preserve">
+    <value>Pyörittää tuulettimia hetken takaperin, jotta pöly puhaltuu ulos jäähdytysrivastoista.</value>
+    <comment>The DustDefender card's description on the Fans page ("DustDefender" is Acer's name for the feature and stays in English).</comment>
+  </data>
+  <data name="DustDefender_Running" xml:space="preserve">
+    <value>Puhdistetaan: tuulettimet pyörivät hetken takaperin.</value>
+    <comment>The DustDefender card's description while a run is going.</comment>
+  </data>
+  <data name="DustDefender_Busy" xml:space="preserve">
+    <value>Kannettava hylkäsi sen toistaiseksi, kuten raskaan kuorman aikana. Yritä uudelleen, kun se on joutilaana.</value>
+    <comment>The DustDefender card's description when the laptop's embedded controller turned a start down (Acer: it does under heavy load).</comment>
+  </data>
+  <data name="DustDefender_Failed" xml:space="preserve">
+    <value>Kannettava ei aloittanut puhdistusta.</value>
+    <comment>The DustDefender card's description when the firmware refused a start.</comment>
+  </data>
+  <data name="Fans_CleanNow.Content" xml:space="preserve">
+    <value>Puhdista nyt</value>
+    <comment>Button on the DustDefender card: the fans run backwards for a moment to blow dust out.</comment>
+  </data>
   <data name="OperatingMode_Eco" xml:space="preserve">
     <value>Eco</value>
     <comment>Acer operating mode name. Short: a segmented button.</comment>
@@ -306,9 +426,17 @@
   <data name="OperatingMode_Turbo_Description" xml:space="preserve">
     <value>Suurin teho ja jäähdytys. Vaatii verkkovirran.</value>
   </data>
-  <data name="OperatingMode_BatteryNote" xml:space="preserve">
-    <value>Akkukäytössä {0} ja {1} toimivat kuten {2}, kunnes liität laturin.</value>
-    <comment>{0}, {1}, {2} = operating mode names (Performance, Turbo, Balanced).</comment>
+  <data name="OperatingMode_BatteryModeNote" xml:space="preserve">
+    <value>Akkukäytössä: tässä valittua tilaa käytetään, kunnes liität laturin.</value>
+    <comment>Under the operating mode list while on battery: the list shows the battery's own mode.</comment>
+  </data>
+  <data name="OperatingMode_LowBatteryNote" xml:space="preserve">
+    <value>Akku on liian tyhjä auttamaan laturia, joten suorituskykytilat palaavat, kun se latautuu.</value>
+    <comment>Under the operating mode list on AC when the battery is too low to help the adapter (only Quiet and Balanced are listed then).</comment>
+  </data>
+  <data name="OperatingMode_AdapterNote" xml:space="preserve">
+    <value>Tämä laturi ei riitä suorituskykytiloille; ne palaavat tehokkaammalla laturilla, kuten kannettavan omalla.</value>
+    <comment>Under the operating modes when the adapter can't power every mode (a USB-C charger that is too weak, or the laptop's own limit), so only the quieter ones are offered.</comment>
   </data>
   <data name="PowerSource_PluggedIn" xml:space="preserve">
     <value>Verkkovirta</value>
@@ -351,14 +479,6 @@
   </data>
   <data name="Dashboard_GpuTemperature.Text" xml:space="preserve">
     <value>GPU:n lämpötila</value>
-    <comment>Tile caption.</comment>
-  </data>
-  <data name="Dashboard_CpuFan.Text" xml:space="preserve">
-    <value>CPU-tuuletin</value>
-    <comment>Tile caption.</comment>
-  </data>
-  <data name="Dashboard_GpuFan.Text" xml:space="preserve">
-    <value>GPU-tuuletin</value>
     <comment>Tile caption.</comment>
   </data>
   <data name="Dashboard_LoadDetail" xml:space="preserve">
@@ -408,6 +528,21 @@
   <data name="Fans_CoolBoost.Description" xml:space="preserve">
     <value>Nostaa laiteohjelmiston omia tuuletinnopeuksia, joita Auto-tila käyttää ja joihin Manuaali-tila lisää nopeutta.</value>
     <comment>Under the header "CoolBoost" (an Acer feature name). Auto, Custom = FanMode_Auto, FanMode_Custom.</comment>
+  </data>
+  <data name="Fans_FanTable.Header" xml:space="preserve">
+    <value>Tuuletinkäyrä</value>
+  </data>
+  <data name="Fans_FanTable.Description" xml:space="preserve">
+    <value>Laiteohjelmiston omat tuuletinnopeudet, joita Auto-tila käyttää ja joihin Manuaali-tila lisää nopeutta. Acerin ohjelmisto valitsee nopeamman käyrän näytönohjaimen ylikellotukseen.</value>
+  </data>
+  <data name="Fans_FanTableStandard.Content" xml:space="preserve">
+    <value>Tavallinen</value>
+  </data>
+  <data name="Fans_FanTableFaster.Content" xml:space="preserve">
+    <value>Nopeampi</value>
+  </data>
+  <data name="Fans_FanTableFastest.Content" xml:space="preserve">
+    <value>Nopein</value>
   </data>
   <data name="Fans_BoostFixed.Content" xml:space="preserve">
     <value>Kiinteä</value>
@@ -459,9 +594,125 @@
     <value>Tehoste</value>
     <comment>Lighting mode: an animated effect.</comment>
   </data>
+  <data name="Lighting_PerKey.Content" xml:space="preserve">
+    <value>Näppäinkohtainen</value>
+    <comment>Lighting mode: a colour for each key (next to "Static colours" and "Effect").</comment>
+  </data>
+  <data name="Lighting_PerKeyHint.Text" xml:space="preserve">
+    <value>Näppäimen napsauttaminen valitsee sen, Ctrl+napsautus lisää tai poistaa näppäimen ja vetäminen valitsee useita. Väri menee sitten valituille näppäimille tai kaikille, jos mitään ei ole valittu.</value>
+    <comment>Help above the per-key editor's buttons.</comment>
+  </data>
+  <data name="Lighting_SelectWasd.Content" xml:space="preserve">
+    <value>WASD</value>
+    <comment>Button that selects the W, A, S and D keys (the name of the key group; keep as is).</comment>
+  </data>
+  <data name="Lighting_SelectArrows.Content" xml:space="preserve">
+    <value>Nuolinäppäimet</value>
+    <comment>Button that selects the four arrow keys.</comment>
+  </data>
+  <data name="Lighting_SelectFunctionKeys.Content" xml:space="preserve">
+    <value>F1–F12</value>
+    <comment>Button that selects the function keys F1 to F12.</comment>
+  </data>
+  <data name="Lighting_SelectNumbers.Content" xml:space="preserve">
+    <value>Numerorivi</value>
+    <comment>Button that selects the row of digit keys 1 to 0.</comment>
+  </data>
+  <data name="Lighting_SelectAll.Content" xml:space="preserve">
+    <value>Kaikki näppäimet</value>
+    <comment>Button that selects every key.</comment>
+  </data>
+  <data name="Lighting_SelectNone.Content" xml:space="preserve">
+    <value>Poista valinta</value>
+    <comment>Button that deselects every key in the per-key editor.</comment>
+  </data>
+  <data name="Lighting_TurnOffKeys.Content" xml:space="preserve">
+    <value>Sammuta</value>
+    <comment>Button that makes the selected keys (or all, with none selected) dark.</comment>
+  </data>
+  <data name="Lighting_Layout.Header" xml:space="preserve">
+    <value>Asettelu</value>
+    <comment>Which keyboard layout the per-key editor draws (US, UK and Europe, Japanese).</comment>
+  </data>
+  <data name="Layout_Ansi" xml:space="preserve">
+    <value>Yhdysvallat (ANSI)</value>
+    <comment>Keyboard layout name in the per-key editor.</comment>
+  </data>
+  <data name="Layout_Iso" xml:space="preserve">
+    <value>Iso-Britannia ja Eurooppa (ISO)</value>
+    <comment>Keyboard layout name in the per-key editor.</comment>
+  </data>
+  <data name="Layout_Jis" xml:space="preserve">
+    <value>Japanilainen (JIS)</value>
+    <comment>Keyboard layout name in the per-key editor.</comment>
+  </data>
+  <data name="Lighting_EffectList.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Tehoste</value>
+    <comment>Screen-reader name of the list of lighting effects.</comment>
+  </data>
   <data name="Lighting_Zone" xml:space="preserve">
     <value>Alue {0}</value>
     <comment>A keyboard lighting zone: {0} = its number.</comment>
+  </data>
+  <data name="Lighting_NumberedLight" xml:space="preserve">
+    <value>{0} {1}</value>
+    <comment>A light's name when the laptop has two of that kind: {0} = its name (e.g. "Light bar"), {1} = 1 or 2.</comment>
+  </data>
+  <data name="Light_Keyboard" xml:space="preserve">
+    <value>Näppäimistö</value>
+    <comment>Name of the keyboard backlight in the Lighting page's list of lights.</comment>
+  </data>
+  <data name="Light_LightBar" xml:space="preserve">
+    <value>Valopalkki</value>
+    <comment>Name of the laptop's light bar(s) in the Lighting page's list of lights.</comment>
+  </data>
+  <data name="Light_InfinityMirror" xml:space="preserve">
+    <value>Infinity Mirror</value>
+    <comment>Acer's name for the rear light bar of Predator Helios 16/18 (2024). A product name: keep it as it is.</comment>
+  </data>
+  <data name="Light_Logo" xml:space="preserve">
+    <value>Logo</value>
+    <comment>Name of the lit logo on the laptop's lid in the Lighting page's list of lights.</comment>
+  </data>
+  <data name="Light_FrontLightBar" xml:space="preserve">
+    <value>Etuvalopalkki</value>
+    <comment>A light's name (the page's light selector).</comment>
+  </data>
+  <data name="Light_LeftLightBar" xml:space="preserve">
+    <value>Vasen valopalkki</value>
+    <comment>A light's name (the page's light selector).</comment>
+  </data>
+  <data name="Light_RightLightBar" xml:space="preserve">
+    <value>Oikea valopalkki</value>
+    <comment>A light's name (the page's light selector).</comment>
+  </data>
+  <data name="Light_RearLightBar" xml:space="preserve">
+    <value>Takavalopalkki</value>
+    <comment>A light's name (the page's light selector).</comment>
+  </data>
+  <data name="Light_TurboKey" xml:space="preserve">
+    <value>Turbo-näppäin</value>
+    <comment>A light's name: the light in the laptop's Turbo key.</comment>
+  </data>
+  <data name="Light_ModeKey" xml:space="preserve">
+    <value>Tilanäppäin</value>
+    <comment>A light's name: the light in the laptop's Mode key (switches operating modes).</comment>
+  </data>
+  <data name="Light_CoverLogo" xml:space="preserve">
+    <value>Kannen logo</value>
+    <comment>A light's name: the logo on the outside of the lid.</comment>
+  </data>
+  <data name="Light_BaseLogo" xml:space="preserve">
+    <value>Rungon logo</value>
+    <comment>A light's name: a logo on the laptop's base.</comment>
+  </data>
+  <data name="Light_MagKey" xml:space="preserve">
+    <value>MagForce-näppäimet</value>
+    <comment>A light's name: the lights under the W, A, S and D keys of Predator Helios models (Acer calls these keys MagForce keys; keep "MagForce").</comment>
+  </data>
+  <data name="Light_InfiniteRing" xml:space="preserve">
+    <value>InfiniteRing</value>
+    <comment>A light's name: a ring of light on some Predator laptops (Acer's name for it; keep as is).</comment>
   </data>
   <data name="Lighting_ZoneColor.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Valitse väri</value>
@@ -469,6 +720,14 @@
   </data>
   <data name="Lighting_AllZones.Text" xml:space="preserve">
     <value>Yksi väri kaikille alueille</value>
+  </data>
+  <data name="Lighting_ApplyToAll.Content" xml:space="preserve">
+    <value>Käytä kaikkiin valoihin</value>
+    <comment>Button: gives every other light the nearest look it can show to the one being edited.</comment>
+  </data>
+  <data name="Lighting_Color.Text" xml:space="preserve">
+    <value>Väri</value>
+    <comment>Heading of the colour picker for a light with a single colour (the logo).</comment>
   </data>
   <data name="Lighting_Speed.Header" xml:space="preserve">
     <value>Nopeus</value>
@@ -480,6 +739,10 @@
   </data>
   <data name="Lighting_EffectColor.Text" xml:space="preserve">
     <value>Tehosteen väri</value>
+  </data>
+  <data name="Lighting_RandomColor.Content" xml:space="preserve">
+    <value>Satunnaiset värit</value>
+    <comment>Check box next to "Effect colour": the effect picks random colours instead.</comment>
   </data>
   <data name="Lighting_AnyColor.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Mikä tahansa väri</value>
@@ -511,6 +774,10 @@
   <data name="Effect_Neon_Description" xml:space="preserve">
     <value>Käy läpi sateenkaaren värit.</value>
   </data>
+  <data name="Effect_NeonKeyboard_Description" xml:space="preserve">
+    <value>Näppäimistö syttyy ja himmenee pehmeästi punaisena, sitten vihreänä ja sitten sinisenä.</value>
+    <comment>Description of the Neon effect on a keyboard lit by zones (the embedded controller's), under the effect list. The whole keyboard fades in and out in one colour at a time.</comment>
+  </data>
   <data name="Effect_Wave_Description" xml:space="preserve">
     <value>Väriaalto pyyhkäisee näppäinten yli.</value>
   </data>
@@ -519,6 +786,224 @@
   </data>
   <data name="Effect_Zoom_Description" xml:space="preserve">
     <value>Väri leviää keskeltä ulospäin.</value>
+  </data>
+  <data name="Effect_Meteor" xml:space="preserve">
+    <value>Meteori</value>
+    <comment>Keyboard lighting effect: streaks of colour move across the keyboard.</comment>
+  </data>
+  <data name="Effect_Meteor_Description" xml:space="preserve">
+    <value>Värijuovat kiitävät näppäimistön poikki.</value>
+  </data>
+  <data name="Effect_MeteorKeyboard_Description" xml:space="preserve">
+    <value>Värisyke kulkee näppäimistön poikki ja takaisin.</value>
+    <comment>Description of the Meteor effect on a keyboard lit by zones (the embedded controller's), under the effect list. The colour lights one zone after the other to the far end, then comes back the same way.</comment>
+  </data>
+  <data name="Effect_Twinkling" xml:space="preserve">
+    <value>Tuike</value>
+    <comment>Keyboard lighting effect: parts of the keyboard light up at random and fade.</comment>
+  </data>
+  <data name="Effect_Snake" xml:space="preserve">
+    <value>Käärme</value>
+    <comment>Light bar effect (Infinity Mirror): a band of rainbow colours runs along the bar.</comment>
+  </data>
+  <data name="Effect_Lightning" xml:space="preserve">
+    <value>Salama</value>
+    <comment>Light bar effect (Infinity Mirror).</comment>
+  </data>
+  <data name="Effect_Stack" xml:space="preserve">
+    <value>Pino</value>
+    <comment>Light bar effect (Infinity Mirror): light builds up zone by zone.</comment>
+  </data>
+  <data name="Effect_MotionPoint" xml:space="preserve">
+    <value>Liikkuva piste</value>
+    <comment>Light bar effect (Infinity Mirror): a point of light moves along the bar.</comment>
+  </data>
+  <data name="Effect_Ripple" xml:space="preserve">
+    <value>Väreily</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Raindrop" xml:space="preserve">
+    <value>Sadepisarat</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Fireball" xml:space="preserve">
+    <value>Tulipallo</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Snow" xml:space="preserve">
+    <value>Lumi</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Heartbeat" xml:space="preserve">
+    <value>Sydämenlyönti</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Dazzling" xml:space="preserve">
+    <value>Häikäisevä</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Matrix" xml:space="preserve">
+    <value>Matrix</value>
+    <comment>Lighting effect name (after the film's falling green code).</comment>
+  </data>
+  <data name="Effect_Swiping" xml:space="preserve">
+    <value>Pyyhkäisy</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_RowWave" xml:space="preserve">
+    <value>Riviaalto</value>
+    <comment>Lighting effect name: a wave that moves row by row.</comment>
+  </data>
+  <data name="Effect_Racing" xml:space="preserve">
+    <value>Kilpa-ajo</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_Sprouting" xml:space="preserve">
+    <value>Itäminen</value>
+    <comment>Lighting effect name: light grows like a sprout.</comment>
+  </data>
+  <data name="Effect_Disco" xml:space="preserve">
+    <value>Disko</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_PingPong" xml:space="preserve">
+    <value>Pingis</value>
+    <comment>Lighting effect name.</comment>
+  </data>
+  <data name="Effect_LightShow" xml:space="preserve">
+    <value>Valoshow</value>
+    <comment>Lighting effect name: the light's effects in turn.</comment>
+  </data>
+  <data name="Effect_FollowOperatingMode" xml:space="preserve">
+    <value>Toimintatila</value>
+    <comment>Lighting effect name: the firmware colours the light by the operating mode (Quiet, Balanced, Performance, ...).</comment>
+  </data>
+  <data name="Effect_Combo" xml:space="preserve">
+    <value>Yhdistelmä</value>
+    <comment>Lighting effect name: several effects at once.</comment>
+  </data>
+  <data name="Effect_Rainbow" xml:space="preserve">
+    <value>Sateenkaari</value>
+    <comment>Lighting effect name (MagForce keys).</comment>
+  </data>
+  <data name="Effect_Slash" xml:space="preserve">
+    <value>Viilto</value>
+    <comment>Lighting effect name (MagForce keys): a slash of light across the keys.</comment>
+  </data>
+  <data name="Effect_Star" xml:space="preserve">
+    <value>Tähdet</value>
+    <comment>Lighting effect name (MagForce keys).</comment>
+  </data>
+  <data name="Effect_Blasting" xml:space="preserve">
+    <value>Räjähdys</value>
+    <comment>Lighting effect name (MagForce keys): colour bursts out.</comment>
+  </data>
+  <data name="Effect_Twinkling_Description" xml:space="preserve">
+    <value>Näppäimistön osat syttyvät satunnaisesti ja himmenevät.</value>
+  </data>
+  <data name="Effect_TwinklingKeyboard_Description" xml:space="preserve">
+    <value>Koko näppäimistö vilkkuu.</value>
+    <comment>Description of the Twinkling effect on a keyboard lit by zones (the embedded controller's), under the effect list. All zones switch on and off together, with no fading.</comment>
+  </data>
+  <data name="Effect_Snake_Description" xml:space="preserve">
+    <value>Sateenkaaren värinen nauha kulkee valopalkkia pitkin.</value>
+  </data>
+  <data name="Effect_SnakeColor_Description" xml:space="preserve">
+    <value>Värillinen viiva kiemurtelee valon poikki.</value>
+    <comment>Description of the Snake effect where it takes a colour (keyboards, logos), under the effect list.</comment>
+  </data>
+  <data name="Effect_Lightning_Description" xml:space="preserve">
+    <value>Valo välähtää kuin salama.</value>
+  </data>
+  <data name="Effect_Stack_Description" xml:space="preserve">
+    <value>Valo kasautuu alue kerrallaan.</value>
+  </data>
+  <data name="Effect_MotionPoint_Description" xml:space="preserve">
+    <value>Valopiste liikkuu valopalkkia pitkin.</value>
+  </data>
+  <data name="Effect_ZoomIn_Description" xml:space="preserve">
+    <value>Valo liikkuu kohti keskustaa.</value>
+    <comment>The Infinity Mirror's Zoom (Acer names it Zoom there too).</comment>
+  </data>
+  <data name="Effect_Ripple_Description" xml:space="preserve">
+    <value>Värilliset renkaat leviävät ulospäin.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Raindrop_Description" xml:space="preserve">
+    <value>Väripisarat putoavat ja himmenevät.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Fireball_Description" xml:space="preserve">
+    <value>Tulipallo syöksyy valon poikki.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Snow_Description" xml:space="preserve">
+    <value>Valohiutaleet leijailevat alas.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Heartbeat_Description" xml:space="preserve">
+    <value>Valo sykkii kuin sydän.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Dazzling_Description" xml:space="preserve">
+    <value>Kirkkaat kipinät välähtelevät kaikkialla.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Matrix_Description" xml:space="preserve">
+    <value>Valovirrat sataavat alas.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Swiping_Description" xml:space="preserve">
+    <value>Väri pyyhkäisee edestakaisin.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_RowWave_Description" xml:space="preserve">
+    <value>Väri vyöryy rivi riviltä.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Racing_Description" xml:space="preserve">
+    <value>Valot jahtaavat toisiaan.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Sprouting_Description" xml:space="preserve">
+    <value>Valo kasvaa alhaalta ylöspäin.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Disco_Description" xml:space="preserve">
+    <value>Värit välkkyvät kuin tanssilattialla.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_PingPong_Description" xml:space="preserve">
+    <value>Valopiste pomppii laidasta laitaan.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_LightShow_Description" xml:space="preserve">
+    <value>Tehosteet toistuvat peräkkäin.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_FollowOperatingMode_Description" xml:space="preserve">
+    <value>Väri näyttää käytössä olevan toimintatilan.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Combo_Description" xml:space="preserve">
+    <value>Useita tehosteita yhtä aikaa.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Rainbow_Description" xml:space="preserve">
+    <value>Näppäimet hehkuvat sateenkaaren väreissä.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Slash_Description" xml:space="preserve">
+    <value>Valo viiltää näppäinten poikki.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Star_Description" xml:space="preserve">
+    <value>Näppäimet tuikkivat kuin tähdet.</value>
+    <comment>Effect description, under the effect list.</comment>
+  </data>
+  <data name="Effect_Blasting_Description" xml:space="preserve">
+    <value>Väri leimahtaa ja himmenee.</value>
+    <comment>Effect description, under the effect list.</comment>
   </data>
   <data name="Direction_Left" xml:space="preserve">
     <value>Vasen</value>
@@ -541,7 +1026,7 @@
     <comment>Keyboard backlight brightness: off. Short: shown next to 25%, 50%...</comment>
   </data>
   <data name="System_Title.Text" xml:space="preserve">
-    <value>Näppäimistö ja näyttö</value>
+    <value>Järjestelmä</value>
     <comment>Page title, same as Nav_System.Content.</comment>
   </data>
   <data name="System_Keyboard.Text" xml:space="preserve">
@@ -561,6 +1046,22 @@
   </data>
   <data name="System_WindowsKey.Description" xml:space="preserve">
     <value>Poista käytöstä, jotta Windows- ja valikkonäppäimet eivät keskeytä pelejä.</value>
+  </data>
+  <data name="System_ModeKey.Header" xml:space="preserve">
+    <value>Tilanäppäin</value>
+    <comment>System page, Keyboard section: the laptop's Mode key (it switches the operating mode). Shown once the key has been pressed.</comment>
+  </data>
+  <data name="System_ModeKey.Description" xml:space="preserve">
+    <value>Mitä kannettavan tilanäppäin tekee.</value>
+    <comment>Description of the Mode key setting.</comment>
+  </data>
+  <data name="System_ModeKeyCycle.Content" xml:space="preserve">
+    <value>Vaihda tiloja vuorotellen</value>
+    <comment>Mode key choice: each press goes to the next operating mode (Balanced, Performance, Turbo, Quiet; on battery Balanced and Eco).</comment>
+  </data>
+  <data name="System_ModeKeyTurbo.Content" xml:space="preserve">
+    <value>Kytke Turbo päälle ja pois</value>
+    <comment>Mode key choice: a press turns Turbo on, the next one goes back to the mode before.</comment>
   </data>
   <data name="System_StickyKeys.Header" xml:space="preserve">
     <value>Päälle jäävät näppäimet</value>
@@ -610,6 +1111,261 @@
   <data name="System_RestartNow.Content" xml:space="preserve">
     <value>Käynnistä uudelleen nyt</value>
     <comment>Button: restart Windows now.</comment>
+  </data>
+  <data name="System_GpuClocks.Header" xml:space="preserve">
+    <value>GPU:n ylikellotus</value>
+    <comment>Expander on the System page: clock offsets for the NVIDIA GPU, per operating mode.</comment>
+  </data>
+  <data name="GpuClocks_Reset.Content" xml:space="preserve">
+    <value>Palauta</value>
+    <comment>Button next to "GPU overclock": sets every offset back to 0.</comment>
+  </data>
+  <data name="GpuClocks_FollowFirmware.Header" xml:space="preserve">
+    <value>Acerin ylikellotus</value>
+    <comment>Switch in the GPU overclock section, on laptops whose firmware has its own GPU overclock for each operating mode (2024+ Predators). Keep "Acer".</comment>
+  </data>
+  <data name="GpuClocks_Core.Header" xml:space="preserve">
+    <value>Ydin (MHz)</value>
+    <comment>Number box label: the GPU core clock offset, in MHz.</comment>
+  </data>
+  <data name="GpuClocks_Memory.Header" xml:space="preserve">
+    <value>Muisti (MHz)</value>
+    <comment>Number box label: the GPU memory clock offset, in MHz.</comment>
+  </data>
+  <data name="GpuClocks_Footer.Text" xml:space="preserve">
+    <value>Muistin siirtymät lasketaan kaksinkertaisina, kuten MSI Afterburnerissa: +100 nostaa muistin kellotaajuutta 50 MHz.</value>
+    <comment>Note under the GPU overclock rows. MSI Afterburner is a product name.</comment>
+  </data>
+  <data name="GpuClocks_Always" xml:space="preserve">
+    <value>Aina</value>
+    <comment>The only row of GPU offsets on laptops without operating modes: they apply all the time.</comment>
+  </data>
+  <data name="GpuClocks_InUse" xml:space="preserve">
+    <value>Käytössä nyt</value>
+    <comment>Under the operating mode whose GPU offsets apply right now.</comment>
+  </data>
+  <data name="GpuClocks_Firmware" xml:space="preserve">
+    <value>Acerilta: ydin {0} MHz, muisti {1} MHz</value>
+    <comment>Under an operating mode in the GPU overclock section: the firmware's own offsets for that mode. {0} = core offset, {1} = memory offset (signed numbers, e.g. +150).</comment>
+  </data>
+  <data name="GpuClocks_Description" xml:space="preserve">
+    <value>Nostaa GPU:n kellotaajuuksia.</value>
+    <comment>Under "GPU overclock" while no offsets are set in the operating mode in force.</comment>
+  </data>
+  <data name="GpuClocks_WaitingForLimits" xml:space="preserve">
+    <value>GPU:n rajat näkyvät, kun sitä on käytetty.</value>
+    <comment>Under "GPU overclock" until the NVIDIA driver has reported which offsets it accepts (it is only asked while the GPU is on).</comment>
+  </data>
+  <data name="GpuClocks_Pending" xml:space="preserve">
+    <value>Otetaan käyttöön, kun GPU:ta seuraavan kerran käytetään.</value>
+    <comment>Under "GPU overclock" while offsets are set but the GPU is powered down (it is not woken to apply them).</comment>
+  </data>
+  <data name="GpuClocks_Applied" xml:space="preserve">
+    <value>Käytössä: ydin {0} MHz, muisti {1} MHz</value>
+    <comment>Under "GPU overclock": the offsets in force. {0} = core, {1} = memory offset, with their sign (e.g. +150, 0).</comment>
+  </data>
+  <data name="GpuClocks_NotApplied" xml:space="preserve">
+    <value>NVIDIA-ohjain ei ottanut näitä siirtymiä käyttöön.</value>
+    <comment>Under "GPU overclock" when the driver did not take the offsets.</comment>
+  </data>
+  <data name="GpuClocks_Confirm_Title" xml:space="preserve">
+    <value>Ylikellotetaanko GPU?</value>
+    <comment>Dialog title before the first GPU offset is set.</comment>
+  </data>
+  <data name="GpuClocks_Confirm_Message" xml:space="preserve">
+    <value>NVIDIAn omia korkeammat kellotaajuudet voivat kaataa pelejä tai jumittaa tai käynnistää kannettavan uudelleen. Jos niin käy, pienennä siirtymiä.</value>
+    <comment>Dialog text before the first GPU offset is set.</comment>
+  </data>
+  <data name="GpuClocks_Confirm_Overclock" xml:space="preserve">
+    <value>Ylikellota</value>
+    <comment>The dialog's button that goes ahead with the overclock.</comment>
+  </data>
+  <data name="System_Battery.Text" xml:space="preserve">
+    <value>Akku</value>
+    <comment>Section header on the System page.</comment>
+  </data>
+  <data name="System_BatteryHealth.Header" xml:space="preserve">
+    <value>Akun kunto</value>
+  </data>
+  <data name="BatteryHealth_Capacity" xml:space="preserve">
+    <value>{0} % alkuperäisestä kapasiteetista ({1}/{2} Wh)</value>
+    <comment>{0} = percent, {1} = what it holds now, {2} = what it held new (watt-hours).</comment>
+  </data>
+  <data name="BatteryHealth_CapacityRelative" xml:space="preserve">
+    <value>{0} % alkuperäisestä kapasiteetista</value>
+    <comment>{0} = percent. For batteries that don't report watt-hours.</comment>
+  </data>
+  <data name="BatteryHealth_Cycles" xml:space="preserve">
+    <value>Latausjaksoja: {0}</value>
+    <comment>{0} = how many times the battery has been fully charged, as it counts.</comment>
+  </data>
+  <data name="System_ChargeLimit.Header" xml:space="preserve">
+    <value>Lataus enintään 80 %:iin</value>
+  </data>
+  <data name="System_ChargeLimit.Description" xml:space="preserve">
+    <value>Jatkuvasti täysi akku kuluu nopeammin. Kannattaa ottaa käyttöön, jos kannettava on useimmiten verkkovirrassa.</value>
+  </data>
+  <data name="System_Calibration.Header" xml:space="preserve">
+    <value>Akun kalibrointi</value>
+  </data>
+  <data name="System_Calibration.Description" xml:space="preserve">
+    <value>Lataa akun täyteen, purkaa sen ja lataa uudelleen, jotta näytetty varaus pitää paikkansa. Kestää useita tunteja.</value>
+  </data>
+  <data name="System_CalibrationStart.Content" xml:space="preserve">
+    <value>Kalibroi</value>
+  </data>
+  <data name="System_CalibrationStop.Content" xml:space="preserve">
+    <value>Lopeta</value>
+  </data>
+  <data name="System_UsbCharging.Header" xml:space="preserve">
+    <value>USB-laitteiden lataus sammutettuna</value>
+  </data>
+  <data name="System_UsbCharging.Description" xml:space="preserve">
+    <value>USB-portit lataavat puhelimia ja muita laitteita kannettavan ollessa sammutettuna, kunnes akku laskee tässä valittuun tasoon.</value>
+  </data>
+  <data name="UsbCharging_Floor" xml:space="preserve">
+    <value>Kunnes akkua on {0} %</value>
+    <comment>An item of the list next to "Charge USB devices while off": charging stops when the battery falls to {0} percent.</comment>
+  </data>
+  <data name="System_Startup.Text" xml:space="preserve">
+    <value>Käynnistys</value>
+    <comment>Section header on the System page: what the laptop does when it is switched on (boot), not apps that start with Windows.</comment>
+  </data>
+  <data name="System_BootAnimation.Header" xml:space="preserve">
+    <value>Käynnistysanimaatio ja -ääni</value>
+  </data>
+  <data name="System_BootAnimation.Description" xml:space="preserve">
+    <value>Animaatio ja ääni kannettavan käynnistyessä malleissa, joissa ne ovat. Tulee voimaan seuraavalla käynnistyskerralla.</value>
+    <comment>Not every laptop has an animation or a sound, and OpenSense can't tell which do, so the text says so.</comment>
+  </data>
+  <data name="System_BootLogo.Header" xml:space="preserve">
+    <value>Käynnistyslogo</value>
+  </data>
+  <data name="System_BootLogoAcer.Text" xml:space="preserve">
+    <value>Acerin logo</value>
+    <comment>Shown in place of a thumbnail while the firmware shows Acer's own logo.</comment>
+  </data>
+  <data name="System_BootLogoRestore.Content" xml:space="preserve">
+    <value>Käytä Acerin logoa</value>
+    <comment>Button: removes the custom picture so Acer's logo shows again.</comment>
+  </data>
+  <data name="System_BootLogoChoose.Content" xml:space="preserve">
+    <value>Valitse kuva</value>
+  </data>
+  <data name="Calibration_Charging" xml:space="preserve">
+    <value>Kalibroidaan klo {0} alkaen: latautuu, {1} %</value>
+    <comment>Next to the Stop button while the battery calibrates. {0} = when it started (a time), {1} = battery percent.</comment>
+  </data>
+  <data name="Calibration_Discharging" xml:space="preserve">
+    <value>Kalibroidaan klo {0} alkaen: purkautuu, {1} %</value>
+    <comment>Next to the Stop button while the battery calibrates. {0} = when it started (a time), {1} = battery percent.</comment>
+  </data>
+  <data name="Calibration_Running" xml:space="preserve">
+    <value>Kalibroidaan klo {0} alkaen</value>
+    <comment>Next to the Stop button while the battery calibrates and Windows can't tell the battery's charge. {0} = when it started (a time).</comment>
+  </data>
+  <data name="Calibration_Confirm_Title" xml:space="preserve">
+    <value>Kalibroidaanko akku?</value>
+  </data>
+  <data name="Calibration_Confirm_Message" xml:space="preserve">
+    <value>Tämä kestää useita tunteja. Pidä verkkolaite kytkettynä koko ajan: irrottaminen keskeyttää kalibroinnin. Kannettava ei siirry lepotilaan ennen kuin se on valmis, ei edes kansi suljettuna.</value>
+  </data>
+  <data name="Calibration_Confirm_Start" xml:space="preserve">
+    <value>Aloita kalibrointi</value>
+    <comment>The dialog's button that starts the calibration.</comment>
+  </data>
+  <data name="Calibration_NeedsAc" xml:space="preserve">
+    <value>Kytke verkkolaite akun kalibrointia varten.</value>
+  </data>
+  <data name="Calibration_AlreadyRunning" xml:space="preserve">
+    <value>Akkua kalibroidaan jo.</value>
+  </data>
+  <data name="Calibration_Rejected" xml:space="preserve">
+    <value>Laiteohjelmisto hylkäsi akun kalibroinnin.</value>
+  </data>
+  <data name="BootLogo_Description" xml:space="preserve">
+    <value>GIF- tai JPEG-kuva, joka näkyy kannettavan käynnistyessä, enintään {0} × {1} kuvapistettä, 35 Mt ja 24-bittiset värit. GIF-kuvan jokainen ruutu näkyy vähintään 30 ms.</value>
+    <comment>Under "Boot logo". {0} × {1} = the largest width and height, in pixels (40 % of the laptop screen's). 35 MB is Acer's file limit (35,000,000 bytes); the BIOS shows each frame of an animated GIF for 30 ms or longer.</comment>
+  </data>
+  <data name="BootLogo_DescriptionAnySize" xml:space="preserve">
+    <value>GIF- tai JPEG-kuva, joka näkyy kannettavan käynnistyessä, enintään 40 % näytön leveydestä ja korkeudesta, 35 Mt ja 24-bittiset värit. GIF-kuvan jokainen ruutu näkyy vähintään 30 ms.</value>
+    <comment>Under "Boot logo" while the laptop screen's resolution is unknown (e.g. the lid is closed). 35 MB is Acer's file limit (35,000,000 bytes); the BIOS shows each frame of an animated GIF for 30 ms or longer.</comment>
+  </data>
+  <data name="BootLogo_BiosDefaults" xml:space="preserve">
+    <value>BIOSin oletusasetusten lataaminen poistaa kuvan.</value>
+  </data>
+  <data name="BootLogo_Confirm_Title" xml:space="preserve">
+    <value>Käytetäänkö tätä käynnistyslogoa?</value>
+  </data>
+  <data name="BootLogo_Confirm_Message" xml:space="preserve">
+    <value>Se näkyy, kun kannettava käynnistyy seuraavan kerran.</value>
+  </data>
+  <data name="BootLogo_Confirm_MessageWithAnimation" xml:space="preserve">
+    <value>Se näkyy, kun kannettava käynnistyy seuraavan kerran. Käynnistysanimaatio, jossa logo näkyy, otetaan käyttöön.</value>
+    <comment>Used instead of BootLogo_Confirm_Message while the boot animation is off: the firmware shows the logo as part of it.</comment>
+  </data>
+  <data name="BootLogo_Confirm_Use" xml:space="preserve">
+    <value>Käytä kuvaa</value>
+    <comment>The dialog's button that makes the picture the boot logo.</comment>
+  </data>
+  <data name="BootLogo_NotGifOrJpeg" xml:space="preserve">
+    <value>Valitse GIF- tai JPEG-kuva.</value>
+  </data>
+  <data name="BootLogo_FileTooLarge" xml:space="preserve">
+    <value>Kuvatiedosto on suurempi kuin 35 Mt.</value>
+    <comment>Acer's limit is 35,000,000 bytes.</comment>
+  </data>
+  <data name="BootLogo_TooManyPixels" xml:space="preserve">
+    <value>Kuva on {0} × {1} kuvapistettä. Tämän kannettavan käynnistyslogo voi olla enintään {2} × {3} kuvapistettä.</value>
+    <comment>{0} × {1} = the picture's width and height; {2} × {3} = the largest this laptop's boot logo can be.</comment>
+  </data>
+  <data name="BootLogo_ColorDepth" xml:space="preserve">
+    <value>Kuva käyttää 32-bittisiä tai syvempiä värejä. Tallenna se 24-bittisin värein (RGB) ja yritä uudelleen.</value>
+    <comment>The firmware takes pictures with fewer than 32 bits per pixel (e.g. not CMYK JPEGs).</comment>
+  </data>
+  <data name="BootLogo_NotBaseline" xml:space="preserve">
+    <value>BIOS näyttää vain tavallisia (baseline) JPEG-kuvia, eikä Windows pystynyt muuntamaan tätä. Tallenna se tavallisena JPEG-kuvana ja yritä uudelleen.</value>
+  </data>
+  <data name="BootLogo_ScreenUnknown" xml:space="preserve">
+    <value>OpenSense ei pysty lukemaan kannettavan näytön tarkkuutta kuvan koon tarkistamiseksi. Avaa kansi ja yritä uudelleen.</value>
+    <comment>Windows doesn't list the built-in screen, usually because the lid is closed.</comment>
+  </data>
+  <data name="BootLogo_NoSpace" xml:space="preserve">
+    <value>EFI-järjestelmäosiossa ei ole tarpeeksi vapaata tilaa tälle kuvalle.</value>
+  </data>
+  <data name="BootLogo_WriteFailed" xml:space="preserve">
+    <value>Käynnistyslogoa ei voitu tallentaa.</value>
+  </data>
+  <data name="BootLogo_RestoreFailed" xml:space="preserve">
+    <value>Acerin logoa ei voitu palauttaa.</value>
+  </data>
+  <data name="BootLogo_ReadFailed" xml:space="preserve">
+    <value>Kuvaa ei voitu lukea: {0}</value>
+    <comment>{0} = the error from Windows.</comment>
+  </data>
+  <data name="Notice_Battery_Title" xml:space="preserve">
+    <value>Akku</value>
+  </data>
+  <data name="Notice_ChargeLimitRejected" xml:space="preserve">
+    <value>Laiteohjelmisto hylkäsi latausrajan muutoksen.</value>
+  </data>
+  <data name="Notice_UsbChargingRejected" xml:space="preserve">
+    <value>Laiteohjelmisto hylkäsi USB-latauksen muutoksen.</value>
+  </data>
+  <data name="Notice_CalibrationFinished" xml:space="preserve">
+    <value>Akun kalibrointi on valmis.</value>
+  </data>
+  <data name="Notice_CalibrationInterrupted" xml:space="preserve">
+    <value>Akun kalibrointi keskeytyi, koska kannettava siirtyi lepotilaan tai sammutettiin.</value>
+  </data>
+  <data name="Notice_CalibrationStoppedUnplugged" xml:space="preserve">
+    <value>Akun kalibrointi keskeytyi, koska verkkolaite irrotettiin.</value>
+  </data>
+  <data name="Notice_Startup_Title" xml:space="preserve">
+    <value>Käynnistys</value>
+  </data>
+  <data name="Notice_BootAnimationRejected" xml:space="preserve">
+    <value>Laiteohjelmisto hylkäsi käynnistysanimaation muutoksen.</value>
   </data>
   <data name="System_Power.Text" xml:space="preserve">
     <value>Virta</value>
@@ -815,6 +1571,14 @@ GPU: {1}</value>
     <value>Toimintatilat</value>
     <comment>Setting: use Acer's operating modes (Eco, Quiet, Balanced...).</comment>
   </data>
+  <data name="Settings_MagKey.Header" xml:space="preserve">
+    <value>MagForce-näppäinten valot</value>
+    <comment>Setting in "Your laptop": whether the W, A, S and D keys' own lights (Acer's MagForce keys) are offered on the Lighting page.</comment>
+  </data>
+  <data name="Settings_MagKey.Description" xml:space="preserve">
+    <value>Omat valot W-, A-, S- ja D-näppäinten alla, tunnistettu kannettavan mallinimestä. Vaihda, jos se ei pidä paikkaansa omassasi.</value>
+    <comment>Under "MagForce key lights".</comment>
+  </data>
   <data name="Settings_OperatingModes_Supported" xml:space="preserve">
     <value>{0}, kuten Acerin ohjelmisto tarjoaa ne tässä mallissa. {1}</value>
     <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
@@ -1000,5 +1764,9 @@ Lisätietoja: {1}</value>
   <data name="Tray_Exit" xml:space="preserve">
     <value>Lopeta</value>
     <comment>Menu item: quit OpenSense.</comment>
+  </data>
+  <data name="GpuClocks_FollowFirmware.Description" xml:space="preserve">
+    <value>Laiteohjelmiston kullekin tilalle asettama ylikellotus lisättynä alla oleviin siirtymiin.</value>
+    <comment>Under "Acer's overclocking": the firmware's own overclock for each mode is added to the user's offsets set below it.</comment>
   </data>
 </root>

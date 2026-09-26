@@ -43,6 +43,7 @@ public partial class App : Application
 
         _window = Services.GetRequiredService<MainWindow>();
         Services.GetRequiredService<TrayService>().Initialize();
+        Services.GetRequiredService<ToastService>().Initialize();
         _instance.Activated += () => _window.DispatcherQueue.TryEnqueue(ShowMainWindow);
         _instance.ExitRequested += () => _window.DispatcherQueue.TryEnqueue(Quit);
 
@@ -77,6 +78,7 @@ public partial class App : Application
         builder.Services.AddSingleton<DeviceSession>();
         builder.Services.AddSingleton<NotificationService>();
         builder.Services.AddSingleton<TrayService>();
+        builder.Services.AddSingleton<ToastService>();
         builder.Services.AddSingleton<NavigationService>();
         builder.Services.AddSingleton<NitroSenseKey>();
         builder.Services.AddSingleton<OpenShortcut>();
@@ -95,6 +97,9 @@ public partial class App : Application
         builder.Services.AddSingleton<FanControlViewModel>();
         builder.Services.AddSingleton<LightingViewModel>();
         builder.Services.AddSingleton<SystemViewModel>();
+        builder.Services.AddSingleton<BatteryViewModel>();
+        builder.Services.AddSingleton<StartupViewModel>();
+        builder.Services.AddSingleton<GpuClocksViewModel>();
         builder.Services.AddSingleton<SettingsViewModel>();
         builder.Services.AddSingleton<UpdateViewModel>();
 
@@ -137,6 +142,7 @@ public partial class App : Application
         {
             Services.GetRequiredService<NitroSenseKey>().Dispose();
             Services.GetRequiredService<OpenShortcut>().Dispose();
+            Services.GetRequiredService<ToastService>().Dispose();
             Services.GetRequiredService<TrayService>().Dispose();
             Services.GetRequiredService<DeviceSession>().Dispose(); // the service keeps control; a hosted engine hands the fans back
             Services.GetRequiredService<SettingsService>().Dispose();

@@ -6,7 +6,9 @@ using OpenSense.App.Localization;
 using OpenSense.Core.Control;
 using OpenSense.Core.Engine;
 using OpenSense.Core.Hardware;
+using OpenSense.Core.Hardware.Boot;
 using OpenSense.Core.Ipc;
+using OpenSense.Core.Lighting;
 using OpenSense.Core.Settings;
 
 namespace OpenSense.App.Services;
@@ -105,6 +107,9 @@ public sealed partial class DeviceSession : IDisposable
     /// <summary>The keyboard's state when the engine started.</summary>
     public KeyboardState? InitialKeyboard => _snapshot.Keyboard;
 
+    /// <summary>What the lights showed when the engine started, by light.</summary>
+    public IReadOnlyDictionary<string, LightingSettings>? InitialLighting => _snapshot.Lighting;
+
     public TemperatureSources TemperatureSources => _snapshot.TemperatureSources;
 
     /// <summary>The machine settings, including changes this app just made.</summary>
@@ -180,6 +185,44 @@ public sealed partial class DeviceSession : IDisposable
     public Task SetKeyboardAsync(KeyboardSettings keyboard) =>
         ChangeAsync(s => s with { Keyboard = keyboard }, service => service.SetKeyboardAsync(keyboard));
 
+    public Task SetLightingAsync(LightingConfig lighting) =>
+        ChangeAsync(s => s with { Lighting = lighting }, service => service.SetLightingAsync(lighting));
+
+    public Task SetPowerAsync(PowerSettings power) =>
+        ChangeAsync(s => s with { Power = power }, service => service.SetPowerAsync(power));
+
+    public async Task<CalibrationResult> StartBatteryCalibrationAsync()
+    {
+        if (_service is not { } service)
+            return CalibrationResult.Rejected;
+        try
+        {
+            return await service.StartBatteryCalibrationAsync().ConfigureAwait(false);
+        }
+        catch (Exception ex) when (IsCallFailure(ex))
+        {
+            LogCallFailed(ex);
+            return CalibrationResult.Rejected;
+        }
+    }
+
+    public async Task StopBatteryCalibrationAsync()
+    {
+        if (_service is not { } service)
+            return;
+        try
+        {
+            await service.StopBatteryCalibrationAsync().ConfigureAwait(false);
+        }
+        catch (Exception ex) when (IsCallFailure(ex))
+        {
+            LogCallFailed(ex);
+        }
+    }
+
+    /// <summary>How worn the battery is; null without one, or when the engine can't be reached.</summary>
+    public Task<BatteryHealth?> ReadBatteryHealthAsync() => CallAsync(service => service.ReadBatteryHealthAsync(), null);
+
     /// <summary>Rebuilds the session with new overrides; <see cref="Changed"/> follows with <see cref="SessionChange.Rebuilt"/>.</summary>
     public Task SetOverridesAsync(CapabilityOverrides overrides) =>
         ChangeAsync(s => s with { Overrides = overrides }, service => service.SetOverridesAsync(overrides));
@@ -203,6 +246,60 @@ public sealed partial class DeviceSession : IDisposable
             LogCallFailed(ex);
             return false;
         }
+    }
+
+    public async Task<bool> SetBootAnimationAsync(bool enabled)
+    {
+        var ok = await CallAsync(service => service.SetBootAnimationAsync(enabled), false).ConfigureAwait(false);
+        if (ok)
+        {
+            lock (_gate)
+                _snapshot = _snapshot with { Firmware = _snapshot.Firmware is { } f ? f with { BootAnimation = enabled } : null };
+        }
+        return ok;
+    }
+
+    public Task<BootLogoState> GetBootLogoAsync() => CallAsync(service => service.GetBootLogoAsync(), BootLogoState.None);
+
+    public Task<BootLogoResult> SetBootLogoAsync(byte[] image) =>
+        CallAsync(service => service.SetBootLogoAsync(image), BootLogoResult.WriteFailed);
+
+    public Task<bool> RestoreBootLogoAsync() => CallAsync(service => service.RestoreBootLogoAsync(), false);
+
+    public Task<DustDefenderStart> StartDustDefenderAsync() =>
+        CallAsync(service => service.StartDustDefenderAsync(), DustDefenderStart.Failed);
+
+    /// <summary>Asks the engine; <paramref name="fallback"/> when it can't be reached.</summary>
+    private async Task<T> CallAsync<T>(Func<IOpenSenseService, Task<T>> call, T fallback)
+    {
+        if (_service is not { } service)
+            return fallback;
+        try
+        {
+            return await call(service).ConfigureAwait(false);
+        }
+        catch (Exception ex) when (IsCallFailure(ex))
+        {
+            LogCallFailed(ex);
+            return fallback;
+        }
+    }
+
+    /// <summary>The engine's diagnostics (probe answers, recent firmware events); what detection found if it can't be asked.</summary>
+    public async Task<string> GetDiagnosticsAsync()
+    {
+        if (_service is { } service)
+        {
+            try
+            {
+                return await service.GetDiagnosticsAsync().ConfigureAwait(false);
+            }
+            catch (Exception ex) when (IsCallFailure(ex))
+            {
+                LogCallFailed(ex);
+            }
+        }
+        return Detected.Diagnostics;
     }
 
     private async Task ChangeAsync(Func<MachineSettings, MachineSettings> change, Func<IOpenSenseService, Task> send)
@@ -236,7 +333,9 @@ public sealed partial class DeviceSession : IDisposable
 
     private void OnPowerModeChanged(object? sender, PowerModeChangedEventArgs e)
     {
-        if (e.Mode == PowerModes.Resume)
+        if (e.Mode == PowerModes.Suspend)
+            _engine?.NotifySuspend();
+        else if (e.Mode == PowerModes.Resume)
             _engine?.NotifyResume();
         else if (e.Mode == PowerModes.StatusChange)
             _engine?.NotifyPowerSourceChanged();

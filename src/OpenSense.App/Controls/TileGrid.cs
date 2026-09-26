@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Specialized;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Windows.Foundation;
@@ -7,10 +9,40 @@ namespace OpenSense.App.Controls;
 /// <summary>
 /// Lays visible children out in equal columns that always span the full width. It picks the column
 /// count the children fill (four tiles become 4 or 2 × 2, never 3 + 1; two fans take half each),
-/// and stretches every child in a row to that row's tallest.
+/// and stretches every child in a row to that row's tallest. Besides the children written out, it can
+/// add a tile per item of <see cref="ItemsSource"/>, made with <see cref="ItemTemplate"/>.
 /// </summary>
 public sealed partial class TileGrid : Panel
 {
+    public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(
+        nameof(ItemsSource), typeof(object), typeof(TileGrid), new PropertyMetadata(null, (d, e) => ((TileGrid)d).OnItemsSourceChanged(e.OldValue)));
+
+    public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
+        nameof(ItemTemplate), typeof(DataTemplate), typeof(TileGrid), new PropertyMetadata(null, (d, _) => ((TileGrid)d).Generate()));
+
+    private readonly List<UIElement> _generated = [];
+    private bool _listening;
+
+    public TileGrid()
+    {
+        // The items usually outlive the page: listen only while on screen.
+        Loaded += (_, _) => Listen(true);
+        Unloaded += (_, _) => Listen(false);
+    }
+
+    /// <summary>Items that each get a tile after the written-out children; follows changes to the collection.</summary>
+    public object? ItemsSource
+    {
+        get => GetValue(ItemsSourceProperty);
+        set => SetValue(ItemsSourceProperty, value);
+    }
+
+    public DataTemplate? ItemTemplate
+    {
+        get => (DataTemplate?)GetValue(ItemTemplateProperty);
+        set => SetValue(ItemTemplateProperty, value);
+    }
+
     public static readonly DependencyProperty MinColumnWidthProperty = DependencyProperty.Register(
         nameof(MinColumnWidth), typeof(double), typeof(TileGrid), new PropertyMetadata(220.0, (d, _) => ((TileGrid)d).InvalidateMeasure()));
 
@@ -76,13 +108,62 @@ public sealed partial class TileGrid : Panel
 
     private List<UIElement> Visible() => Children.Where(c => c.Visibility == Visibility.Visible).ToList();
 
-    /// <summary>As many columns as fit, reduced until the last row wastes the fewest cells.</summary>
+    private void OnItemsSourceChanged(object? old)
+    {
+        if (_listening && old is INotifyCollectionChanged observable)
+            observable.CollectionChanged -= OnItemsChanged;
+        _listening = false;
+        if (IsLoaded)
+            Listen(true);
+        Generate();
+    }
+
+    private void Listen(bool on)
+    {
+        if (on == _listening)
+            return;
+        if (ItemsSource is INotifyCollectionChanged observable)
+        {
+            if (on)
+                observable.CollectionChanged += OnItemsChanged;
+            else
+                observable.CollectionChanged -= OnItemsChanged;
+            _listening = on;
+        }
+        if (on)
+            Generate(); // it may have changed while off screen
+    }
+
+    private void OnItemsChanged(object? sender, NotifyCollectionChangedEventArgs e) => Generate();
+
+    /// <summary>Makes the item tiles again, after the written-out children.</summary>
+    private void Generate()
+    {
+        foreach (var tile in _generated)
+            Children.Remove(tile);
+        _generated.Clear();
+        if (ItemTemplate is not { } template || ItemsSource is not IEnumerable items)
+            return;
+        foreach (var item in items)
+        {
+            if (template.LoadContent() is not FrameworkElement tile)
+                continue;
+            tile.DataContext = item;
+            _generated.Add(tile);
+            Children.Add(tile);
+        }
+    }
+
+    /// <summary>
+    /// As many columns as fit, reduced (to no fewer than half) until the last row wastes the fewest cells: five tiles
+    /// in four columns' room become 3 + 2, not a single column.
+    /// </summary>
     private int Columns(double width, int count)
     {
         var fit = double.IsInfinity(width) ? count : (int)Math.Floor((width + Spacing) / (MinColumnWidth + Spacing));
         var most = Math.Clamp(Math.Min(fit, MaxColumns), 1, count);
         var best = most;
-        for (var columns = most; columns >= 1; columns--)
+        for (var columns = most; columns >= (most + 1) / 2; columns--)
         {
             if (EmptyCells(count, columns) < EmptyCells(count, best))
                 best = columns;
