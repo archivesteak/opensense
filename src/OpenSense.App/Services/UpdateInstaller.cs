@@ -89,38 +89,15 @@ public static class UpdateInstaller
 
         var source = AppDirectory;
         var backup = Path.Combine(DownloadDirectory, "backup-" + DateTime.Now.ToString("yyyyMMdd-HHmmss", System.Globalization.CultureInfo.InvariantCulture));
-        var replaced = new List<string>();
-        var added = new List<string>();
         log($"Updating {target} from {source}");
         try
         {
-            foreach (var file in Directory.EnumerateFiles(source, "*", SearchOption.AllDirectories))
-            {
-                var relative = Path.GetRelativePath(source, file);
-                var destination = Path.Combine(target, relative);
-                Directory.CreateDirectory(Path.GetDirectoryName(destination)!);
-                if (File.Exists(destination))
-                {
-                    var saved = Path.Combine(backup, relative);
-                    Directory.CreateDirectory(Path.GetDirectoryName(saved)!);
-                    File.Copy(destination, saved, overwrite: true);
-                    replaced.Add(relative);
-                }
-                else
-                {
-                    added.Add(relative);
-                }
-                File.Copy(file, destination, overwrite: true);
-            }
-            log($"Replaced {replaced.Count} files, added {added.Count}");
+            var (replaced, added) = PortableUpdate.CopyOver(source, target, backup);
+            log($"Replaced {replaced} files, added {added}");
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
-            log($"Update failed, restoring the previous version: {ex}");
-            foreach (var relative in replaced)
-                File.Copy(Path.Combine(backup, relative), Path.Combine(target, relative), overwrite: true);
-            foreach (var relative in added)
-                File.Delete(Path.Combine(target, relative));
+            log($"Update failed, the previous version is back: {ex}");
             throw;
         }
         finally

@@ -1,0 +1,161 @@
+{
+  "Version": 2,
+  "Profile": {
+    "Mode": "Custom",
+    "AutoBoost": false,
+    "Manual": {
+      "Cpu": {
+        "Percent": 40,
+        "UseCurve": true
+      },
+      "Gpu": {
+        "Percent": 20,
+        "UseCurve": false
+      },
+      "Gpu2": {
+        "Percent": 70,
+        "UseCurve": false
+      }
+    },
+    "Curves": {
+      "Cpu": {
+        "Curve": {
+          "Points": [
+            {
+              "Temperature": 35,
+              "Percent": 10
+            },
+            {
+              "Temperature": 70,
+              "Percent": 60
+            },
+            {
+              "Temperature": 90,
+              "Percent": 100
+            }
+          ]
+        }
+      },
+      "Gpu": {
+        "Curve": {
+          "Points": [
+            {
+              "Temperature": 40,
+              "Percent": 0
+            },
+            {
+              "Temperature": 80,
+              "Percent": 80
+            }
+          ]
+        }
+      }
+    },
+    "CoolBoost": true,
+    "FanTable": "Fastest",
+    "OperatingMode": "Performance",
+    "BatteryOperatingMode": "Eco",
+    "ModeKey": "TurboToggle",
+    "TurboReturnMode": "Quiet",
+    "GpuClocks": {
+      "Modes": {
+        "Performance": {
+          "CoreMhz": 100,
+          "MemoryMhz": 200
+        },
+        "Turbo": {
+          "CoreMhz": 150,
+          "MemoryMhz": 400
+        }
+      },
+      "Fixed": {
+        "CoreMhz": 50,
+        "MemoryMhz": 100
+      },
+      "FollowFirmware": false
+    },
+    "Safety": {
+      "RestoreAutoOnExit": false
+    }
+  },
+  "Keyboard": {
+    "BacklightAutoOff": false,
+    "WindowsKey": false,
+    "LcdOverdrive": true
+  },
+  "Lighting": {
+    "Devices": {
+      "Keyboard": {
+        "Effect": "PerKey",
+        "Brightness": 75,
+        "Speed": 7,
+        "Direction": "Up",
+        "EffectColor": "#00FF88",
+        "RandomColor": true,
+        "Zones": [
+          {
+            "On": true,
+            "Color": "#102030"
+          },
+          {
+            "On": false,
+            "Color": "#FFFFFF"
+          },
+          {
+            "On": true,
+            "Color": "#00FF00"
+          },
+          {
+            "On": true,
+            "Color": "#0000FF"
+          }
+        ],
+        "KeyColors": {
+          "KeyW": "#FF0000",
+          "Space": "#0000FF"
+        },
+        "Layout": "Iso"
+      },
+      "LightBar": {
+        "Effect": "Wave",
+        "Brightness": 100,
+        "Speed": 3,
+        "Direction": "Down",
+        "EffectColor": "#FF3B30",
+        "RandomColor": false,
+        "Zones": [
+          {
+            "On": true,
+            "Color": "#FF3B30"
+          },
+          {
+            "On": true,
+            "Color": "#FF3B30"
+          },
+          {
+            "On": true,
+            "Color": "#FF3B30"
+          },
+          {
+            "On": true,
+            "Color": "#FF3B30"
+          }
+        ],
+        "KeyColors": {}
+      }
+    }
+  },
+  "Power": {
+    "ChargeLimit": true,
+    "UsbCharging": {
+      "On": true,
+      "Floor": 30
+    }
+  },
+  "Overrides": {
+    "CoolBoost": false,
+    "OperatingModes": true,
+    "GpuModeSwitch": false,
+    "MagKey": true
+  }
+}

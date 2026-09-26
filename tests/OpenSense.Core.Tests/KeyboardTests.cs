@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Time.Testing;
 using OpenSense.Core.Control;
 using OpenSense.Core.Hardware;
 
@@ -141,12 +142,33 @@ public class SmbiosTests
 
 public class KeyboardServiceTests
 {
-    private static (KeyboardService Service, SimulatedTransport Laptop) Create()
+    private static (KeyboardService Service, SimulatedTransport Laptop) Create(TimeProvider? time = null)
     {
         var laptop = new SimulatedTransport(SimulatedModel.Nitro2021);
         var device = new AcerDevice(laptop);
         var caps = new KeyboardCapabilities { RgbBacklight = true, Zones = 4, BacklightHotkey = 0x84, WindowsKey = true, LcdOverdrive = true };
-        return (new KeyboardService(new ImmediateDispatcher(device), caps), laptop);
+        return (new KeyboardService(new ImmediateDispatcher(device), caps, time: time), laptop);
+    }
+
+    [Fact]
+    public async Task After_a_sleep_the_settings_go_out_again_once_Acers_agent_has_restored_its_own()
+    {
+        var time = new FakeTimeProvider();
+        var (service, laptop) = Create(time);
+        await service.ApplyAsync(new KeyboardSettings { WindowsKey = false, LcdOverdrive = true });
+
+        var resumed = service.OnResume();
+        var acersAgent = new AcerDevice(laptop);
+        acersAgent.SetWindowsKeyEnabled(true);
+        acersAgent.SetLcdOverdrive(false);
+        time.Advance(TimeSpan.FromSeconds(5));
+        Assert.False(resumed.IsCompleted); // not while the agent may still overwrite them
+
+        time.Advance(TimeSpan.FromSeconds(1));
+        await resumed;
+        var state = await service.ReadStateAsync();
+        Assert.False(state.WindowsKey);
+        Assert.True(state.LcdOverdrive);
     }
 
     [Fact]

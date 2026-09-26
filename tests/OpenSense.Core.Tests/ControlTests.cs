@@ -110,6 +110,62 @@ public class FanControlServiceTests
     }
 
     [Fact]
+    public void After_a_sleep_the_fans_are_set_again_once_Acers_agent_has_had_its_turn()
+    {
+        var now = new DateTime(2026, 9, 26, 12, 0, 0, DateTimeKind.Utc);
+        var (service, fw, _) = Create(new ControlProfile { Mode = FanControlMode.Max }, clock: () => now);
+        service.Tick();
+
+        service.OnResume();
+        fw.Behavior[0] = fw.Behavior[3] = FanBehavior.Auto; // Acer's agent restores its own state on wake-up
+        service.Tick();
+        Assert.Equal(FanBehavior.Auto, fw.Behavior[0]); // not while the agent may still overwrite it
+
+        now += TimeSpan.FromSeconds(4);
+        service.Tick();
+        Assert.Equal(FanBehavior.Max, fw.Behavior[0]);
+        Assert.Equal(FanBehavior.Max, fw.Behavior[3]);
+
+        fw.Behavior[0] = FanBehavior.Auto; // an agent that came late
+        now += TimeSpan.FromSeconds(8);
+        service.Tick();
+        Assert.Equal(FanBehavior.Max, fw.Behavior[0]);
+    }
+
+    [Fact]
+    public void Losing_access_to_the_firmware_is_reported_and_the_loop_carries_on() =>
+        AssertTheLoopOutlives(new AcerWmiAccessDeniedException(), NoticeKind.FirmwareAccessDenied);
+
+    [Fact]
+    public void An_unexpected_error_is_reported_and_the_loop_carries_on() =>
+        AssertTheLoopOutlives(new InvalidOperationException("an answer the loop can't use"), NoticeKind.ControlLoopError);
+
+    /// <summary>The running loop meets <paramref name="failure"/> at every step, then the firmware answers again.</summary>
+    private static void AssertTheLoopOutlives(Exception failure, NoticeKind reported)
+    {
+        var (service, fw, _) = Create(new ControlProfile { Mode = FanControlMode.Max });
+        using (service)
+        {
+            using var noticed = new ManualResetEventSlim();
+            ControlNotice? first = null;
+            service.Notice += n =>
+            {
+                first ??= n;
+                noticed.Set();
+            };
+            fw.Fault = failure;
+
+            service.Start();
+            Assert.True(noticed.Wait(TimeSpan.FromSeconds(10)));
+            Assert.Equal(reported, first!.Kind);
+
+            fw.Fault = null;
+            service.ReapplyAfter(TimeSpan.Zero); // wakes the loop now instead of at its next step
+            Assert.True(SpinWait.SpinUntil(() => fw.Behavior[0] == FanBehavior.Max, TimeSpan.FromSeconds(10)));
+        }
+    }
+
+    [Fact]
     public void Missing_cpu_temperature_hands_fans_back_to_auto()
     {
         var (service, fw, _) = Create(new ControlProfile { Mode = FanControlMode.Custom });

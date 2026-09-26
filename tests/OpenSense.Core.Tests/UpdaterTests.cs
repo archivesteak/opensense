@@ -93,6 +93,20 @@ public sealed class UpdaterTests : IDisposable
     }
 
     [Fact]
+    public async Task A_download_github_published_no_digest_for_is_refused()
+    {
+        var asset = new ReleaseAsset("unpublished", new Uri("https://github.com/download/unpublished"),
+            new Uri("https://api.github.com/assets/unpublished"), SetupBytes.Length, Digest: null);
+        var path = Path.Combine(_directory, "setup.exe");
+
+        var refused = await Assert.ThrowsAsync<UpdateVerificationException>(() =>
+            Updater(null).DownloadAsync(asset, path, cancellationToken: TestContext.Current.CancellationToken));
+
+        Assert.Equal(VerificationFailure.NoDigest, refused.Failure);
+        Assert.False(File.Exists(path));
+    }
+
+    [Fact]
     public async Task Missing_digest_is_fetched_from_the_asset()
     {
         var updater = Updater(Release("v0.2.0", setupDigest: null));
@@ -121,7 +135,7 @@ public sealed class UpdaterTests : IDisposable
         }
         """;
 
-    /// <summary>Answers the three URLs the updater uses; 404 for a repository without releases.</summary>
+    /// <summary>Answers the URLs the updater uses (and an asset without a digest); 404 for a repository without releases.</summary>
     private sealed class FakeGitHub(string? releaseJson) : HttpMessageHandler
     {
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -133,6 +147,8 @@ public sealed class UpdaterTests : IDisposable
                 _ when url.EndsWith("/releases/latest", StringComparison.Ordinal) => Json(releaseJson!),
                 "https://api.github.com/assets/setup" => Json($$"""{ "name": "setup", "url": "{{url}}", "browser_download_url": "https://github.com/download/setup", "size": 1, "digest": "{{SetupDigest}}" }"""),
                 "https://github.com/download/setup" => new(HttpStatusCode.OK) { Content = new ByteArrayContent(SetupBytes) },
+                "https://api.github.com/assets/unpublished" => Json($$"""{ "name": "unpublished", "url": "{{url}}", "browser_download_url": "https://github.com/download/unpublished", "size": 1 }"""),
+                "https://github.com/download/unpublished" => new(HttpStatusCode.OK) { Content = new ByteArrayContent(SetupBytes) },
                 _ => new(HttpStatusCode.NotFound),
             };
             return Task.FromResult(response);
@@ -147,6 +163,66 @@ public sealed class UpdaterTests : IDisposable
     {
         public void Report(double value) => report(value);
     }
+
+    public void Dispose()
+    {
+        if (Directory.Exists(_directory))
+            Directory.Delete(_directory, recursive: true);
+    }
+}
+
+/// <summary>A portable copy updates itself by copying the new version's files over its own folder.</summary>
+public sealed class PortableUpdateTests : IDisposable
+{
+    private readonly string _directory = Path.Combine(Path.GetTempPath(), "OpenSense.Tests", Guid.NewGuid().ToString("N"));
+
+    public PortableUpdateTests()
+    {
+        Write(Installed, "OpenSense.exe", "old app");
+        Write(Installed, "OpenSense.Core.dll", "old core");
+        Write(Installed, @"logs\opensense.log", "the user's log");
+        Write(Unpacked, "OpenSense.exe", "new app");
+        Write(Unpacked, "OpenSense.Core.dll", "new core");
+        Write(Unpacked, "OpenSense.Lighting.dll", "new lighting");
+    }
+
+    private string Installed => Path.Combine(_directory, "OpenSense");
+    private string Unpacked => Path.Combine(_directory, "update");
+    private string Backup => Path.Combine(_directory, "backup");
+
+    [Fact]
+    public void The_new_version_replaces_the_old_and_keeps_what_it_replaced()
+    {
+        Assert.Equal((Replaced: 2, Added: 1), PortableUpdate.CopyOver(Unpacked, Installed, Backup));
+
+        Assert.Equal("new app", Read(Installed, "OpenSense.exe"));
+        Assert.Equal("new lighting", Read(Installed, "OpenSense.Lighting.dll"));
+        Assert.Equal("the user's log", Read(Installed, @"logs\opensense.log"));
+        Assert.Equal("old core", Read(Backup, "OpenSense.Core.dll"));
+    }
+
+    [Fact]
+    public void A_file_still_in_use_puts_the_old_version_back()
+    {
+        Write(Installed, "Zeta.dll", "old zeta");
+        Write(Unpacked, "Zeta.dll", "new zeta"); // copied after the others
+        using (File.Open(Path.Combine(Installed, "Zeta.dll"), FileMode.Open, FileAccess.Read, FileShare.Read))
+            Assert.ThrowsAny<IOException>(() => PortableUpdate.CopyOver(Unpacked, Installed, Backup));
+
+        Assert.Equal("old app", Read(Installed, "OpenSense.exe"));
+        Assert.Equal("old core", Read(Installed, "OpenSense.Core.dll"));
+        Assert.Equal("old zeta", Read(Installed, "Zeta.dll"));
+        Assert.False(File.Exists(Path.Combine(Installed, "OpenSense.Lighting.dll")));
+    }
+
+    private static void Write(string folder, string file, string text)
+    {
+        var path = Path.Combine(folder, file);
+        Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+        File.WriteAllText(path, text);
+    }
+
+    private static string Read(string folder, string file) => File.ReadAllText(Path.Combine(folder, file));
 
     public void Dispose()
     {

@@ -8,13 +8,14 @@ namespace OpenSense.Core.Control;
 /// and everything again after resume (Acer's agent restores its own lighting when the machine wakes, and USB lights
 /// lose theirs in sleep).
 /// </summary>
-public sealed class LightingService(IReadOnlyList<ILightingBackend> backends)
+public sealed class LightingService(IReadOnlyList<ILightingBackend> backends, TimeProvider? time = null)
 {
     private static readonly TimeSpan ResumeDelay = TimeSpan.FromSeconds(6);
 
     /// <summary>Acer's lighting service sends one light no more often than this.</summary>
     private static readonly TimeSpan MinInterval = TimeSpan.FromMilliseconds(150);
 
+    private readonly TimeProvider _time = time ?? TimeProvider.System;
     private readonly object _gate = new();
     private LightingConfig? _pending;
     private bool _forget;
@@ -69,7 +70,8 @@ public sealed class LightingService(IReadOnlyList<ILightingBackend> backends)
     }
 
     /// <summary>The machine woke up: send ours again after Acer's agent has restored its own.</summary>
-    public void OnResume() => _ = Task.Delay(ResumeDelay).ContinueWith(_ => ReapplyAsync(), TaskScheduler.Default).Unwrap();
+    /// <returns>Done once they are sent (the engine doesn't wait).</returns>
+    public Task OnResume() => Task.Delay(ResumeDelay, _time).ContinueWith(_ => ReapplyAsync(), TaskScheduler.Default).Unwrap();
 
     private async Task PumpAsync()
     {

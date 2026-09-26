@@ -1,3 +1,6 @@
+using System.Globalization;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using OpenSense.Core.Control;
 using OpenSense.Core.Hardware;
 using OpenSense.Core.Lighting;
@@ -149,6 +152,82 @@ public sealed class SettingsTests : IDisposable
 
         Assert.Equal(FanControlMode.Auto, loaded.Profile.Mode);
         Assert.True(File.Exists(SettingsPath + ".bad"));
+    }
+
+    public void Dispose()
+    {
+        if (Directory.Exists(_directory))
+            Directory.Delete(_directory, recursive: true);
+    }
+}
+
+/// <summary>
+/// Settings files written by released versions (<c>Fixtures/Settings/&lt;version&gt;</c>, written by that version with every
+/// member changed from its default) load in this one without losing a value. A release that changes the settings adds
+/// its own folder.
+/// </summary>
+public sealed class ReleasedSettingsTests : IDisposable
+{
+    private static readonly string Fixtures = Path.Combine(SourceTree.Tests, "Fixtures", "Settings");
+
+    /// <summary>Where today's settings keep what a release kept elsewhere: (release, path then, path now).</summary>
+    private static readonly (string Release, string Then, string Now)[] Moved =
+    [
+        ("0.2.0", "Keyboard.Lighting", "Lighting.Devices.Keyboard"), // settings version 2 keeps lighting per light
+    ];
+
+    private readonly string _directory = Path.Combine(Path.GetTempPath(), "OpenSense.Tests", Guid.NewGuid().ToString("N"));
+
+    public static TheoryData<string, string> Files => new(Directory.GetDirectories(Fixtures)
+        .SelectMany(release => Directory.GetFiles(release).Select(file => (Path.GetFileName(release), Path.GetFileName(file)))));
+
+    [Theory, MemberData(nameof(Files))]
+    public void A_file_a_release_wrote_loads_with_every_value(string release, string file)
+    {
+        Directory.CreateDirectory(_directory);
+        var path = Path.Combine(_directory, file);
+        File.Copy(Path.Combine(Fixtures, release, file), path);
+
+        object loaded = file switch
+        {
+            "settings.json" => new SettingsStore<MachineSettings>(path).Load().Upgrade(),
+            "user.json" => new SettingsStore<UserSettings>(path).Load(),
+            "state.json" => new SettingsStore<RuntimeState>(path).Load(),
+            _ => throw new InvalidDataException($"{file} is no settings file"),
+        };
+
+        Assert.False(File.Exists(path + ".bad"), "The file was taken for a corrupt one.");
+        var now = Values(JsonSerializer.SerializeToNode(loaded, loaded.GetType(), SettingsJson.Options));
+        var lost = new List<string>();
+        foreach (var (at, value) in Values(JsonNode.Parse(File.ReadAllText(path))).Where(v => v.Key != "Version")) // Upgrade raises it
+        {
+            var place = Moved.Where(m => m.Release == release && at.StartsWith(m.Then + ".", StringComparison.Ordinal))
+                .Select(m => m.Now + at[m.Then.Length..]).FirstOrDefault() ?? at;
+            if (now.GetValueOrDefault(place) != value)
+                lost.Add($"{at} = {value}, read as {now.GetValueOrDefault(place) ?? "nothing"}");
+        }
+        Assert.Empty(lost);
+    }
+
+    /// <summary>Every value in <paramref name="node"/> by its path (list items by their index).</summary>
+    private static Dictionary<string, string> Values(JsonNode? node, string path = "", Dictionary<string, string>? values = null)
+    {
+        values ??= new(StringComparer.Ordinal);
+        switch (node)
+        {
+            case JsonObject members:
+                foreach (var (name, child) in members)
+                    Values(child, path.Length == 0 ? name : $"{path}.{name}", values);
+                break;
+            case JsonArray items:
+                for (var i = 0; i < items.Count; i++)
+                    Values(items[i], $"{path}.{i.ToString(CultureInfo.InvariantCulture)}", values);
+                break;
+            default:
+                values[path] = node?.ToJsonString() ?? "null";
+                break;
+        }
+        return values;
     }
 
     public void Dispose()

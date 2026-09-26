@@ -72,7 +72,8 @@ public sealed partial class PipeServer(IOpenSenseService engine, ILogger<PipeSer
         }
     }
 
-    private static PipeSecurity Security()
+    /// <summary>Owned by LocalSystem; signed-in users may talk over it (but not add instances or change it); no network access.</summary>
+    internal static PipeSecurity Security()
     {
         var security = new PipeSecurity();
         security.SetOwner(new SecurityIdentifier(WellKnownSidType.LocalSystemSid, null)); // what clients check

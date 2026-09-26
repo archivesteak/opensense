@@ -21,6 +21,7 @@ public sealed class KeyboardService
     private readonly IDeviceDispatcher _dispatcher;
     private readonly KeyboardCapabilities _caps;
     private readonly UsbKeyboardDevice? _usb;
+    private readonly TimeProvider _time;
     private readonly object _gate = new();
 
     private KeyboardSettings? _pending;
@@ -31,11 +32,13 @@ public sealed class KeyboardService
     private bool? _appliedAutoOff, _appliedWindowsKey, _appliedOverdrive;
 
     /// <param name="usb">A USB keyboard that keeps the Windows key or auto-off itself (<see cref="KeyboardCapabilities.UsbWindowsKey"/>).</param>
-    public KeyboardService(IDeviceDispatcher dispatcher, KeyboardCapabilities capabilities, UsbKeyboardDevice? usb = null)
+    public KeyboardService(IDeviceDispatcher dispatcher, KeyboardCapabilities capabilities, UsbKeyboardDevice? usb = null,
+        TimeProvider? time = null)
     {
         _dispatcher = dispatcher;
         _caps = capabilities;
         _usb = usb;
+        _time = time ?? TimeProvider.System;
     }
 
     public KeyboardSettings Current { get; private set; } = new();
@@ -135,5 +138,6 @@ public sealed class KeyboardService
     }
 
     /// <summary>The machine woke up: Acer's agent restores its own settings, so send ours again after it.</summary>
-    public void OnResume() => _ = Task.Delay(ResumeDelay).ContinueWith(_ => ReapplyAsync(), TaskScheduler.Default).Unwrap();
+    /// <returns>Done once they are sent (the engine doesn't wait).</returns>
+    public Task OnResume() => Task.Delay(ResumeDelay, _time).ContinueWith(_ => ReapplyAsync(), TaskScheduler.Default).Unwrap();
 }

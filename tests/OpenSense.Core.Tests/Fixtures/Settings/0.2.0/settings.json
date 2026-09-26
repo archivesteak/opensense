@@ -1,0 +1,91 @@
+{
+  "Version": 1,
+  "Profile": {
+    "Mode": "Custom",
+    "AutoBoost": false,
+    "Manual": {
+      "Cpu": {
+        "Percent": 40,
+        "UseCurve": true
+      },
+      "Gpu": {
+        "Percent": 20,
+        "UseCurve": false
+      }
+    },
+    "Curves": {
+      "Cpu": {
+        "Curve": {
+          "Points": [
+            {
+              "Temperature": 35,
+              "Percent": 10
+            },
+            {
+              "Temperature": 70,
+              "Percent": 60
+            },
+            {
+              "Temperature": 90,
+              "Percent": 100
+            }
+          ]
+        }
+      },
+      "Gpu": {
+        "Curve": {
+          "Points": [
+            {
+              "Temperature": 40,
+              "Percent": 0
+            },
+            {
+              "Temperature": 80,
+              "Percent": 80
+            }
+          ]
+        }
+      }
+    },
+    "CoolBoost": true,
+    "OperatingMode": "Performance",
+    "Safety": {
+      "RestoreAutoOnExit": false
+    }
+  },
+  "Keyboard": {
+    "Lighting": {
+      "Effect": "Wave",
+      "Brightness": 75,
+      "Speed": 7,
+      "Direction": "Left",
+      "EffectColor": "#00FF88",
+      "Zones": [
+        {
+          "On": true,
+          "Color": "#102030"
+        },
+        {
+          "On": false,
+          "Color": "#FFFFFF"
+        },
+        {
+          "On": true,
+          "Color": "#00FF00"
+        },
+        {
+          "On": true,
+          "Color": "#0000FF"
+        }
+      ]
+    },
+    "BacklightAutoOff": false,
+    "WindowsKey": false,
+    "LcdOverdrive": true
+  },
+  "Overrides": {
+    "CoolBoost": false,
+    "OperatingModes": true,
+    "GpuModeSwitch": false
+  }
+}

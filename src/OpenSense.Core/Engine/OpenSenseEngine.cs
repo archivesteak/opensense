@@ -136,9 +136,9 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
     public void NotifyResume()
     {
         _controller?.OnResume();
-        _keyboard?.OnResume();
-        _lighting?.OnResume();
-        _powerService?.OnResume();
+        _ = _keyboard?.OnResume();
+        _ = _lighting?.OnResume();
+        _ = _powerService?.OnResume();
     }
 
     /// <summary>AC power was connected or removed.</summary>

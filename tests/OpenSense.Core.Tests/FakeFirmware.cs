@@ -22,6 +22,9 @@ internal sealed class FakeFirmware : IWmiTransport
     public bool SupportsCoolBoost { get; set; }
     public bool RejectEverything { get; set; }
 
+    /// <summary>Thrown by every integer call while set, as the transport throws when WMI fails.</summary>
+    public Exception? Fault { get; set; }
+
     /// <summary>The supported-sensor bitmap (bits 24+), the AN515-57's by default: CPU and GPU fans only.</summary>
     public ulong SensorMask { get; set; } = 0x227UL << 24;
 
@@ -108,6 +111,8 @@ internal sealed class FakeFirmware : IWmiTransport
 
     public ulong Invoke(string className, string method, ulong input)
     {
+        if (Fault is { } fault)
+            throw fault;
         Calls.Add((method, input));
         if (RejectEverything && method.StartsWith("Set", StringComparison.Ordinal))
             return 1;

@@ -1,0 +1,28 @@
+{
+  "Calibration": {
+    "StartedUtc": "2026-09-26T09:00:00Z",
+    "ChargeLimitBefore": true,
+    "PowerScheme": {
+      "Scheme": "381b4222-f694-41f0-9685-ff5bb260df2e",
+      "Values": [
+        {
+          "Subgroup": "4f971e89-eebd-4455-a8de-9e59040e7347",
+          "Setting": "5ca83367-6e45-459f-a27b-476b1d01c936",
+          "Ac": 1,
+          "Dc": 0
+        }
+      ]
+    }
+  },
+  "GpuClocks": {
+    "Device": "PCI\\VEN_10DE\u0026DEV_24DD",
+    "Driver": "581.29",
+    "Limits": {
+      "CoreMin": -1000,
+      "CoreMax": 1000,
+      "MemoryMin": -2000,
+      "MemoryMax": 3000
+    }
+  },
+  "ModeKeySeen": true
+}

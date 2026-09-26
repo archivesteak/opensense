@@ -60,6 +60,7 @@ public sealed partial class DeviceSession : IDisposable
     private readonly CancellationTokenSource _stopping = new();
     private readonly object _gate = new();
     private readonly Timer _reconcileTimer;
+    private bool _disposed;
 
     private IOpenSenseService? _service;
     private OpenSenseConnection? _connection;
@@ -515,6 +516,10 @@ public sealed partial class DeviceSession : IDisposable
 
     public void Dispose()
     {
+        // Quit disposes the session in its own order, then the host disposes it again as it goes.
+        if (_disposed)
+            return;
+        _disposed = true;
         _stopping.Cancel();
         _reconcileTimer.Dispose();
         _connection?.Dispose(); // the service keeps controlling the fans

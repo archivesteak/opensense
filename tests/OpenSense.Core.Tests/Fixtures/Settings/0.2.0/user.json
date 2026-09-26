@@ -1,0 +1,22 @@
+{
+  "Version": 1,
+  "Ui": {
+    "CloseToTray": false,
+    "UseFahrenheit": true,
+    "OpenWithNitroSenseKey": false,
+    "OpenShortcut": {
+      "Key": 79,
+      "Control": true,
+      "Alt": true,
+      "Shift": true,
+      "Windows": true
+    },
+    "Theme": 2,
+    "Language": "de-DE"
+  },
+  "Updates": {
+    "CheckAutomatically": false,
+    "LastCheck": "2026-09-24T12:00:00+03:00",
+    "SkippedVersion": "v0.2.1"
+  }
+}

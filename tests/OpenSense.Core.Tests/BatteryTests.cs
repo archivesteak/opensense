@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Time.Testing;
 using OpenSense.Core.Control;
 using OpenSense.Core.Hardware;
 using OpenSense.Core.Settings;
@@ -88,6 +89,25 @@ public class PowerServiceTests
         firmware.NamedCalls.Clear();
         await service.ApplyAsync(new PowerSettings());
         Assert.Empty(firmware.NamedCalls);
+    }
+
+    [Fact]
+    public async Task After_a_sleep_the_settings_go_out_again_once_Acers_software_has_written_its_own()
+    {
+        var time = new FakeTimeProvider();
+        var (service, firmware, _, _) = Create(time);
+        await service.ApplyAsync(new PowerSettings { ChargeLimit = true, UsbCharging = new UsbChargingSettings(true, 20) });
+
+        var resumed = service.OnResume();
+        firmware.HealthMode = false; // Acer's software writes its own choice on wake-up
+        firmware.UsbCharging = 0x6400;
+        time.Advance(TimeSpan.FromSeconds(5));
+        Assert.False(resumed.IsCompleted); // not while it may still overwrite them
+
+        time.Advance(TimeSpan.FromSeconds(1));
+        await resumed;
+        Assert.True(firmware.HealthMode);
+        Assert.Equal(0x140F00UL, firmware.UsbCharging);
     }
 
     [Fact]
@@ -278,12 +298,12 @@ public class PowerServiceTests
         UsbCharging = true,
     };
 
-    private static (PowerService Service, FakeFirmware Firmware, FakeSystemPower System, FakePower Power) Create()
+    private static (PowerService Service, FakeFirmware Firmware, FakeSystemPower System, FakePower Power) Create(TimeProvider? time = null)
     {
         var firmware = new FakeFirmware { SupportsBattery = true, SupportsUsbCharging = true };
         var system = new FakeSystemPower();
         var power = new FakePower();
-        var service = new PowerService(new ImmediateDispatcher(new AcerDevice(firmware)), Caps, power, system, null, _ => { });
+        var service = new PowerService(new ImmediateDispatcher(new AcerDevice(firmware)), Caps, power, system, null, _ => { }, time);
         return (service, firmware, system, power);
     }
 }

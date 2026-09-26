@@ -33,10 +33,10 @@ public sealed class PowerService : IDisposable
     private readonly IPowerSource _power;
     private readonly ISystemPower _system;
     private readonly Action<CalibrationRecord?> _saveCalibration;
-    private readonly Func<DateTime> _clock;
+    private readonly TimeProvider _time;
     private readonly object _gate = new();
     private readonly SemaphoreSlim _calibrationGate = new(1, 1);
-    private readonly Timer _poll;
+    private readonly ITimer _poll;
 
     private PowerSettings? _pending;
     private bool _pumping;
@@ -52,7 +52,7 @@ public sealed class PowerService : IDisposable
     /// <param name="calibration">A calibration that was running when the engine last stopped.</param>
     /// <param name="saveCalibration">Stores the running calibration (null when none runs).</param>
     public PowerService(IDeviceDispatcher dispatcher, DeviceCapabilities capabilities, IPowerSource power, ISystemPower system,
-        CalibrationRecord? calibration, Action<CalibrationRecord?> saveCalibration, Func<DateTime>? clock = null)
+        CalibrationRecord? calibration, Action<CalibrationRecord?> saveCalibration, TimeProvider? time = null)
     {
         _dispatcher = dispatcher;
         _battery = capabilities.Battery;
@@ -61,8 +61,8 @@ public sealed class PowerService : IDisposable
         _system = system;
         _calibration = calibration;
         _saveCalibration = saveCalibration;
-        _clock = clock ?? (() => DateTime.UtcNow);
-        _poll = new Timer(_ => _ = CheckCalibrationAsync(), null, Timeout.Infinite, Timeout.Infinite);
+        _time = time ?? TimeProvider.System;
+        _poll = _time.CreateTimer(_ => _ = CheckCalibrationAsync(), null, Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
     }
 
     public PowerSettings Current { get; private set; } = new();
@@ -120,12 +120,13 @@ public sealed class PowerService : IDisposable
             if (_disposed || _calibration is null)
                 return;
             _slept = true;
-            _poll.Change(Timeout.Infinite, Timeout.Infinite);
+            _poll.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
         }
     }
 
     /// <summary>The machine woke up: check the calibration, and put back what Acer's software may have changed.</summary>
-    public void OnResume() => _ = Task.Delay(ResumeDelay).ContinueWith(_ => ReapplyAsync(), TaskScheduler.Default).Unwrap();
+    /// <returns>Done once that is sent (the engine doesn't wait).</returns>
+    public Task OnResume() => Task.Delay(ResumeDelay, _time).ContinueWith(_ => ReapplyAsync(), TaskScheduler.Default).Unwrap();
 
     /// <summary>The adapter or the battery changed: look at the calibration now rather than at the next poll.</summary>
     public void OnFirmwareEvent(FirmwareEvent firmwareEvent)
@@ -152,7 +153,7 @@ public sealed class PowerService : IDisposable
                 return result;
             var scheme = _system.Override(CalibrationOverrides);
             _system.HoldAwake();
-            SetCalibration(new CalibrationRecord(_clock(), limitWasOn, scheme));
+            SetCalibration(new CalibrationRecord(_time.GetUtcNow().UtcDateTime, limitWasOn, scheme));
             return CalibrationResult.Started;
         }
         finally
@@ -264,7 +265,7 @@ public sealed class PowerService : IDisposable
         {
             _calibration = null;
             _slept = false;
-            _poll.Change(Timeout.Infinite, Timeout.Infinite);
+            _poll.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
         }
         _system.ReleaseAwake();
         if (record.PowerScheme is { } scheme)

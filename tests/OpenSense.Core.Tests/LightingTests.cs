@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Time.Testing;
 using OpenSense.Core.Control;
 using OpenSense.Core.Engine;
 using OpenSense.Core.Hardware;
@@ -16,11 +17,11 @@ public class LightingServiceTests
         Effects = KeyboardProtocol.ZonedEffects,
     };
 
-    private static (LightingService Service, SimulatedTransport Laptop) Create()
+    private static (LightingService Service, SimulatedTransport Laptop) Create(TimeProvider? time = null)
     {
         var laptop = new SimulatedTransport(SimulatedModel.Nitro2021);
         var dispatcher = new ImmediateDispatcher(new AcerDevice(laptop));
-        return (new LightingService([new EcKeyboardBackend(dispatcher, Keyboard)]), laptop);
+        return (new LightingService([new EcKeyboardBackend(dispatcher, Keyboard)], time), laptop);
     }
 
     private static LightingConfig KeyboardOnly(LightingSettings settings) => new LightingConfig().With(EcKeyboardBackend.Id, settings);
@@ -130,6 +131,23 @@ public class LightingServiceTests
         Assert.Equal((byte)KeyboardEffect.Neon, laptop.Backlight[0]);
 
         await service.ReapplyAsync();
+        Assert.Equal((byte)KeyboardEffect.Breathing, laptop.Backlight[0]);
+    }
+
+    [Fact]
+    public async Task After_a_sleep_the_lights_go_out_again_once_Acers_agent_has_restored_its_own()
+    {
+        var time = new FakeTimeProvider();
+        var (service, laptop) = Create(time);
+        await service.ApplyAsync(KeyboardOnly(new LightingSettings { Effect = LightingEffect.Breathing, EffectColor = "#00FF00" }));
+
+        var resumed = service.OnResume();
+        laptop.OverwriteBacklight(KeyboardProtocol.BacklightPayload(KeyboardEffect.Neon, 5, 100, KeyboardDirection.Right, default));
+        time.Advance(TimeSpan.FromSeconds(5));
+        Assert.False(resumed.IsCompleted); // not while the agent may still overwrite them
+
+        time.Advance(TimeSpan.FromSeconds(1));
+        await resumed;
         Assert.Equal((byte)KeyboardEffect.Breathing, laptop.Backlight[0]);
     }
 

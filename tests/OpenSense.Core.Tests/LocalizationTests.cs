@@ -12,7 +12,7 @@ public sealed partial class LocalizationTests
     private const string English = "en-US";
     private const string InstallerEnglish = "English";
 
-    private static readonly string Root = FindRoot();
+    private static readonly string Root = SourceTree.Root;
     private static readonly string AppFolder = Path.Combine(Root, "src", "OpenSense.App");
     private static readonly string StringsFolder = Path.Combine(AppFolder, "Strings");
     private static readonly string InstallerFolder = Path.Combine(Root, "installer");
@@ -98,16 +98,6 @@ public sealed partial class LocalizationTests
                 problems.Add($"{key} uses {string.Join(' ', InstallerVariables(text))}, English {string.Join(' ', InstallerVariables(source))}");
         }
         Assert.Empty(problems);
-    }
-
-    private static string FindRoot()
-    {
-        for (var folder = new DirectoryInfo(AppContext.BaseDirectory); folder is not null; folder = folder.Parent)
-        {
-            if (File.Exists(Path.Combine(folder.FullName, "OpenSense.sln")))
-                return folder.FullName;
-        }
-        throw new DirectoryNotFoundException("OpenSense.sln not found above " + AppContext.BaseDirectory);
     }
 
     private static IEnumerable<string> AppLanguages() => Directory.GetDirectories(StringsFolder).Select(Path.GetFileName)!;

@@ -37,9 +37,13 @@ public static class OpenSensePipe
 
     /// <summary>Connects to the running service. Null when nothing answers within <paramref name="timeout"/>.</summary>
     /// <exception cref="UnauthorizedAccessException">The pipe exists but was not created by OpenSense.</exception>
-    public static async Task<OpenSenseConnection?> ConnectAsync(TimeSpan timeout, CancellationToken cancellationToken = default)
+    public static Task<OpenSenseConnection?> ConnectAsync(TimeSpan timeout, CancellationToken cancellationToken = default) =>
+        ConnectAsync(Name, timeout, cancellationToken);
+
+    /// <summary>Connects to the pipe <paramref name="name"/> (tests use a name of their own).</summary>
+    internal static async Task<OpenSenseConnection?> ConnectAsync(string name, TimeSpan timeout, CancellationToken cancellationToken)
     {
-        var pipe = new NamedPipeClientStream(".", Name, PipeDirection.InOut, PipeOptions.Asynchronous);
+        var pipe = new NamedPipeClientStream(".", name, PipeDirection.InOut, PipeOptions.Asynchronous);
         try
         {
             await pipe.ConnectAsync(timeout, cancellationToken).ConfigureAwait(false);
@@ -54,7 +58,7 @@ public static class OpenSensePipe
         {
             await pipe.DisposeAsync().ConfigureAwait(false);
             throw new UnauthorizedAccessException(
-                $@"\\.\pipe\{Name} was not created by the OpenSense service. Another program may be posing as it.");
+                $@"\\.\pipe\{name} was not created by the OpenSense service. Another program may be posing as it.");
         }
 
         var rpc = CreateRpc(pipe);
