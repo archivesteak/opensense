@@ -404,8 +404,16 @@ public static class CapabilityProbe
 
         var keyboard = ProbeKeyboard(device, hints, smbios, actionClass, ecHid?.BacklightTimeout == true, Log);
         List<LightingDeviceInfo> lights = [];
+        // SMBIOS can report an LED array (a real RGB keyboard) even where GetGamingKBBacklight errors: confirmed on
+        // 2024+ Predators (Helios Neo 16, PHN16-72), whose keyboard RGB never reaches this ACPI-WMI class at all. Where
+        // that happens, AcerService's own local API (127.0.0.1:46933) is the only way found so far to reach it, and
+        // only when it's actually there to answer, so a laptop with no RGB keyboard still shows no Keyboard tab.
+        var acerServiceKeyboard = !keyboard.RgbBacklight && smbios.LedArrayLength > 0 && AcerServiceTransport.IsAvailable();
+        Log($"AcerService keyboard fallback: {(keyboard.RgbBacklight ? "not needed" : acerServiceKeyboard ? "available" : "unavailable")}");
         if (keyboard.RgbBacklight)
             lights.Add(EcKeyboardBackend.Describe(keyboard));
+        else if (acerServiceKeyboard)
+            lights.Add(AcerServiceKeyboardBackend.Describe());
 
         // Light bars where SMBIOS record 0x17 says the embedded controller has them; the lid logo where
         // GetGamingLEDBehavior(1) answers with status 0 (AN515-57: no bars, status 2; no logo, status 1).
