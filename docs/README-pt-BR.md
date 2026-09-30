@@ -66,19 +66,6 @@ O OpenSense foi desenvolvido em um **Nitro 5 AN515-57**.
 
 Testou em outro modelo? [Abra uma issue](https://github.com/archivesteak/opensense/issues) e cole os diagnósticos de **Configurações → Solução de problemas → Copiar**.
 
-### Cópias do firmware
-
-Falta algo ou algo não funciona direito no seu notebook? Envie uma cópia do firmware dele: ela será analisada para descobrir como isso funciona no seu modelo. Foi assim que se entendeu como funcionam as ventoinhas do AN515-57: o firmware dele mostrou que elas só são aceleradas em passos de 10% e que a curva das ventoinhas do firmware não faz nada. [Este guia](firmware/dump-firmware-pt-BR.md) explica como fazer a cópia a partir de um pendrive com Linux, sem mudar nada no notebook.
-
-A cópia vem só do chip do firmware do notebook: nenhum dos seus arquivos, contas ou qualquer outra coisa do Windows está nela. Os únicos dados pessoais que ela contém são o número de série do notebook e a chave de licença do Windows que a Acer gravou no firmware. Se preferir não publicá-los, o guia explica como enviar a cópia de forma privada.
-
-Os modelos que mais ajudariam:
-
-- **Nitro AN515-46, AN515-47, AN515-58, AN517-42, AN517-43 e AN517-55**: os únicos modelos em que o software da Acer ajusta a **Curva das ventoinhas**, e por isso os únicos em que o OpenSense a mostra. Ninguém verificou ainda o que ela muda neles.
-- **Predator Helios 16 e 18 de 2024 e 2025 (PH16-72, PH18-72, PH16-73, PH18-73) e Helios Neo 16 (PHN16-72)**: nos Predator de 2024 em diante, os modos de operação e o overclock da GPU da Acer passam pela interface HID do controlador embarcado, que o OpenSense controla com base apenas no software da Acer.
-- **Predator Helios 16 e 18 de 2023 (PH16-71, PH18-71) e Helios 3D 15 (PH3D15-71)**: a barra de luz traseira, cujos efeitos o controlador embarcado gera.
-- **Qualquer outro modelo**: o OpenSense acelera as ventoinhas em passos de 10% em todos os notebooks, porque o controlador do AN515-57 descarta os valores intermediários. Uma cópia mostra se o seu faz o mesmo.
-
 ## Traduções
 
 O OpenSense usa o idioma de exibição do Windows ou o escolhido em **Configurações → Aparência → Idioma**. Nenhum falante nativo revisou as traduções ainda, incluindo esta página, então correções são bem-vindas.

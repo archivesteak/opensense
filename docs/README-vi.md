@@ -66,19 +66,6 @@ OpenSense đã được phát triển trên một chiếc **Nitro 5 AN515-57**.
 
 Đã thử trên mẫu máy khác? Hãy [mở một issue](https://github.com/archivesteak/opensense/issues) và dán thông tin chẩn đoán từ **Cài đặt → Khắc phục sự cố → Sao chép**.
 
-### Bản sao firmware
-
-Máy của bạn thiếu tính năng nào đó, hoặc có tính năng chạy không đúng? Hãy gửi một bản sao firmware của máy: bản sao sẽ được phân tích để tìm hiểu tính năng đó hoạt động thế nào trên mẫu máy của bạn. Quạt của AN515-57 đã được tìm hiểu theo cách này: firmware của máy cho thấy tốc độ quạt chỉ tăng được theo từng bước 10%, và đường cong quạt có sẵn trong firmware không có tác dụng gì. [Hướng dẫn này](firmware/dump-firmware-vi.md) giải thích cách tạo bản sao từ một USB Linux mà không thay đổi gì trên máy.
-
-Bản sao chỉ lấy từ chip firmware của máy: trong đó không có tệp, tài khoản hay bất cứ thứ gì khác của Windows. Thông tin cá nhân duy nhất trong đó là số sê-ri của máy và khóa bản quyền Windows mà Acer lưu trong firmware; hướng dẫn cũng nói cách gửi riêng nếu bạn không muốn công khai những thông tin này.
-
-Những mẫu máy sau sẽ giúp ích nhiều nhất:
-
-- **Nitro AN515-46, AN515-47, AN515-58, AN517-42, AN517-43 và AN517-55**: những mẫu duy nhất mà phần mềm của Acer đặt **Đường cong quạt**, nên cũng là những mẫu duy nhất OpenSense hiển thị tùy chọn này. Chưa ai kiểm tra nó thay đổi gì trên các mẫu đó.
-- **Predator Helios 16 và 18 đời 2024 và 2025 (PH16-72, PH18-72, PH16-73, PH18-73) và Helios Neo 16 (PHN16-72)**: trên các mẫu Predator từ 2024 trở đi, chế độ hoạt động và mức ép xung GPU của Acer đi qua giao diện HID của bộ điều khiển nhúng, mà OpenSense điều khiển chỉ dựa trên phần mềm của Acer.
-- **Predator Helios 16 và 18 đời 2023 (PH16-71, PH18-71) và Helios 3D 15 (PH3D15-71)**: thanh đèn phía sau, có hiệu ứng do bộ điều khiển nhúng tạo ra.
-- **Bất kỳ mẫu máy nào khác**: OpenSense tăng tốc quạt theo từng bước 10% trên mọi máy, vì bộ điều khiển của AN515-57 bỏ qua mọi giá trị ở giữa. Một bản sao sẽ cho thấy máy của bạn có làm như vậy không.
-
 ## Bản dịch
 
 OpenSense dùng ngôn ngữ hiển thị của Windows, hoặc ngôn ngữ được chọn trong **Cài đặt → Giao diện → Ngôn ngữ**. Chưa có người bản ngữ nào kiểm tra các bản dịch, kể cả trang này, vì vậy mọi góp ý sửa lỗi đều được hoan nghênh.

@@ -66,19 +66,6 @@ OpenSense was developed on a **Nitro 5 AN515-57**.
 
 Tried it on another model? [Open an issue](https://github.com/archivesteak/opensense/issues) and paste the diagnostics from **Settings → Troubleshooting → Copy**.
 
-### Firmware dumps
-
-Something missing, or not working right on your laptop? Send a copy of its firmware and it will be analysed to find out how your model does it. That's how the AN515-57's fans were worked out: its firmware showed that they are only sped up in steps of 10%, and that the firmware's own fan curve does nothing. [This guide](docs/firmware/dump-firmware.md) explains how to make the copy from a Linux USB stick without changing anything on the laptop.
-
-The copy comes from the laptop's firmware chip only: none of your files, accounts or anything else from Windows is in it. The only personal details it holds are the laptop's serial number and the Windows licence key Acer stored in the firmware, and the guide says how to send it privately if you'd rather not post those.
-
-These models would help most:
-
-- **Nitro AN515-46, AN515-47, AN515-58, AN517-42, AN517-43 and AN517-55**: the only models where Acer's software sets the **Fan curve**, so the only ones where OpenSense shows it. Nobody has checked yet what it changes on them.
-- **Predator Helios 16 and 18 of 2024 and 2025 (PH16-72, PH18-72, PH16-73, PH18-73) and Helios Neo 16 (PHN16-72)**: on 2024 and later Predators, operating modes and Acer's GPU overclock go through the embedded controller's HID interface, which OpenSense drives from Acer's software alone.
-- **Predator Helios 16 and 18 of 2023 (PH16-71, PH18-71) and Helios 3D 15 (PH3D15-71)**: the rear light bar, whose effects the embedded controller draws.
-- **Any other model**: OpenSense sends fan boosts in steps of 10% on every laptop, because the AN515-57's controller drops anything in between. A dump shows whether yours does the same.
-
 ## Translations
 
 OpenSense uses the Windows display language, or the one picked in **Settings → Appearance → Language**. No native speaker has checked the translations yet, so corrections are welcome.

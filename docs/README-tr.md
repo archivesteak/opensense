@@ -66,19 +66,6 @@ OpenSense bir **Nitro 5 AN515-57** üzerinde geliştirildi.
 
 Başka bir modelde denediniz mi? [Bir issue açın](https://github.com/archivesteak/opensense/issues) ve **Ayarlar → Sorun giderme → Kopyala** ile alınan tanılama bilgilerini yapıştırın.
 
-### Bellenim dökümleri
-
-Dizüstünüzde bir şey eksik mi ya da düzgün çalışmıyor mu? Belleniminin bir kopyasını gönderin; bunun modelinizde nasıl çalıştığını anlamak için incelenecek. AN515-57'nin fanlarının nasıl çalıştığı da böyle anlaşıldı: bellenimi, fan hızının yalnızca %10'luk adımlarla artırılabildiğini ve bellenimdeki fan eğrisinin hiçbir şey yapmadığını gösterdi. [Bu kılavuz](firmware/dump-firmware-tr.md), dizüstünde hiçbir şeyi değiştirmeden bir Linux USB belleğinden kopyanın nasıl alınacağını anlatır.
-
-Kopya yalnızca dizüstünün bellenim yongasından alınır: içinde dosyalarınız, hesaplarınız ya da Windows'tan herhangi bir şey yoktur. İçerdiği tek kişisel bilgiler, dizüstünün seri numarası ve Acer'ın bellenime kaydettiği Windows lisans anahtarıdır; bunları yayımlamak istemezseniz kopyayı nasıl özel olarak göndereceğinizi kılavuz anlatır.
-
-En çok yardımcı olacak modeller:
-
-- **Nitro AN515-46, AN515-47, AN515-58, AN517-42, AN517-43 ve AN517-55**: Acer'ın yazılımının **Fan eğrisi** ayarını yaptığı tek modeller; bu yüzden OpenSense onu yalnızca bunlarda gösterir. Bu modellerde neyi değiştirdiğini henüz kimse denetlemedi.
-- **2024 ve 2025 Predator Helios 16 ve 18 (PH16-72, PH18-72, PH16-73, PH18-73) ile Helios Neo 16 (PHN16-72)**: 2024 ve sonrası Predator'larda çalışma modları ve Acer'ın GPU hız aşırtması, gömülü denetleyicinin HID arabiriminden geçer; OpenSense bunu yalnızca Acer'ın yazılımına dayanarak yönetir.
-- **2023 Predator Helios 16 ve 18 (PH16-71, PH18-71) ile Helios 3D 15 (PH3D15-71)**: efektlerini gömülü denetleyicinin oluşturduğu arka ışık çubuğu.
-- **Diğer tüm modeller**: AN515-57'nin denetleyicisi aradaki değerleri yok saydığı için OpenSense fanları her dizüstünde %10'luk adımlarla hızlandırır. Bir döküm, sizinkinin de aynısını yapıp yapmadığını gösterir.
-
 ## Çeviriler
 
 OpenSense, Windows'un görüntüleme dilini veya **Ayarlar → Görünüm → Dil** bölümünde seçilen dili kullanır. Bu sayfa dahil çevirilerin hiçbiri henüz anadili konuşan biri tarafından gözden geçirilmedi, bu yüzden düzeltmeler memnuniyetle karşılanır.

@@ -66,19 +66,6 @@ OpenSense a été développé sur un **Nitro 5 AN515-57**.
 
 Vous l’avez essayé sur un autre modèle ? [Ouvrez une issue](https://github.com/archivesteak/opensense/issues) et collez les diagnostics copiés depuis **Paramètres → Résolution des problèmes → Copier**.
 
-### Copies du firmware
-
-Quelque chose manque ou ne fonctionne pas bien sur votre portable ? Envoyez une copie de son firmware : elle sera analysée pour comprendre comment cela fonctionne sur votre modèle. C’est ainsi qu’on a compris le fonctionnement des ventilateurs de l’AN515-57 : son firmware a montré qu’ils ne sont accélérés que par paliers de 10 % et que la courbe des ventilateurs du firmware ne fait rien. [Ce guide](firmware/dump-firmware-fr.md) explique comment faire la copie depuis une clé USB Linux, sans rien modifier sur le portable.
-
-La copie provient uniquement de la puce du firmware du portable : aucun de vos fichiers, aucun compte ni rien d’autre de Windows ne s’y trouve. Les seules informations personnelles qu’elle contient sont le numéro de série du portable et la clé de licence Windows qu’Acer a enregistrée dans le firmware ; si vous préférez ne pas les publier, le guide explique comment envoyer la copie en privé.
-
-Les modèles les plus utiles :
-
-- **Nitro AN515-46, AN515-47, AN515-58, AN517-42, AN517-43 et AN517-55** : les seuls modèles sur lesquels le logiciel d’Acer règle la **Courbe des ventilateurs**, donc les seuls où OpenSense l’affiche. Personne n’a encore vérifié ce qu’elle y change.
-- **Predator Helios 16 et 18 de 2024 et 2025 (PH16-72, PH18-72, PH16-73, PH18-73) et Helios Neo 16 (PHN16-72)** : sur les Predator de 2024 et après, les modes de fonctionnement et l’overclocking du GPU d’Acer passent par l’interface HID du contrôleur embarqué, qu’OpenSense pilote en se fondant uniquement sur le logiciel d’Acer.
-- **Predator Helios 16 et 18 de 2023 (PH16-71, PH18-71) et Helios 3D 15 (PH3D15-71)** : la barre lumineuse arrière, dont le contrôleur embarqué génère les effets.
-- **Tout autre modèle** : OpenSense accélère les ventilateurs par paliers de 10 % sur tous les portables, parce que le contrôleur de l’AN515-57 ignore les valeurs intermédiaires. Une copie montre si le vôtre fait de même.
-
 ## Traductions
 
 OpenSense utilise la langue d’affichage de Windows, ou celle choisie dans **Paramètres → Apparence → Langue**. Aucune traduction n’a encore été relue par un locuteur natif, y compris cette page : les corrections sont les bienvenues.

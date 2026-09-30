@@ -66,19 +66,6 @@ OpenSense wurde auf einem **Nitro 5 AN515-57** entwickelt.
 
 Auf einem anderen Modell ausprobiert? [Erstelle ein Issue](https://github.com/archivesteak/opensense/issues) und füge die Diagnosedaten aus **Einstellungen → Problembehandlung → Kopieren** ein.
 
-### Firmware-Dumps
-
-Fehlt etwas, oder funktioniert etwas auf deinem Laptop nicht richtig? Schicke eine Kopie seiner Firmware: Sie wird ausgewertet, um herauszufinden, wie dein Modell das umsetzt. So wurde klar, wie die Lüfter des AN515-57 funktionieren: Seine Firmware zeigte, dass sie nur in Zehnerschritten beschleunigt werden und dass die Lüfterkurve der Firmware nichts bewirkt. [Diese Anleitung](firmware/dump-firmware-de.md) erklärt, wie du die Kopie mit einem Linux-USB-Stick erstellst, ohne am Laptop etwas zu ändern.
-
-Die Kopie stammt nur aus dem Firmware-Chip des Laptops: Darin sind weder deine Dateien noch deine Konten noch sonst etwas aus Windows. Die einzigen persönlichen Angaben darin sind die Seriennummer des Laptops und der Windows-Lizenzschlüssel, den Acer in der Firmware hinterlegt hat. Wenn du sie nicht veröffentlichen möchtest: In der Anleitung steht, wie du die Kopie privat schickst.
-
-Am meisten würden diese Modelle helfen:
-
-- **Nitro AN515-46, AN515-47, AN515-58, AN517-42, AN517-43 und AN517-55**: die einzigen Modelle, auf denen Acers Software die **Lüfterkurve** setzt, und daher die einzigen, auf denen OpenSense sie anzeigt. Was sie dort ändert, hat noch niemand geprüft.
-- **Predator Helios 16 und 18 von 2024 und 2025 (PH16-72, PH18-72, PH16-73, PH18-73) und Helios Neo 16 (PHN16-72)**: Auf Predator-Modellen ab 2024 laufen Betriebsmodi und Acers GPU-Übertaktung über die HID-Schnittstelle des Embedded Controllers, die OpenSense bisher nur anhand von Acers Software ansteuert.
-- **Predator Helios 16 und 18 von 2023 (PH16-71, PH18-71) und Helios 3D 15 (PH3D15-71)**: die hintere Lichtleiste, deren Effekte der Embedded Controller erzeugt.
-- **Jedes andere Modell**: OpenSense beschleunigt die Lüfter auf jedem Laptop in Zehnerschritten, weil der Controller des AN515-57 alles dazwischen verwirft. Ein Dump zeigt, ob deiner es genauso macht.
-
 ## Übersetzungen
 
 OpenSense verwendet die Anzeigesprache von Windows oder die unter **Einstellungen → Darstellung → Sprache** gewählte. Noch hat kein Muttersprachler die Übersetzungen geprüft, auch diese Seite nicht, daher sind Korrekturen willkommen.

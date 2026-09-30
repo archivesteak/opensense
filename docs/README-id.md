@@ -66,19 +66,6 @@ OpenSense dikembangkan di **Nitro 5 AN515-57**.
 
 Sudah mencobanya di model lain? [Buka issue](https://github.com/archivesteak/opensense/issues) dan tempelkan data diagnostik dari **Pengaturan → Pemecahan masalah → Salin**.
 
-### Dump firmware
-
-Ada yang tidak tersedia atau tidak berjalan dengan benar di laptop Anda? Kirimkan salinan firmware-nya, dan salinan itu akan dianalisis untuk mengetahui cara kerjanya pada model Anda. Begitulah cara kerja kipas AN515-57 dipahami: firmware-nya menunjukkan bahwa kecepatan kipas hanya bisa ditambah per 10%, dan kurva kipas bawaan firmware tidak berpengaruh apa pun. [Panduan ini](firmware/dump-firmware-id.md) menjelaskan cara membuat salinan itu dari USB Linux tanpa mengubah apa pun di laptop.
-
-Salinan ini hanya berasal dari chip firmware laptop: tidak ada file, akun, atau apa pun dari Windows di dalamnya. Satu-satunya data pribadi di dalamnya adalah nomor seri laptop dan kunci lisensi Windows yang disimpan Acer di firmware. Jika Anda tidak ingin memublikasikannya, panduan menjelaskan cara mengirim salinan itu secara pribadi.
-
-Model-model ini akan paling membantu:
-
-- **Nitro AN515-46, AN515-47, AN515-58, AN517-42, AN517-43, dan AN517-55**: satu-satunya model tempat perangkat lunak Acer mengatur **Kurva kipas**, jadi satu-satunya model tempat OpenSense menampilkannya. Belum ada yang memeriksa apa yang diubahnya di model-model itu.
-- **Predator Helios 16 dan 18 tahun 2024 dan 2025 (PH16-72, PH18-72, PH16-73, PH18-73) serta Helios Neo 16 (PHN16-72)**: pada Predator 2024 dan yang lebih baru, mode operasi dan overclock GPU dari Acer melewati antarmuka HID embedded controller, yang dikendalikan OpenSense hanya berdasarkan perangkat lunak Acer.
-- **Predator Helios 16 dan 18 tahun 2023 (PH16-71, PH18-71) serta Helios 3D 15 (PH3D15-71)**: bilah lampu belakang, yang efeknya dihasilkan oleh embedded controller.
-- **Model lain apa pun**: OpenSense menambah kecepatan kipas per 10% di semua laptop, karena controller AN515-57 membuang nilai di antaranya. Dump akan menunjukkan apakah laptop Anda melakukan hal yang sama.
-
 ## Terjemahan
 
 OpenSense menggunakan bahasa tampilan Windows, atau bahasa yang dipilih di **Pengaturan → Tampilan → Bahasa**. Belum ada penutur asli yang memeriksa terjemahannya, termasuk halaman ini, jadi koreksi sangat diterima.
