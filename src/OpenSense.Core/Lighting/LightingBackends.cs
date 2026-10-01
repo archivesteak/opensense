@@ -23,6 +23,9 @@ public static class LightingBackends
                 case LightingBackendKind.EcLogo:
                     backends.Add(new EcLogoBackend(dispatcher));
                     break;
+                case LightingBackendKind.AcerServiceKeyboard:
+                    backends.Add(new AcerServiceKeyboardBackend(light));
+                    break;
                 default:
                     if (hid is not null && worker is not null)
                         backends.AddRange(hid.CreateBackends(worker, [light]));

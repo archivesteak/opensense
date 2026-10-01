@@ -55,6 +55,12 @@ public enum LightingBackendKind
 
     /// <summary>A Darfon USB light: cover logo, light bar, InfiniteRing.</summary>
     Darfon,
+
+    /// <summary>
+    /// The keyboard through AcerService's local JSON API (127.0.0.1:46933), for 2024+ Predators whose per-zone RGB
+    /// never reaches the ACPI-WMI class OpenSense otherwise drives it through. Needs AcerLightingService running.
+    /// </summary>
+    AcerServiceKeyboard,
 }
 
 /// <summary>The physical layout of a keyboard, as drawn by the per-key editor.</summary>
