@@ -243,10 +243,12 @@ public sealed partial class FanCurveEditor : CanvasElement
     private void DrawTag(CanvasDrawingSession session, CanvasTextFormat format, Vector2 anchor, string text, Rect plot, Windows.UI.Color? accent = null)
     {
         using var layout = new CanvasTextLayout(session, text, format, 400, 40);
-        var width = (float)layout.LayoutBounds.Width + 16;
+        var (left, width) = CurveLabelPlacement.Fit(anchor.X, (float)layout.LayoutBounds.Width + 16, (float)plot.X, (float)plot.Width);
+        if (width <= 0)
+            return;
         var height = (float)layout.LayoutBounds.Height + 8;
-        var left = Math.Clamp(anchor.X - width / 2, (float)plot.X, (float)plot.Right - width);
         var top = Math.Max((float)plot.Y - 10, anchor.Y);
+        using var clip = session.CreateLayer(1, new Rect(left, top, width, height));
         session.FillRoundedRectangle(left, top, width, height, 6, 6, Surface);
         session.DrawRoundedRectangle(left, top, width, height, 6, 6, accent ?? Accent, 1);
         session.DrawTextLayout(layout, left + 8, top + 4, TextPrimary);

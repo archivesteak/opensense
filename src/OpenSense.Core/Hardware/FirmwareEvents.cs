@@ -23,7 +23,7 @@ public enum FirmwareEventKind : byte
     /// <summary>The Mode (Turbo) key; the firmware leaves switching the mode to software.</summary>
     ModeKey = 7,
 
-    /// <summary>The adapter was plugged in (value 1) or unplugged (0).</summary>
+    /// <summary>Power source changed: 0 unplugged, 1 adapter, 4 another source class on newer firmware. Preserve the raw code.</summary>
     AcAdapter = 8,
 
     /// <summary>

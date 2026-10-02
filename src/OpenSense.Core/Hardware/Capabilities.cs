@@ -1,7 +1,6 @@
 using System.Globalization;
 using System.Text;
 using System.Text.Json.Serialization;
-using Microsoft.Win32;
 using OpenSense.Core.Control;
 using OpenSense.Core.Hardware.Hid;
 using OpenSense.Core.Lighting;
@@ -24,6 +23,9 @@ public sealed record KeyboardCapabilities
     /// <summary>What <c>SetGamingLED</c> takes on this firmware (<see cref="AcerSmbios.LedArrayLength"/>).</summary>
     public int LedArrayLength { get; init; } = 8;
 
+    /// <summary>How effects go out: as the model's own Acer software sends them (<see cref="KeyboardProtocol.PayloadLayout"/>).</summary>
+    public KeyboardPayloadLayout PayloadLayout { get; init; }
+
     /// <summary>Keyboard-backlight hotkey function number, when backlight auto-off is available through <c>APGeAction</c>.</summary>
     public byte? BacklightHotkey { get; init; }
 
@@ -40,7 +42,28 @@ public sealed record KeyboardCapabilities
 
     public bool LcdOverdrive { get; init; }
 
-    /// <summary>Per-channel colour correction NitroSense applies for this model (R, G, B).</summary>
+    /// <summary>Fn lock through the firmware (misc 0x0F): where the model's reviewed BIOS has it and it answers.</summary>
+    public bool FnLock { get; init; }
+
+    /// <summary>
+    /// No RGB through WMI, but the firmware acts on the brightness in the <c>SetGamingKBBacklight</c> record
+    /// (<see cref="EcKeyboardControl.BrightnessOnly"/>).
+    /// </summary>
+    public bool WmiBacklightBrightness { get; init; }
+
+    /// <summary>Zones are switched on and off with <c>SetGamingLED</c>; where the firmware has no switches, a zone that is off goes out black.</summary>
+    public bool ZoneSwitches { get; init; } = true;
+
+    /// <summary>The firmware answers which zones are on (<c>GetGamingLED(0x08)</c>); without that a static effect can't be read back.</summary>
+    public bool ZoneSwitchReadback { get; init; } = true;
+
+    /// <summary>
+    /// The firmware puts its default colours back when every static zone is black, so all black (or all off) goes out
+    /// as static at brightness 0 instead, with the zone colours left as they are.
+    /// </summary>
+    public bool ResetsBlackStaticColors { get; init; }
+
+    /// <summary>Per-channel colour correction Acer's software applies for this model (R, G, B).</summary>
     public IReadOnlyList<double> ColorAdjust { get; init; } = [1, 1, 1];
 
     public IReadOnlyList<RgbColor> DefaultZoneColors { get; init; } = [];
@@ -98,6 +121,23 @@ public sealed record DeviceCapabilities(
     /// <summary>The firmware answers CoolBoost, whether or not it is offered (never together with operating modes).</summary>
     public bool FirmwareCoolBoost { get; init; }
 
+    /// <summary>The model's reviewed BIOS does nothing with WMI CoolBoost, whatever the method answers: no override turns it on.</summary>
+    public bool CoolBoostUnsupported { get; init; }
+
+    /// <summary>
+    /// The model's reviewed BIOS has no WMI operating modes and no EC HID interface sets them: no override turns them on.
+    /// </summary>
+    public bool OperatingModesUnsupported { get; init; }
+
+    /// <summary>The GPU switch has a third mode, <see cref="GpuMode.Automatic"/> (the BIOS lists it in its answer for misc 9).</summary>
+    public bool GpuModeAutomatic { get; init; }
+
+    /// <summary>
+    /// The firmware answers which GPU modes it has (misc 9). Where it doesn't, the switch can't be turned on by an
+    /// override: the AN515-45's SMM code writes a misc 2 value into the embedded controller's own flags.
+    /// </summary>
+    public bool GpuModeSupportAnswered { get; init; }
+
     public KeyboardCapabilities Keyboard { get; init; } = KeyboardCapabilities.None;
 
     /// <summary>The lights OpenSense can drive: the keyboard backlight, light bars, logos, HID and USB lights.</summary>
@@ -119,6 +159,18 @@ public sealed record DeviceCapabilities(
 
     /// <summary>The firmware keeps a boot animation and sound setting (whether the model has either can't be told).</summary>
     public bool BootAnimation { get; init; }
+
+    /// <summary>
+    /// The BIOS has Acer's settings interface (<see cref="BiosProtocol"/>: the 2025 Predators on). Whether it lists any
+    /// settings is only known when they are read: its switch for that is set at boot.
+    /// </summary>
+    public bool BiosSettings { get; init; }
+
+    /// <summary>
+    /// The longest new BIOS password the BIOS keeps whole: 16 characters unless the model's reviewed BIOS takes more
+    /// (<see cref="AcerFirmwareProfile.BiosPasswordMaxLength"/>).
+    /// </summary>
+    public int BiosPasswordMaxLength { get; init; } = 16;
 
     /// <summary>
     /// The firmware shows a picture from the EFI system partition at power-on (SMBIOS record 0x0D or
@@ -196,8 +248,8 @@ public sealed record CapabilityOverrides
 
         IReadOnlyList<OperatingMode> modes = OperatingModes switch
         {
-            true when !caps.HasOperatingModes => caps.FirmwareOperatingModes.Count > 0
-                ? caps.FirmwareOperatingModes
+            true when !caps.HasOperatingModes => caps.FirmwareOperatingModes.Count > 0 ? caps.FirmwareOperatingModes
+                : caps.OperatingModesUnsupported ? []
                 : CapabilityProbe.DefaultOperatingModes,
             false => [],
             _ => caps.OperatingModes,
@@ -206,155 +258,89 @@ public sealed record CapabilityOverrides
         {
             OperatingModes = modes,
             // As NitroSense does: CoolBoost where the firmware has it and operating modes are off.
-            CoolBoost = CoolBoost ?? (OperatingModes is null ? caps.CoolBoost : modes.Count == 0 && caps.FirmwareCoolBoost),
-            GpuModeSwitch = GpuModeSwitch ?? caps.GpuModeSwitch,
+            CoolBoost = !caps.CoolBoostUnsupported && (CoolBoost ?? (OperatingModes is null
+                ? caps.CoolBoost
+                : modes.Count == 0 && caps.FirmwareCoolBoost)),
+            GpuModeSwitch = caps.GpuModeSupportAnswered && (GpuModeSwitch ?? caps.GpuModeSwitch),
+            GpuModeAutomatic = caps.GpuModeSupportAnswered && (GpuModeSwitch ?? caps.GpuModeSwitch) && caps.GpuModeAutomatic,
             Lights = lights,
         };
     }
 }
 
-/// <summary>Values NitroSense's installer leaves on the machine, when present. Used only as hints.</summary>
-public sealed record NitroSenseHints
-{
-    private const string Dir = @"C:\ProgramData\OEM\NitroSense";
-    private const string RegistryKey = @"SOFTWARE\OEM\NitroSense";
-    private static readonly string[] Channels = ["R", "G", "B"];
-
-    public int? MachineType { get; init; }
-    public bool? CpuFan { get; init; }
-    public bool? GpuFan { get; init; }
-    public bool? SystemFan { get; init; }
-
-    /// <summary>2 = RGB zoned keyboard.</summary>
-    public int? KeyboardColor { get; init; }
-
-    public int? KeyboardZones { get; init; }
-    public int? BacklightHotkey { get; init; }
-
-    /// <summary>[AdvanceSetting] entries, e.g. "LCD".</summary>
-    public IReadOnlyList<string> AdvancedSettings { get; init; } = [];
-
-    /// <summary>[KeyboardSetting] entries, e.g. "Backlight", "Sticky_Key", "Windowskey1".</summary>
-    public IReadOnlyList<string> KeyboardSettings { get; init; } = [];
-
-    public IReadOnlyList<double>? ColorAdjust { get; init; }
-    public IReadOnlyList<RgbColor> DefaultZoneColors { get; init; } = [];
-
-    public bool Present => MachineType is not null || KeyboardColor is not null;
-
-    public static NitroSenseHints Read()
-    {
-        var feature = ReadIni(Path.Combine(Dir, "Feature.ini"));
-        var hw = ReadIni(Path.Combine(Dir, "HW_Support.ini"));
-        using var reg = Registry.LocalMachine.OpenSubKey(RegistryKey);
-        using var light = Registry.LocalMachine.OpenSubKey(RegistryKey + @"\LightSetting");
-
-        string?[] adjust = [.. Channels.Select(c => hw.GetValueOrDefault($"ZoneColorAdjust.{c}"))];
-        return new NitroSenseHints
-        {
-            MachineType = Int(feature.GetValueOrDefault("MachineType.Type")),
-            CpuFan = Flag(hw, "FanSupport.CPU"),
-            GpuFan = Flag(hw, "FanSupport.GPU"),
-            SystemFan = Flag(hw, "FanSupport.System"),
-            KeyboardColor = light?.GetValue("KeyBoardColor") as int?,
-            KeyboardZones = light?.GetValue("KeyBoardArea") as int?,
-            BacklightHotkey = reg?.GetValue("BK_Hotkey_Number") as int?,
-            AdvancedSettings = List(hw, "AdvanceSetting"),
-            KeyboardSettings = List(hw, "KeyboardSetting"),
-            ColorAdjust = adjust.All(a => a is not null)
-                ? [.. adjust.Select(a => double.TryParse(a, NumberStyles.Float, CultureInfo.InvariantCulture, out var v) ? v : 1)]
-                : null,
-            DefaultZoneColors = [.. Enumerable.Range(1, 4)
-                .Select(i => hw.GetValueOrDefault($"ZoneDefaultColor.Zone{i}"))
-                .OfType<string>()
-                .Select(RgbColor.FromHex)],
-        };
-    }
-
-    private static int? Int(string? value) => int.TryParse(value, CultureInfo.InvariantCulture, out var v) ? v : null;
-
-    private static bool? Flag(Dictionary<string, string> ini, string key) =>
-        ini.TryGetValue(key, out var v) ? v.Trim() == "1" : null;
-
-    private static List<string> List(Dictionary<string, string> ini, string section) =>
-        [.. ini.Where(kv => kv.Key.StartsWith(section + ".FUN", StringComparison.OrdinalIgnoreCase)).Select(kv => kv.Value)];
-
-    private static Dictionary<string, string> ReadIni(string path)
-    {
-        var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        if (!File.Exists(path))
-            return result;
-        var section = "";
-        foreach (var raw in File.ReadLines(path))
-        {
-            var line = raw.Trim();
-            if (line.StartsWith('[') && line.EndsWith(']'))
-                section = line[1..^1];
-            else if (line.IndexOfAny(['=', ':']) is var i and > 0)
-                result[$"{section}.{line[..i].Trim()}"] = line[(i + 1)..].Trim();
-        }
-        return result;
-    }
-}
-
 public static class CapabilityProbe
 {
-    /// <summary>The keyboard-backlight hotkey function on models seen so far (AN515-57).</summary>
-    private const byte CommonBacklightHotkey = 0x84;
-
     public static IReadOnlyList<OperatingMode> DefaultOperatingModes { get; } =
         [OperatingMode.Quiet, OperatingMode.Balanced, OperatingMode.Performance];
 
+    /// <summary>
+    /// What the laptop has, from the firmware's own answers, Acer's SMBIOS structures, the built-in model catalog
+    /// (<see cref="AcerModelProfile"/>) and what the model's reviewed BIOS is known to do (<see cref="AcerDevice.FirmwareProfile"/>).
+    /// Nothing written; nothing read from Acer's software.
+    /// </summary>
     /// <param name="model">The laptop's model name, for the features Acer's software offers by model.</param>
-    public static DeviceCapabilities Probe(AcerDevice device, NitroSenseHints? hints = null, AcerSmbios? smbios = null, string? model = null)
+    public static DeviceCapabilities Probe(AcerDevice device, AcerSmbios? smbios = null, string? model = null)
     {
         if (!device.IsPresent)
             return DeviceCapabilities.None;
 
-        hints ??= new NitroSenseHints();
         smbios ??= AcerSmbios.Empty;
+        var catalog = AcerModelProfile.For(model);
+        var profile = device.FirmwareProfile;
         var diag = new StringBuilder();
         void Log(string text) => diag.AppendLine(text);
-        static string Hex(ulong? v) => v is { } x ? $"0x{x:X}" : "error";
 
         Log($"OpenSense {typeof(CapabilityProbe).Assembly.GetName().Version} capability probe");
-        Log(hints.Present
-            ? $"NitroSense hints: MachineType={hints.MachineType} fans cpu={hints.CpuFan} gpu={hints.GpuFan} sys={hints.SystemFan} " +
-              $"kbColor={hints.KeyboardColor} kbZones={hints.KeyboardZones} bkHotkey={hints.BacklightHotkey} " +
-              $"advanced=[{string.Join(",", hints.AdvancedSettings)}] keyboard=[{string.Join(",", hints.KeyboardSettings)}]"
-            : "NitroSense hints: none (NitroSense not installed)");
+        Log($"Model catalog: {catalog.ModelCode ?? "not listed"}; firmware profile: {profile.ModelCode ?? "generic"}");
         Log($"SMBIOS 0xAC gaming interface: {smbios.GamingVersion?.ToString("0.00", CultureInfo.InvariantCulture) ?? "absent"}; records: " +
             string.Join(" ", smbios.GamingRecords.Select(r => $"{r.Id:X2}={r.Value:X}")));
         Log("SMBIOS 0xAA hotkey functions: " + string.Join(" ", smbios.HotkeyFunctions.Select(r => $"{r.Id:X2}={r.Value:X}")));
-        var ecHid = ProbeEcHid(device.EcHid, Log);
+        EcHidCapabilities? ecHid;
+        try
+        {
+            ecHid = ProbeEcHid(device.EcHid, Log);
+        }
+        catch (Exception ex) when (ex is not OutOfMemoryException)
+        {
+            // The interface is optional: what WMI has stays.
+            Log($"EC HID capability probe failed: {ex.GetType().Name}: {ex.Message}");
+            ecHid = null;
+        }
 
-        // Sensors: every read answers "ok" (absent sensors read 0), so use the supported-sensor bitmap.
+        // Sensors: every read answers "ok" (absent sensors read 0), so the supported-sensor bitmap decides and only its
+        // sensors are read. Without one, every sensor is read and those above 0 count (older firmware); where that finds
+        // no fan, the model's fan counts stand in.
         var maskAnswer = device.Raw(GamingClass, "GetGamingSysInfo", SupportedSensorsQuery);
         Log($"GetGamingSysInfo(0x00) = {Hex(maskAnswer)}");
-        var readings = new Dictionary<SensorId, int?>();
-        foreach (var id in Enum.GetValues<SensorId>())
+        IReadOnlyList<SensorId> listed = maskAnswer is { } ma && IsOk(ma) ? DecodeSensorMask(ma) : [];
+        var sensors = new HashSet<SensorId>();
+        foreach (var id in listed.Count > 0 ? listed : Enum.GetValues<SensorId>())
         {
             var raw = device.Raw(GamingClass, "GetGamingSysInfo", SensorReadInput(id));
-            readings[id] = raw is { } r && IsOk(r) ? SensorValue(r) : null;
             Log($"sensor {id,-18} raw={Hex(raw)}");
+            if (listed.Count > 0 || (raw is { } r && IsOk(r) && SensorValue(r) > 0))
+                sensors.Add(id);
         }
-        var sensors = maskAnswer is { } ma && IsOk(ma) && DecodeSensorMask(ma) is { Count: > 0 } listed
-            ? listed.ToHashSet()
-            : readings.Where(kv => kv.Value > 0).Select(kv => kv.Key).ToHashSet(); // older firmware: best effort
+        if (listed.Count == 0 && !FanChannel.Known.Any(f => sensors.Contains(f.RpmSensor)))
+        {
+            var known = ModelFanSensors(catalog);
+            if (known.Count > 0)
+                Log($"sensors: none found; the model's fans ({string.Join(", ", known)})");
+            sensors.UnionWith(known);
+        }
         if (sensors.Contains(SensorId.GpuFanSpeed))
             sensors.Add(SensorId.GpuTemperature); // reads 0 while the dGPU sleeps, so the fallback above can miss it
-        if (hints.CpuFan == true) sensors.Add(SensorId.CpuFanSpeed);
-        if (hints.GpuFan == true) sensors.Add(SensorId.GpuFanSpeed);
-        if (hints.SystemFan == true) sensors.Add(SensorId.SystemFanSpeed);
 
         // A fan is there when its RPM sensor is (as Acer's software counts them); system fans only report their speed.
         var fans = FanChannel.Known.Where(f => sensors.Contains(f.RpmSensor)).ToList();
 
-        // CoolBoost (APGeAction). NitroSense offers it only on models without operating modes.
+        // CoolBoost (APGeAction). NitroSense offers it only on models without operating modes. On the reviewed Nitro V 16s
+        // the method answers without anything behind it (a stub, or a register the EC never reads).
         var actionClass = device.Transport.IsClassAvailable(ActionClass);
         var coolRaw = actionClass ? device.Raw(ActionClass, "GetFunction", CoolBoostGetInput) : null;
         Log($"APGeAction CoolBoost raw={Hex(coolRaw)}");
-        var firmwareCoolBoost = coolRaw is { } c && IsOk(c);
+        var coolBoostUnsupported = profile.WmiCoolBoostSupported == false;
+        var firmwareCoolBoost = coolRaw is { } c && IsOk(c) && !coolBoostUnsupported;
 
         // Dust Defender (the same function, sub-function 1): every sub-function answers, byte 3 tells.
         var dustRaw = actionClass ? device.Raw(ActionClass, "GetFunction", DustDefenderQuery) : null;
@@ -368,44 +354,57 @@ public static class CapabilityProbe
         Log($"GetGamingFanTable = {Hex(fanTableRaw)}");
         var fanTable = fanTableRaw is { } ft && IsOk(ft) && UsesFanTable(model);
 
-        // Operating modes. Firmware may list modes on models where Acer's software never uses them. They stay off
-        // by default where NitroSense's config says the model has none (MachineType 0/1) or, without that config,
-        // where the firmware has CoolBoost instead; the user can still turn them on. (The AN515-57 lists
-        // Quiet/Balanced/Performance/Turbo: its firmware hands them to Intel DTT's CPU profiles and NVIDIA's
-        // Dynamic Boost, not to the power limit registers.)
+        // Operating modes. Firmware may list modes on models where Acer's software never uses them (the AN515-57 lists
+        // Quiet/Balanced/Performance/Turbo: its firmware hands them to Intel DTT's CPU profiles and NVIDIA's Dynamic
+        // Boost, not to the power limit registers). Whether they are offered: the reviewed BIOS where it settles it, else
+        // the model catalog, else SMBIOS record 0x0F, else not where the firmware has CoolBoost instead. The user can
+        // still turn them on, except where the reviewed BIOS has none. Only modes the firmware answers are offered.
         var maskRaw = device.Raw(GamingClass, "GetGamingMiscSetting", MiscGetInput(MiscSetting.SupportedOperatingModes));
         var modeRaw = device.Raw(GamingClass, "GetGamingMiscSetting", MiscGetInput(MiscSetting.OperatingMode));
         Log($"misc SupportedOperatingModes raw={Hex(maskRaw)}");
         Log($"misc OperatingMode raw={Hex(modeRaw)}");
         IReadOnlyList<OperatingMode> firmwareModes = [];
-        if (maskRaw is { } m && IsOk(m) && DecodeOperatingModeMask(m) is { Count: > 0 } decoded)
+        if (profile.WmiOperatingModesSupported == false)
+            Log("misc operating modes: none behind them on this model's BIOS");
+        else if (maskRaw is { } m && IsOk(m) && DecodeOperatingModeMask(m) is { Count: > 0 } decoded)
             firmwareModes = decoded;
         else if (modeRaw is { } cur && IsOk(cur) && Enum.IsDefined((OperatingMode)MiscValue(cur)))
             firmwareModes = DefaultOperatingModes;
-        var modes = hints.MachineType switch
+        var smbiosModes = smbios.Gaming(GamingRecord.OperatingModes);
+        var modesWanted = profile.WmiOperatingModesSupported == true ? true
+            : catalog.OperatingModes ?? (smbiosModes is { } sm ? sm == 1 : null);
+        var modes = modesWanted switch
         {
-            0 or 1 => [],
-            2 when firmwareModes.Count == 0 => DefaultOperatingModes,
-            2 => firmwareModes,
-            _ when firmwareCoolBoost => [],
-            _ => firmwareModes,
+            false => [],
+            true => firmwareModes,
+            null => firmwareCoolBoost ? [] : firmwareModes,
         };
         // Where the embedded controller's HID interface sets the mode, its list is the one Acer's software offers.
         if (ecHid is { Modes.Count: > 0 })
             firmwareModes = modes = ecHid.Modes;
+        var modesUnsupported = profile.WmiOperatingModesSupported == false && firmwareModes.Count == 0;
 
         // GPU MUX switch.
         var gpuSupportRaw = device.Raw(GamingClass, "GetGamingMiscSetting", MiscGetInput(MiscSetting.GpuModeSupport));
         Log($"misc GpuModeSupport raw={Hex(gpuSupportRaw)}");
         Log($"misc GpuMode raw={Hex(device.Raw(GamingClass, "GetGamingMiscSetting", MiscGetInput(MiscSetting.GpuMode)))}");
-        var gpuSwitch = gpuSupportRaw is { } g && IsOk(g) && MiscValue(g) == 3;
+        // A bit per mode: 1 hybrid, 2 discrete only, 4 automatic selection. The BIOSes seen answer 3 or 7.
+        var gpuSupportAnswered = gpuSupportRaw is { } g && IsOk(g);
+        var gpuModes = gpuSupportAnswered ? MiscValue(gpuSupportRaw!.Value) : 0;
+        var gpuSwitch = (gpuModes & 3) == 3;
+        var gpuAutomatic = gpuSwitch && (gpuModes & 4) != 0;
 
-        var coolBoost = firmwareCoolBoost && modes.Count == 0 && hints.MachineType != 2;
+        var coolBoost = firmwareCoolBoost && modes.Count == 0;
 
-        var keyboard = ProbeKeyboard(device, hints, smbios, actionClass, ecHid?.BacklightTimeout == true, Log);
+        var keyboard = ProbeKeyboard(device, smbios, catalog, model, actionClass, ecHid?.BacklightTimeout == true, Log);
         List<LightingDeviceInfo> lights = [];
+        // Brightness alone: through the backlight record, or the auto-off function's brightness, except where the reviewed
+        // BIOS has nothing behind the keyboard's WMI methods (ANV16-72: auto-off works, its brightness byte is ignored).
         if (keyboard.RgbBacklight)
             lights.Add(EcKeyboardBackend.Describe(keyboard));
+        else if (keyboard.WmiBacklightBrightness || (profile.KeyboardControl != EcKeyboardControl.Unsupported
+                     && (keyboard.BacklightHotkey is not null || keyboard.EcHidBacklightTimeout)))
+            lights.Add(EcKeyboardBrightnessBackend.Describe());
 
         // Light bars where SMBIOS record 0x17 says the embedded controller has them; the lid logo where
         // GetGamingLEDBehavior(1) answers with status 0 (AN515-57: no bars, status 2; no logo, status 1).
@@ -449,6 +448,10 @@ public static class CapabilityProbe
         Log($"GetGamingMiscSetting(0x08) = {Hex(customLogoRaw)}");
         var customBootLogoSwitch = customLogoRaw is { } cl && IsOk(cl) && MiscValue(cl) is 0 or 1;
 
+        // The BIOS's own settings: the two classes (MOF version 2.94 on the PHN16-73), not read here.
+        var biosSettings = device.HasBiosSettings();
+        Log($"BIOS settings classes: {biosSettings}");
+
         // Extra read-only probes that help map new models.
         foreach (var (method, input) in new (string, uint)[]
                  {
@@ -463,9 +466,13 @@ public static class CapabilityProbe
             $"fan table: {fanTable}");
         Log($"=> operating modes: {(modes.Count == 0 ? "none" : string.Join(", ", modes))}" +
             (firmwareModes.Count > 0 && modes.Count == 0 ? $" (firmware lists {string.Join(", ", firmwareModes)}; off by default on this model)" : ""));
-        Log($"=> CoolBoost: {coolBoost}, GPU mode switch: {gpuSwitch}");
-        Log($"=> keyboard: rgb={keyboard.RgbBacklight} zones={keyboard.Zones} ledArray={keyboard.LedArrayLength} " +
-            $"autoOff={keyboard.BacklightAutoOff} winKey={keyboard.WindowsKey} overdrive={keyboard.LcdOverdrive}");
+        Log($"=> CoolBoost: {coolBoost}{(coolBoostUnsupported ? " (nothing behind it on this model's BIOS)" : "")}, " +
+            $"GPU mode switch: {gpuSwitch}{(gpuAutomatic ? " (with automatic selection)" : "")}");
+        Log($"=> keyboard: rgb={keyboard.RgbBacklight} zones={keyboard.Zones} effects={string.Join(",", keyboard.Effects)} " +
+            $"ledArray={keyboard.LedArrayLength} layout={keyboard.PayloadLayout} " +
+            $"brightness={keyboard.WmiBacklightBrightness} zoneSwitches={keyboard.ZoneSwitches}/{keyboard.ZoneSwitchReadback} " +
+            $"autoOff={keyboard.BacklightAutoOff}{(keyboard.BacklightHotkey is { } hk ? $" (0x{hk:X2})" : "")} winKey={keyboard.WindowsKey} " +
+            $"overdrive={keyboard.LcdOverdrive} fnLock={keyboard.FnLock}");
         Log($"=> lights: {(lights.Count == 0 ? "none" : string.Join(", ", lights.Select(l => $"{l.Id} ({l.Zones} zones)")))}" +
             $"; light bars: {(lightBars.Count == 0 ? "none" : string.Join(", ", lightBars.Select(b => $"{b.Id} {b.Zones}")))}");
         Log($"=> battery: charge limit={battery.ChargeLimit} calibration={battery.Calibration}; USB charging when off: {usbCharging}; " +
@@ -482,12 +489,18 @@ public static class CapabilityProbe
         {
             FirmwareOperatingModes = firmwareModes,
             FirmwareCoolBoost = firmwareCoolBoost,
+            CoolBoostUnsupported = coolBoostUnsupported,
+            OperatingModesUnsupported = modesUnsupported,
+            GpuModeAutomatic = gpuAutomatic,
+            GpuModeSupportAnswered = gpuSupportAnswered,
             Keyboard = keyboard,
             Lights = lights,
             LightBars = lightBars,
             Battery = battery,
             UsbCharging = usbCharging,
             BootAnimation = bootAnimation,
+            BiosSettings = biosSettings,
+            BiosPasswordMaxLength = profile.BiosPasswordMaxLength,
             CustomBootLogoSwitch = customBootLogoSwitch,
             DustDefender = dustDefender,
             FanTable = fanTable,
@@ -554,60 +567,97 @@ public static class CapabilityProbe
         };
     }
 
+    /// <summary>
+    /// The keyboard. RGB: not where the reviewed BIOS has no RGB behind WMI, else SMBIOS record 0x0A (1 single colour,
+    /// 2 RGB), else the catalog, else whether the firmware answers the backlight record; SMBIOS record 0x08 of 0 is a
+    /// per-key keyboard, which the zoned controls don't reach. Its zones: record 0x08 (1, 3 or 4), else the catalog's, else 4.
+    /// </summary>
     /// <param name="ecHidBacklight">The embedded controller's HID interface keeps the backlight timeout (it then replaces <c>APGeAction</c>'s).</param>
-    private static KeyboardCapabilities ProbeKeyboard(AcerDevice device, NitroSenseHints hints, AcerSmbios smbios, bool actionClass,
-        bool ecHidBacklight, Action<string> log)
+    private static KeyboardCapabilities ProbeKeyboard(AcerDevice device, AcerSmbios smbios, AcerModelProfile catalog, string? model,
+        bool actionClass, bool ecHidBacklight, Action<string> log)
     {
+        var firmware = device.FirmwareProfile;
         var backlight = device.GetKeyboardBacklight();
         log($"GetGamingKBBacklight = {(backlight is null ? "error" : Convert.ToHexString(backlight))}");
-        var rgb = hints.KeyboardColor switch
+        var type = smbios.Gaming(GamingRecord.KeyboardType);
+        var rgb = firmware.KeyboardControl switch
         {
-            2 => true,
-            not null => false,
-            null => backlight is not null,
+            EcKeyboardControl.Unsupported or EcKeyboardControl.BrightnessOnly => false,
+            // The ANV16-41's EC drives RGB zones while its BIOS reports a single colour on every unit.
+            EcKeyboardControl.Rgb => true,
+            _ => type != 0 && smbios.Gaming(GamingRecord.KeyboardColor) switch
+            {
+                2 => true,
+                1 => false,
+                _ => catalog.RgbKeyboard ?? backlight is not null,
+            },
         };
+        var zones = rgb ? type is 1 or 3 or 4 ? type.Value : Math.Clamp(catalog.KeyboardZones ?? 4, 1, 4) : 0;
+        var brightness = firmware.KeyboardControl == EcKeyboardControl.BrightnessOnly && backlight is { Length: >= 9 };
 
-        // Backlight auto-off needs the model's hotkey function number.
-        byte? hotkey = hints.BacklightHotkey is > 0 and <= 0xFF ? (byte)hints.BacklightHotkey.Value
-            : smbios.HasHotkeyFunction(CommonBacklightHotkey) ? CommonBacklightHotkey
-            : null;
-        if (ecHidBacklight)
-        {
-            hotkey = null;
-        }
-        else if (hotkey is { } h && actionClass)
+        // Backlight auto-off: the hotkey function SMBIOS names for it, else the one measured for the model, as long as
+        // the firmware answers it.
+        byte? hotkey = null;
+        if (!ecHidBacklight && actionClass && (smbios.BacklightHotkey ?? catalog.KeyboardTimeoutHotkey) is { } h)
         {
             var timeout = device.GetBacklightTimeout(h);
             log($"backlight timeout (hotkey 0x{h:X2}) = {(timeout is { } t ? $"{t.Brightness}% / {t.TimeoutSeconds}s" : "error")}");
-            if (timeout is null || (hints.Present && !hints.KeyboardSettings.Contains("Backlight", StringComparer.OrdinalIgnoreCase)))
-                hotkey = null;
-        }
-        else
-        {
-            hotkey = null;
+            if (timeout is not null)
+                hotkey = h;
         }
 
+        // Overdrive depends on the panel, so the firmware's answer counts, whatever the model.
         var profile = device.GetGamingProfile();
         log($"GetGamingProfile(0) = {(profile is { } p ? $"0x{p:X}" : "error")}");
-        var windowsKey = hints.Present
-            ? hints.KeyboardSettings.Any(s => s.StartsWith("Windowskey", StringComparison.OrdinalIgnoreCase))
-            : profile is { } wp && KeyboardProtocol.WindowsKeyValue(wp) is not null;
-        // Overdrive depends on the panel, so the firmware's answer counts even where NitroSense lists it for the model.
-        var overdrive = profile is { } op && KeyboardProtocol.LcdOverdriveSupported(op)
-            && (!hints.Present || hints.AdvancedSettings.Contains("LCD", StringComparer.OrdinalIgnoreCase));
+        var windowsKey = catalog.WindowsKeyLock != false && profile is { } wp && KeyboardProtocol.WindowsKeyValue(wp) is not null;
+        var overdrive = catalog.LcdOverdrive != false && profile is { } op && KeyboardProtocol.LcdOverdriveSupported(op);
+
+        // Which zones are lit, each zone's colour (their raw answers, for keyboards whose zones misbehave), and Fn lock:
+        // asked only where they are used.
+        var zoneSwitches = firmware.KeyboardZoneSwitches ?? true;
+        var switchReadback = rgb && zoneSwitches && device.GetZonesEnabled(zones) is not null;
+        if (rgb)
+        {
+            var switchAnswer = device.Call(GamingClass, "GetGamingLED", new WmiArgument("gmInput", KeyboardProtocol.ZoneEnableQuery));
+            log($"GetGamingLED(0x08) = {switchAnswer?.ToString() ?? "error"}");
+            log("GetGamingRgbKb = " + string.Join(" ", Enumerable.Range(1, zones)
+                .Select(zone => $"{zone}:{Hex(device.Raw(GamingClass, "GetGamingRgbKb", KeyboardProtocol.ZoneColorQuery(zone)))}")));
+        }
+        bool? fnLock = firmware.SupportsFnLockProbe ? device.GetFnLock() : null;
+        if (firmware.SupportsFnLockProbe)
+            log($"misc FnLock = {fnLock switch { true => "locked", false => "unlocked", null => "no answer" }}");
 
         return new KeyboardCapabilities
         {
             RgbBacklight = rgb,
-            Zones = rgb ? Math.Clamp(hints.KeyboardZones ?? 4, 1, 4) : 0,
-            Effects = rgb ? KeyboardProtocol.ZonedEffects : [],
+            Zones = zones,
+            Effects = rgb ? catalog.KeyboardEffects ?? KeyboardProtocol.ZonedEffects : [],
             LedArrayLength = smbios.LedArrayLength,
+            PayloadLayout = KeyboardProtocol.PayloadLayout(model),
             BacklightHotkey = hotkey,
             EcHidBacklightTimeout = ecHidBacklight,
-            WindowsKey = windowsKey && profile is not null,
+            WindowsKey = windowsKey,
             LcdOverdrive = overdrive,
-            ColorAdjust = hints.ColorAdjust ?? [1, 1, 1],
-            DefaultZoneColors = hints.DefaultZoneColors,
+            FnLock = fnLock is not null,
+            WmiBacklightBrightness = brightness,
+            ZoneSwitches = zoneSwitches,
+            ZoneSwitchReadback = switchReadback,
+            ResetsBlackStaticColors = firmware.ResetsBlackStaticColors,
+            ColorAdjust = catalog.KeyboardColorScale,
         };
+    }
+
+    private static string Hex(ulong? v) => v is { } x ? $"0x{x:X}" : "error";
+
+    /// <summary>The RPM sensors of the fans the catalog gives the model.</summary>
+    private static List<SensorId> ModelFanSensors(AcerModelProfile catalog)
+    {
+        List<SensorId> sensors = [];
+        if (catalog.CpuFanCount > 0) sensors.Add(SensorId.CpuFanSpeed);
+        if (catalog.GpuFanCount > 0) sensors.Add(SensorId.GpuFanSpeed);
+        if (catalog.GpuFanCount > 1) sensors.Add(SensorId.Gpu2FanSpeed);
+        if (catalog.SystemFanCount > 0) sensors.Add(SensorId.SystemFanSpeed);
+        if (catalog.SystemFanCount > 1) sensors.Add(SensorId.System2FanSpeed);
+        return sensors;
     }
 }

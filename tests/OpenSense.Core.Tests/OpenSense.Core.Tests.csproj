@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\OpenSense.Core\OpenSense.Core.csproj" />
+    <Compile Include="..\..\src\OpenSense.App\Helpers\CurveLabelPlacement.cs" Link="App\CurveLabelPlacement.cs" />
   </ItemGroup>
 
 </Project>

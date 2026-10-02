@@ -39,9 +39,10 @@ Bantu terjemahkan OpenSense dan halaman ini ke bahasa Anda: lihat [Terjemahan](#
 - **Aman secara default.** Anti-throttling menaikkan kipas hingga kecepatan penuh saat prosesor mendekati titik throttling, dan firmware kembali mengambil alih jika sensor atau OpenSense berhenti.
 - **Performa.** Mode operasi, CoolBoost, overclock GPU untuk tiap mode, dan rencana daya Windows. Tombol mode beralih antarmode, dan saat memakai baterai ada mode tersendiri. Pada Predator 2024 dan yang lebih baru, overclock GPU bawaan Acer untuk tiap mode ikut ditambahkan.
 - **Pencahayaan.** Warna statis per zona keyboard, atau efek Bernapas, Neon, Gelombang, Bergeser, Zoom, Meteor, dan Kerlip. Juga bilah lampu, Infinity Mirror, InfiniteRing, logo, serta tombol Turbo dan tombol mode, masing-masing dengan efeknya sendiri. Keyboard dengan lampu per tombol dan tombol MagForce bisa diberi warna untuk tiap tombol, dan punya efeknya sendiri.
-- **Keyboard dan layar.** Lampu latar mati otomatis, kunci tombol Windows, Overdrive LCD, dan sakelar GPU (MUX).
+- **Keyboard dan layar.** Lampu latar mati otomatis, kunci tombol Windows, kunci Fn, Overdrive LCD, dan sakelar GPU (MUX).
 - **Baterai.** Kesehatan baterai (kapasitas tersisa dan siklus pengisian), pengisian berhenti di 80%, kalibrasi baterai, dan isi daya perangkat USB saat laptop mati.
 - **Pengaktifan.** Animasi dan suara saat menyala, serta logo Anda sendiri saat menyala di laptop yang mendukungnya.
+- **Pengaturan BIOS.** Di laptop yang BIOS-nya menyediakannya (Predator 2025), setiap pengaturan BIOS dapat diubah di halaman **Sistem** setelah Anda mengizinkannya di **Pengaturan**. Pengaturan berbahaya punya sakelar tersendiri.
 - **Tanpa permintaan izin administrator.** Layanan latar belakang kecil menerapkan pengaturan Anda sejak komputer dinyalakan, dan tombol NitroSense membuka aplikasinya.
 - **Bahasa Anda.** 36 bahasa, mengikuti Windows atau dipilih di pengaturan.
 

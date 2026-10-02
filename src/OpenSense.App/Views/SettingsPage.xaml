@@ -130,6 +130,19 @@
                 Visibility="{x:Bind ViewModel.MagKeySwitchAvailable, Mode=OneWay}">
                 <ToggleSwitch IsOn="{x:Bind ViewModel.MagKeyOn, Mode=TwoWay}" />
             </toolkit:SettingsCard>
+            <!-- For the BIOS of the 2025 Predators on: its settings on the System page, then the dangerous ones -->
+            <toolkit:SettingsCard
+                x:Uid="Settings_BiosSettings"
+                HeaderIcon="{ui:FontIcon Glyph=&#xE713;}"
+                Visibility="{x:Bind ViewModel.BiosSettingsAvailable, Mode=OneWay}">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.BiosSettingsOn, Mode=TwoWay}" />
+            </toolkit:SettingsCard>
+            <toolkit:SettingsCard
+                x:Uid="Settings_DangerousBiosSettings"
+                HeaderIcon="{ui:FontIcon Glyph=&#xE7BA;}"
+                Visibility="{x:Bind ViewModel.DangerousBiosSettingsAvailable, Mode=OneWay}">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.DangerousBiosSettingsOn, Mode=TwoWay}" />
+            </toolkit:SettingsCard>
 
             <TextBlock x:Uid="Settings_Updates" Style="{StaticResource SectionHeaderStyle}" />
             <!-- Version and "Check now"; with an update found it opens downward to offer it -->

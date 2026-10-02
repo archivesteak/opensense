@@ -8,7 +8,7 @@ namespace OpenSense.Core.Control;
 /// and everything again after resume (Acer's agent restores its own lighting when the machine wakes, and USB lights
 /// lose theirs in sleep).
 /// </summary>
-public sealed class LightingService(IReadOnlyList<ILightingBackend> backends, TimeProvider? time = null)
+public sealed class LightingService(IReadOnlyList<ILightingBackend> backends, TimeProvider? time = null) : IDisposable
 {
     private static readonly TimeSpan ResumeDelay = TimeSpan.FromSeconds(6);
 
@@ -17,6 +17,7 @@ public sealed class LightingService(IReadOnlyList<ILightingBackend> backends, Ti
 
     private readonly TimeProvider _time = time ?? TimeProvider.System;
     private readonly object _gate = new();
+    private readonly ServiceLifetime _lifetime = new();
     private LightingConfig? _pending;
     private bool _forget;
     private bool _pumping;
@@ -38,12 +39,14 @@ public sealed class LightingService(IReadOnlyList<ILightingBackend> backends, Ti
     {
         lock (_gate)
         {
+            if (_lifetime.Stopped)
+                return Task.CompletedTask;
             Current = config;
             _pending = config;
             if (!_pumping)
             {
                 _pumping = true;
-                _pump = Task.Run(PumpAsync);
+                _pump = _lifetime.Run(_ => Task.Run(PumpAsync, CancellationToken.None));
             }
             return _pump;
         }
@@ -58,11 +61,14 @@ public sealed class LightingService(IReadOnlyList<ILightingBackend> backends, Ti
     }
 
     /// <summary>What each light shows now, where it can be read.</summary>
-    public async Task<IReadOnlyDictionary<string, LightingSettings>> ReadAsync()
+    public Task<IReadOnlyDictionary<string, LightingSettings>> ReadAsync() => _lifetime.Run(ReadCoreAsync);
+
+    private async Task<IReadOnlyDictionary<string, LightingSettings>> ReadCoreAsync(CancellationToken token)
     {
         var states = new Dictionary<string, LightingSettings>();
         foreach (var backend in backends)
         {
+            token.ThrowIfCancellationRequested();
             if (await backend.ReadAsync().ConfigureAwait(false) is { } state)
                 states[backend.Device.Id] = state;
         }
@@ -71,7 +77,16 @@ public sealed class LightingService(IReadOnlyList<ILightingBackend> backends, Ti
 
     /// <summary>The machine woke up: send ours again after Acer's agent has restored its own.</summary>
     /// <returns>Done once they are sent (the engine doesn't wait).</returns>
-    public Task OnResume() => Task.Delay(ResumeDelay, _time).ContinueWith(_ => ReapplyAsync(), TaskScheduler.Default).Unwrap();
+    public Task OnResume() => _lifetime.Run(async token =>
+    {
+        await Task.Delay(ResumeDelay, _time, token).ConfigureAwait(false);
+        if (!token.IsCancellationRequested)
+            await ReapplyAsync().ConfigureAwait(false);
+    });
+
+    public Task StopAsync() => _lifetime.StopAsync();
+
+    public void Dispose() => _lifetime.Dispose();
 
     private async Task PumpAsync()
     {
@@ -95,7 +110,7 @@ public sealed class LightingService(IReadOnlyList<ILightingBackend> backends, Ti
             LightingConfig next;
             lock (_gate)
             {
-                if (_pending is null)
+                if (_pending is null || _lifetime.Stopped)
                 {
                     _pumping = false;
                     return;
@@ -109,11 +124,15 @@ public sealed class LightingService(IReadOnlyList<ILightingBackend> backends, Ti
 
             foreach (var backend in backends)
             {
+                if (_lifetime.Stopped)
+                    return;
                 var id = backend.Device.Id;
                 if (next.For(id) is not { } settings || settings.SameAs(_applied.GetValueOrDefault(id)))
                     continue;
                 if (_sentAt.TryGetValue(id, out var sent) && MinInterval - Stopwatch.GetElapsedTime(sent) is { Ticks: > 0 } wait)
                     await Task.Delay(wait).ConfigureAwait(false);
+                if (_lifetime.Stopped)
+                    return;
                 _sentAt[id] = Stopwatch.GetTimestamp();
                 if (await backend.ApplyAsync(settings).ConfigureAwait(false))
                 {

@@ -17,6 +17,9 @@ public static class LightingBackends
                 case LightingBackendKind.EcKeyboard:
                     backends.Add(new EcKeyboardBackend(dispatcher, caps.Keyboard));
                     break;
+                case LightingBackendKind.EcKeyboardBrightness:
+                    backends.Add(new EcKeyboardBrightnessBackend(dispatcher, caps.Keyboard));
+                    break;
                 case LightingBackendKind.EcLightBar:
                     backends.Add(new EcLightBarBackend(dispatcher, caps.LightBars, caps.Smbios.LedArrayLength));
                     break;

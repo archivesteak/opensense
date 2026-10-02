@@ -39,9 +39,10 @@ Ajude a traduzir o OpenSense e esta página para o seu idioma: veja [Traduções
 - **Seguro por padrão.** O Anti-throttling leva as ventoinhas à velocidade máxima quando o processador se aproxima do ponto de throttling, e o firmware assume de novo se um sensor ou o OpenSense parar.
 - **Desempenho.** Modos de operação, CoolBoost, overclock da GPU para cada modo e planos de energia do Windows. A tecla de modo alterna entre os modos, e a bateria tem um modo próprio. Nos Predator de 2024 em diante, o overclock da GPU que a Acer define para cada modo é somado.
 - **Iluminação.** Cores estáticas por zona do teclado, ou os efeitos Respiração, Neon, Onda, Deslocamento, Zoom, Meteoro e Cintilação. Também as barras de luz, o Infinity Mirror, o InfiniteRing, o logotipo e as teclas Turbo e de modo, cada um com seus próprios efeitos. Teclados com iluminação por tecla e as teclas MagForce aceitam uma cor para cada tecla e têm efeitos próprios.
-- **Teclado e tela.** Desligamento automático da luz de fundo, bloqueio da tecla Windows, overdrive da tela LCD e a chave de GPU (MUX).
+- **Teclado e tela.** Desligamento automático da luz de fundo, bloqueio da tecla Windows, bloqueio de Fn, overdrive da tela LCD e a chave de GPU (MUX).
 - **Bateria.** Saúde da bateria (capacidade restante e ciclos de carga), parar de carregar em 80%, calibração da bateria e carregamento de dispositivos USB com o notebook desligado.
 - **Inicialização.** A animação e o som de inicialização, e seu próprio logotipo de inicialização nos notebooks compatíveis.
+- **Configurações da BIOS.** Nos notebooks cuja BIOS as oferece (os Predator de 2025), cada configuração da BIOS pode ser alterada na página **Sistema** depois que você permite isso em **Configurações**. As perigosas têm um interruptor próprio.
 - **Sem pedidos de administrador.** Um pequeno serviço em segundo plano aplica suas configurações desde a inicialização, e a tecla NitroSense abre o aplicativo.
 - **Seu idioma.** 36 idiomas, seguindo o Windows ou escolhido nas configurações.
 

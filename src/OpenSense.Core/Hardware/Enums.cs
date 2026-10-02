@@ -50,6 +50,9 @@ public enum GpuMode : byte
 {
     Hybrid = 1,
     Discrete = 2,
+
+    /// <summary>The laptop picks the GPU that drives the display itself ("Automatic Selection"); only where the BIOS lists it.</summary>
+    Automatic = 3,
 }
 
 /// <summary>How asking the firmware for a Dust Defender run went.</summary>
@@ -86,6 +89,9 @@ public enum MiscSetting : byte
     GpuModeSupport = 0x09,
     SupportedOperatingModes = 0x0A,
     OperatingMode = 0x0B,
+
+    /// <summary>Fn lock on the firmware's keyboard: 1 locked, 2 unlocked (only probed where the firmware profile has it).</summary>
+    FnLock = 0x0F,
 }
 
 /// <summary>The fans a model can have. Settings store these by name; add new ones at the end.</summary>

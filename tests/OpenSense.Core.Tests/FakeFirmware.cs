@@ -46,6 +46,8 @@ internal sealed class FakeFirmware : IWmiTransport
 
     public bool IsClassAvailable(string className) => true;
 
+    public IReadOnlyList<string> ReadStrings(string className, string propertyName) => [];
+
     public List<(string Method, byte[] Input)> ArrayCalls { get; } = [];
 
     public bool HasArrayInput(string className, string method) => method == "SetGamingKBBacklight";

@@ -39,9 +39,10 @@ Ayuda a traducir OpenSense y esta página a tu idioma: consulta [Traducciones](#
 - **Seguro por defecto.** Antilimitación térmica sube los ventiladores hasta la máxima velocidad cuando el procesador se acerca a su límite térmico, y el firmware vuelve a tomar el control si un sensor u OpenSense deja de funcionar.
 - **Rendimiento.** Modos de funcionamiento, CoolBoost, overclock de la GPU para cada modo y planes de energía de Windows. La tecla de modo cambia entre los modos, y con batería se usa un modo propio. En los Predator de 2024 en adelante se suma el overclock de la GPU que Acer fija para cada modo.
 - **Iluminación.** Colores estáticos por zona del teclado, o los efectos Respiración, Neón, Ola, Desplazamiento, Zoom, Meteoro y Centelleo. También las barras de luz, el Infinity Mirror, el InfiniteRing, el logotipo y las teclas Turbo y de modo, cada uno con sus propios efectos. Los teclados con iluminación por tecla y las teclas MagForce admiten un color para cada tecla y efectos propios.
-- **Teclado y pantalla.** Apagado automático de la retroiluminación, bloqueo de la tecla Windows, overdrive de la pantalla LCD y el conmutador de GPU (MUX).
+- **Teclado y pantalla.** Apagado automático de la retroiluminación, bloqueo de la tecla Windows, bloqueo de Fn, overdrive de la pantalla LCD y el conmutador de GPU (MUX).
 - **Batería.** Estado de la batería (capacidad restante y ciclos de carga), carga solo hasta el 80 %, calibración de la batería y carga de dispositivos USB con el portátil apagado.
 - **Arranque.** La animación y el sonido de arranque, y tu propio logotipo de arranque en los portátiles que lo admiten.
+- **Ajustes de la BIOS.** En los portátiles cuya BIOS los ofrece (los Predator de 2025), cada ajuste de la BIOS se puede cambiar en la página **Sistema** cuando lo permites en **Configuración**. Los peligrosos tienen su propio interruptor.
 - **Sin avisos de administrador.** Un pequeño servicio en segundo plano aplica tu configuración desde el inicio, y la tecla NitroSense abre la aplicación.
 - **Tu idioma.** 36 idiomas, según Windows o elegido en la configuración.
 

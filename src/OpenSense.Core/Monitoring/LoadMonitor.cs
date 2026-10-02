@@ -25,12 +25,20 @@ public sealed partial class LoadMonitor : ILoadMonitor
 
     public LoadMonitor()
     {
-        _cpu = _query.Add(@"\Processor Information(_Total)\% Processor Utility")
-            ?? _query.Add(@"\Processor(_Total)\% Processor Time");
-        _gpu3d = _query.Add(@"\GPU Engine(*engtype_3D)\Utilization Percentage");
-        _discrete = GpuAdapters.FindDiscrete(GpuAdapters.TryEnumerate());
-        CpuName = ReadCpuName();
-        _query.Collect(); // rate counters need a baseline sample
+        try
+        {
+            _cpu = _query.Add(@"\Processor Information(_Total)\% Processor Utility")
+                ?? _query.Add(@"\Processor(_Total)\% Processor Time");
+            _gpu3d = _query.Add(@"\GPU Engine(*engtype_3D)\Utilization Percentage");
+            _discrete = GpuAdapters.FindDiscrete(GpuAdapters.TryEnumerate());
+            CpuName = ReadCpuName();
+            _query.Collect(); // rate counters need a baseline sample
+        }
+        catch
+        {
+            _query.Dispose();
+            throw;
+        }
     }
 
     public (double? Cpu, double? Gpu) Sample()
@@ -71,4 +79,13 @@ public sealed partial class LoadMonitor : ILoadMonitor
     private static partial Regex LuidPattern();
 
     public void Dispose() => _query.Dispose();
+}
+
+/// <summary>Missing performance counters do not prevent firmware temperature and fan control.</summary>
+internal sealed class UnavailableLoadMonitor : ILoadMonitor
+{
+    public string? CpuName => null;
+    public string? GpuName => null;
+    public (double? Cpu, double? Gpu) Sample() => (null, null);
+    public void Dispose() { }
 }

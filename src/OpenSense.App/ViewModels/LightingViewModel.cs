@@ -124,7 +124,7 @@ public sealed partial class LightingViewModel : ObservableObject
     public bool HasKeys => Device is { Keys.Count: > 0 };
 
     /// <summary>A keyboard lit by zones.</summary>
-    public bool IsKeyboard => Device?.Location == LightingLocation.Keyboard && !HasKeys;
+    public bool IsKeyboard => Device is { Location: LightingLocation.Keyboard, Zones: > 0 } && !HasKeys;
 
     public bool IsLightBar => Device?.Location is LightingLocation.LightBar or LightingLocation.InfinityMirror or LightingLocation.FrontLightBar
         or LightingLocation.LeftLightBar or LightingLocation.RightLightBar or LightingLocation.RearLightBar or LightingLocation.InfiniteRing;
@@ -137,7 +137,7 @@ public sealed partial class LightingViewModel : ObservableObject
     [NotifyPropertyChangedFor(nameof(IsStatic), nameof(IsEffect), nameof(IsPerKey))]
     public partial int ModeIndex { get; set; }
 
-    public bool IsStatic => ModeIndex == 0;
+    public bool IsStatic => ModeIndex == 0 && Device is { Zones: > 0 };
 
     public bool IsEffect => ModeIndex == 1;
 
@@ -161,7 +161,7 @@ public sealed partial class LightingViewModel : ObservableObject
     [NotifyPropertyChangedFor(nameof(IsSingleColor))]
     public partial bool HasZones { get; set; }
 
-    public bool IsSingleColor => !HasZones;
+    public bool IsSingleColor => !HasZones && Device is { Zones: > 0 };
 
     /// <summary>The effects this light offers.</summary>
     [ObservableProperty]
@@ -418,7 +418,7 @@ public sealed partial class LightingViewModel : ObservableObject
         LayoutIndex = Math.Max(0, LayoutValues.ToList().IndexOf(lighting.Layout ?? device.Layout ?? KeyboardLayout.Ansi));
 
         Zones.Clear();
-        for (var i = 0; i < Math.Max(device.Zones, 1); i++)
+        for (var i = 0; i < device.Zones; i++)
         {
             var setting = lighting.Zone(i);
             var color = ColorHex.To(setting.Color);
@@ -431,6 +431,10 @@ public sealed partial class LightingViewModel : ObservableObject
             Zones.Add(zone);
         }
         AllZonesColor = Zones.FirstOrDefault()?.Color ?? AllZonesColor;
+        // A rebuilt session can replace a backend without changing DeviceIndex.
+        foreach (var name in new[] { nameof(Device), nameof(HasKeys), nameof(IsKeyboard), nameof(IsLightBar), nameof(IsLogo),
+            nameof(IsStatic), nameof(IsSingleColor), nameof(LayoutChoice) })
+            OnPropertyChanged(name);
         PreviewRevision++;
     }
 

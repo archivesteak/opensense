@@ -39,9 +39,10 @@ Aidez à traduire OpenSense et cette page dans votre langue : voir [Traductions
 - **Sûr par défaut.** Anti-bridage pousse les ventilateurs jusqu’à pleine vitesse quand le processeur approche de son seuil de bridage, et le firmware reprend la main si un capteur ou OpenSense s’arrête.
 - **Performances.** Modes de fonctionnement, CoolBoost, overclocking du GPU pour chaque mode et modes de gestion de l’alimentation Windows. La touche de mode passe d’un mode à l’autre, et la batterie a son propre mode. Sur les Predator de 2024 et après, l’overclocking du GPU qu’Acer prévoit pour chaque mode s’y ajoute.
 - **Éclairage.** Des couleurs fixes par zone du clavier, ou les effets Respiration, Néon, Vague, Défilement, Zoom, Météore et Scintillement. Aussi les barres lumineuses, l’Infinity Mirror, l’InfiniteRing, le logo et les touches Turbo et Mode, chacun avec ses propres effets. Les claviers éclairés touche par touche et les touches MagForce prennent une couleur par touche et ont leurs propres effets.
-- **Clavier et écran.** Extinction auto du rétroéclairage, verrouillage de la touche Windows, overdrive LCD et le commutateur de GPU (MUX).
+- **Clavier et écran.** Extinction auto du rétroéclairage, verrouillage de la touche Windows, verrouillage Fn, overdrive LCD et le commutateur de GPU (MUX).
 - **Batterie.** État de la batterie (capacité restante et cycles de charge), arrêt de la charge à 80 %, calibrage de la batterie et charge des appareils USB quand l’ordinateur portable est éteint.
 - **Démarrage.** L’animation et le son de démarrage, et votre propre logo de démarrage sur les ordinateurs portables qui le permettent.
+- **Paramètres du BIOS.** Sur les ordinateurs portables dont le BIOS les propose (les Predator de 2025), chaque paramètre du BIOS peut être modifié sur la page **Système** une fois que vous l’avez autorisé dans **Paramètres**. Les paramètres dangereux ont leur propre interrupteur.
 - **Aucune demande d’administrateur.** Un petit service en arrière-plan applique vos réglages dès le démarrage, et la touche NitroSense ouvre l’application.
 - **Votre langue.** 36 langues, selon Windows ou au choix dans les paramètres.
 

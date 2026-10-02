@@ -91,6 +91,16 @@
                             </StackPanel>
                         </StackPanel>
                     </InfoBar>
+                    <!-- A page that could not be opened (its text and button are set when that happens) -->
+                    <InfoBar
+                        x:Name="NavigationFailedBar"
+                        Margin="0,0,0,8"
+                        IsOpen="False"
+                        Severity="Error">
+                        <InfoBar.ActionButton>
+                            <Button x:Name="NavigationRetryButton" Click="OnNavigationRetry" />
+                        </InfoBar.ActionButton>
+                    </InfoBar>
                     <ItemsControl ItemsSource="{x:Bind Shell.Notices}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="services:Notice">

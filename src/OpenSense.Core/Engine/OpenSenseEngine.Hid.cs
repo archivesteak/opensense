@@ -24,21 +24,48 @@ public sealed partial class OpenSenseEngine
 
     private Timer? _hidTimer;
     private readonly HashSet<string> _hidChanges = new(StringComparer.OrdinalIgnoreCase);
+    private Task? _hidDrain;
 
-    /// <summary>Opens the HID lights and merges them into what the firmware probe found (their probe goes into the diagnostics).</summary>
+    /// <summary>
+    /// Opens the HID lights and merges them into what the firmware probe found (their probe goes into the diagnostics).
+    /// They are optional: when opening them fails, the firmware's lights stay, and a later HID change tries again.
+    /// </summary>
     private DeviceCapabilities DetectHidLights(DeviceCapabilities probed)
     {
+        try
+        {
+            var (lights, capabilities) = OpenHidLights(probed);
+            _hidLights = lights;
+            return capabilities;
+        }
+        catch (Exception ex) when (ex is not OutOfMemoryException)
+        {
+            LogOptionalFailed(ex, "the HID lights");
+            return probed with { Diagnostics = probed.Diagnostics + $"HID lights: could not open them: {ex.GetType().Name}: {ex.Message}{Environment.NewLine}" };
+        }
+    }
+
+    private (HidLights Lights, DeviceCapabilities Capabilities) OpenHidLights(DeviceCapabilities probed)
+    {
         var log = new StringBuilder();
-        _hidLights = HidLights.Open(_hid!, _deviceName, line => log.AppendLine(line));
-        var merged = _hidLights.Merge(probed);
-        var summary = merged.Lights.Count == 0 ? "none" : string.Join(", ", merged.Lights.Select(l => $"{l.Id} ({l.Backend}, {l.Zones} zones)"));
-        log.AppendLine(CultureInfo.InvariantCulture, $"=> lights with HID and USB devices: {summary}; USB keyboard settings: {_hidLights.KeyboardSettings}");
-        return merged with { Diagnostics = probed.Diagnostics + log };
+        var lights = HidLights.Open(_hid!, _deviceName, line => log.AppendLine(line));
+        try
+        {
+            var merged = lights.Merge(probed);
+            var summary = merged.Lights.Count == 0 ? "none" : string.Join(", ", merged.Lights.Select(l => $"{l.Id} ({l.Backend}, {l.Zones} zones)"));
+            log.AppendLine(CultureInfo.InvariantCulture, $"=> lights with HID and USB devices: {summary}; USB keyboard settings: {lights.KeyboardSettings}");
+            return (lights, merged with { Diagnostics = probed.Diagnostics + log });
+        }
+        catch
+        {
+            lights.Dispose();
+            throw;
+        }
     }
 
     private void WatchHid()
     {
-        _hidTimer = new Timer(_ => _ = RescanHidAsync(), null, Timeout.Infinite, Timeout.Infinite);
+        _hidTimer = new Timer(_ => _ = ObserveHidRescanAsync(), null, Timeout.Infinite, Timeout.Infinite);
         _hid!.Changed += OnHidChanged;
     }
 
@@ -46,8 +73,35 @@ public sealed partial class OpenSenseEngine
     {
         lock (_hidChanges)
         {
+            if (Volatile.Read(ref _disposed) != 0 || _hidTimer is null)
+                return;
             _hidChanges.Add(path);
-            _hidTimer?.Change(HidSettleDelay, Timeout.InfiniteTimeSpan);
+            _hidTimer.Change(HidSettleDelay, Timeout.InfiniteTimeSpan);
+        }
+    }
+
+    private async Task ObserveHidRescanAsync()
+    {
+        try
+        {
+            await RescanHidAsync().ConfigureAwait(false);
+        }
+        catch (Exception ex) when (ex is not OutOfMemoryException)
+        {
+            LogHidRescanFailed(ex);
+            lock (_hidChanges)
+            {
+                if ((_hidDrain is not null || _hidChanges.Count > 0) && Volatile.Read(ref _disposed) == 0)
+                    _hidTimer?.Change(HidSettleDelay, Timeout.InfiniteTimeSpan);
+            }
+            try
+            {
+                OnNotice(new ControlNotice(NoticeKind.LightingRejected, "HID lighting or keyboard settings are unavailable while discovery retries: " + ex.Message));
+            }
+            catch (Exception noticeError) when (noticeError is not OutOfMemoryException)
+            {
+                LogBackgroundFailed(noticeError, "HID recovery notice");
+            }
         }
     }
 
@@ -70,32 +124,43 @@ public sealed partial class OpenSenseEngine
             if (_state != EngineState.Ready || _hid is null || Volatile.Read(ref _disposed) != 0)
                 return;
             var present = _hid.Enumerate().Where(HidLights.Relevant).Select(d => d.Path).ToHashSet(StringComparer.OrdinalIgnoreCase);
-            if (!changed.Any(p => _hidLights.Paths.Contains(p) || present.Contains(p)))
+            if (_hidDrain is null && !changed.Any(p => _hidLights.Paths.Contains(p) || present.Contains(p)))
                 return;
-            await Task.Run(() =>
+            // Retain this drain across a timeout: a later arrival must wait for the same old owners.
+            _hidDrain ??= DrainHidServicesAsync(StopLighting(), StopKeyboard());
+            await _hidDrain.WaitAsync(StopWait).ConfigureAwait(false);
+            var (lights, detected) = await Task.Run(() => OpenHidLights(_probed with { ModeKey = _detected.ModeKey }))
+                .ConfigureAwait(false);
+            _hidLights.Dispose();
+            _hidLights = lights;
+            _detected = detected;
+            _capabilities = Current.Overrides.Apply(_detected);
+            try
             {
-                StopLighting();
-                StopKeyboard();
-                // After what the lighting thread still has queued for them.
-                var old = _hidLights;
-                _lightingWorker?.InvokeAsync(() =>
-                {
-                    old.Dispose();
-                    return true;
-                }).Wait();
-                _detected = DetectHidLights(_probed with { ModeKey = _detected.ModeKey });
-                _capabilities = Current.Overrides.Apply(_detected);
                 StartKeyboard(_controller!, Current.Keyboard);
                 StartLighting(_controller!, Current.Lighting);
-            }).ConfigureAwait(false);
+            }
+            catch
+            {
+                // A partially created replacement is an owner too: drain it before the next retry.
+                _hidDrain = DrainHidServicesAsync(StopLighting(), StopKeyboard());
+                throw;
+            }
+            _hidDrain = null;
             rebuilt = Snapshot();
+        }
+        catch
+        {
+            lock (_hidChanges)
+                _hidChanges.UnionWith(changed);
+            throw;
         }
         finally
         {
             _sessionGate.Release();
         }
-        var lights = string.Join(", ", rebuilt.Capabilities.Lights.Select(l => l.Id));
-        LogHidRescan(lights);
+        var lightNames = string.Join(", ", rebuilt.Capabilities.Lights.Select(l => l.Id));
+        LogHidRescan(lightNames);
         Rebuilt?.Invoke(this, rebuilt);
     }
 
@@ -103,28 +168,62 @@ public sealed partial class OpenSenseEngine
     {
         _keyboard = new KeyboardService(dispatcher, _capabilities.Keyboard, _hidLights.KeyboardSettings ? _hidLights.Keyboard : null);
         _keyboard.Notice += OnNotice;
-        _ = _keyboard.ApplyAsync(settings);
+        ObserveWork(_keyboard.ApplyAsync(settings), "keyboard settings");
     }
 
-    private void StopKeyboard()
+    private Task StopKeyboard()
     {
-        if (_keyboard is { } keyboard)
+        var keyboard = _keyboard;
+        if (keyboard is not null)
             keyboard.Notice -= OnNotice;
         _keyboard = null;
+        return keyboard?.StopAsync() ?? Task.CompletedTask;
     }
 
-    private void StopHid()
+    private async Task DrainHidServicesAsync(Task lightingStopped, Task keyboardStopped)
+    {
+        try
+        {
+            await Task.WhenAll(lightingStopped, keyboardStopped).ConfigureAwait(false);
+        }
+        catch (Exception ex) when (ex is not OutOfMemoryException)
+        {
+            // Both owners are finished even if one rejected a queued request while stopping.
+            LogStopFailed(ex);
+        }
+    }
+
+    private async Task StopHidAsync()
     {
         if (_hid is { } hid)
             hid.Changed -= OnHidChanged;
-        _hidTimer?.Dispose();
-        _hidTimer = null;
-        _lightingWorker?.Dispose();
+        lock (_hidChanges)
+        {
+            _hidTimer?.Dispose();
+            _hidTimer = null;
+            _hidChanges.Clear();
+        }
+        if (_hidDrain is { } drain)
+            await drain.ConfigureAwait(false);
+        if (_lightingWorker is { } worker)
+            await worker.StopAsync().ConfigureAwait(false);
+        _lightingWorker = null;
         _hidLights.Dispose();
         _hidLights = HidLights.None;
         (_hid as IDisposable)?.Dispose();
+        _hid = null;
     }
 
     [LoggerMessage(Level = LogLevel.Information, Message = "HID devices came or went: lights now {Lights}")]
     private partial void LogHidRescan(string lights);
+
+    [LoggerMessage(Level = LogLevel.Warning, Message = "Could not rebuild HID lights and keyboard settings; the old work is drained before retrying")]
+    private partial void LogHidRescanFailed(Exception ex);
+
+    private sealed class UnavailableHidBus : IHidBus
+    {
+        public IReadOnlyList<HidDeviceInfo> Enumerate() => [];
+        public IHidDevice? Open(HidDeviceInfo device) => null;
+        public event Action<string>? Changed { add { } remove { } }
+    }
 }

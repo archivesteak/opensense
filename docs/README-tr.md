@@ -39,9 +39,10 @@ OpenSense'i ve bu sayfayı kendi dilinize çevirmemize yardım edin: [Çeviriler
 - **Varsayılan olarak güvenli.** Kısılma önleme, işlemci kısılma noktasına yaklaştıkça fanları tam hıza çıkarır; bir sensör ya da OpenSense durursa denetimi yeniden bellenim devralır.
 - **Performans.** Çalışma modları, CoolBoost, her mod için GPU hız aşırtma ve Windows güç planları. Mod tuşu modlar arasında geçiş yapar; pil gücü için ayrı bir mod seçilir. 2024 ve sonrası Predator'larda Acer'ın her mod için belirlediği GPU hız aşırtma da eklenir.
 - **Aydınlatma.** Klavye bölgesi başına sabit renkler ya da Nefes, Neon, Dalga, Kayma, Yakınlaştırma, Meteor ve Parıltı efektleri. Işık çubukları, Infinity Mirror, InfiniteRing, logo ve Turbo ile Mod tuşları da, her biri kendi efektleriyle. Tuş başına aydınlatmalı klavyeler ve MagForce tuşları her tuş için ayrı bir renk alır ve kendi efektlerine sahiptir.
-- **Klavye ve ekran.** Arka ışığı otomatik kapatma, Windows tuşu kilidi, LCD overdrive ve GPU (MUX) anahtarı.
+- **Klavye ve ekran.** Arka ışığı otomatik kapatma, Windows tuşu kilidi, Fn kilidi, LCD overdrive ve GPU (MUX) anahtarı.
 - **Pil.** Pil sağlığı (kalan kapasite ve şarj döngüleri), şarjı %80'de durdurma, pil kalibrasyonu ve dizüstü bilgisayar kapalıyken USB cihazlarını şarj etme.
 - **Başlangıç.** Açılış animasyonu ve sesi ile destekleyen dizüstü bilgisayarlarda kendi açılış logonuz.
+- **BIOS ayarları.** BIOS'unun sunduğu dizüstü bilgisayarlarda (2025 Predator'lar), **Ayarlar**'dan izin verdiğinizde her BIOS ayarı **Sistem** sayfasından değiştirilebilir. Tehlikeli olanların ayrı bir anahtarı vardır.
 - **Yönetici istemi yok.** Küçük bir arka plan hizmeti ayarlarınızı sistem açılışından itibaren uygular ve NitroSense tuşu uygulamayı açar.
 - **Sizin diliniz.** 36 dil; Windows'u izler veya ayarlardan seçilir.
 

@@ -183,6 +183,10 @@
   <data name="Notice_WindowsKeyRejected" xml:space="preserve">
     <value>سفت‌افزار تغییر کلید Windows را رد کرد.</value>
   </data>
+  <data name="Notice_FnLockRejected" xml:space="preserve">
+    <value>میان‌افزار تغییر قفل Fn را نپذیرفت.</value>
+    <comment>The firmware rejected the requested Fn lock setting.</comment>
+  </data>
   <data name="Notice_LcdOverdriveRejected" xml:space="preserve">
     <value>نمایشگر تغییر overdrive را رد کرد.</value>
     <comment>Overdrive = LCD overdrive, a screen setting that speeds up pixel response.</comment>
@@ -201,6 +205,31 @@
   </data>
   <data name="Notice_GpuModeRejected" xml:space="preserve">
     <value>سفت‌افزار تغییر حالت GPU را رد کرد.</value>
+  </data>
+  <data name="Notice_Bios_Title" xml:space="preserve">
+    <value>تنظیمات BIOS</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_BiosPasswordSet" xml:space="preserve">
+    <value>گذرواژه BIOS ذخیره شد. پس از راه‌اندازی مجدد لپ‌تاپ اعمال می‌شود.</value>
+  </data>
+  <data name="Notice_BiosPasswordRemoved" xml:space="preserve">
+    <value>گذرواژه BIOS حذف شد. پس از راه‌اندازی مجدد لپ‌تاپ اعمال می‌شود.</value>
+  </data>
+  <data name="Notice_BiosOff" xml:space="preserve">
+    <value>تنظیمات BIOS در تنظیمات خاموش است.</value>
+  </data>
+  <data name="Notice_BiosUnsupported" xml:space="preserve">
+    <value>این BIOS از این کار پشتیبانی نمی‌کند.</value>
+  </data>
+  <data name="Notice_BiosRejected" xml:space="preserve">
+    <value>BIOS آن را نپذیرفت.</value>
+  </data>
+  <data name="Notice_BiosLocked" xml:space="preserve">
+    <value>گذرواژه‌های نادرست بیش از حد. برای تلاش دوباره لپ‌تاپ را راه‌اندازی مجدد کنید.</value>
+  </data>
+  <data name="Notice_BiosFailed" xml:space="preserve">
+    <value>BIOS پاسخ نداد.</value>
   </data>
   <data name="Notice_GpuClocks_Title" xml:space="preserve">
     <value>اورکلاک GPU</value>
@@ -258,6 +287,13 @@
   </data>
   <data name="GpuSwitch_HybridMessage" xml:space="preserve">
     <value>GPU مجتمع نمایشگر را اداره می‌کند و GPU مجزا فقط در صورت نیاز روشن می‌شود و باتری را حفظ می‌کند. برای اعمال این تغییر، Windows باید دوباره راه‌اندازی شود.</value>
+  </data>
+  <data name="GpuSwitch_AutomaticTitle" xml:space="preserve">
+    <value>به انتخاب خودکار گرافیک تغییر داده شود؟</value>
+    <comment>Dialog title.</comment>
+  </data>
+  <data name="GpuSwitch_AutomaticMessage" xml:space="preserve">
+    <value>لپ‌تاپ خودش انتخاب می‌کند که GPU مجتمع نمایشگر را اداره کند یا GPU مجزا. برای اعمال این تغییر، Windows باید دوباره راه‌اندازی شود.</value>
   </data>
   <data name="GpuSwitch_RestartNow" xml:space="preserve">
     <value>اکنون راه‌اندازی مجدد شود</value>
@@ -1044,6 +1080,10 @@
     <value>کلیدهای Windows و منو</value>
     <comment>The Windows logo key and the Menu (application) key.</comment>
   </data>
+  <data name="System_FnLock.Header" xml:space="preserve">
+    <value>قفل Fn</value>
+    <comment>Keyboard Fn lock toggle, shown only when the firmware reports support.</comment>
+  </data>
   <data name="System_WindowsKey.Description" xml:space="preserve">
     <value>خاموش کنید تا کلیدهای Windows و منو بازی‌ها را قطع نکنند.</value>
   </data>
@@ -1100,6 +1140,10 @@
   <data name="System_GpuDiscrete.Content" xml:space="preserve">
     <value>مجزا</value>
     <comment>GPU mode: only the NVIDIA graphics chip. Short: a segmented button.</comment>
+  </data>
+  <data name="System_GpuAutomatic.Content" xml:space="preserve">
+    <value>خودکار</value>
+    <comment>GPU mode: the laptop chooses which graphics chip drives the display (Acer: Automatic Selection). Short: a segmented button.</comment>
   </data>
   <data name="System_GpuRestart.Title" xml:space="preserve">
     <value>برای تغییر حالت GPU دوباره راه‌اندازی کنید</value>
@@ -1371,6 +1415,147 @@
     <value>انرژی</value>
     <comment>Section title.</comment>
   </data>
+  <data name="System_Bios.Text" xml:space="preserve">
+    <value>BIOS</value>
+    <comment>Section header on the System page; BIOS is not translated.</comment>
+  </data>
+  <data name="System_BiosRestart.Title" xml:space="preserve">
+    <value>برای اعمال تغییرات BIOS راه‌اندازی مجدد کنید</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="System_BiosRestart.Message" xml:space="preserve">
+    <value>تغییرات BIOS پس از راه‌اندازی مجدد لپ‌تاپ اعمال می‌شوند.</value>
+  </data>
+  <data name="System_BiosSettings.Header" xml:space="preserve">
+    <value>تنظیمات BIOS</value>
+    <comment>Expander on the System page that opens to every BIOS setting.</comment>
+  </data>
+  <data name="Bios_SetPassword.Content" xml:space="preserve">
+    <value>تنظیم…</value>
+    <comment>Button on a BIOS password setting; opens a dialog to type the new password.</comment>
+  </data>
+  <data name="Bios_RemovePassword.Content" xml:space="preserve">
+    <value>حذف…</value>
+    <comment>Button on a BIOS password setting; takes the password away after a question.</comment>
+  </data>
+  <data name="Bios_LoadDefaults.Content" xml:space="preserve">
+    <value>بارگیری پیش‌فرض‌های BIOS</value>
+    <comment>Button under the BIOS settings: puts every BIOS setting back to Acer's defaults.</comment>
+  </data>
+  <data name="Bios_LoadUserDefaults.Content" xml:space="preserve">
+    <value>بارگیری پیش‌فرض‌های ذخیره‌شده</value>
+    <comment>Button under the BIOS settings: loads the defaults the user saved in the BIOS setup.</comment>
+  </data>
+  <data name="BiosSettings_Footer.Text" xml:space="preserve">
+    <value>نام‌ها و مقادیر همان‌هایی هستند که خود BIOS می‌دهد، به انگلیسی. تغییر پس از راه‌اندازی مجدد لپ‌تاپ اعمال می‌شود.</value>
+    <comment>Under the list of BIOS settings.</comment>
+  </data>
+  <data name="Bios_StatusIdle" xml:space="preserve">
+    <value>برای خواندن تنظیمات از BIOS باز کنید.</value>
+    <comment>Under "BIOS settings" before it is opened.</comment>
+  </data>
+  <data name="Bios_StatusReading" xml:space="preserve">
+    <value>در حال خواندن BIOS…</value>
+    <comment>Under "BIOS settings" while the BIOS is being read.</comment>
+  </data>
+  <data name="Bios_StatusCount" xml:space="preserve">
+    <value>تنظیمات یافت‌شده: {0}</value>
+    <comment>{0} = how many settings the BIOS listed.</comment>
+  </data>
+  <data name="Bios_StatusNone" xml:space="preserve">
+    <value>این BIOS هیچ تنظیمی را به Windows نشان نمی‌دهد.</value>
+    <comment>Under "BIOS settings" when the BIOS lists none.</comment>
+  </data>
+  <data name="Bios_Dangerous" xml:space="preserve">
+    <value>خطرناک: مقدار نادرست می‌تواند مانع روشن شدن لپ‌تاپ شود.</value>
+    <comment>Under a dangerous BIOS setting that can be changed.</comment>
+  </data>
+  <data name="Bios_DangerousLocked" xml:space="preserve">
+    <value>خطرناک. برای تغییر آن، «فعال‌سازی تنظیمات خطرناک BIOS» را در تنظیمات روشن کنید.</value>
+    <comment>Under a dangerous BIOS setting while dangerous BIOS settings are off in Settings; "Enable dangerous BIOS settings" is that setting's name.</comment>
+  </data>
+  <data name="BiosPassword_Title" xml:space="preserve">
+    <value>گذرواژه BIOS</value>
+    <comment>Dialog title asking for the BIOS supervisor password.</comment>
+  </data>
+  <data name="BiosPassword_Message" xml:space="preserve">
+    <value>BIOS پیش از اجازه‌ی تغییر تنظیمات، گذرواژه مدیر خود را می‌خواهد.</value>
+    <comment>In the dialog asking for the BIOS supervisor password.</comment>
+  </data>
+  <data name="BiosPassword_Wrong" xml:space="preserve">
+    <value>گذرواژه نادرست بود. دوباره تلاش کنید.</value>
+    <comment>In the dialog asking for the BIOS supervisor password, after a wrong one.</comment>
+  </data>
+  <data name="BiosPassword_Continue" xml:space="preserve">
+    <value>ادامه</value>
+    <comment>Button of the dialog asking for the BIOS supervisor password.</comment>
+  </data>
+  <data name="BiosNewPassword_Title" xml:space="preserve">
+    <value>گذرواژه جدید BIOS</value>
+    <comment>Dialog title for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosNewPassword_Message" xml:space="preserve">
+    <value>{0}: گذرواژه جدید را دو بار وارد کنید. BIOS فقط حروف، ارقام و نمادهای موجود در صفحه‌کلید انگلیسی را می‌پذیرد.</value>
+    <comment>In the dialog for setting a BIOS password. {0} = the BIOS's name for the setting, in English (for example "Set Supervisor Password").</comment>
+  </data>
+  <data name="BiosNewPassword_First" xml:space="preserve">
+    <value>گذرواژه جدید</value>
+    <comment>Label of the first box in the dialog for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosNewPassword_Again" xml:space="preserve">
+    <value>تکرار گذرواژه</value>
+    <comment>Label of the second box in the dialog for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosNewPassword_Set" xml:space="preserve">
+    <value>تنظیم گذرواژه</value>
+    <comment>Button of the dialog for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosPasswordSave_Title" xml:space="preserve">
+    <value>گذرواژه BIOS ذخیره شود؟</value>
+    <comment>Dialog title before a BIOS password is saved.</comment>
+  </data>
+  <data name="BiosPasswordSave_Message" xml:space="preserve">
+    <value>{0}: BIOS از راه‌اندازی بعدی از این گذرواژه استفاده می‌کند. اگر آن را فراموش کنید، ممکن است دسترسی به تنظیم BIOS را از دست بدهید.</value>
+    <comment>Dialog text before a BIOS password is saved. {0} = the BIOS's name for the setting, in English (for example "Set Supervisor Password").</comment>
+  </data>
+  <data name="BiosPasswordSave_Save" xml:space="preserve">
+    <value>ذخیره گذرواژه</value>
+    <comment>Button of the dialog that saves a BIOS password.</comment>
+  </data>
+  <data name="BiosDanger_Title" xml:space="preserve">
+    <value>تنظیم خطرناک تغییر کند؟</value>
+    <comment>Dialog title before a dangerous BIOS setting changes.</comment>
+  </data>
+  <data name="BiosDanger_Message" xml:space="preserve">
+    <value>{0} پس از راه‌اندازی مجدد لپ‌تاپ روی {1} تنظیم می‌شود.
+
+مقدار نادرست می‌تواند مانع روشن شدن لپ‌تاپ شود یا آن را از صفحه‌کلید، درایو یا پورت‌هایش جدا کند. فقط در صورتی ادامه دهید که می‌دانید این تنظیم چه می‌کند.</value>
+    <comment>Dialog text before a dangerous BIOS setting changes. {0} = the setting's name, {1} = the new value, both as the BIOS gives them (English). Two line breaks.</comment>
+  </data>
+  <data name="BiosDanger_Change" xml:space="preserve">
+    <value>تغییر</value>
+    <comment>Button of the dialog that goes ahead with a dangerous BIOS setting change.</comment>
+  </data>
+  <data name="BiosDefaults_Title" xml:space="preserve">
+    <value>پیش‌فرض‌های Acer بارگیری شود؟</value>
+    <comment>Dialog title before Acer's BIOS defaults are loaded.</comment>
+  </data>
+  <data name="BiosDefaults_Message" xml:space="preserve">
+    <value>همه تنظیمات BIOS پس از راه‌اندازی مجدد لپ‌تاپ به پیش‌فرض‌های Acer برمی‌گردند، از جمله آن‌هایی که OpenSense نشان نمی‌دهد.</value>
+    <comment>Dialog text before Acer's BIOS defaults are loaded.</comment>
+  </data>
+  <data name="BiosUserDefaults_Title" xml:space="preserve">
+    <value>پیش‌فرض‌های ذخیره‌شده شما بارگیری شود؟</value>
+    <comment>Dialog title before the defaults the user saved in the BIOS setup are loaded.</comment>
+  </data>
+  <data name="BiosUserDefaults_Message" xml:space="preserve">
+    <value>همه تنظیمات BIOS پس از راه‌اندازی مجدد لپ‌تاپ به پیش‌فرض‌های ذخیره‌شده در تنظیم BIOS برمی‌گردند، از جمله آن‌هایی که OpenSense نشان نمی‌دهد.</value>
+    <comment>Dialog text before the defaults the user saved in the BIOS setup are loaded.</comment>
+  </data>
+  <data name="BiosDefaults_Load" xml:space="preserve">
+    <value>بارگیری</value>
+    <comment>Button of the dialogs that go ahead with loading BIOS defaults.</comment>
+  </data>
   <data name="System_PowerPlan.Header" xml:space="preserve">
     <value>طرح انرژی</value>
     <comment>Windows power plan setting.</comment>
@@ -1579,6 +1764,46 @@ GPU: {1}</value>
     <value>نورهای جداگانه زیر W، A، S و D که از نام مدل لپ‌تاپ شناسایی می‌شوند. اگر برای دستگاه شما درست نیست، این را تغییر دهید.</value>
     <comment>Under "MagForce key lights".</comment>
   </data>
+  <data name="Settings_BiosSettings.Header" xml:space="preserve">
+    <value>فعال‌سازی تنظیمات BIOS</value>
+    <comment>Setting in "Your laptop": lets OpenSense show and change the BIOS's own settings.</comment>
+  </data>
+  <data name="Settings_BiosSettings.Description" xml:space="preserve">
+    <value>تنظیمات BIOS را در صفحه سیستم نشان می‌دهد و به OpenSense اجازه می‌دهد آن‌ها را تغییر دهد. تغییر پس از راه‌اندازی مجدد لپ‌تاپ اعمال می‌شود.</value>
+    <comment>Under "Enable BIOS settings".</comment>
+  </data>
+  <data name="Settings_DangerousBiosSettings.Header" xml:space="preserve">
+    <value>فعال‌سازی تنظیمات خطرناک BIOS</value>
+    <comment>Setting shown once BIOS settings are enabled: also allows the dangerous ones.</comment>
+  </data>
+  <data name="Settings_DangerousBiosSettings.Description" xml:space="preserve">
+    <value>تنظیماتی را هم مجاز می‌کند که می‌توانند مانع روشن شدن لپ‌تاپ شوند یا آن را از صفحه‌کلید، درایو یا پورت‌هایش جدا کنند. فقط برای کسانی که می‌دانند این تنظیمات چه می‌کنند.</value>
+    <comment>Under "Enable dangerous BIOS settings".</comment>
+  </data>
+  <data name="BiosDangerousEnable_Title" xml:space="preserve">
+    <value>تنظیمات خطرناک BIOS فعال شود؟</value>
+    <comment>First dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousEnable_Message" xml:space="preserve">
+    <value>این تنظیمات می‌توانند مانع روشن شدن لپ‌تاپ شوند، آن را از صفحه‌کلید، درایو یا پورت‌هایش جدا کنند یا غیرقابل بازگشت باشند. مقدار نادرست می‌تواند لپ‌تاپ را نیازمند تعمیر کند.</value>
+    <comment>Text of the first dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousEnable_Continue" xml:space="preserve">
+    <value>ادامه</value>
+    <comment>Button of the first dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousSure_Title" xml:space="preserve">
+    <value>مطمئن هستید؟</value>
+    <comment>Title of the second dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousSure_Message" xml:space="preserve">
+    <value>آخرین بررسی. با روشن بودن این گزینه، OpenSense می‌تواند تنظیماتی را تغییر دهد که ممکن است مانع روشن شدن لپ‌تاپ شوند. فقط در صورتی آن را روشن کنید که می‌دانید این تنظیمات چه می‌کنند.</value>
+    <comment>Text of the second dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousSure_Enable" xml:space="preserve">
+    <value>فعال‌سازی</value>
+    <comment>Button of the second dialog when "Enable dangerous BIOS settings" is switched on: goes ahead.</comment>
+  </data>
   <data name="Settings_OperatingModes_Supported" xml:space="preserve">
     <value>{0}، همان‌طور که نرم‌افزار Acer در این مدل ارائه می‌دهد. {1}</value>
     <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
@@ -1768,5 +1993,13 @@ GPU: {1}</value>
   <data name="GpuClocks_FollowFirmware.Description" xml:space="preserve">
     <value>اورکلاکی که میان‌افزار برای هر حالت تعیین می‌کند، به‌علاوهٔ آفست‌های زیر.</value>
     <comment>Under "Acer's overclocking": the firmware's own overclock for each mode is added to the user's offsets set below it.</comment>
+  </data>
+  <data name="Navigation_FailedTitle" xml:space="preserve">
+    <value>این صفحه باز نشد</value>
+    <comment>Title when navigating to a page fails. The app remains open and offers a retry.</comment>
+  </data>
+  <data name="Navigation_Retry" xml:space="preserve">
+    <value>تلاش دوباره</value>
+    <comment>Button to retry opening the page after a navigation failure.</comment>
   </data>
 </root>

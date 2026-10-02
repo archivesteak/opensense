@@ -25,15 +25,17 @@ public sealed partial class OpenSenseEngine
             _lightingWorker ??= new LightingWorker();
         var lighting = new LightingService(LightingBackends.Create(dispatcher, _capabilities, _hidLights, _lightingWorker));
         lighting.Notice += OnNotice;
-        _lightingAtStart = lighting.ReadAsync().GetAwaiter().GetResult();
         _lighting = lighting;
-        _ = lighting.ApplyAsync(settings);
+        _lightingAtStart = lighting.ReadAsync().GetAwaiter().GetResult();
+        ObserveWork(lighting.ApplyAsync(settings), "apply lighting");
     }
 
-    private void StopLighting()
+    private Task StopLighting()
     {
-        if (_lighting is { } lighting)
+        var lighting = _lighting;
+        if (lighting is not null)
             lighting.Notice -= OnNotice;
         _lighting = null;
+        return lighting?.StopAsync() ?? Task.CompletedTask;
     }
 }

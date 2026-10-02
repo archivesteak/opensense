@@ -183,6 +183,10 @@
   <data name="Notice_WindowsKeyRejected" xml:space="preserve">
     <value>Püsivara lükkas Windowsi klahvi muudatuse tagasi.</value>
   </data>
+  <data name="Notice_FnLockRejected" xml:space="preserve">
+    <value>Püsivara ei võtnud Fn-luku muudatust vastu.</value>
+    <comment>The firmware rejected the requested Fn lock setting.</comment>
+  </data>
   <data name="Notice_LcdOverdriveRejected" xml:space="preserve">
     <value>Ekraan lükkas overdrive'i muudatuse tagasi.</value>
     <comment>Overdrive = LCD overdrive, a screen setting that speeds up pixel response.</comment>
@@ -201,6 +205,31 @@
   </data>
   <data name="Notice_GpuModeRejected" xml:space="preserve">
     <value>Püsivara lükkas GPU režiimi muutmise tagasi.</value>
+  </data>
+  <data name="Notice_Bios_Title" xml:space="preserve">
+    <value>BIOS-i sätted</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_BiosPasswordSet" xml:space="preserve">
+    <value>BIOS-i parool salvestati. See hakkab kehtima pärast sülearvuti taaskäivitamist.</value>
+  </data>
+  <data name="Notice_BiosPasswordRemoved" xml:space="preserve">
+    <value>BIOS-i parool eemaldati. See hakkab kehtima pärast sülearvuti taaskäivitamist.</value>
+  </data>
+  <data name="Notice_BiosOff" xml:space="preserve">
+    <value>BIOS-i sätted on sätetes välja lülitatud.</value>
+  </data>
+  <data name="Notice_BiosUnsupported" xml:space="preserve">
+    <value>See BIOS ei toeta seda.</value>
+  </data>
+  <data name="Notice_BiosRejected" xml:space="preserve">
+    <value>BIOS ei võtnud seda vastu.</value>
+  </data>
+  <data name="Notice_BiosLocked" xml:space="preserve">
+    <value>Liiga palju valesid paroole. Uuesti proovimiseks taaskäivitage sülearvuti.</value>
+  </data>
+  <data name="Notice_BiosFailed" xml:space="preserve">
+    <value>BIOS ei vastanud.</value>
   </data>
   <data name="Notice_GpuClocks_Title" xml:space="preserve">
     <value>GPU ülekiirendamine</value>
@@ -258,6 +287,13 @@
   </data>
   <data name="GpuSwitch_HybridMessage" xml:space="preserve">
     <value>Integreeritud GPU juhib ekraani ja eraldi GPU lülitub sisse ainult vajaduse korral, mis säästab akut. Muudatuse rakendamiseks tuleb Windows taaskäivitada.</value>
+  </data>
+  <data name="GpuSwitch_AutomaticTitle" xml:space="preserve">
+    <value>Kas lülituda automaatsele graafikavalikule?</value>
+    <comment>Dialog title.</comment>
+  </data>
+  <data name="GpuSwitch_AutomaticMessage" xml:space="preserve">
+    <value>Sülearvuti valib ise, kas ekraani juhib integreeritud või eraldi GPU. Muudatuse rakendamiseks tuleb Windows taaskäivitada.</value>
   </data>
   <data name="GpuSwitch_RestartNow" xml:space="preserve">
     <value>Taaskäivita kohe</value>
@@ -1044,6 +1080,10 @@
     <value>Windowsi ja menüüklahv</value>
     <comment>The Windows logo key and the Menu (application) key.</comment>
   </data>
+  <data name="System_FnLock.Header" xml:space="preserve">
+    <value>Fn-lukk</value>
+    <comment>Keyboard Fn lock toggle, shown only when the firmware reports support.</comment>
+  </data>
   <data name="System_WindowsKey.Description" xml:space="preserve">
     <value>Lülitage välja, et Windowsi ja menüüklahv mänge ei katkestaks.</value>
   </data>
@@ -1100,6 +1140,10 @@
   <data name="System_GpuDiscrete.Content" xml:space="preserve">
     <value>Eraldi</value>
     <comment>GPU mode: only the NVIDIA graphics chip. Short: a segmented button.</comment>
+  </data>
+  <data name="System_GpuAutomatic.Content" xml:space="preserve">
+    <value>Automaatne</value>
+    <comment>GPU mode: the laptop chooses which graphics chip drives the display (Acer: Automatic Selection). Short: a segmented button.</comment>
   </data>
   <data name="System_GpuRestart.Title" xml:space="preserve">
     <value>GPU režiimi vahetamiseks taaskäivitage</value>
@@ -1371,6 +1415,147 @@
     <value>Toide</value>
     <comment>Section title.</comment>
   </data>
+  <data name="System_Bios.Text" xml:space="preserve">
+    <value>BIOS</value>
+    <comment>Section header on the System page; BIOS is not translated.</comment>
+  </data>
+  <data name="System_BiosRestart.Title" xml:space="preserve">
+    <value>BIOS-i muudatuste rakendamiseks taaskäivitage</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="System_BiosRestart.Message" xml:space="preserve">
+    <value>BIOS-i muudatused hakkavad kehtima pärast sülearvuti taaskäivitamist.</value>
+  </data>
+  <data name="System_BiosSettings.Header" xml:space="preserve">
+    <value>BIOS-i sätted</value>
+    <comment>Expander on the System page that opens to every BIOS setting.</comment>
+  </data>
+  <data name="Bios_SetPassword.Content" xml:space="preserve">
+    <value>Määra…</value>
+    <comment>Button on a BIOS password setting; opens a dialog to type the new password.</comment>
+  </data>
+  <data name="Bios_RemovePassword.Content" xml:space="preserve">
+    <value>Eemalda…</value>
+    <comment>Button on a BIOS password setting; takes the password away after a question.</comment>
+  </data>
+  <data name="Bios_LoadDefaults.Content" xml:space="preserve">
+    <value>Laadi BIOS-i vaikeväärtused</value>
+    <comment>Button under the BIOS settings: puts every BIOS setting back to Acer's defaults.</comment>
+  </data>
+  <data name="Bios_LoadUserDefaults.Content" xml:space="preserve">
+    <value>Laadi salvestatud vaikeväärtused</value>
+    <comment>Button under the BIOS settings: loads the defaults the user saved in the BIOS setup.</comment>
+  </data>
+  <data name="BiosSettings_Footer.Text" xml:space="preserve">
+    <value>Nimed ja väärtused on BIOS-i enda omad, inglise keeles. Muudatus hakkab kehtima pärast sülearvuti taaskäivitamist.</value>
+    <comment>Under the list of BIOS settings.</comment>
+  </data>
+  <data name="Bios_StatusIdle" xml:space="preserve">
+    <value>Avage, et lugeda sätted BIOS-ist.</value>
+    <comment>Under "BIOS settings" before it is opened.</comment>
+  </data>
+  <data name="Bios_StatusReading" xml:space="preserve">
+    <value>BIOS-i lugemine…</value>
+    <comment>Under "BIOS settings" while the BIOS is being read.</comment>
+  </data>
+  <data name="Bios_StatusCount" xml:space="preserve">
+    <value>Leitud sätteid: {0}</value>
+    <comment>{0} = how many settings the BIOS listed.</comment>
+  </data>
+  <data name="Bios_StatusNone" xml:space="preserve">
+    <value>See BIOS ei näita Windowsile ühtegi sätet.</value>
+    <comment>Under "BIOS settings" when the BIOS lists none.</comment>
+  </data>
+  <data name="Bios_Dangerous" xml:space="preserve">
+    <value>Ohtlik: vale väärtus võib takistada sülearvuti käivitumist.</value>
+    <comment>Under a dangerous BIOS setting that can be changed.</comment>
+  </data>
+  <data name="Bios_DangerousLocked" xml:space="preserve">
+    <value>Ohtlik. Selle muutmiseks lülitage sätetes sisse „Luba ohtlikud BIOS-i sätted“.</value>
+    <comment>Under a dangerous BIOS setting while dangerous BIOS settings are off in Settings; "Enable dangerous BIOS settings" is that setting's name.</comment>
+  </data>
+  <data name="BiosPassword_Title" xml:space="preserve">
+    <value>BIOS-i parool</value>
+    <comment>Dialog title asking for the BIOS supervisor password.</comment>
+  </data>
+  <data name="BiosPassword_Message" xml:space="preserve">
+    <value>BIOS küsib enne sätete muutmist oma administraatoriparooli.</value>
+    <comment>In the dialog asking for the BIOS supervisor password.</comment>
+  </data>
+  <data name="BiosPassword_Wrong" xml:space="preserve">
+    <value>Parool oli vale. Proovige uuesti.</value>
+    <comment>In the dialog asking for the BIOS supervisor password, after a wrong one.</comment>
+  </data>
+  <data name="BiosPassword_Continue" xml:space="preserve">
+    <value>Jätka</value>
+    <comment>Button of the dialog asking for the BIOS supervisor password.</comment>
+  </data>
+  <data name="BiosNewPassword_Title" xml:space="preserve">
+    <value>Uus BIOS-i parool</value>
+    <comment>Dialog title for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosNewPassword_Message" xml:space="preserve">
+    <value>{0}: sisestage uus parool kaks korda. BIOS aktsepteerib ainult inglise klaviatuuril leiduvaid tähti, numbreid ja sümboleid.</value>
+    <comment>In the dialog for setting a BIOS password. {0} = the BIOS's name for the setting, in English (for example "Set Supervisor Password").</comment>
+  </data>
+  <data name="BiosNewPassword_First" xml:space="preserve">
+    <value>Uus parool</value>
+    <comment>Label of the first box in the dialog for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosNewPassword_Again" xml:space="preserve">
+    <value>Korrake parooli</value>
+    <comment>Label of the second box in the dialog for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosNewPassword_Set" xml:space="preserve">
+    <value>Määra parool</value>
+    <comment>Button of the dialog for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosPasswordSave_Title" xml:space="preserve">
+    <value>Kas salvestada BIOS-i parool?</value>
+    <comment>Dialog title before a BIOS password is saved.</comment>
+  </data>
+  <data name="BiosPasswordSave_Message" xml:space="preserve">
+    <value>{0}: BIOS kasutab seda parooli alates järgmisest käivitamisest. Kui unustate selle, võite kaotada juurdepääsu BIOS-i seadistusele.</value>
+    <comment>Dialog text before a BIOS password is saved. {0} = the BIOS's name for the setting, in English (for example "Set Supervisor Password").</comment>
+  </data>
+  <data name="BiosPasswordSave_Save" xml:space="preserve">
+    <value>Salvesta parool</value>
+    <comment>Button of the dialog that saves a BIOS password.</comment>
+  </data>
+  <data name="BiosDanger_Title" xml:space="preserve">
+    <value>Kas muuta ohtlikku sätet?</value>
+    <comment>Dialog title before a dangerous BIOS setting changes.</comment>
+  </data>
+  <data name="BiosDanger_Message" xml:space="preserve">
+    <value>{0} määratakse väärtusele {1} pärast sülearvuti taaskäivitamist.
+
+Vale väärtus võib takistada sülearvuti käivitumist või katkestada ühenduse klaviatuuri, draivi või portidega. Jätkake ainult siis, kui teate, mida see teeb.</value>
+    <comment>Dialog text before a dangerous BIOS setting changes. {0} = the setting's name, {1} = the new value, both as the BIOS gives them (English). Two line breaks.</comment>
+  </data>
+  <data name="BiosDanger_Change" xml:space="preserve">
+    <value>Muuda</value>
+    <comment>Button of the dialog that goes ahead with a dangerous BIOS setting change.</comment>
+  </data>
+  <data name="BiosDefaults_Title" xml:space="preserve">
+    <value>Kas laadida Aceri vaikeväärtused?</value>
+    <comment>Dialog title before Acer's BIOS defaults are loaded.</comment>
+  </data>
+  <data name="BiosDefaults_Message" xml:space="preserve">
+    <value>Kõik BIOS-i sätted taastatakse pärast sülearvuti taaskäivitamist Aceri vaikeväärtustele, sealhulgas need, mida OpenSense ei näita.</value>
+    <comment>Dialog text before Acer's BIOS defaults are loaded.</comment>
+  </data>
+  <data name="BiosUserDefaults_Title" xml:space="preserve">
+    <value>Kas laadida teie salvestatud vaikeväärtused?</value>
+    <comment>Dialog title before the defaults the user saved in the BIOS setup are loaded.</comment>
+  </data>
+  <data name="BiosUserDefaults_Message" xml:space="preserve">
+    <value>Kõik BIOS-i sätted taastatakse pärast sülearvuti taaskäivitamist BIOS-i seadistuses salvestatud vaikeväärtustele, sealhulgas need, mida OpenSense ei näita.</value>
+    <comment>Dialog text before the defaults the user saved in the BIOS setup are loaded.</comment>
+  </data>
+  <data name="BiosDefaults_Load" xml:space="preserve">
+    <value>Laadi</value>
+    <comment>Button of the dialogs that go ahead with loading BIOS defaults.</comment>
+  </data>
   <data name="System_PowerPlan.Header" xml:space="preserve">
     <value>Toiteplaan</value>
     <comment>Windows power plan setting.</comment>
@@ -1579,6 +1764,46 @@ GPU: {1}</value>
     <value>Omaette tuled W, A, S ja D all, tuvastatud sülearvuti mudelinime järgi. Lülita ümber, kui see sinu omale ei vasta.</value>
     <comment>Under "MagForce key lights".</comment>
   </data>
+  <data name="Settings_BiosSettings.Header" xml:space="preserve">
+    <value>Luba BIOS-i sätted</value>
+    <comment>Setting in "Your laptop": lets OpenSense show and change the BIOS's own settings.</comment>
+  </data>
+  <data name="Settings_BiosSettings.Description" xml:space="preserve">
+    <value>Näitab BIOS-i sätteid lehel Süsteem ja lubab OpenSense'il neid muuta. Muudatus hakkab kehtima pärast sülearvuti taaskäivitamist.</value>
+    <comment>Under "Enable BIOS settings".</comment>
+  </data>
+  <data name="Settings_DangerousBiosSettings.Header" xml:space="preserve">
+    <value>Luba ohtlikud BIOS-i sätted</value>
+    <comment>Setting shown once BIOS settings are enabled: also allows the dangerous ones.</comment>
+  </data>
+  <data name="Settings_DangerousBiosSettings.Description" xml:space="preserve">
+    <value>Lubab ka sätted, mis võivad takistada sülearvuti käivitumist või katkestada ühenduse klaviatuuri, draivi või portidega. Ainult neile, kes teavad, mida need teevad.</value>
+    <comment>Under "Enable dangerous BIOS settings".</comment>
+  </data>
+  <data name="BiosDangerousEnable_Title" xml:space="preserve">
+    <value>Kas lubada ohtlikud BIOS-i sätted?</value>
+    <comment>First dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousEnable_Message" xml:space="preserve">
+    <value>Need sätted võivad takistada sülearvuti käivitumist, katkestada ühenduse klaviatuuri, draivi või portidega või olla tagasipööramatud. Vale väärtus võib jätta sülearvuti remonti vajama.</value>
+    <comment>Text of the first dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousEnable_Continue" xml:space="preserve">
+    <value>Jätka</value>
+    <comment>Button of the first dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousSure_Title" xml:space="preserve">
+    <value>Kas olete kindel?</value>
+    <comment>Title of the second dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousSure_Message" xml:space="preserve">
+    <value>Viimane kontroll. Kui see on sees, saab OpenSense muuta sätteid, mis võivad takistada sülearvuti käivitumist. Lülitage see sisse ainult siis, kui teate, mida need teevad.</value>
+    <comment>Text of the second dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousSure_Enable" xml:space="preserve">
+    <value>Luba</value>
+    <comment>Button of the second dialog when "Enable dangerous BIOS settings" is switched on: goes ahead.</comment>
+  </data>
   <data name="Settings_OperatingModes_Supported" xml:space="preserve">
     <value>{0}, nagu Aceri tarkvara neid selle mudeli puhul pakub. {1}</value>
     <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
@@ -1768,5 +1993,13 @@ GPU: {1}</value>
   <data name="GpuClocks_FollowFirmware.Description" xml:space="preserve">
     <value>Püsivara määratud ülekiirendus iga režiimi jaoks, liidetuna allolevatele nihetele.</value>
     <comment>Under "Acer's overclocking": the firmware's own overclock for each mode is added to the user's offsets set below it.</comment>
+  </data>
+  <data name="Navigation_FailedTitle" xml:space="preserve">
+    <value>Seda lehte ei saanud avada</value>
+    <comment>Title when navigating to a page fails. The app remains open and offers a retry.</comment>
+  </data>
+  <data name="Navigation_Retry" xml:space="preserve">
+    <value>Proovi uuesti</value>
+    <comment>Button to retry opening the page after a navigation failure.</comment>
   </data>
 </root>

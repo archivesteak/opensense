@@ -24,6 +24,7 @@ public sealed class EcHidDevice : IDisposable
     private readonly Mutex? _lock;
     private readonly Action<TimeSpan> _sleep;
     private IHidDevice? _device;
+    private bool _disposed;
 
     private EcHidDevice(IHidBus bus, IHidDevice device, Mutex? machineLock, Action<TimeSpan> sleep)
     {
@@ -87,6 +88,8 @@ public sealed class EcHidDevice : IDisposable
     /// </summary>
     public EcHidReply? Exchange(byte[] request)
     {
+        if (_disposed)
+            return null;
         var command = (ushort)(request[3] | request[4] << 8);
         for (var attempt = 0; attempt < Attempts; attempt++)
         {
@@ -178,6 +181,9 @@ public sealed class EcHidDevice : IDisposable
 
     public void Dispose()
     {
+        if (_disposed)
+            return;
+        _disposed = true;
         _device?.Dispose();
         _device = null;
         _lock?.Dispose();

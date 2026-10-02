@@ -13,6 +13,7 @@ public sealed partial class SystemPage : Page
         Battery = App.Current.Services.GetRequiredService<BatteryViewModel>();
         Startup = App.Current.Services.GetRequiredService<StartupViewModel>();
         GpuClocks = App.Current.Services.GetRequiredService<GpuClocksViewModel>();
+        Bios = App.Current.Services.GetRequiredService<BiosSettingsViewModel>();
         Fans = App.Current.Services.GetRequiredService<FanControlViewModel>();
         InitializeComponent();
     }
@@ -27,6 +28,8 @@ public sealed partial class SystemPage : Page
     public StartupViewModel Startup { get; }
 
     public GpuClocksViewModel GpuClocks { get; }
+
+    public BiosSettingsViewModel Bios { get; }
 
     /// <summary>A section shows when it has either setting.</summary>
     public static Visibility Either(bool first, bool second) => first || second ? Visibility.Visible : Visibility.Collapsed;

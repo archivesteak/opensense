@@ -183,6 +183,10 @@
   <data name="Notice_WindowsKeyRejected" xml:space="preserve">
     <value>Oprogramowanie układowe odrzuciło zmianę klawisza Windows.</value>
   </data>
+  <data name="Notice_FnLockRejected" xml:space="preserve">
+    <value>Oprogramowanie układowe nie zaakceptowało zmiany blokady Fn.</value>
+    <comment>The firmware rejected the requested Fn lock setting.</comment>
+  </data>
   <data name="Notice_LcdOverdriveRejected" xml:space="preserve">
     <value>Ekran odrzucił zmianę funkcji overdrive.</value>
     <comment>Overdrive = LCD overdrive, a screen setting that speeds up pixel response.</comment>
@@ -201,6 +205,31 @@
   </data>
   <data name="Notice_GpuModeRejected" xml:space="preserve">
     <value>Oprogramowanie układowe odrzuciło zmianę trybu GPU.</value>
+  </data>
+  <data name="Notice_Bios_Title" xml:space="preserve">
+    <value>Ustawienia BIOS</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_BiosPasswordSet" xml:space="preserve">
+    <value>Hasło BIOS zapisano. Zacznie obowiązywać po ponownym uruchomieniu laptopa.</value>
+  </data>
+  <data name="Notice_BiosPasswordRemoved" xml:space="preserve">
+    <value>Hasło BIOS usunięto. Zacznie to obowiązywać po ponownym uruchomieniu laptopa.</value>
+  </data>
+  <data name="Notice_BiosOff" xml:space="preserve">
+    <value>Ustawienia BIOS są wyłączone w Ustawieniach.</value>
+  </data>
+  <data name="Notice_BiosUnsupported" xml:space="preserve">
+    <value>Ten BIOS tego nie obsługuje.</value>
+  </data>
+  <data name="Notice_BiosRejected" xml:space="preserve">
+    <value>BIOS tego nie przyjął.</value>
+  </data>
+  <data name="Notice_BiosLocked" xml:space="preserve">
+    <value>Zbyt wiele nieprawidłowych haseł. Uruchom laptop ponownie, aby spróbować jeszcze raz.</value>
+  </data>
+  <data name="Notice_BiosFailed" xml:space="preserve">
+    <value>BIOS nie odpowiedział.</value>
   </data>
   <data name="Notice_GpuClocks_Title" xml:space="preserve">
     <value>Podkręcanie GPU</value>
@@ -258,6 +287,13 @@
   </data>
   <data name="GpuSwitch_HybridMessage" xml:space="preserve">
     <value>Zintegrowany procesor GPU będzie obsługiwać ekran, a dedykowany procesor GPU włączy się tylko w razie potrzeby, co oszczędza baterię. Aby zastosować zmianę, trzeba ponownie uruchomić system Windows.</value>
+  </data>
+  <data name="GpuSwitch_AutomaticTitle" xml:space="preserve">
+    <value>Przełączyć na automatyczny wybór grafiki?</value>
+    <comment>Dialog title.</comment>
+  </data>
+  <data name="GpuSwitch_AutomaticMessage" xml:space="preserve">
+    <value>Laptop sam wybierze, czy ekran będzie obsługiwać zintegrowany, czy dedykowany procesor GPU. Aby zastosować zmianę, trzeba ponownie uruchomić system Windows.</value>
   </data>
   <data name="GpuSwitch_RestartNow" xml:space="preserve">
     <value>Uruchom ponownie teraz</value>
@@ -1044,6 +1080,10 @@
     <value>Klawisze Windows i Menu</value>
     <comment>The Windows logo key and the Menu (application) key.</comment>
   </data>
+  <data name="System_FnLock.Header" xml:space="preserve">
+    <value>Blokada Fn</value>
+    <comment>Keyboard Fn lock toggle, shown only when the firmware reports support.</comment>
+  </data>
   <data name="System_WindowsKey.Description" xml:space="preserve">
     <value>Wyłącz, aby klawisze Windows i Menu nie przerywały gier.</value>
   </data>
@@ -1100,6 +1140,10 @@
   <data name="System_GpuDiscrete.Content" xml:space="preserve">
     <value>Dedykowany</value>
     <comment>GPU mode: only the NVIDIA graphics chip. Short: a segmented button.</comment>
+  </data>
+  <data name="System_GpuAutomatic.Content" xml:space="preserve">
+    <value>Automatyczny</value>
+    <comment>GPU mode: the laptop chooses which graphics chip drives the display (Acer: Automatic Selection). Short: a segmented button.</comment>
   </data>
   <data name="System_GpuRestart.Title" xml:space="preserve">
     <value>Uruchom ponownie, aby zmienić tryb GPU</value>
@@ -1371,6 +1415,147 @@
     <value>Zasilanie</value>
     <comment>Section title.</comment>
   </data>
+  <data name="System_Bios.Text" xml:space="preserve">
+    <value>BIOS</value>
+    <comment>Section header on the System page; BIOS is not translated.</comment>
+  </data>
+  <data name="System_BiosRestart.Title" xml:space="preserve">
+    <value>Uruchom ponownie, aby zastosować zmiany BIOS</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="System_BiosRestart.Message" xml:space="preserve">
+    <value>Zmiany BIOS zaczną działać po ponownym uruchomieniu laptopa.</value>
+  </data>
+  <data name="System_BiosSettings.Header" xml:space="preserve">
+    <value>Ustawienia BIOS</value>
+    <comment>Expander on the System page that opens to every BIOS setting.</comment>
+  </data>
+  <data name="Bios_SetPassword.Content" xml:space="preserve">
+    <value>Ustaw…</value>
+    <comment>Button on a BIOS password setting; opens a dialog to type the new password.</comment>
+  </data>
+  <data name="Bios_RemovePassword.Content" xml:space="preserve">
+    <value>Usuń…</value>
+    <comment>Button on a BIOS password setting; takes the password away after a question.</comment>
+  </data>
+  <data name="Bios_LoadDefaults.Content" xml:space="preserve">
+    <value>Wczytaj domyślne ustawienia BIOS</value>
+    <comment>Button under the BIOS settings: puts every BIOS setting back to Acer's defaults.</comment>
+  </data>
+  <data name="Bios_LoadUserDefaults.Content" xml:space="preserve">
+    <value>Wczytaj zapisane ustawienia domyślne</value>
+    <comment>Button under the BIOS settings: loads the defaults the user saved in the BIOS setup.</comment>
+  </data>
+  <data name="BiosSettings_Footer.Text" xml:space="preserve">
+    <value>Nazwy i wartości pochodzą z samego BIOS i są po angielsku. Zmiana zacznie działać po ponownym uruchomieniu laptopa.</value>
+    <comment>Under the list of BIOS settings.</comment>
+  </data>
+  <data name="Bios_StatusIdle" xml:space="preserve">
+    <value>Otwórz, aby odczytać ustawienia z BIOS.</value>
+    <comment>Under "BIOS settings" before it is opened.</comment>
+  </data>
+  <data name="Bios_StatusReading" xml:space="preserve">
+    <value>Odczytywanie BIOS…</value>
+    <comment>Under "BIOS settings" while the BIOS is being read.</comment>
+  </data>
+  <data name="Bios_StatusCount" xml:space="preserve">
+    <value>Znalezione ustawienia: {0}</value>
+    <comment>{0} = how many settings the BIOS listed.</comment>
+  </data>
+  <data name="Bios_StatusNone" xml:space="preserve">
+    <value>Ten BIOS nie udostępnia systemowi Windows żadnych ustawień.</value>
+    <comment>Under "BIOS settings" when the BIOS lists none.</comment>
+  </data>
+  <data name="Bios_Dangerous" xml:space="preserve">
+    <value>Niebezpieczne: błędna wartość może uniemożliwić uruchomienie laptopa.</value>
+    <comment>Under a dangerous BIOS setting that can be changed.</comment>
+  </data>
+  <data name="Bios_DangerousLocked" xml:space="preserve">
+    <value>Niebezpieczne. Aby to zmienić, włącz w Ustawieniach opcję „Włącz niebezpieczne ustawienia BIOS”.</value>
+    <comment>Under a dangerous BIOS setting while dangerous BIOS settings are off in Settings; "Enable dangerous BIOS settings" is that setting's name.</comment>
+  </data>
+  <data name="BiosPassword_Title" xml:space="preserve">
+    <value>Hasło BIOS</value>
+    <comment>Dialog title asking for the BIOS supervisor password.</comment>
+  </data>
+  <data name="BiosPassword_Message" xml:space="preserve">
+    <value>BIOS prosi o hasło administratora, zanim pozwoli zmienić ustawienia.</value>
+    <comment>In the dialog asking for the BIOS supervisor password.</comment>
+  </data>
+  <data name="BiosPassword_Wrong" xml:space="preserve">
+    <value>To hasło było nieprawidłowe. Spróbuj ponownie.</value>
+    <comment>In the dialog asking for the BIOS supervisor password, after a wrong one.</comment>
+  </data>
+  <data name="BiosPassword_Continue" xml:space="preserve">
+    <value>Kontynuuj</value>
+    <comment>Button of the dialog asking for the BIOS supervisor password.</comment>
+  </data>
+  <data name="BiosNewPassword_Title" xml:space="preserve">
+    <value>Nowe hasło BIOS</value>
+    <comment>Dialog title for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosNewPassword_Message" xml:space="preserve">
+    <value>{0}: wpisz nowe hasło dwa razy. BIOS przyjmuje tylko litery, cyfry i symbole dostępne na angielskiej klawiaturze.</value>
+    <comment>In the dialog for setting a BIOS password. {0} = the BIOS's name for the setting, in English (for example "Set Supervisor Password").</comment>
+  </data>
+  <data name="BiosNewPassword_First" xml:space="preserve">
+    <value>Nowe hasło</value>
+    <comment>Label of the first box in the dialog for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosNewPassword_Again" xml:space="preserve">
+    <value>Powtórz hasło</value>
+    <comment>Label of the second box in the dialog for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosNewPassword_Set" xml:space="preserve">
+    <value>Ustaw hasło</value>
+    <comment>Button of the dialog for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosPasswordSave_Title" xml:space="preserve">
+    <value>Zapisać hasło BIOS?</value>
+    <comment>Dialog title before a BIOS password is saved.</comment>
+  </data>
+  <data name="BiosPasswordSave_Message" xml:space="preserve">
+    <value>{0}: BIOS będzie używać tego hasła od następnego uruchomienia. Jeśli je zapomnisz, możesz utracić dostęp do konfiguracji BIOS.</value>
+    <comment>Dialog text before a BIOS password is saved. {0} = the BIOS's name for the setting, in English (for example "Set Supervisor Password").</comment>
+  </data>
+  <data name="BiosPasswordSave_Save" xml:space="preserve">
+    <value>Zapisz hasło</value>
+    <comment>Button of the dialog that saves a BIOS password.</comment>
+  </data>
+  <data name="BiosDanger_Title" xml:space="preserve">
+    <value>Zmienić niebezpieczne ustawienie?</value>
+    <comment>Dialog title before a dangerous BIOS setting changes.</comment>
+  </data>
+  <data name="BiosDanger_Message" xml:space="preserve">
+    <value>{0} zostanie ustawione na {1} po ponownym uruchomieniu laptopa.
+
+Błędna wartość może uniemożliwić uruchomienie laptopa albo odciąć go od klawiatury, dysku lub portów. Kontynuuj tylko wtedy, gdy wiesz, co to robi.</value>
+    <comment>Dialog text before a dangerous BIOS setting changes. {0} = the setting's name, {1} = the new value, both as the BIOS gives them (English). Two line breaks.</comment>
+  </data>
+  <data name="BiosDanger_Change" xml:space="preserve">
+    <value>Zmień</value>
+    <comment>Button of the dialog that goes ahead with a dangerous BIOS setting change.</comment>
+  </data>
+  <data name="BiosDefaults_Title" xml:space="preserve">
+    <value>Wczytać ustawienia domyślne Acer?</value>
+    <comment>Dialog title before Acer's BIOS defaults are loaded.</comment>
+  </data>
+  <data name="BiosDefaults_Message" xml:space="preserve">
+    <value>Wszystkie ustawienia BIOS wrócą do domyślnych ustawień Acer po ponownym uruchomieniu laptopa, także te, których OpenSense nie pokazuje.</value>
+    <comment>Dialog text before Acer's BIOS defaults are loaded.</comment>
+  </data>
+  <data name="BiosUserDefaults_Title" xml:space="preserve">
+    <value>Wczytać zapisane ustawienia domyślne?</value>
+    <comment>Dialog title before the defaults the user saved in the BIOS setup are loaded.</comment>
+  </data>
+  <data name="BiosUserDefaults_Message" xml:space="preserve">
+    <value>Wszystkie ustawienia BIOS wrócą do wartości domyślnych zapisanych w konfiguracji BIOS po ponownym uruchomieniu laptopa, także te, których OpenSense nie pokazuje.</value>
+    <comment>Dialog text before the defaults the user saved in the BIOS setup are loaded.</comment>
+  </data>
+  <data name="BiosDefaults_Load" xml:space="preserve">
+    <value>Wczytaj</value>
+    <comment>Button of the dialogs that go ahead with loading BIOS defaults.</comment>
+  </data>
   <data name="System_PowerPlan.Header" xml:space="preserve">
     <value>Plan zasilania</value>
     <comment>Windows power plan setting.</comment>
@@ -1579,6 +1764,46 @@ GPU: {1}</value>
     <value>Własne światła pod W, A, S i D, wykrywane po nazwie modelu laptopa. Przełącz, jeśli u Ciebie jest inaczej.</value>
     <comment>Under "MagForce key lights".</comment>
   </data>
+  <data name="Settings_BiosSettings.Header" xml:space="preserve">
+    <value>Włącz ustawienia BIOS</value>
+    <comment>Setting in "Your laptop": lets OpenSense show and change the BIOS's own settings.</comment>
+  </data>
+  <data name="Settings_BiosSettings.Description" xml:space="preserve">
+    <value>Pokazuje ustawienia BIOS na stronie System i pozwala OpenSense je zmieniać. Zmiana zacznie działać po ponownym uruchomieniu laptopa.</value>
+    <comment>Under "Enable BIOS settings".</comment>
+  </data>
+  <data name="Settings_DangerousBiosSettings.Header" xml:space="preserve">
+    <value>Włącz niebezpieczne ustawienia BIOS</value>
+    <comment>Setting shown once BIOS settings are enabled: also allows the dangerous ones.</comment>
+  </data>
+  <data name="Settings_DangerousBiosSettings.Description" xml:space="preserve">
+    <value>Zezwala też na ustawienia, które mogą uniemożliwić uruchomienie laptopa albo odciąć go od klawiatury, dysku lub portów. Tylko dla osób, które wiedzą, co robią.</value>
+    <comment>Under "Enable dangerous BIOS settings".</comment>
+  </data>
+  <data name="BiosDangerousEnable_Title" xml:space="preserve">
+    <value>Włączyć niebezpieczne ustawienia BIOS?</value>
+    <comment>First dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousEnable_Message" xml:space="preserve">
+    <value>Te ustawienia mogą uniemożliwić uruchomienie laptopa, odciąć go od klawiatury, dysku lub portów albo być nieodwracalne. Błędna wartość może sprawić, że laptop będzie wymagał naprawy.</value>
+    <comment>Text of the first dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousEnable_Continue" xml:space="preserve">
+    <value>Kontynuuj</value>
+    <comment>Button of the first dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousSure_Title" xml:space="preserve">
+    <value>Na pewno?</value>
+    <comment>Title of the second dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousSure_Message" xml:space="preserve">
+    <value>Ostatnie sprawdzenie. Gdy ta opcja jest włączona, OpenSense może zmieniać ustawienia, które mogą uniemożliwić uruchomienie laptopa. Włącz ją tylko wtedy, gdy wiesz, co robią.</value>
+    <comment>Text of the second dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousSure_Enable" xml:space="preserve">
+    <value>Włącz</value>
+    <comment>Button of the second dialog when "Enable dangerous BIOS settings" is switched on: goes ahead.</comment>
+  </data>
   <data name="Settings_OperatingModes_Supported" xml:space="preserve">
     <value>{0}, tak jak oferuje je oprogramowanie Acer na tym modelu. {1}</value>
     <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
@@ -1768,5 +1993,13 @@ Szczegóły: {1}</value>
   <data name="GpuClocks_FollowFirmware.Description" xml:space="preserve">
     <value>Podkręcenie, które oprogramowanie układowe ustawia dla każdego trybu, dodane do przesunięć poniżej.</value>
     <comment>Under "Acer's overclocking": the firmware's own overclock for each mode is added to the user's offsets set below it.</comment>
+  </data>
+  <data name="Navigation_FailedTitle" xml:space="preserve">
+    <value>Nie udało się otworzyć tej strony</value>
+    <comment>Title when navigating to a page fails. The app remains open and offers a retry.</comment>
+  </data>
+  <data name="Navigation_Retry" xml:space="preserve">
+    <value>Spróbuj ponownie</value>
+    <comment>Button to retry opening the page after a navigation failure.</comment>
   </data>
 </root>

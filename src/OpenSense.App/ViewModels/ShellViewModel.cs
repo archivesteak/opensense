@@ -20,6 +20,7 @@ public sealed partial class ShellViewModel(
     BatteryViewModel battery,
     StartupViewModel startup,
     GpuClocksViewModel gpuClocks,
+    BiosSettingsViewModel bios,
     SettingsViewModel settings,
     ToastService toasts) : ObservableObject
 {
@@ -117,6 +118,7 @@ public sealed partial class ShellViewModel(
         battery.Attach();
         startup.Attach();
         gpuClocks.Attach();
+        bios.Attach();
         settings.Attach();
         LightingAvailable = lighting.Available;
     }

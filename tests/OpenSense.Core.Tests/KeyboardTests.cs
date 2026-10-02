@@ -39,6 +39,28 @@ public class KeyboardProtocolTests
     }
 
     [Fact]
+    public void Predatorsense_layout_matches_its_keyboard_controller()
+    {
+        // AcerECKeyboardController: effect, speed, brightness, 0, direction, R, G, B, 03 01, zeros; static without a direction.
+        const KeyboardPayloadLayout predator = KeyboardPayloadLayout.PredatorSense;
+        Assert.Equal(new byte[] { 3, 4, 100, 0, 2, 0, 0, 0, 0x03, 0x01, 0, 0, 0, 0, 0, 0 },
+            KeyboardProtocol.BacklightPayload(KeyboardEffect.Wave, 4, 100, KeyboardDirection.Left, new RgbColor(0x10, 0x20, 0x30), predator));
+        Assert.Equal(new byte[] { 1, 5, 75, 0, 1, 0xFF, 0x00, 0x40, 0x03, 0x01, 0, 0, 0, 0, 0, 0 },
+            KeyboardProtocol.BacklightPayload(KeyboardEffect.Breathing, 5, 75, KeyboardDirection.Right, new RgbColor(0xFF, 0x00, 0x40), predator));
+        Assert.Equal(new byte[] { 0, 0, 50, 0, 0, 0, 0, 0, 0x03, 0x01, 0, 0, 0, 0, 0, 0 },
+            KeyboardProtocol.BacklightPayload(KeyboardEffect.Static, 3, 50, KeyboardDirection.Left, new RgbColor(1, 2, 3), predator));
+    }
+
+    [Theory]
+    [InlineData("Nitro AN515-57", KeyboardPayloadLayout.NitroSense)]
+    [InlineData("Nitro AN515-45", KeyboardPayloadLayout.NitroSense)]
+    [InlineData("Predator PHN16-73", KeyboardPayloadLayout.PredatorSense)]
+    [InlineData("Nitro AN16-41", KeyboardPayloadLayout.PredatorSense)]
+    [InlineData(null, KeyboardPayloadLayout.NitroSense)]
+    public void Effects_go_out_as_the_models_own_software_sends_them(string? model, KeyboardPayloadLayout expected) =>
+        Assert.Equal(expected, KeyboardProtocol.PayloadLayout(model));
+
+    [Fact]
     public void Zone_encodings()
     {
         Assert.Equal(0x30201004UL, KeyboardProtocol.ZoneColorInput(3, new RgbColor(0x10, 0x20, 0x30)));
@@ -85,17 +107,6 @@ public class KeyboardProtocolTests
         Assert.Equal([true, true, true, true], KeyboardProtocol.ZoneEnableValue(0xF00_0000_0000, 4)); // AN515-57
         Assert.Equal([true, false, false, true], KeyboardProtocol.ZoneEnableValue(KeyboardProtocol.ZoneEnableInput([true, false, false, true]), 4));
         Assert.Equal([true, false], KeyboardProtocol.ZoneEnableValue(0x100_0000_0000, 2));
-    }
-
-    [Fact]
-    public void Overdrive_needs_the_firmwares_answer_even_where_nitrosense_lists_it()
-    {
-        var hints = new NitroSenseHints { KeyboardColor = 2, KeyboardZones = 4, AdvancedSettings = ["LCD"] };
-        var none = CapabilityProbe.Probe(new AcerDevice(new FakeFirmware { Profile = 0xFFFF000103FF00 }), hints);
-        var some = CapabilityProbe.Probe(new AcerDevice(new FakeFirmware { Profile = 0x0000_0001_0103_FF00 }), hints);
-
-        Assert.False(none.Keyboard.LcdOverdrive);
-        Assert.True(some.Keyboard.LcdOverdrive);
     }
 }
 

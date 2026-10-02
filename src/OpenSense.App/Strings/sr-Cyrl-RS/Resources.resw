@@ -183,6 +183,10 @@
   <data name="Notice_WindowsKeyRejected" xml:space="preserve">
     <value>Фирмвер је одбио промену тастера Windows.</value>
   </data>
+  <data name="Notice_FnLockRejected" xml:space="preserve">
+    <value>Фирмвер није прихватио промену закључавања Fn.</value>
+    <comment>The firmware rejected the requested Fn lock setting.</comment>
+  </data>
   <data name="Notice_LcdOverdriveRejected" xml:space="preserve">
     <value>Екран је одбио промену функције overdrive.</value>
     <comment>Overdrive = LCD overdrive, a screen setting that speeds up pixel response.</comment>
@@ -201,6 +205,31 @@
   </data>
   <data name="Notice_GpuModeRejected" xml:space="preserve">
     <value>Фирмвер је одбио промену GPU режима.</value>
+  </data>
+  <data name="Notice_Bios_Title" xml:space="preserve">
+    <value>BIOS поставке</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_BiosPasswordSet" xml:space="preserve">
+    <value>BIOS лозинка је сачувана. Важи када се лаптоп поново покрене.</value>
+  </data>
+  <data name="Notice_BiosPasswordRemoved" xml:space="preserve">
+    <value>BIOS лозинка је уклоњена. Важи када се лаптоп поново покрене.</value>
+  </data>
+  <data name="Notice_BiosOff" xml:space="preserve">
+    <value>BIOS поставке су искључене у Поставкама.</value>
+  </data>
+  <data name="Notice_BiosUnsupported" xml:space="preserve">
+    <value>Овај BIOS то не подржава.</value>
+  </data>
+  <data name="Notice_BiosRejected" xml:space="preserve">
+    <value>BIOS то није прихватио.</value>
+  </data>
+  <data name="Notice_BiosLocked" xml:space="preserve">
+    <value>Превише погрешних лозинки. Поново покрените лаптоп да бисте покушали поново.</value>
+  </data>
+  <data name="Notice_BiosFailed" xml:space="preserve">
+    <value>BIOS није одговорио.</value>
   </data>
   <data name="Notice_GpuClocks_Title" xml:space="preserve">
     <value>Оверклок GPU</value>
@@ -258,6 +287,13 @@
   </data>
   <data name="GpuSwitch_HybridMessage" xml:space="preserve">
     <value>Интегрисани GPU ће покретати екран, а засебни GPU ће се укључивати само када је потребно, чиме се штеди батерија. Windows мора да се поново покрене да би се ово применило.</value>
+  </data>
+  <data name="GpuSwitch_AutomaticTitle" xml:space="preserve">
+    <value>Желите ли да пређете на аутоматски избор графике?</value>
+    <comment>Dialog title.</comment>
+  </data>
+  <data name="GpuSwitch_AutomaticMessage" xml:space="preserve">
+    <value>Лаптоп ће сам изабрати да ли екран покреће интегрисани или засебни GPU. Windows мора да се поново покрене да би се ово применило.</value>
   </data>
   <data name="GpuSwitch_RestartNow" xml:space="preserve">
     <value>Поново покрени сада</value>
@@ -1044,6 +1080,10 @@
     <value>Тастери Windows и Мени</value>
     <comment>The Windows logo key and the Menu (application) key.</comment>
   </data>
+  <data name="System_FnLock.Header" xml:space="preserve">
+    <value>Закључавање Fn</value>
+    <comment>Keyboard Fn lock toggle, shown only when the firmware reports support.</comment>
+  </data>
   <data name="System_WindowsKey.Description" xml:space="preserve">
     <value>Искључите да тастери Windows и Мени не би прекидали игре.</value>
   </data>
@@ -1100,6 +1140,10 @@
   <data name="System_GpuDiscrete.Content" xml:space="preserve">
     <value>Засебно</value>
     <comment>GPU mode: only the NVIDIA graphics chip. Short: a segmented button.</comment>
+  </data>
+  <data name="System_GpuAutomatic.Content" xml:space="preserve">
+    <value>Аутоматски</value>
+    <comment>GPU mode: the laptop chooses which graphics chip drives the display (Acer: Automatic Selection). Short: a segmented button.</comment>
   </data>
   <data name="System_GpuRestart.Title" xml:space="preserve">
     <value>Поново покрените да бисте променили GPU режим</value>
@@ -1371,6 +1415,147 @@
     <value>Напајање</value>
     <comment>Section title.</comment>
   </data>
+  <data name="System_Bios.Text" xml:space="preserve">
+    <value>BIOS</value>
+    <comment>Section header on the System page; BIOS is not translated.</comment>
+  </data>
+  <data name="System_BiosRestart.Title" xml:space="preserve">
+    <value>Поново покрените да би се примениле BIOS измене</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="System_BiosRestart.Message" xml:space="preserve">
+    <value>BIOS измене ступају на снагу када се лаптоп поново покрене.</value>
+  </data>
+  <data name="System_BiosSettings.Header" xml:space="preserve">
+    <value>BIOS поставке</value>
+    <comment>Expander on the System page that opens to every BIOS setting.</comment>
+  </data>
+  <data name="Bios_SetPassword.Content" xml:space="preserve">
+    <value>Постави…</value>
+    <comment>Button on a BIOS password setting; opens a dialog to type the new password.</comment>
+  </data>
+  <data name="Bios_RemovePassword.Content" xml:space="preserve">
+    <value>Уклони…</value>
+    <comment>Button on a BIOS password setting; takes the password away after a question.</comment>
+  </data>
+  <data name="Bios_LoadDefaults.Content" xml:space="preserve">
+    <value>Учитај BIOS подразумеване вредности</value>
+    <comment>Button under the BIOS settings: puts every BIOS setting back to Acer's defaults.</comment>
+  </data>
+  <data name="Bios_LoadUserDefaults.Content" xml:space="preserve">
+    <value>Учитај сачуване подразумеване вредности</value>
+    <comment>Button under the BIOS settings: loads the defaults the user saved in the BIOS setup.</comment>
+  </data>
+  <data name="BiosSettings_Footer.Text" xml:space="preserve">
+    <value>Називи и вредности су из самог BIOS-а, на енглеском. Промена ступа на снагу када се лаптоп поново покрене.</value>
+    <comment>Under the list of BIOS settings.</comment>
+  </data>
+  <data name="Bios_StatusIdle" xml:space="preserve">
+    <value>Отворите да се поставке прочитају из BIOS-а.</value>
+    <comment>Under "BIOS settings" before it is opened.</comment>
+  </data>
+  <data name="Bios_StatusReading" xml:space="preserve">
+    <value>Читање BIOS-а…</value>
+    <comment>Under "BIOS settings" while the BIOS is being read.</comment>
+  </data>
+  <data name="Bios_StatusCount" xml:space="preserve">
+    <value>Пронађених поставки: {0}</value>
+    <comment>{0} = how many settings the BIOS listed.</comment>
+  </data>
+  <data name="Bios_StatusNone" xml:space="preserve">
+    <value>Овај BIOS не приказује никакве поставке систему Windows.</value>
+    <comment>Under "BIOS settings" when the BIOS lists none.</comment>
+  </data>
+  <data name="Bios_Dangerous" xml:space="preserve">
+    <value>Опасно: погрешна вредност може спречити покретање лаптопа.</value>
+    <comment>Under a dangerous BIOS setting that can be changed.</comment>
+  </data>
+  <data name="Bios_DangerousLocked" xml:space="preserve">
+    <value>Опасно. Да бисте то променили, укључите „Омогући опасне BIOS поставке“ у Поставкама.</value>
+    <comment>Under a dangerous BIOS setting while dangerous BIOS settings are off in Settings; "Enable dangerous BIOS settings" is that setting's name.</comment>
+  </data>
+  <data name="BiosPassword_Title" xml:space="preserve">
+    <value>BIOS лозинка</value>
+    <comment>Dialog title asking for the BIOS supervisor password.</comment>
+  </data>
+  <data name="BiosPassword_Message" xml:space="preserve">
+    <value>BIOS тражи лозинку супервизора пре него што дозволи промену поставки.</value>
+    <comment>In the dialog asking for the BIOS supervisor password.</comment>
+  </data>
+  <data name="BiosPassword_Wrong" xml:space="preserve">
+    <value>Лозинка је погрешна. Покушајте поново.</value>
+    <comment>In the dialog asking for the BIOS supervisor password, after a wrong one.</comment>
+  </data>
+  <data name="BiosPassword_Continue" xml:space="preserve">
+    <value>Настави</value>
+    <comment>Button of the dialog asking for the BIOS supervisor password.</comment>
+  </data>
+  <data name="BiosNewPassword_Title" xml:space="preserve">
+    <value>Нова BIOS лозинка</value>
+    <comment>Dialog title for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosNewPassword_Message" xml:space="preserve">
+    <value>{0}: унесите нову лозинку двапут. BIOS прихвата само слова, цифре и симболе са енглеске тастатуре.</value>
+    <comment>In the dialog for setting a BIOS password. {0} = the BIOS's name for the setting, in English (for example "Set Supervisor Password").</comment>
+  </data>
+  <data name="BiosNewPassword_First" xml:space="preserve">
+    <value>Нова лозинка</value>
+    <comment>Label of the first box in the dialog for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosNewPassword_Again" xml:space="preserve">
+    <value>Поновите лозинку</value>
+    <comment>Label of the second box in the dialog for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosNewPassword_Set" xml:space="preserve">
+    <value>Постави лозинку</value>
+    <comment>Button of the dialog for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosPasswordSave_Title" xml:space="preserve">
+    <value>Сачувати BIOS лозинку?</value>
+    <comment>Dialog title before a BIOS password is saved.</comment>
+  </data>
+  <data name="BiosPasswordSave_Message" xml:space="preserve">
+    <value>{0}: BIOS ће користити ову лозинку од следећег покретања. Ако је заборавите, можете изгубити приступ BIOS подешавању.</value>
+    <comment>Dialog text before a BIOS password is saved. {0} = the BIOS's name for the setting, in English (for example "Set Supervisor Password").</comment>
+  </data>
+  <data name="BiosPasswordSave_Save" xml:space="preserve">
+    <value>Сачувај лозинку</value>
+    <comment>Button of the dialog that saves a BIOS password.</comment>
+  </data>
+  <data name="BiosDanger_Title" xml:space="preserve">
+    <value>Променити опасну поставку?</value>
+    <comment>Dialog title before a dangerous BIOS setting changes.</comment>
+  </data>
+  <data name="BiosDanger_Message" xml:space="preserve">
+    <value>{0} ће бити постављено на {1} када се лаптоп поново покрене.
+
+Погрешна вредност може спречити покретање лаптопа или га одсећи од тастатуре, диска или портова. Наставите само ако знате шта то ради.</value>
+    <comment>Dialog text before a dangerous BIOS setting changes. {0} = the setting's name, {1} = the new value, both as the BIOS gives them (English). Two line breaks.</comment>
+  </data>
+  <data name="BiosDanger_Change" xml:space="preserve">
+    <value>Промени</value>
+    <comment>Button of the dialog that goes ahead with a dangerous BIOS setting change.</comment>
+  </data>
+  <data name="BiosDefaults_Title" xml:space="preserve">
+    <value>Учитати Acer-ове подразумеване вредности?</value>
+    <comment>Dialog title before Acer's BIOS defaults are loaded.</comment>
+  </data>
+  <data name="BiosDefaults_Message" xml:space="preserve">
+    <value>Све BIOS поставке враћају се на Acer-ове подразумеване вредности када се лаптоп поново покрене, укључујући и оне које OpenSense не приказује.</value>
+    <comment>Dialog text before Acer's BIOS defaults are loaded.</comment>
+  </data>
+  <data name="BiosUserDefaults_Title" xml:space="preserve">
+    <value>Учитати ваше сачуване подразумеване вредности?</value>
+    <comment>Dialog title before the defaults the user saved in the BIOS setup are loaded.</comment>
+  </data>
+  <data name="BiosUserDefaults_Message" xml:space="preserve">
+    <value>Све BIOS поставке враћају се на подразумеване вредности сачуване у BIOS подешавању када се лаптоп поново покрене, укључујући и оне које OpenSense не приказује.</value>
+    <comment>Dialog text before the defaults the user saved in the BIOS setup are loaded.</comment>
+  </data>
+  <data name="BiosDefaults_Load" xml:space="preserve">
+    <value>Учитај</value>
+    <comment>Button of the dialogs that go ahead with loading BIOS defaults.</comment>
+  </data>
   <data name="System_PowerPlan.Header" xml:space="preserve">
     <value>План напајања</value>
     <comment>Windows power plan setting.</comment>
@@ -1579,6 +1764,46 @@ GPU: {1}</value>
     <value>Сопствена светла испод W, A, S и D, препозната по називу модела лаптопа. Промените ако то не важи за ваш.</value>
     <comment>Under "MagForce key lights".</comment>
   </data>
+  <data name="Settings_BiosSettings.Header" xml:space="preserve">
+    <value>Омогући BIOS поставке</value>
+    <comment>Setting in "Your laptop": lets OpenSense show and change the BIOS's own settings.</comment>
+  </data>
+  <data name="Settings_BiosSettings.Description" xml:space="preserve">
+    <value>Приказује BIOS поставке на страници Систем и дозвољава програму OpenSense да их мења. Промена ступа на снагу када се лаптоп поново покрене.</value>
+    <comment>Under "Enable BIOS settings".</comment>
+  </data>
+  <data name="Settings_DangerousBiosSettings.Header" xml:space="preserve">
+    <value>Омогући опасне BIOS поставке</value>
+    <comment>Setting shown once BIOS settings are enabled: also allows the dangerous ones.</comment>
+  </data>
+  <data name="Settings_DangerousBiosSettings.Description" xml:space="preserve">
+    <value>Дозвољава и поставке које могу спречити покретање лаптопа или га одсећи од тастатуре, диска или портова. Само за оне који знају шта оне раде.</value>
+    <comment>Under "Enable dangerous BIOS settings".</comment>
+  </data>
+  <data name="BiosDangerousEnable_Title" xml:space="preserve">
+    <value>Омогућити опасне BIOS поставке?</value>
+    <comment>First dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousEnable_Message" xml:space="preserve">
+    <value>Ове поставке могу спречити покретање лаптопа, одсећи га од тастатуре, диска или портова, или се не могу поништити. Погрешна вредност може довести до тога да лаптоп треба поправити.</value>
+    <comment>Text of the first dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousEnable_Continue" xml:space="preserve">
+    <value>Настави</value>
+    <comment>Button of the first dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousSure_Title" xml:space="preserve">
+    <value>Да ли сте сигурни?</value>
+    <comment>Title of the second dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousSure_Message" xml:space="preserve">
+    <value>Последња провера. Када је ово укључено, OpenSense може да мења поставке које могу спречити покретање лаптопа. Укључите то само ако знате шта оне раде.</value>
+    <comment>Text of the second dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousSure_Enable" xml:space="preserve">
+    <value>Омогући</value>
+    <comment>Button of the second dialog when "Enable dangerous BIOS settings" is switched on: goes ahead.</comment>
+  </data>
   <data name="Settings_OperatingModes_Supported" xml:space="preserve">
     <value>{0}, онако како их Acer софтвер нуди на овом моделу. {1}</value>
     <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
@@ -1768,5 +1993,13 @@ GPU: {1}</value>
   <data name="GpuClocks_FollowFirmware.Description" xml:space="preserve">
     <value>Оверклок који фирмвер задаје за сваки режим, додат помацима испод.</value>
     <comment>Under "Acer's overclocking": the firmware's own overclock for each mode is added to the user's offsets set below it.</comment>
+  </data>
+  <data name="Navigation_FailedTitle" xml:space="preserve">
+    <value>Није могуће отворити ову страницу</value>
+    <comment>Title when navigating to a page fails. The app remains open and offers a retry.</comment>
+  </data>
+  <data name="Navigation_Retry" xml:space="preserve">
+    <value>Покушајте поново</value>
+    <comment>Button to retry opening the page after a navigation failure.</comment>
   </data>
 </root>

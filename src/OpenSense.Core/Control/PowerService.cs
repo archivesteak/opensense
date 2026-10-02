@@ -35,6 +35,7 @@ public sealed class PowerService : IDisposable
     private readonly Action<CalibrationRecord?> _saveCalibration;
     private readonly TimeProvider _time;
     private readonly object _gate = new();
+    private readonly ServiceLifetime _lifetime = new();
     private readonly SemaphoreSlim _calibrationGate = new(1, 1);
     private readonly ITimer _poll;
 
@@ -62,7 +63,7 @@ public sealed class PowerService : IDisposable
         _calibration = calibration;
         _saveCalibration = saveCalibration;
         _time = time ?? TimeProvider.System;
-        _poll = _time.CreateTimer(_ => _ = CheckCalibrationAsync(), null, Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+        _poll = _time.CreateTimer(_ => _ = ObserveCalibrationAsync(), null, Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
     }
 
     public PowerSettings Current { get; private set; } = new();
@@ -90,20 +91,22 @@ public sealed class PowerService : IDisposable
     }
 
     /// <summary>Applies <paramref name="settings"/> and picks up a calibration that was running when the engine last stopped.</summary>
-    public Task StartAsync(PowerSettings settings) =>
-        Task.WhenAll(Calibration is not null ? ResumeCalibrationAsync() : Task.CompletedTask, ApplyAsync(settings));
+    public Task StartAsync(PowerSettings settings) => _lifetime.Run(_ =>
+        Task.WhenAll(Calibration is not null ? ResumeCalibrationAsync() : Task.CompletedTask, ApplyAsync(settings)));
 
     /// <summary>Applies the members of <paramref name="settings"/> that differ from what the firmware has.</summary>
     public Task ApplyAsync(PowerSettings settings)
     {
         lock (_gate)
         {
+            if (_lifetime.Stopped)
+                return Task.CompletedTask;
             Current = settings;
             _pending = settings;
             if (!_pumping)
             {
                 _pumping = true;
-                _pump = Task.Run(PumpAsync);
+                _pump = _lifetime.Run(_ => Task.Run(PumpAsync, CancellationToken.None));
             }
             return _pump;
         }
@@ -126,23 +129,54 @@ public sealed class PowerService : IDisposable
 
     /// <summary>The machine woke up: check the calibration, and put back what Acer's software may have changed.</summary>
     /// <returns>Done once that is sent (the engine doesn't wait).</returns>
-    public Task OnResume() => Task.Delay(ResumeDelay, _time).ContinueWith(_ => ReapplyAsync(), TaskScheduler.Default).Unwrap();
+    public Task OnResume() => _lifetime.Run(async token =>
+    {
+        await Task.Delay(ResumeDelay, _time, token).ConfigureAwait(false);
+        if (!token.IsCancellationRequested)
+            await ReapplyAsync().ConfigureAwait(false);
+    });
+
+    public Task StopAsync()
+    {
+        lock (_gate)
+        {
+            if (!_disposed)
+                _poll.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+        }
+        return _lifetime.StopAsync();
+    }
 
     /// <summary>The adapter or the battery changed: look at the calibration now rather than at the next poll.</summary>
     public void OnFirmwareEvent(FirmwareEvent firmwareEvent)
     {
         if (firmwareEvent.Kind is FirmwareEventKind.AcAdapter or FirmwareEventKind.BatteryCalibration or FirmwareEventKind.BatteryCharging)
-            _ = CheckCalibrationAsync();
+            _ = ObserveCalibrationAsync();
     }
 
-    public async Task<CalibrationResult> StartCalibrationAsync()
+    private async Task ObserveCalibrationAsync()
+    {
+        try
+        {
+            await CheckCalibrationAsync().ConfigureAwait(false);
+        }
+        catch (Exception ex) when (ex is not OutOfMemoryException)
+        {
+            if (!_lifetime.Stopped)
+                Notice?.Invoke(new ControlNotice(ex is AcerWmiAccessDeniedException ? NoticeKind.FirmwareAccessDenied : NoticeKind.ControlLoopError,
+                    ex.Message));
+        }
+    }
+
+    public Task<CalibrationResult> StartCalibrationAsync() => _lifetime.Run(_ => StartCalibrationCoreAsync());
+
+    private async Task<CalibrationResult> StartCalibrationCoreAsync()
     {
         if (!_battery.Calibration)
             return CalibrationResult.Unsupported;
         await _calibrationGate.WaitAsync().ConfigureAwait(false);
         try
         {
-            if (_disposed)
+            if (_disposed || _lifetime.Stopped)
                 return CalibrationResult.Rejected;
             if (Calibration is not null)
                 return CalibrationResult.AlreadyRunning;
@@ -163,12 +197,14 @@ public sealed class PowerService : IDisposable
     }
 
     /// <summary>Stops a running calibration at the user's request.</summary>
-    public async Task StopCalibrationAsync()
+    public Task StopCalibrationAsync() => _lifetime.Run(_ => StopCalibrationCoreAsync());
+
+    private async Task StopCalibrationCoreAsync()
     {
         await _calibrationGate.WaitAsync().ConfigureAwait(false);
         try
         {
-            if (Calibration is not { } record || _disposed)
+            if (Calibration is not { } record || _disposed || _lifetime.Stopped)
                 return;
             await _dispatcher.InvokeAsync(d => d.SetBatteryFunction(BatteryFunction.Calibration, false)).ConfigureAwait(false);
             await FinishAsync(record, null).ConfigureAwait(false);
@@ -183,12 +219,14 @@ public sealed class PowerService : IDisposable
     /// Looks at a running calibration: ended by the firmware (finished, or interrupted if the machine slept since the
     /// last look), or to be stopped because the adapter is out.
     /// </summary>
-    internal async Task CheckCalibrationAsync()
+    internal Task CheckCalibrationAsync() => _lifetime.Run(_ => CheckCalibrationCoreAsync());
+
+    private async Task CheckCalibrationCoreAsync()
     {
         await _calibrationGate.WaitAsync().ConfigureAwait(false);
         try
         {
-            if (Calibration is not { } record || _disposed)
+            if (Calibration is not { } record || _disposed || _lifetime.Stopped)
                 return;
             if (await _dispatcher.InvokeAsync(d => d.GetBatteryHealth()).ConfigureAwait(false) is not { } health)
                 return; // asked again at the next poll
@@ -219,7 +257,7 @@ public sealed class PowerService : IDisposable
         await _calibrationGate.WaitAsync().ConfigureAwait(false);
         try
         {
-            if (Calibration is not { } record || _disposed)
+            if (Calibration is not { } record || _disposed || _lifetime.Stopped)
                 return;
             switch (await _dispatcher.InvokeAsync(d => d.GetBatteryHealth()).ConfigureAwait(false))
             {
@@ -318,12 +356,26 @@ public sealed class PowerService : IDisposable
 
     private async Task PumpAsync()
     {
+        try
+        {
+            await PumpLoopAsync().ConfigureAwait(false);
+        }
+        catch
+        {
+            lock (_gate)
+                _pumping = false;
+            throw;
+        }
+    }
+
+    private async Task PumpLoopAsync()
+    {
         while (true)
         {
             PowerSettings next;
             lock (_gate)
             {
-                if (_pending is null)
+                if (_pending is null || _lifetime.Stopped)
                 {
                     _pumping = false;
                     return;
@@ -331,9 +383,18 @@ public sealed class PowerService : IDisposable
                 next = _pending;
                 _pending = null;
             }
-            var failures = await _dispatcher.InvokeAsync(d => ApplyChanges(d, next)).ConfigureAwait(false);
-            foreach (var failure in failures)
-                Notice?.Invoke(new ControlNotice(failure));
+            try
+            {
+                var failures = await _dispatcher.InvokeAsync(d => _lifetime.Stopped ? [] : ApplyChanges(d, next)).ConfigureAwait(false);
+                foreach (var failure in failures)
+                    Notice?.Invoke(new ControlNotice(failure));
+            }
+            catch (Exception ex) when (ex is not OutOfMemoryException)
+            {
+                if (!_lifetime.Stopped)
+                    Notice?.Invoke(new ControlNotice(ex is AcerWmiAccessDeniedException ? NoticeKind.FirmwareAccessDenied : NoticeKind.ControlLoopError,
+                        ex.Message));
+            }
         }
     }
 
@@ -367,11 +428,15 @@ public sealed class PowerService : IDisposable
     /// </summary>
     public void Dispose()
     {
+        if (!StopAsync().Wait(TimeSpan.FromSeconds(5)))
+            throw new TimeoutException("Power settings are still stopping; their resources remain in use.");
         _calibrationGate.Wait();
         try
         {
             lock (_gate)
             {
+                if (_disposed)
+                    return;
                 _disposed = true;
                 _poll.Dispose();
             }

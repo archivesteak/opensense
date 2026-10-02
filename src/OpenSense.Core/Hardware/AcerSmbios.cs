@@ -19,6 +19,9 @@ public enum GamingRecord : byte
     /// <summary>1: the firmware shows a custom boot logo from the EFI system partition.</summary>
     CustomBootLogo = 0x0D,
 
+    /// <summary>1: operating-mode controls are supported.</summary>
+    OperatingModes = 0x0F,
+
     /// <summary>1: light bars on the embedded controller, 2: on USB.</summary>
     LightBar = 0x17,
 }
@@ -55,6 +58,11 @@ public sealed record AcerSmbios(
     public bool HasEcLightBars => Gaming(GamingRecord.LightBar) == 1;
 
     public bool HasHotkeyFunction(byte function) => HotkeyFunctions.Any(r => r.Id == function);
+
+    /// <summary>The last backlight-function record, matching the firmware's hotkey table selection.</summary>
+    public byte? BacklightHotkey => HotkeyFunctions
+        .Where(r => r.Id is >= 0x81 and <= 0x9F && r.Value == 0x0008)
+        .Select(r => (byte?)r.Id).LastOrDefault();
 
     /// <summary>A record's value; null when the record is missing or reads 0xFF ("not present").</summary>
     public ushort? Gaming(GamingRecord record) =>

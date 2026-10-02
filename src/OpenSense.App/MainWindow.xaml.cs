@@ -28,7 +28,7 @@ public sealed partial class MainWindow : Window
     private readonly SettingsService _settings;
 
     public MainWindow(ShellViewModel shell, UpdateViewModel updates, SettingsService settings, SettingsViewModel settingsPage, SystemViewModel system,
-        BatteryViewModel battery, StartupViewModel startup, GpuClocksViewModel gpuClocks, NavigationService navigation)
+        BatteryViewModel battery, StartupViewModel startup, GpuClocksViewModel gpuClocks, BiosSettingsViewModel bios, NavigationService navigation)
     {
         Shell = shell;
         Updates = updates;
@@ -50,6 +50,12 @@ public sealed partial class MainWindow : Window
         startup.PickPicture = PickPictureAsync;
         startup.ConfirmLogo = ConfirmBootLogoAsync;
         gpuClocks.ConfirmOverclock = ConfirmOverclockAsync;
+        bios.AskPassword = AskBiosPasswordAsync;
+        bios.AskNewPassword = AskNewBiosPasswordAsync;
+        bios.ConfirmDangerous = ConfirmDangerousBiosAsync;
+        bios.ConfirmPassword = ConfirmBiosPasswordAsync;
+        settingsPage.ConfirmDangerousBios = ConfirmDangerousBiosSettingsAsync;
+        bios.ConfirmDefaults = ConfirmBiosDefaultsAsync;
 
         AppWindow.Closing += OnClosing;
         navigation.Requested += NavigateTo;
@@ -57,7 +63,14 @@ public sealed partial class MainWindow : Window
         {
             Serilog.Log.Error(e.Exception, "Navigation to {Page} failed", e.SourcePageType.Name);
             e.Handled = true;
+            // Say so, rather than leave the last page (or nothing) under the selected item.
+            _failedPage = e.SourcePageType;
+            NavigationFailedBar.Title = Strings.Get("Navigation_FailedTitle");
+            NavigationFailedBar.Message = e.Exception.Message;
+            NavigationRetryButton.Content = Strings.Get("Navigation_Retry");
+            NavigationFailedBar.IsOpen = true;
         };
+        ContentFrame.Navigated += (_, _) => NavigationFailedBar.IsOpen = false;
         shell.PropertyChanged += (_, e) =>
         {
             if (e.PropertyName == nameof(ShellViewModel.IsReady) && shell.IsReady)
@@ -150,6 +163,16 @@ public sealed partial class MainWindow : Window
 
     private void OnPaneToggleRequested(TitleBar sender, object args) => Nav.IsPaneOpen = !Nav.IsPaneOpen;
 
+    /// <summary>The page that could not be opened last, for <see cref="OnNavigationRetry"/>.</summary>
+    private Type? _failedPage;
+
+    private void OnNavigationRetry(object sender, RoutedEventArgs e)
+    {
+        NavigationFailedBar.IsOpen = false;
+        if (_failedPage is { } page)
+            ContentFrame.Navigate(page);
+    }
+
     /// <summary>The title bar's template sets the app name in the 12 px caption style; use the navigation items' 14 px.</summary>
     private void MatchNavigationText()
     {
@@ -166,8 +189,8 @@ public sealed partial class MainWindow : Window
     private async Task<bool?> ConfirmGpuSwitchAsync(GpuMode mode)
     {
         var dialog = Dialog(
-            Strings.Get(mode == GpuMode.Discrete ? "GpuSwitch_DiscreteTitle" : "GpuSwitch_HybridTitle"),
-            Strings.Get(mode == GpuMode.Discrete ? "GpuSwitch_DiscreteMessage" : "GpuSwitch_HybridMessage"));
+            Strings.Get(mode == GpuMode.Discrete ? "GpuSwitch_DiscreteTitle" : mode == GpuMode.Automatic ? "GpuSwitch_AutomaticTitle" : "GpuSwitch_HybridTitle"),
+            Strings.Get(mode == GpuMode.Discrete ? "GpuSwitch_DiscreteMessage" : mode == GpuMode.Automatic ? "GpuSwitch_AutomaticMessage" : "GpuSwitch_HybridMessage"));
         dialog.PrimaryButtonText = Strings.Get("GpuSwitch_RestartNow");
         dialog.SecondaryButtonText = Strings.Get("GpuSwitch_RestartLater");
         dialog.DefaultButton = ContentDialogButton.Secondary;
@@ -191,6 +214,89 @@ public sealed partial class MainWindow : Window
     {
         var dialog = Dialog(Strings.Get("GpuClocks_Confirm_Title"), Strings.Get("GpuClocks_Confirm_Message"));
         dialog.PrimaryButtonText = Strings.Get("GpuClocks_Confirm_Overclock");
+        dialog.DefaultButton = ContentDialogButton.Close;
+        return await dialog.ShowAsync() == ContentDialogResult.Primary;
+    }
+
+    /// <summary>The BIOS supervisor password, which the BIOS asks for; null when the user gives up.</summary>
+    private async Task<string?> AskBiosPasswordAsync(bool wrong)
+    {
+        var password = new PasswordBox { MaxLength = BiosProtocol.MaxLength };
+        var content = new StackPanel { Spacing = 12 };
+        content.Children.Add(new TextBlock { Text = Strings.Get(wrong ? "BiosPassword_Wrong" : "BiosPassword_Message"), TextWrapping = TextWrapping.Wrap });
+        content.Children.Add(password);
+
+        var dialog = Dialog(Strings.Get("BiosPassword_Title"), content);
+        dialog.PrimaryButtonText = Strings.Get("BiosPassword_Continue");
+        dialog.DefaultButton = ContentDialogButton.Primary;
+        dialog.IsPrimaryButtonEnabled = false;
+        password.PasswordChanged += (_, _) => dialog.IsPrimaryButtonEnabled = password.Password.Length > 0;
+        dialog.Opened += (_, _) => password.Focus(FocusState.Programmatic);
+        return await dialog.ShowAsync() == ContentDialogResult.Primary ? password.Password : null;
+    }
+
+    /// <summary>A new password for a BIOS password setting, typed twice; null when the user gives up.</summary>
+    /// <param name="maxLength">The longest the BIOS keeps whole.</param>
+    private async Task<string?> AskNewBiosPasswordAsync(string setting, int maxLength)
+    {
+        var first = new PasswordBox { MaxLength = maxLength, Header = Strings.Get("BiosNewPassword_First") };
+        var again = new PasswordBox { MaxLength = maxLength, Header = Strings.Get("BiosNewPassword_Again") };
+        var content = new StackPanel { Spacing = 12 };
+        content.Children.Add(new TextBlock { Text = Strings.Format("BiosNewPassword_Message", setting), TextWrapping = TextWrapping.Wrap });
+        content.Children.Add(first);
+        content.Children.Add(again);
+
+        var dialog = Dialog(Strings.Get("BiosNewPassword_Title"), content);
+        dialog.PrimaryButtonText = Strings.Get("BiosNewPassword_Set");
+        dialog.DefaultButton = ContentDialogButton.Primary;
+        dialog.IsPrimaryButtonEnabled = false;
+        // Only what the BIOS can take, and the same twice.
+        void Check(object sender, RoutedEventArgs e) =>
+            dialog.IsPrimaryButtonEnabled = first.Password == again.Password && BiosProtocol.IsPlainText(first.Password);
+        first.PasswordChanged += Check;
+        again.PasswordChanged += Check;
+        dialog.Opened += (_, _) => first.Focus(FocusState.Programmatic);
+        return await dialog.ShowAsync() == ContentDialogResult.Primary ? first.Password : null;
+    }
+
+    /// <summary>Two questions, one after the other, before the dangerous BIOS settings are switched on.</summary>
+    private async Task<bool> ConfirmDangerousBiosSettingsAsync()
+    {
+        var first = Dialog(Strings.Get("BiosDangerousEnable_Title"), Strings.Get("BiosDangerousEnable_Message"));
+        first.PrimaryButtonText = Strings.Get("BiosDangerousEnable_Continue");
+        first.DefaultButton = ContentDialogButton.Close;
+        if (await first.ShowAsync() != ContentDialogResult.Primary)
+            return false;
+
+        var second = Dialog(Strings.Get("BiosDangerousSure_Title"), Strings.Get("BiosDangerousSure_Message"));
+        second.PrimaryButtonText = Strings.Get("BiosDangerousSure_Enable");
+        second.DefaultButton = ContentDialogButton.Close;
+        return await second.ShowAsync() == ContentDialogResult.Primary;
+    }
+
+    /// <summary>The last question before a BIOS password is saved.</summary>
+    private async Task<bool> ConfirmBiosPasswordAsync(string setting)
+    {
+        var dialog = Dialog(Strings.Get("BiosPasswordSave_Title"), Strings.Format("BiosPasswordSave_Message", setting));
+        dialog.PrimaryButtonText = Strings.Get("BiosPasswordSave_Save");
+        dialog.DefaultButton = ContentDialogButton.Close;
+        return await dialog.ShowAsync() == ContentDialogResult.Primary;
+    }
+
+    private async Task<bool> ConfirmDangerousBiosAsync(string name, string value)
+    {
+        var dialog = Dialog(Strings.Get("BiosDanger_Title"), Strings.Format("BiosDanger_Message", name, value));
+        dialog.PrimaryButtonText = Strings.Get("BiosDanger_Change");
+        dialog.DefaultButton = ContentDialogButton.Close;
+        return await dialog.ShowAsync() == ContentDialogResult.Primary;
+    }
+
+    private async Task<bool> ConfirmBiosDefaultsAsync(bool user)
+    {
+        var dialog = Dialog(
+            Strings.Get(user ? "BiosUserDefaults_Title" : "BiosDefaults_Title"),
+            Strings.Get(user ? "BiosUserDefaults_Message" : "BiosDefaults_Message"));
+        dialog.PrimaryButtonText = Strings.Get("BiosDefaults_Load");
         dialog.DefaultButton = ContentDialogButton.Close;
         return await dialog.ShowAsync() == ContentDialogResult.Primary;
     }

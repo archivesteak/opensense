@@ -67,6 +67,11 @@ public sealed class IpcTests : IAsyncLifetime
         Assert.Equal(4, snapshot.Capabilities.Keyboard.Zones);
         Assert.NotNull(snapshot.Firmware);
         Assert.Equal(FanControlMode.Auto, snapshot.Settings.Profile.Mode);
+
+        // This BIOS answers 3 for the GPU switch: two modes, so a third is not sent.
+        Assert.True(snapshot.Capabilities.GpuModeSwitch);
+        Assert.False(snapshot.Capabilities.GpuModeAutomatic);
+        Assert.False(await _service.SetGpuModeAsync(GpuMode.Automatic, TestContext.Current.CancellationToken));
     }
 
     [Fact]

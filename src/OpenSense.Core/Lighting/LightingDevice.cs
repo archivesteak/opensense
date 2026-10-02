@@ -55,6 +55,17 @@ public enum LightingBackendKind
 
     /// <summary>A Darfon USB light: cover logo, light bar, InfiniteRing.</summary>
     Darfon,
+
+    /// <summary>Keyboard brightness without RGB, through WMI or the brightness/timeout interface.</summary>
+    EcKeyboardBrightness,
+}
+
+/// <summary>What a light's getter can establish; firmware state is not a measurement of the LEDs.</summary>
+public enum LightingReadbackKind
+{
+    None,
+    FirmwareState,
+    Brightness,
 }
 
 /// <summary>The physical layout of a keyboard, as drawn by the per-key editor.</summary>
@@ -91,6 +102,8 @@ public sealed record EffectTraits(LightingEffect Effect, bool Color = false, boo
 /// <param name="Id">Its key in <see cref="LightingConfig.Devices"/>.</param>
 public sealed record LightingDeviceInfo(string Id, LightingLocation Location, LightingBackendKind Backend)
 {
+    public LightingReadbackKind Readback { get; init; }
+
     /// <summary>Static colour zones (1: one colour for the whole light).</summary>
     public int Zones { get; init; } = 1;
 

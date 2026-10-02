@@ -34,9 +34,6 @@ public interface IMachine
     /// <summary>HID devices: Acer's embedded-controller interface on newer models, USB lighting devices.</summary>
     IHidBus OpenHid();
 
-    /// <summary>What NitroSense's installer left behind, used as detection hints.</summary>
-    NitroSenseHints ReadHints();
-
     AcerSmbios ReadSmbios();
 
     ILoadMonitor OpenLoadMonitor();
@@ -71,8 +68,6 @@ public sealed class WindowsMachine : IMachine
     public BatteryHealth? ReadBatteryHealth() => WindowsBattery.Read();
 
     public IHidBus OpenHid() => new WindowsHidBus();
-
-    public NitroSenseHints ReadHints() => NitroSenseHints.Read();
 
     public AcerSmbios ReadSmbios() => AcerSmbios.Read();
 

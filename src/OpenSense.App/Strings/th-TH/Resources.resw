@@ -183,6 +183,10 @@
   <data name="Notice_WindowsKeyRejected" xml:space="preserve">
     <value>เฟิร์มแวร์ปฏิเสธการเปลี่ยนแปลงปุ่ม Windows</value>
   </data>
+  <data name="Notice_FnLockRejected" xml:space="preserve">
+    <value>เฟิร์มแวร์ไม่ยอมรับการเปลี่ยนการล็อก Fn</value>
+    <comment>The firmware rejected the requested Fn lock setting.</comment>
+  </data>
   <data name="Notice_LcdOverdriveRejected" xml:space="preserve">
     <value>จอแสดงผลปฏิเสธการเปลี่ยนแปลง Overdrive</value>
     <comment>Overdrive = LCD overdrive, a screen setting that speeds up pixel response.</comment>
@@ -201,6 +205,31 @@
   </data>
   <data name="Notice_GpuModeRejected" xml:space="preserve">
     <value>เฟิร์มแวร์ปฏิเสธการเปลี่ยนโหมด GPU</value>
+  </data>
+  <data name="Notice_Bios_Title" xml:space="preserve">
+    <value>การตั้งค่า BIOS</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_BiosPasswordSet" xml:space="preserve">
+    <value>บันทึกรหัสผ่าน BIOS แล้ว จะมีผลหลังจากเริ่มแล็ปท็อปใหม่</value>
+  </data>
+  <data name="Notice_BiosPasswordRemoved" xml:space="preserve">
+    <value>ลบรหัสผ่าน BIOS แล้ว จะมีผลหลังจากเริ่มแล็ปท็อปใหม่</value>
+  </data>
+  <data name="Notice_BiosOff" xml:space="preserve">
+    <value>การตั้งค่า BIOS ถูกปิดอยู่ในการตั้งค่า</value>
+  </data>
+  <data name="Notice_BiosUnsupported" xml:space="preserve">
+    <value>BIOS นี้ไม่รองรับสิ่งนั้น</value>
+  </data>
+  <data name="Notice_BiosRejected" xml:space="preserve">
+    <value>BIOS ไม่ยอมรับสิ่งนั้น</value>
+  </data>
+  <data name="Notice_BiosLocked" xml:space="preserve">
+    <value>ใส่รหัสผ่านผิดหลายครั้งเกินไป เริ่มแล็ปท็อปใหม่เพื่อลองอีกครั้ง</value>
+  </data>
+  <data name="Notice_BiosFailed" xml:space="preserve">
+    <value>BIOS ไม่ตอบสนอง</value>
   </data>
   <data name="Notice_GpuClocks_Title" xml:space="preserve">
     <value>โอเวอร์คล็อก GPU</value>
@@ -258,6 +287,13 @@
   </data>
   <data name="GpuSwitch_HybridMessage" xml:space="preserve">
     <value>GPU ในตัวจะขับจอแสดงผล และ GPU แยกจะเปิดเฉพาะเมื่อจำเป็นเท่านั้น ช่วยประหยัดแบตเตอรี่ ต้องเริ่ม Windows ใหม่จึงจะมีผล</value>
+  </data>
+  <data name="GpuSwitch_AutomaticTitle" xml:space="preserve">
+    <value>สลับไปใช้การเลือกกราฟิกอัตโนมัติหรือไม่</value>
+    <comment>Dialog title.</comment>
+  </data>
+  <data name="GpuSwitch_AutomaticMessage" xml:space="preserve">
+    <value>แล็ปท็อปจะเลือกเองว่าจะใช้ GPU ในตัวหรือ GPU แยกขับจอแสดงผล ต้องเริ่ม Windows ใหม่จึงจะมีผล</value>
   </data>
   <data name="GpuSwitch_RestartNow" xml:space="preserve">
     <value>เริ่มใหม่ตอนนี้</value>
@@ -1044,6 +1080,10 @@
     <value>ปุ่ม Windows และปุ่มเมนู</value>
     <comment>The Windows logo key and the Menu (application) key.</comment>
   </data>
+  <data name="System_FnLock.Header" xml:space="preserve">
+    <value>ล็อก Fn</value>
+    <comment>Keyboard Fn lock toggle, shown only when the firmware reports support.</comment>
+  </data>
   <data name="System_WindowsKey.Description" xml:space="preserve">
     <value>ปิดเพื่อไม่ให้ปุ่ม Windows และปุ่มเมนูขัดจังหวะเกม</value>
   </data>
@@ -1100,6 +1140,10 @@
   <data name="System_GpuDiscrete.Content" xml:space="preserve">
     <value>แยก</value>
     <comment>GPU mode: only the NVIDIA graphics chip. Short: a segmented button.</comment>
+  </data>
+  <data name="System_GpuAutomatic.Content" xml:space="preserve">
+    <value>อัตโนมัติ</value>
+    <comment>GPU mode: the laptop chooses which graphics chip drives the display (Acer: Automatic Selection). Short: a segmented button.</comment>
   </data>
   <data name="System_GpuRestart.Title" xml:space="preserve">
     <value>เริ่มใหม่เพื่อสลับโหมด GPU</value>
@@ -1371,6 +1415,147 @@
     <value>พลังงาน</value>
     <comment>Section title.</comment>
   </data>
+  <data name="System_Bios.Text" xml:space="preserve">
+    <value>BIOS</value>
+    <comment>Section header on the System page; BIOS is not translated.</comment>
+  </data>
+  <data name="System_BiosRestart.Title" xml:space="preserve">
+    <value>เริ่มใหม่เพื่อใช้การเปลี่ยนแปลง BIOS</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="System_BiosRestart.Message" xml:space="preserve">
+    <value>การเปลี่ยนแปลง BIOS จะมีผลหลังจากเริ่มแล็ปท็อปใหม่</value>
+  </data>
+  <data name="System_BiosSettings.Header" xml:space="preserve">
+    <value>การตั้งค่า BIOS</value>
+    <comment>Expander on the System page that opens to every BIOS setting.</comment>
+  </data>
+  <data name="Bios_SetPassword.Content" xml:space="preserve">
+    <value>ตั้งค่า…</value>
+    <comment>Button on a BIOS password setting; opens a dialog to type the new password.</comment>
+  </data>
+  <data name="Bios_RemovePassword.Content" xml:space="preserve">
+    <value>ลบ…</value>
+    <comment>Button on a BIOS password setting; takes the password away after a question.</comment>
+  </data>
+  <data name="Bios_LoadDefaults.Content" xml:space="preserve">
+    <value>โหลดค่าเริ่มต้นของ BIOS</value>
+    <comment>Button under the BIOS settings: puts every BIOS setting back to Acer's defaults.</comment>
+  </data>
+  <data name="Bios_LoadUserDefaults.Content" xml:space="preserve">
+    <value>โหลดค่าเริ่มต้นที่บันทึกไว้</value>
+    <comment>Button under the BIOS settings: loads the defaults the user saved in the BIOS setup.</comment>
+  </data>
+  <data name="BiosSettings_Footer.Text" xml:space="preserve">
+    <value>ชื่อและค่าเป็นของ BIOS เอง เป็นภาษาอังกฤษ การเปลี่ยนแปลงจะมีผลหลังจากเริ่มแล็ปท็อปใหม่</value>
+    <comment>Under the list of BIOS settings.</comment>
+  </data>
+  <data name="Bios_StatusIdle" xml:space="preserve">
+    <value>เปิดเพื่ออ่านการตั้งค่าจาก BIOS</value>
+    <comment>Under "BIOS settings" before it is opened.</comment>
+  </data>
+  <data name="Bios_StatusReading" xml:space="preserve">
+    <value>กำลังอ่าน BIOS…</value>
+    <comment>Under "BIOS settings" while the BIOS is being read.</comment>
+  </data>
+  <data name="Bios_StatusCount" xml:space="preserve">
+    <value>การตั้งค่าที่พบ: {0}</value>
+    <comment>{0} = how many settings the BIOS listed.</comment>
+  </data>
+  <data name="Bios_StatusNone" xml:space="preserve">
+    <value>BIOS นี้ไม่แสดงการตั้งค่าใด ๆ ให้ Windows</value>
+    <comment>Under "BIOS settings" when the BIOS lists none.</comment>
+  </data>
+  <data name="Bios_Dangerous" xml:space="preserve">
+    <value>อันตราย: ค่าที่ไม่ถูกต้องอาจทำให้แล็ปท็อปเปิดไม่ติด</value>
+    <comment>Under a dangerous BIOS setting that can be changed.</comment>
+  </data>
+  <data name="Bios_DangerousLocked" xml:space="preserve">
+    <value>อันตราย เปิด “เปิดใช้งานการตั้งค่า BIOS ที่เป็นอันตราย” ในการตั้งค่าเพื่อเปลี่ยนแปลง</value>
+    <comment>Under a dangerous BIOS setting while dangerous BIOS settings are off in Settings; "Enable dangerous BIOS settings" is that setting's name.</comment>
+  </data>
+  <data name="BiosPassword_Title" xml:space="preserve">
+    <value>รหัสผ่าน BIOS</value>
+    <comment>Dialog title asking for the BIOS supervisor password.</comment>
+  </data>
+  <data name="BiosPassword_Message" xml:space="preserve">
+    <value>BIOS ขอรหัสผ่านผู้ควบคุมก่อนอนุญาตให้เปลี่ยนการตั้งค่า</value>
+    <comment>In the dialog asking for the BIOS supervisor password.</comment>
+  </data>
+  <data name="BiosPassword_Wrong" xml:space="preserve">
+    <value>รหัสผ่านไม่ถูกต้อง ลองอีกครั้ง</value>
+    <comment>In the dialog asking for the BIOS supervisor password, after a wrong one.</comment>
+  </data>
+  <data name="BiosPassword_Continue" xml:space="preserve">
+    <value>ดำเนินการต่อ</value>
+    <comment>Button of the dialog asking for the BIOS supervisor password.</comment>
+  </data>
+  <data name="BiosNewPassword_Title" xml:space="preserve">
+    <value>รหัสผ่าน BIOS ใหม่</value>
+    <comment>Dialog title for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosNewPassword_Message" xml:space="preserve">
+    <value>{0}: พิมพ์รหัสผ่านใหม่สองครั้ง BIOS รับเฉพาะตัวอักษร ตัวเลข และสัญลักษณ์ที่มีบนคีย์บอร์ดภาษาอังกฤษ</value>
+    <comment>In the dialog for setting a BIOS password. {0} = the BIOS's name for the setting, in English (for example "Set Supervisor Password").</comment>
+  </data>
+  <data name="BiosNewPassword_First" xml:space="preserve">
+    <value>รหัสผ่านใหม่</value>
+    <comment>Label of the first box in the dialog for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosNewPassword_Again" xml:space="preserve">
+    <value>ป้อนรหัสผ่านซ้ำ</value>
+    <comment>Label of the second box in the dialog for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosNewPassword_Set" xml:space="preserve">
+    <value>ตั้งรหัสผ่าน</value>
+    <comment>Button of the dialog for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosPasswordSave_Title" xml:space="preserve">
+    <value>บันทึกรหัสผ่าน BIOS หรือไม่</value>
+    <comment>Dialog title before a BIOS password is saved.</comment>
+  </data>
+  <data name="BiosPasswordSave_Message" xml:space="preserve">
+    <value>{0}: BIOS จะใช้รหัสผ่านนี้ตั้งแต่การเริ่มระบบครั้งถัดไป หากคุณลืม คุณอาจเข้าถึงการตั้งค่า BIOS ไม่ได้</value>
+    <comment>Dialog text before a BIOS password is saved. {0} = the BIOS's name for the setting, in English (for example "Set Supervisor Password").</comment>
+  </data>
+  <data name="BiosPasswordSave_Save" xml:space="preserve">
+    <value>บันทึกรหัสผ่าน</value>
+    <comment>Button of the dialog that saves a BIOS password.</comment>
+  </data>
+  <data name="BiosDanger_Title" xml:space="preserve">
+    <value>เปลี่ยนการตั้งค่าที่เป็นอันตรายหรือไม่</value>
+    <comment>Dialog title before a dangerous BIOS setting changes.</comment>
+  </data>
+  <data name="BiosDanger_Message" xml:space="preserve">
+    <value>{0} จะถูกตั้งเป็น {1} หลังจากเริ่มแล็ปท็อปใหม่
+
+ค่าที่ไม่ถูกต้องอาจทำให้แล็ปท็อปเปิดไม่ติดหรือตัดการเชื่อมต่อกับคีย์บอร์ด ไดรฟ์ หรือพอร์ต ดำเนินการต่อเมื่อคุณรู้ว่าการตั้งค่านี้ทำอะไรเท่านั้น</value>
+    <comment>Dialog text before a dangerous BIOS setting changes. {0} = the setting's name, {1} = the new value, both as the BIOS gives them (English). Two line breaks.</comment>
+  </data>
+  <data name="BiosDanger_Change" xml:space="preserve">
+    <value>เปลี่ยน</value>
+    <comment>Button of the dialog that goes ahead with a dangerous BIOS setting change.</comment>
+  </data>
+  <data name="BiosDefaults_Title" xml:space="preserve">
+    <value>โหลดค่าเริ่มต้นของ Acer หรือไม่</value>
+    <comment>Dialog title before Acer's BIOS defaults are loaded.</comment>
+  </data>
+  <data name="BiosDefaults_Message" xml:space="preserve">
+    <value>การตั้งค่า BIOS ทั้งหมดจะกลับเป็นค่าเริ่มต้นของ Acer หลังจากเริ่มแล็ปท็อปใหม่ รวมถึงรายการที่ OpenSense ไม่แสดง</value>
+    <comment>Dialog text before Acer's BIOS defaults are loaded.</comment>
+  </data>
+  <data name="BiosUserDefaults_Title" xml:space="preserve">
+    <value>โหลดค่าเริ่มต้นที่คุณบันทึกไว้หรือไม่</value>
+    <comment>Dialog title before the defaults the user saved in the BIOS setup are loaded.</comment>
+  </data>
+  <data name="BiosUserDefaults_Message" xml:space="preserve">
+    <value>การตั้งค่า BIOS ทั้งหมดจะกลับเป็นค่าเริ่มต้นที่บันทึกไว้ในการตั้งค่า BIOS หลังจากเริ่มแล็ปท็อปใหม่ รวมถึงรายการที่ OpenSense ไม่แสดง</value>
+    <comment>Dialog text before the defaults the user saved in the BIOS setup are loaded.</comment>
+  </data>
+  <data name="BiosDefaults_Load" xml:space="preserve">
+    <value>โหลด</value>
+    <comment>Button of the dialogs that go ahead with loading BIOS defaults.</comment>
+  </data>
   <data name="System_PowerPlan.Header" xml:space="preserve">
     <value>แผนการใช้พลังงาน</value>
     <comment>Windows power plan setting.</comment>
@@ -1579,6 +1764,46 @@ GPU: {1}</value>
     <value>ไฟเฉพาะใต้ปุ่ม W, A, S และ D ซึ่งตรวจพบจากชื่อรุ่นของแล็ปท็อป เปลี่ยนการตั้งค่านี้หากไม่ตรงกับเครื่องของคุณ</value>
     <comment>Under "MagForce key lights".</comment>
   </data>
+  <data name="Settings_BiosSettings.Header" xml:space="preserve">
+    <value>เปิดใช้งานการตั้งค่า BIOS</value>
+    <comment>Setting in "Your laptop": lets OpenSense show and change the BIOS's own settings.</comment>
+  </data>
+  <data name="Settings_BiosSettings.Description" xml:space="preserve">
+    <value>แสดงการตั้งค่า BIOS ในหน้าระบบและอนุญาตให้ OpenSense เปลี่ยนแปลงได้ การเปลี่ยนแปลงจะมีผลหลังจากเริ่มแล็ปท็อปใหม่</value>
+    <comment>Under "Enable BIOS settings".</comment>
+  </data>
+  <data name="Settings_DangerousBiosSettings.Header" xml:space="preserve">
+    <value>เปิดใช้งานการตั้งค่า BIOS ที่เป็นอันตราย</value>
+    <comment>Setting shown once BIOS settings are enabled: also allows the dangerous ones.</comment>
+  </data>
+  <data name="Settings_DangerousBiosSettings.Description" xml:space="preserve">
+    <value>อนุญาตการตั้งค่าที่อาจทำให้แล็ปท็อปเปิดไม่ติดหรือตัดการเชื่อมต่อกับคีย์บอร์ด ไดรฟ์ หรือพอร์ตด้วย สำหรับผู้ที่รู้ว่าการตั้งค่าเหล่านี้ทำอะไรเท่านั้น</value>
+    <comment>Under "Enable dangerous BIOS settings".</comment>
+  </data>
+  <data name="BiosDangerousEnable_Title" xml:space="preserve">
+    <value>เปิดใช้งานการตั้งค่า BIOS ที่เป็นอันตรายหรือไม่</value>
+    <comment>First dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousEnable_Message" xml:space="preserve">
+    <value>การตั้งค่าเหล่านี้อาจทำให้แล็ปท็อปเปิดไม่ติด ตัดการเชื่อมต่อกับคีย์บอร์ด ไดรฟ์ หรือพอร์ต หรือย้อนกลับไม่ได้ ค่าที่ไม่ถูกต้องอาจทำให้ต้องส่งแล็ปท็อปไปซ่อม</value>
+    <comment>Text of the first dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousEnable_Continue" xml:space="preserve">
+    <value>ดำเนินการต่อ</value>
+    <comment>Button of the first dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousSure_Title" xml:space="preserve">
+    <value>แน่ใจหรือไม่</value>
+    <comment>Title of the second dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousSure_Message" xml:space="preserve">
+    <value>การตรวจสอบครั้งสุดท้าย เมื่อเปิดใช้ OpenSense จะเปลี่ยนการตั้งค่าที่อาจทำให้แล็ปท็อปเปิดไม่ติดได้ เปิดใช้เฉพาะเมื่อคุณรู้ว่าการตั้งค่าเหล่านั้นทำอะไร</value>
+    <comment>Text of the second dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousSure_Enable" xml:space="preserve">
+    <value>เปิดใช้งาน</value>
+    <comment>Button of the second dialog when "Enable dangerous BIOS settings" is switched on: goes ahead.</comment>
+  </data>
   <data name="Settings_OperatingModes_Supported" xml:space="preserve">
     <value>{0} ตามที่ซอฟต์แวร์ของ Acer มีให้ในรุ่นนี้ {1}</value>
     <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
@@ -1768,5 +1993,13 @@ GPU: {1}</value>
   <data name="GpuClocks_FollowFirmware.Description" xml:space="preserve">
     <value>การโอเวอร์คล็อกที่เฟิร์มแวร์ตั้งไว้สำหรับแต่ละโหมด บวกกับค่าชดเชยด้านล่าง</value>
     <comment>Under "Acer's overclocking": the firmware's own overclock for each mode is added to the user's offsets set below it.</comment>
+  </data>
+  <data name="Navigation_FailedTitle" xml:space="preserve">
+    <value>ไม่สามารถเปิดหน้านี้ได้</value>
+    <comment>Title when navigating to a page fails. The app remains open and offers a retry.</comment>
+  </data>
+  <data name="Navigation_Retry" xml:space="preserve">
+    <value>ลองอีกครั้ง</value>
+    <comment>Button to retry opening the page after a navigation failure.</comment>
   </data>
 </root>

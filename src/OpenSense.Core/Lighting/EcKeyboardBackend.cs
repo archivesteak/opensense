@@ -12,7 +12,9 @@ public sealed class EcKeyboardBackend(IDeviceDispatcher dispatcher, KeyboardCapa
     /// <summary>The light as Acer's software offers it on this keyboard.</summary>
     public static LightingDeviceInfo Describe(KeyboardCapabilities caps) => new(Id, LightingLocation.Keyboard, LightingBackendKind.EcKeyboard)
     {
+        Readback = LightingReadbackKind.FirmwareState,
         Zones = Math.Max(caps.Zones, 1),
+        // Where the firmware has no zone switches, a zone that is off goes out black.
         ZoneSwitches = true,
         Effects = [.. caps.Effects.Select(Traits)],
         BrightnessLevels = KeyboardProtocol.BrightnessLevels,
@@ -47,46 +49,63 @@ public sealed class EcKeyboardBackend(IDeviceDispatcher dispatcher, KeyboardCapa
         if (!Device.Offers(lighting.Effect) || Backlight(lighting) is not { } backlight)
             return false;
         if (backlight.Effect != KeyboardEffect.Static)
-        {
-            return device.SetKeyboardBacklight(backlight.Effect, backlight.Speed, lighting.Brightness, backlight.Direction,
-                Adjust(backlight.Color));
-        }
+            return SetBacklight(device, backlight.Effect, backlight.Speed, lighting.Brightness, backlight.Direction, Adjust(backlight.Color));
 
         var zones = Enumerable.Range(0, caps.Zones).Select(lighting.Zone).ToList();
-        var ok = device.SetZonesEnabled([.. zones.Select(z => z.On)], caps.LedArrayLength);
-        ok &= device.SetKeyboardBacklight(KeyboardEffect.Static, backlight.Speed, lighting.Brightness, backlight.Direction, backlight.Color);
+        // Firmware that puts its default colours back over an all-black keyboard gets dark as brightness 0, its colours untouched.
+        if (caps.ResetsBlackStaticColors && zones.All(z => !z.On || RgbColor.FromHex(z.Color) == default))
+            return SetBacklight(device, KeyboardEffect.Static, 0, 0, backlight.Direction, default);
+        var ok = !caps.ZoneSwitches || device.SetZonesEnabled([.. zones.Select(z => z.On)], caps.LedArrayLength);
+        ok &= SetBacklight(device, KeyboardEffect.Static, backlight.Speed, lighting.Brightness, backlight.Direction, backlight.Color);
         for (var i = 0; i < zones.Count; i++)
         {
             if (zones[i].On)
                 ok &= device.SetZoneColor(i + 1, Adjust(RgbColor.FromHex(zones[i].Color)));
+            else if (!caps.ZoneSwitches)
+                ok &= device.SetZoneColor(i + 1, default);
         }
         return ok;
     }
 
+    private bool SetBacklight(AcerDevice device, KeyboardEffect effect, int speed, int brightness, KeyboardDirection direction, RgbColor color) =>
+        device.SetKeyboardBacklight(KeyboardProtocol.BacklightPayload(effect, speed, brightness, direction, color, caps.PayloadLayout));
+
     /// <summary>
     /// The firmware's current effect, and each zone's colour and switch where the firmware answers them (else the
-    /// model's default colours, all zones lit).
+    /// model's default colours). A static effect whose zone switches can't be read isn't adopted: all lit would be a guess.
     /// </summary>
     protected override LightingSettings? Read(AcerDevice device)
     {
         if (device.GetKeyboardBacklight() is not { Length: >= 8 } record)
             return null;
         var defaults = new LightingSettings();
-        var zoneColors = caps.DefaultZoneColors.Count > 0 ? caps.DefaultZoneColors : [RgbColor.FromHex(defaults.EffectColor)];
-        var color = new RgbColor(record[5], record[6], record[7]);
+        KeyboardEffect? effect = Enum.IsDefined((KeyboardEffect)record[0]) ? (KeyboardEffect)record[0] : null;
         var zones = Math.Max(caps.Zones, 1);
-        var switches = device.GetZonesEnabled(zones);
+        IReadOnlyList<bool>? switches = null;
+        if (caps.ZoneSwitches)
+        {
+            switches = caps.ZoneSwitchReadback ? device.GetZonesEnabled(zones) : null;
+            if (switches is null && effect == KeyboardEffect.Static)
+                return null;
+        }
+        var zoneColors = caps.DefaultZoneColors.Count > 0 ? caps.DefaultZoneColors : [RgbColor.FromHex(defaults.EffectColor)];
+        // The colour as chosen, before the model's correction; black is a colour an effect can have.
+        var color = Unadjust(new RgbColor(record[5], record[6], record[7]));
         return defaults with
         {
-            Effect = Enum.IsDefined((KeyboardEffect)record[0]) ? ToLighting((KeyboardEffect)record[0]) : defaults.Effect,
+            Effect = effect is { } e ? ToLighting(e) : defaults.Effect,
             Brightness = NearestBrightness(record[2]),
             Speed = record[1] is >= KeyboardProtocol.MinSpeed and <= KeyboardProtocol.MaxSpeed ? record[1] : defaults.Speed,
             Direction = Enum.IsDefined((KeyboardDirection)record[4]) ? ToLighting((KeyboardDirection)record[4]) : defaults.Direction,
-            EffectColor = color != default ? color.ToHex() : defaults.EffectColor,
-            Zones = [.. Enumerable.Range(0, zones).Select(i => new ZoneSetting(
-                switches?[i] ?? true,
-                // Black counts as not set: a zone is darkened with its switch, not with a black colour.
-                (device.GetZoneColor(i + 1) is { } zone && zone != default ? Unadjust(zone) : zoneColors[Math.Min(i, zoneColors.Count - 1)]).ToHex()))],
+            EffectColor = (effect is { } used && KeyboardProtocol.UsesColor(used)) || color != default ? color.ToHex() : defaults.EffectColor,
+            Zones = [.. Enumerable.Range(0, zones).Select(i =>
+            {
+                var stored = device.GetZoneColor(i + 1);
+                // With switches, black counts as not set: a zone is darkened with its switch. Without, black is off.
+                var on = caps.ZoneSwitches ? switches?[i] ?? true : stored != default(RgbColor);
+                var shown = stored is { } zone && zone != default ? Unadjust(zone) : zoneColors[Math.Min(i, zoneColors.Count - 1)];
+                return new ZoneSetting(on, shown.ToHex());
+            })],
         };
     }
 

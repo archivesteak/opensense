@@ -39,9 +39,10 @@ Hãy giúp dịch OpenSense và trang này sang ngôn ngữ của bạn: xem [B�
 - **An toàn theo mặc định.** Chống bóp xung đẩy quạt lên hết tốc độ khi bộ xử lý gần đến ngưỡng bóp xung, và firmware sẽ tiếp quản lại nếu cảm biến hoặc OpenSense ngừng hoạt động.
 - **Hiệu năng.** Chế độ hoạt động, CoolBoost, ép xung GPU cho từng chế độ và kế hoạch nguồn điện của Windows. Phím chế độ chuyển qua lại giữa các chế độ, và khi dùng pin có chế độ riêng. Trên các mẫu Predator từ 2024 trở đi, mức ép xung GPU riêng của Acer cho từng chế độ cũng được cộng thêm.
 - **Đèn.** Màu tĩnh cho từng vùng bàn phím, hoặc các hiệu ứng Nhịp thở, Neon, Sóng, Dịch chuyển, Phóng to, Sao băng và Lấp lánh. Cả thanh đèn, Infinity Mirror, InfiniteRing, logo, phím Turbo và phím chế độ, mỗi thứ có hiệu ứng riêng. Bàn phím có đèn theo từng phím và phím MagForce nhận màu riêng cho từng phím, cùng các hiệu ứng của riêng chúng.
-- **Bàn phím và màn hình.** Tự động tắt đèn nền, khóa phím Windows, LCD overdrive và công tắc GPU (MUX).
+- **Bàn phím và màn hình.** Tự động tắt đèn nền, khóa phím Windows, khóa Fn, LCD overdrive và công tắc GPU (MUX).
 - **Pin.** Tình trạng pin (dung lượng còn lại và số chu kỳ sạc), dừng sạc ở 80%, hiệu chỉnh pin và sạc thiết bị USB khi tắt máy.
 - **Khởi động.** Hoạt ảnh và âm thanh khi khởi động, cùng logo khởi động của riêng bạn trên các máy hỗ trợ.
+- **Cài đặt BIOS.** Trên các máy có BIOS cung cấp chúng (Predator 2025), mọi cài đặt BIOS đều có thể thay đổi trên trang **Hệ thống** sau khi bạn cho phép trong **Cài đặt**. Những cài đặt nguy hiểm có công tắc riêng.
 - **Không có lời nhắc quản trị viên.** Một dịch vụ nền nhỏ áp dụng cài đặt của bạn ngay từ khi khởi động, và phím NitroSense sẽ mở ứng dụng.
 - **Ngôn ngữ của bạn.** 36 ngôn ngữ, theo Windows hoặc chọn trong phần cài đặt.
 

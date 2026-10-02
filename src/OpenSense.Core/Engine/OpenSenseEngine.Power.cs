@@ -29,7 +29,7 @@ public sealed partial class OpenSenseEngine
         _systemPower ??= _machine.OpenSystemPower();
         _powerService = new PowerService(_controller!, _capabilities, _power!, _systemPower, Runtime.Calibration, SaveCalibration);
         _powerService.Notice += OnNotice;
-        _ = _powerService.StartAsync(settings.Power);
+        ObserveWork(_powerService.StartAsync(settings.Power), "start power settings");
     }
 
     private void StopPower()

@@ -35,7 +35,7 @@ public sealed class EcHidOperatingModeChannel(AcerDevice device, EcHidDevice hid
         if (EcHidProtocol.ModeValue(modes, mode) is not { } value || !hid.WriteMode(value))
             return false;
         // The controller's answer is the one that counts; the WMI copy keeps the firmware's own view in step.
-        device.SetOperatingMode(mode);
+        device.SynchronizeHidOperatingMode(mode);
         return true;
     }
 }

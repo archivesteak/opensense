@@ -44,13 +44,23 @@ public sealed class UsbKeyboardDevice : IDisposable
             if (HidChannel.Open(bus, info, d => Same(d) && IsCommandInterface(d)) is not { } commands)
                 continue;
             HidChannel? lighting = null;
-            if (model.Lighting)
+            try
             {
-                lighting = commands.Info.UsagePage == LightingUsagePage
-                    ? commands
-                    : HidChannel.Open(bus, d => Same(d) && IsLightingInterface(d));
+                if (model.Lighting)
+                {
+                    lighting = commands.Info.UsagePage == LightingUsagePage
+                        ? commands
+                        : HidChannel.Open(bus, d => Same(d) && IsLightingInterface(d));
+                }
+                return new UsbKeyboardDevice(model, commands, lighting, sleep ?? Thread.Sleep);
             }
-            return new UsbKeyboardDevice(model, commands, lighting, sleep ?? Thread.Sleep);
+            catch
+            {
+                if (lighting is not null && !ReferenceEquals(lighting, commands))
+                    lighting.Dispose();
+                commands.Dispose();
+                throw;
+            }
         }
         return null;
     }

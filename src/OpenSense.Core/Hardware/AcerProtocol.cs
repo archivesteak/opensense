@@ -61,12 +61,13 @@ public static class AcerProtocol
         SpeedId(fan) | ((ulong)Math.Clamp(percent, 0, 100) << 8);
 
     /// <summary>
-    /// The boost's resolution. The embedded controller counts it in whole tens and drops the rest (AN515-57 firmware:
-    /// 0–9 % boosts nothing, 95 % acts as 90 %), and Acer's software only sends multiples of 10.
+    /// The control/UI step, matching the proven AN515-57 EC resolution (0–9 % boosts nothing, 95 % acts as 90 %).
+    /// V16 wire setters accept whole percentages; their physical quantization is unproved, so retain this conservative
+    /// step until a different effective resolution is established for those controllers.
     /// </summary>
     public const int FanSpeedStep = 10;
 
-    /// <summary>The boost the firmware can do that is nearest to <paramref name="percent"/>.</summary>
+    /// <summary>The nearest boost in the current control/UI steps.</summary>
     public static int NearestFanSpeed(int percent) =>
         (int)Math.Round(Math.Clamp(percent, 0, 100) / (double)FanSpeedStep, MidpointRounding.AwayFromZero) * FanSpeedStep;
 

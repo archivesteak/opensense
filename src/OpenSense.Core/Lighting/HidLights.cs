@@ -24,8 +24,14 @@ public sealed class HidLights : IDisposable
     /// <summary>A USB keyboard Acer's software knows (lights and settings, or settings only).</summary>
     public UsbKeyboardDevice? Keyboard { get; private set; }
 
-    /// <summary>The keyboard answered its settings (the Windows key, backlight auto-off), which then go through it.</summary>
-    public bool KeyboardSettings { get; private set; }
+    /// <summary>The keyboard answered one of its settings (the Windows key, backlight auto-off), which then goes through it.</summary>
+    public bool KeyboardSettings => KeyboardWindowsKey || KeyboardAutoOff;
+
+    /// <summary>The keyboard answered its Windows key lock.</summary>
+    public bool KeyboardWindowsKey { get; private set; }
+
+    /// <summary>The keyboard answered its backlight auto-off.</summary>
+    public bool KeyboardAutoOff { get; private set; }
 
     public IReadOnlyList<DarfonDevice> Darfon { get; private set; } = [];
 
@@ -47,9 +53,24 @@ public sealed class HidLights : IDisposable
 
     /// <param name="model">The laptop's model name (MagForce keys are told by it).</param>
     /// <param name="sleep">Waits between reports (tests pass a no-op).</param>
+    /// <remarks>When a device fails while they are opened, the ones opened so far are closed again before the error goes on.</remarks>
     public static HidLights Open(IHidBus bus, string? model, Action<string> log, Action<TimeSpan>? sleep = null)
     {
         var found = new HidLights();
+        try
+        {
+            OpenAll(found, bus, model, log, sleep);
+            return found;
+        }
+        catch
+        {
+            found.Dispose();
+            throw;
+        }
+    }
+
+    private static void OpenAll(HidLights found, IHidBus bus, string? model, Action<string> log, Action<TimeSpan>? sleep)
+    {
         var paths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         if (Kyd100Device.Open(bus, sleep) is { } kyd)
@@ -73,6 +94,12 @@ public sealed class HidLights : IDisposable
             foreach (var light in lights)
                 found.Add(Kyd100Backend.Describe(light), (worker, info) => new Kyd100Backend(worker, kyd, info));
         }
+        else
+        {
+            // Nothing opened: say what Windows does list on vendor pages, to tell a missing interface from one held by another program.
+            var vendor = bus.Enumerate().Where(d => d.UsagePage >= 0xFF00).Select(d => d.ToString()).Distinct().ToList();
+            log($"Lighting HID: none opened; vendor-page interfaces: {(vendor.Count == 0 ? "none" : string.Join("; ", vendor))}");
+        }
 
         if (UsbKeyboardDevice.Open(bus, sleep) is { } keyboard)
         {
@@ -81,7 +108,8 @@ public sealed class HidLights : IDisposable
             var model2 = keyboard.Model;
             var windowsKey = keyboard.ReadWindowsKeyEnabled();
             var autoOff = keyboard.ReadAutoOff();
-            found.KeyboardSettings = windowsKey is not null || autoOff is not null;
+            found.KeyboardWindowsKey = windowsKey is not null;
+            found.KeyboardAutoOff = autoOff is not null;
             log($"USB keyboard: {keyboard.Info}; {model2.Maker} {model2.Generation} {model2.Layout?.ToString() ?? "unnamed layout"}; " +
                 $"lighting interface {(keyboard.HasLighting ? "yes" : "no")}; per-key table {(keyboard.Leds is { } leds ? $"{leds.Count} keys" : "none")}; " +
                 $"Windows key {(windowsKey is { } w ? w ? "on" : "locked" : "no answer")}; auto-off {(autoOff is { } a ? a ? "on" : "off" : "no answer")}");
@@ -111,37 +139,29 @@ public sealed class HidLights : IDisposable
         }
 
         found.Paths = paths;
-        return found;
     }
 
     /// <summary>
     /// The embedded controller's capabilities with these lights: the lighting interface's keyboard (or a per-key USB
-    /// keyboard) replaces the embedded controller's keyboard colours, any other light of the lighting interface its
-    /// light bars and logo, as in Acer's software. A USB keyboard that answers takes the Windows key, and backlight
-    /// auto-off unless the embedded controller's HID interface keeps that.
+    /// keyboard) replaces the embedded controller's keyboard light (colours or brightness alone), any other light of the
+    /// lighting interface its light bars and logo, as in Acer's software. A USB keyboard takes each of its settings it
+    /// answers: the Windows key, and backlight auto-off unless the embedded controller's HID interface keeps that.
     /// </summary>
     public DeviceCapabilities Merge(DeviceCapabilities ec)
     {
         var lights = ec.Lights.ToList();
         if (Kyd100Lights.Any(l => l.Id == Kyd100Light.Keyboard) || _lights.Any(l => l.Light.Backend == LightingBackendKind.UsbKeyboard))
-            lights.RemoveAll(l => l.Backend == LightingBackendKind.EcKeyboard);
+            lights.RemoveAll(l => l.Backend is LightingBackendKind.EcKeyboard or LightingBackendKind.EcKeyboardBrightness);
         if (Kyd100Lights.Any(l => l.Id != Kyd100Light.Keyboard))
             lights.RemoveAll(l => l.Backend is LightingBackendKind.EcLightBar or LightingBackendKind.EcLogo);
         foreach (var light in Lights)
             lights.Add(light with { Id = UniqueId(lights, light.Id) });
 
         var keyboard = ec.Keyboard;
-        if (KeyboardSettings)
-        {
-            var autoOff = !keyboard.EcHidBacklightTimeout;
-            keyboard = keyboard with
-            {
-                WindowsKey = true,
-                UsbWindowsKey = true,
-                UsbBacklightTimeout = autoOff,
-                BacklightHotkey = autoOff ? null : keyboard.BacklightHotkey,
-            };
-        }
+        if (KeyboardWindowsKey)
+            keyboard = keyboard with { WindowsKey = true, UsbWindowsKey = true };
+        if (KeyboardAutoOff && !keyboard.EcHidBacklightTimeout)
+            keyboard = keyboard with { UsbBacklightTimeout = true, BacklightHotkey = null };
         return ec with
         {
             Lights = lights,

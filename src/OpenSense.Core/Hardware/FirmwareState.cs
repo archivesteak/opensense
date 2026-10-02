@@ -25,7 +25,7 @@ public sealed record FirmwareState(
     public static FirmwareState Read(AcerDevice device, DeviceCapabilities caps) => new(
         caps.ControllableFans.ToDictionary(f => f.Id, f => device.GetFanBehavior(f)),
         caps.ControllableFans.ToDictionary(f => f.Id, f => device.GetFanBoost(f)),
-        caps.HasOperatingModes ? device.GetOperatingMode() : null,
+        caps.HasOperatingModes ? ReadOperatingMode(device, caps) : null,
         caps.CoolBoost ? device.GetCoolBoost() : null,
         caps.GpuModeSwitch ? device.GetGpuMode() : null)
     {
@@ -35,12 +35,21 @@ public sealed record FirmwareState(
         FanTable = caps.FanTable ? device.GetFanTable() : null,
     };
 
+    private static OperatingMode? ReadOperatingMode(AcerDevice device, DeviceCapabilities caps) =>
+        device.EcHid is { } hid && caps.EcHid is { Modes.Count: > 0 } ec
+            ? new EcHidOperatingModeChannel(device, hid, ec.Modes).Read()
+            : device.GetOperatingMode();
+
     /// <summary>
-    /// A profile that keeps the machine as it is, so the first launch of OpenSense changes nothing.
+    /// Adopts readable firmware settings. Unreadable custom fan boosts retain the configured profile
+    /// (Auto on a fresh installation), rather than fabricating a speed.
     /// </summary>
     public ControlProfile ToProfile(ControlProfile defaults)
     {
         var behaviors = FanBehaviors.Values.Where(b => b is not null).Select(b => b!.Value).ToList();
+        // A broken/unsupported custom-speed getter cannot supply a saved boost. Retain the configured fan profile
+        // (Auto on a fresh install) instead of presenting a guessed percentage as an adopted firmware setting.
+        var canAdoptFans = !FanBehaviors.Any(kv => kv.Value == FanBehavior.Custom && FanBoosts.GetValueOrDefault(kv.Key) is null);
         var mode = behaviors switch
         {
             _ when behaviors.Contains(FanBehavior.Custom) => FanControlMode.Custom,
@@ -59,8 +68,8 @@ public sealed record FirmwareState(
 
         return defaults with
         {
-            Mode = mode,
-            Manual = mode == FanControlMode.Custom ? manual : defaults.Manual,
+            Mode = canAdoptFans ? mode : defaults.Mode,
+            Manual = canAdoptFans && mode == FanControlMode.Custom ? manual : defaults.Manual,
             OperatingMode = OperatingMode ?? defaults.OperatingMode,
             CoolBoost = CoolBoost ?? defaults.CoolBoost,
             FanTable = FanTable ?? defaults.FanTable,

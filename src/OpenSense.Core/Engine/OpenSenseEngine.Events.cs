@@ -15,7 +15,19 @@ public sealed partial class OpenSenseEngine
 
     public Task<string> GetDiagnosticsAsync(CancellationToken cancellationToken = default) => Task.Run(() =>
     {
-        var text = new StringBuilder(_detected.Diagnostics);
+        var text = new StringBuilder();
+        text.AppendLine(CultureInfo.InvariantCulture, $"OpenSense engine: {Version}");
+        text.AppendLine(CultureInfo.InvariantCulture, $"OS: {System.Runtime.InteropServices.RuntimeInformation.OSDescription}");
+        text.AppendLine(CultureInfo.InvariantCulture, $"Model: {_deviceName ?? "unknown"}");
+        text.AppendLine(CultureInfo.InvariantCulture, $"BIOS: {_biosVersion ?? "unknown"}");
+        var profile = AcerFirmwareProfile.For(_deviceName, _biosVersion);
+        text.AppendLine(CultureInfo.InvariantCulture, $"Firmware profile: {profile.ModelCode ?? "generic"}; mode reset={profile.RequiresBalancedModeReset}; reliable fan boost readback={profile.FanBoostReadbackReliable}");
+        if (_firmware is { } firmware && firmware.FanBehaviors.Any(f => f.Value == FanBehavior.Custom && firmware.FanBoosts.GetValueOrDefault(f.Key) is null))
+            text.AppendLine("Startup custom fan boost was unreadable; using the configured fan profile (Auto on a fresh installation).");
+        text.AppendLine(CultureInfo.InvariantCulture, $"Keyboard: {_capabilities.Keyboard.PayloadLayout}; route={profile.KeyboardControl}");
+        foreach (var light in _capabilities.Lights)
+            text.AppendLine(CultureInfo.InvariantCulture, $"Light {light.Id}: {light.Backend}; zones={light.Zones}; effects={string.Join(',', light.Effects.Select(e => e.Effect))}");
+        text.AppendLine(_detected.Diagnostics);
         text.AppendLine(_events is null ? "Firmware events: not watched" : "Recent firmware events:");
         lock (_recentEvents)
         {
@@ -24,8 +36,20 @@ public sealed partial class OpenSenseEngine
         }
         text.AppendLine(GpuClockDiagnostics());
         text.AppendLine("HID devices:");
-        foreach (var device in _machine.OpenHid().Enumerate().OrderBy(d => d.VendorId).ThenBy(d => d.ProductId).ThenBy(d => d.UsagePage))
-            text.AppendLine(CultureInfo.InvariantCulture, $"  {device}");
+        _sessionGate.Wait(cancellationToken);
+        try
+        {
+            foreach (var device in (_hid?.Enumerate() ?? []).OrderBy(d => d.VendorId).ThenBy(d => d.ProductId).ThenBy(d => d.UsagePage))
+                text.AppendLine(CultureInfo.InvariantCulture, $"  {device}");
+        }
+        catch (Exception ex) when (ex is not OperationCanceledException)
+        {
+            text.AppendLine(CultureInfo.InvariantCulture, $"  Enumeration failed: {ex.GetType().Name}: {ex.Message}");
+        }
+        finally
+        {
+            _sessionGate.Release();
+        }
         return text.ToString();
     }, cancellationToken);
 
@@ -33,13 +57,12 @@ public sealed partial class OpenSenseEngine
     {
         var events = _machine.OpenFirmwareEvents();
         events.Raised += OnFirmwareEvent;
+        _events = events;
         if (events.Start())
-        {
-            _events = events;
             return;
-        }
         events.Raised -= OnFirmwareEvent;
         events.Dispose();
+        _events = null;
         LogNoFirmwareEvents();
     }
 
@@ -58,7 +81,7 @@ public sealed partial class OpenSenseEngine
         switch (firmwareEvent.Kind)
         {
             case FirmwareEventKind.ModeKey:
-                _ = OnModeKeyAsync();
+                ObserveWork(OnModeKeyAsync(), "mode key");
                 break;
             case FirmwareEventKind.BatteryBoost:
                 _controller?.OnBatteryBoostEvent();

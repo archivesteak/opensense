@@ -17,8 +17,7 @@ public enum SimulatedModel
 
     /// <summary>
     /// 2024 Predator: like the 2022 Nitro plus Turbo, a second GPU fan, a system fan that only reports its speed,
-    /// Dust Defender, a seven-zone rear light bar (the Infinity Mirror) and a lid logo. No NitroSense hints (PredatorSense
-    /// leaves none).
+    /// Dust Defender, a seven-zone rear light bar (the Infinity Mirror) and a lid logo.
     /// </summary>
     Predator2024,
 }
@@ -50,6 +49,38 @@ public sealed class SimulatedTransport : IWmiTransport
     private ulong _zonesOn = 0xF;
     private bool _windowsKey = true, _lcdOverdrive;
     private int _backlightTimeout = KeyboardProtocol.AutoOffSeconds, _backlightBrightness = 100;
+
+    // The Predator's BIOS settings (interface 2.94): a few of them, and the supervisor password the BIOS asks for.
+    private static readonly string[] OffOn = ["Disabled", "Enabled"];
+
+    private readonly Dictionary<string, string> _bios = new()
+    {
+        ["Wi-Fi"] = "Enabled",
+        ["Lid Open Resume"] = "Disabled",
+        ["Battery Threshold"] = "20%",
+        ["Type C"] = "Enabled",
+    };
+
+    private readonly Dictionary<string, string[]> _biosOptions = new()
+    {
+        ["Wi-Fi"] = OffOn,
+        ["Lid Open Resume"] = OffOn,
+        ["Battery Threshold"] = ["10%", "20%", "30%"],
+        ["Type C"] = OffOn,
+    };
+
+    /// <summary>The BIOS supervisor password; empty when none is set.</summary>
+    public string BiosPassword { get; private set; } = "";
+
+    /// <summary>The value the BIOS holds for a setting.</summary>
+    public string BiosValue(string name)
+    {
+        lock (_gate)
+            return _bios[name];
+    }
+
+    /// <summary>Whether the laptop's BIOS has a saved set of user defaults to load.</summary>
+    public bool HasBiosUserDefaults { get; set; }
 
     // The Predator's lights: a rear bar of seven zones (the Infinity Mirror) and the lid logo.
     private const int MirrorZones = 7;
@@ -91,7 +122,24 @@ public sealed class SimulatedTransport : IWmiTransport
         }
     }
 
-    public bool IsClassAvailable(string className) => className is GamingClass or ActionClass or BatteryClass;
+    public bool IsClassAvailable(string className) =>
+        className is GamingClass or ActionClass or BatteryClass || (IsPredator && className is BiosProtocol.MethodClass or BiosProtocol.ListClass);
+
+    /// <summary>The list as the BIOS gives it: a setting it lacks is an empty string, a password has no values.</summary>
+    public IReadOnlyList<string> ReadStrings(string className, string propertyName)
+    {
+        if (!IsPredator || className != BiosProtocol.ListClass || propertyName != BiosProtocol.ListProperty)
+            return [];
+        lock (_gate)
+        {
+            return
+            [
+                .. _bios.Select(b => $"{b.Key}, {b.Value}[{string.Concat(_biosOptions[b.Key].Select(o => o + ";"))}]"),
+                "Camera Shutter, ",
+                $"{BiosProtocol.SupervisorPassword}, Unsupported",
+            ];
+        }
+    }
 
     public bool HasArrayInput(string className, string method) => method == "SetGamingKBBacklight";
 
@@ -153,6 +201,8 @@ public sealed class SimulatedTransport : IWmiTransport
                     return FakeFirmware.Outputs(("gmOutput", _zonesOn << 40));
                 case (GamingClass, "GetGamingFanTable"):
                     return FakeFirmware.Outputs(("gmOutput", Ok(_fanTable)));
+                case (BiosProtocol.MethodClass, _) when IsPredator:
+                    return FakeFirmware.Outputs(("Return", BiosMethod(method, args)));
                 default:
                     throw new AcerWmiException($"{className}.{method} is not simulated.");
             }
@@ -175,6 +225,45 @@ public sealed class SimulatedTransport : IWmiTransport
         {
             lock (_gate)
                 return _usbCharging;
+        }
+    }
+
+    /// <summary>What every stored BIOS change answers: the BIOS applies it at the next start.</summary>
+    private const string BiosRestart = "0x08 - Success and Reboot required to make function works";
+
+    private static readonly Dictionary<string, string> BiosDefaults = new()
+    {
+        ["Wi-Fi"] = "Enabled",
+        ["Lid Open Resume"] = "Enabled",
+        ["Battery Threshold"] = "30%",
+        ["Type C"] = "Enabled",
+    };
+
+    private string BiosMethod(string method, Dictionary<string, object> args)
+    {
+        if ((string)args["Password"] != BiosPassword)
+            return "0x02 - Incorrect Password";
+        switch (method)
+        {
+            case "SetBiosSetting":
+                var item = (string)args["BiosItem"];
+                var value = (string)args["BiosNewSetting"];
+                if (item == BiosProtocol.SupervisorPassword)
+                    BiosPassword = value;
+                else if (_biosOptions.TryGetValue(item, out var options) && options.Contains(value))
+                    _bios[item] = value;
+                else
+                    return "0x03 - Incorrect Parameters";
+                return BiosRestart;
+            case "LoadBIOSDefault":
+                foreach (var (name, defaultValue) in BiosDefaults)
+                    _bios[name] = defaultValue;
+                return BiosRestart;
+            case "LoadUserDefault" when HasBiosUserDefaults:
+                _bios["Wi-Fi"] = "Disabled";
+                return BiosRestart;
+            default:
+                return "0x01 - Control method not support";
         }
     }
 
@@ -340,7 +429,8 @@ public sealed class SimulatedTransport : IWmiTransport
         MiscSetting.SupportedOperatingModes when Is2022 =>
             Ok((1UL << (int)OperatingMode.Quiet) | (1UL << (int)OperatingMode.Balanced) | (1UL << (int)OperatingMode.Performance)
                 | (IsPredator ? 1UL << (int)OperatingMode.Turbo : 0)),
-        MiscSetting.GpuModeSupport => Ok(Is2022 ? 3UL : 0UL),
+        // A bit per mode, as the BIOS answers: hybrid and discrete (3), and automatic selection with them (7, the 2025 Predators).
+        MiscSetting.GpuModeSupport => Ok(IsPredator ? 7UL : Is2022 ? 3UL : 0UL),
         MiscSetting.GpuMode when Is2022 => Ok((ulong)_gpuMode),
         MiscSetting.BootAnimation => Ok(_bootAnimation),
         MiscSetting.CustomBootLogo => Ok(CustomBootLogoSwitch ? _customBootLogo : 0xFFUL),
@@ -360,7 +450,7 @@ public sealed class SimulatedTransport : IWmiTransport
             case MiscSetting.OperatingMode when Is2022 && Enum.IsDefined((OperatingMode)value):
                 _opMode = (OperatingMode)value;
                 return 0;
-            case MiscSetting.GpuMode when Is2022 && Enum.IsDefined((GpuMode)value):
+            case MiscSetting.GpuMode when Is2022 && Enum.IsDefined((GpuMode)value) && ((GpuMode)value != GpuMode.Automatic || IsPredator):
                 _gpuMode = (GpuMode)value;
                 return 0;
             case MiscSetting.BootAnimation when value is 0 or 1:
@@ -583,7 +673,7 @@ public sealed class SimulatedTransport : IWmiTransport
     public void Dispose() { }
 }
 
-/// <summary>The engine's view of a <see cref="SimulatedTransport"/> laptop, with the hints NitroSense would leave behind.</summary>
+/// <summary>The engine's view of a <see cref="SimulatedTransport"/> laptop.</summary>
 public sealed class SimulatedMachine(SimulatedModel model) : IMachine
 {
     /// <summary>The opened laptop's load; the engine owns (and disposes) the laptop itself.</summary>
@@ -642,25 +732,18 @@ public sealed class SimulatedMachine(SimulatedModel model) : IMachine
 
     internal FakeHidBus Hid { get; } = new();
 
-    public NitroSenseHints ReadHints() => model == SimulatedModel.Predator2024 ? new NitroSenseHints() : new()
-    {
-        MachineType = model == SimulatedModel.Nitro2022 ? 2 : 1,
-        CpuFan = true,
-        GpuFan = true,
-        KeyboardColor = 2,
-        KeyboardZones = 4,
-        BacklightHotkey = 0x84,
-        KeyboardSettings = ["Backlight", "Sticky_Key", "Windowskey1"],
-        AdvancedSettings = ["LCD", "Temperature"],
-    };
-
     public AcerSmbios ReadSmbios() => Smbios;
 
-    /// <summary>Acer's SMBIOS tables: the Predator's (interface 2.91, RGB keyboard, EC light bars), else none unless a test gives some.</summary>
-    internal AcerSmbios Smbios { get; init; } = model == SimulatedModel.Predator2024 ? PredatorSmbios : AcerSmbios.Empty;
+    /// <summary>
+    /// Acer's SMBIOS tables: the Predator's (interface 2.91, RGB keyboard, EC light bars), else the AN515-57's (interface
+    /// 2.83, a four-zone RGB keyboard, operating modes, the backlight function 0x84).
+    /// </summary>
+    internal AcerSmbios Smbios { get; init; } = model == SimulatedModel.Predator2024 ? PredatorSmbios : NitroSmbios;
 
     internal static AcerSmbios PredatorSmbios { get; } = new(2, 0x5B,
         [new(0x08, 4), new(0x0A, 2), new((byte)GamingRecord.LightBar, 1)], []);
+
+    internal static AcerSmbios NitroSmbios { get; } = new(2, 0x53, [new(0x08, 4), new(0x0A, 2), new(0x0F, 1)], [new(0x84, 8)]);
 
     public ILoadMonitor OpenLoadMonitor() => new SimulatedLoadMonitor(_loads ?? throw new InvalidOperationException("Open the firmware first."));
 

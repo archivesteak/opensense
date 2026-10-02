@@ -20,11 +20,15 @@ public sealed record KeyboardSettings
     public bool? WindowsKey { get; init; }
 
     public bool? LcdOverdrive { get; init; }
+
+    public bool? FnLock { get; init; }
 }
 
 /// <summary>What the firmware (or the USB keyboard) reports for the keyboard's settings right now.</summary>
 public sealed record KeyboardState(bool? BacklightAutoOff, bool? WindowsKey, bool? LcdOverdrive)
 {
+    public bool? FnLock { get; init; }
+
     /// <param name="usb">The USB keyboard, where it keeps the Windows key or auto-off itself.</param>
     public static KeyboardState Read(AcerDevice device, KeyboardCapabilities caps, UsbKeyboardDevice? usb = null)
     {
@@ -34,6 +38,9 @@ public sealed record KeyboardState(bool? BacklightAutoOff, bool? WindowsKey, boo
             caps.UsbBacklightTimeout ? usb?.ReadAutoOff() : device.GetBacklightTimeout(caps) is { } t ? t.TimeoutSeconds > 0 : null,
             caps.UsbWindowsKey ? usb?.ReadWindowsKeyEnabled()
                 : firmwareWindowsKey && profile is { } wp ? KeyboardProtocol.WindowsKeyValue(wp) : null,
-            caps.LcdOverdrive && profile is { } op ? KeyboardProtocol.LcdOverdriveValue(op) : null);
+            caps.LcdOverdrive && profile is { } op ? KeyboardProtocol.LcdOverdriveValue(op) : null)
+        {
+            FnLock = caps.FnLock ? device.GetFnLock() : null,
+        };
     }
 }

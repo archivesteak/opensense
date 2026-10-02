@@ -67,6 +67,9 @@ public sealed record MachineSettings
     public PowerSettings Power { get; init; } = new();
     public CapabilityOverrides Overrides { get; init; } = new();
 
+    /// <summary>Whether BIOS settings may be changed (the engine refuses otherwise).</summary>
+    public BiosAccess Bios { get; init; } = new();
+
     /// <summary>Settings written by an older version, in today's form.</summary>
     public MachineSettings Upgrade()
     {

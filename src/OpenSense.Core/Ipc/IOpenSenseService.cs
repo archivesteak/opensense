@@ -78,6 +78,24 @@ public partial interface IOpenSenseService
     /// <summary>Reads what each light shows right now, by <see cref="LightingDeviceInfo.Id"/> (the lights that can be read).</summary>
     Task<IReadOnlyDictionary<string, LightingSettings>?> ReadLightingAsync(CancellationToken cancellationToken = default);
 
+    /// <summary>Lets BIOS settings be changed, the dangerous ones too or not. The engine keeps and enforces it (machine-wide).</summary>
+    Task SetBiosAccessAsync(BiosAccess access, CancellationToken cancellationToken = default);
+
+    /// <summary>The BIOS settings with their values now; empty when the BIOS lists none.</summary>
+    Task<IReadOnlyList<BiosSetting>> ReadBiosSettingsAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Sets a BIOS setting (a password setting takes the new password as <paramref name="value"/>). <paramref name="password"/>
+    /// is the BIOS supervisor password, empty where none is set. Nothing is kept of it.
+    /// </summary>
+    Task<BiosChangeResult> SetBiosSettingAsync(string name, string value, string password, CancellationToken cancellationToken = default);
+
+    /// <summary>Puts every BIOS setting back to Acer's defaults, from the next start.</summary>
+    Task<BiosChangeResult> LoadBiosDefaultsAsync(string password, CancellationToken cancellationToken = default);
+
+    /// <summary>Puts every BIOS setting back to the defaults the user saved in the BIOS setup, from the next start.</summary>
+    Task<BiosChangeResult> LoadBiosUserDefaultsAsync(string password, CancellationToken cancellationToken = default);
+
     /// <summary>The capability probe's raw answers and the firmware's recent events, for bug reports.</summary>
     Task<string> GetDiagnosticsAsync(CancellationToken cancellationToken = default);
 }

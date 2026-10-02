@@ -30,6 +30,12 @@ public sealed partial class SystemViewModel(DispatcherQueue dispatcher, DeviceSe
     public partial bool WindowsKey { get; set; } = true;
 
     [ObservableProperty]
+    public partial bool FnLockAvailable { get; set; }
+
+    [ObservableProperty]
+    public partial bool FnLock { get; set; }
+
+    [ObservableProperty]
     public partial bool LcdOverdriveAvailable { get; set; }
 
     [ObservableProperty]
@@ -47,14 +53,18 @@ public sealed partial class SystemViewModel(DispatcherQueue dispatcher, DeviceSe
     [ObservableProperty]
     public partial bool GpuSwitchAvailable { get; set; }
 
-    /// <summary>0 = hybrid (Optimus), 1 = discrete only.</summary>
+    /// <summary>The BIOS lists automatic selection as a third mode.</summary>
+    [ObservableProperty]
+    public partial bool GpuAutomaticAvailable { get; set; }
+
+    /// <summary>0 = hybrid (Optimus), 1 = discrete only, 2 = automatic selection.</summary>
     [ObservableProperty]
     public partial int GpuModeIndex { get; set; }
 
     [ObservableProperty]
     public partial bool RestartPending { get; set; }
 
-    public bool AnyKeyboardSetting => BacklightAutoOffAvailable || WindowsKeyAvailable;
+    public bool AnyKeyboardSetting => BacklightAutoOffAvailable || WindowsKeyAvailable || FnLockAvailable;
 
     /// <summary>Asked before a GPU mode switch; returns true to restart now, false for later, null to cancel.</summary>
     public Func<GpuMode, Task<bool?>>? ConfirmGpuSwitch { get; set; }
@@ -71,6 +81,8 @@ public sealed partial class SystemViewModel(DispatcherQueue dispatcher, DeviceSe
         BacklightAutoOff = kb.BacklightAutoOff ?? state?.BacklightAutoOff ?? false;
         WindowsKeyAvailable = caps.Keyboard.WindowsKey;
         WindowsKey = kb.WindowsKey ?? state?.WindowsKey ?? true;
+        FnLockAvailable = caps.Keyboard.FnLock;
+        FnLock = kb.FnLock ?? state?.FnLock ?? false;
         LcdOverdriveAvailable = caps.Keyboard.LcdOverdrive;
         LcdOverdrive = kb.LcdOverdrive ?? state?.LcdOverdrive ?? false;
         StickyKeysOn = StickyKeys.IsEnabled() ?? false;
@@ -87,7 +99,13 @@ public sealed partial class SystemViewModel(DispatcherQueue dispatcher, DeviceSe
         }
 
         GpuSwitchAvailable = caps.GpuModeSwitch;
-        _firmwareGpuIndex = session.Firmware?.GpuMode == GpuMode.Discrete ? 1 : 0;
+        GpuAutomaticAvailable = caps.GpuModeAutomatic;
+        _firmwareGpuIndex = session.Firmware?.GpuMode switch
+        {
+            GpuMode.Discrete => 1,
+            GpuMode.Automatic when caps.GpuModeAutomatic => 2,
+            _ => 0,
+        };
         GpuModeIndex = _firmwareGpuIndex;
         _loading = false;
     }
@@ -95,6 +113,8 @@ public sealed partial class SystemViewModel(DispatcherQueue dispatcher, DeviceSe
     partial void OnBacklightAutoOffChanged(bool value) => ApplyKeyboard(k => k with { BacklightAutoOff = value });
 
     partial void OnWindowsKeyChanged(bool value) => ApplyKeyboard(k => k with { WindowsKey = value });
+
+    partial void OnFnLockChanged(bool value) => ApplyKeyboard(k => k with { FnLock = value });
 
     partial void OnLcdOverdriveChanged(bool value) => ApplyKeyboard(k => k with { LcdOverdrive = value });
 
@@ -111,13 +131,13 @@ public sealed partial class SystemViewModel(DispatcherQueue dispatcher, DeviceSe
             notifications.Show(Strings.Get("Notice_PowerPlan_Title"), Strings.Format("Notice_PowerPlanFailed", value.Name));
     }
 
-    /// <summary>GPU mode the firmware is set to (0 hybrid, 1 discrete).</summary>
+    /// <summary>GPU mode the firmware is set to (0 hybrid, 1 discrete, 2 automatic).</summary>
     private int _firmwareGpuIndex;
 
     partial void OnGpuModeIndexChanged(int oldValue, int newValue)
     {
         // Selection controls briefly report -1 while (re)initialising; only a real change asks the user.
-        if (_loading || newValue is < 0 or > 1 || newValue == _firmwareGpuIndex)
+        if (_loading || newValue is < 0 or > 2 || newValue == _firmwareGpuIndex)
             return;
         _ = SwitchGpuModeAsync(_firmwareGpuIndex, newValue);
     }
@@ -137,7 +157,12 @@ public sealed partial class SystemViewModel(DispatcherQueue dispatcher, DeviceSe
 
     private async Task SwitchGpuModeAsync(int oldIndex, int newIndex)
     {
-        var mode = newIndex == 1 ? GpuMode.Discrete : GpuMode.Hybrid;
+        var mode = newIndex switch
+        {
+            1 => GpuMode.Discrete,
+            2 => GpuMode.Automatic,
+            _ => GpuMode.Hybrid,
+        };
         var decision = ConfirmGpuSwitch is null ? false : await ConfirmGpuSwitch(mode);
         if (decision is null)
         {

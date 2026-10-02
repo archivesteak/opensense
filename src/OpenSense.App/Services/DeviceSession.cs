@@ -270,6 +270,24 @@ public sealed partial class DeviceSession : IDisposable
     public Task<DustDefenderStart> StartDustDefenderAsync() =>
         CallAsync(service => service.StartDustDefenderAsync(), DustDefenderStart.Failed);
 
+    /// <summary>Lets the engine change BIOS settings (the dangerous ones too, or not); it enforces this, whoever asks.</summary>
+    public Task SetBiosAccessAsync(BiosAccess access) =>
+        ChangeAsync(s => s with { Bios = access with { Dangerous = access.Enabled && access.Dangerous } }, service => service.SetBiosAccessAsync(access));
+
+    /// <summary>The BIOS settings with their values now; none when the BIOS lists none or the engine can't be reached.</summary>
+    public Task<IReadOnlyList<BiosSetting>> ReadBiosSettingsAsync() =>
+        CallAsync(service => service.ReadBiosSettingsAsync(), (IReadOnlyList<BiosSetting>)[]);
+
+    /// <summary>Sets a BIOS setting; <paramref name="password"/> is the BIOS supervisor password (empty where none is set).</summary>
+    public Task<BiosChangeResult> SetBiosSettingAsync(string name, string value, string password) =>
+        CallAsync(service => service.SetBiosSettingAsync(name, value, password), BiosChangeResult.Failed);
+
+    public Task<BiosChangeResult> LoadBiosDefaultsAsync(string password) =>
+        CallAsync(service => service.LoadBiosDefaultsAsync(password), BiosChangeResult.Failed);
+
+    public Task<BiosChangeResult> LoadBiosUserDefaultsAsync(string password) =>
+        CallAsync(service => service.LoadBiosUserDefaultsAsync(password), BiosChangeResult.Failed);
+
     /// <summary>Asks the engine; <paramref name="fallback"/> when it can't be reached.</summary>
     private async Task<T> CallAsync<T>(Func<IOpenSenseService, Task<T>> call, T fallback)
     {

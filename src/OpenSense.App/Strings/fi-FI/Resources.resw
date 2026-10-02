@@ -183,6 +183,10 @@
   <data name="Notice_WindowsKeyRejected" xml:space="preserve">
     <value>Laiteohjelmisto hylkäsi Windows-näppäimen muutoksen.</value>
   </data>
+  <data name="Notice_FnLockRejected" xml:space="preserve">
+    <value>Laiteohjelmisto ei hyväksynyt Fn-lukituksen muutosta.</value>
+    <comment>The firmware rejected the requested Fn lock setting.</comment>
+  </data>
   <data name="Notice_LcdOverdriveRejected" xml:space="preserve">
     <value>Näyttö hylkäsi overdrive-muutoksen.</value>
     <comment>Overdrive = LCD overdrive, a screen setting that speeds up pixel response.</comment>
@@ -201,6 +205,31 @@
   </data>
   <data name="Notice_GpuModeRejected" xml:space="preserve">
     <value>Laiteohjelmisto hylkäsi GPU-tilan vaihdon.</value>
+  </data>
+  <data name="Notice_Bios_Title" xml:space="preserve">
+    <value>BIOS-asetukset</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_BiosPasswordSet" xml:space="preserve">
+    <value>BIOSin salasana tallennettiin. Se tulee voimaan, kun kannettava on käynnistetty uudelleen.</value>
+  </data>
+  <data name="Notice_BiosPasswordRemoved" xml:space="preserve">
+    <value>BIOSin salasana poistettiin. Muutos tulee voimaan, kun kannettava on käynnistetty uudelleen.</value>
+  </data>
+  <data name="Notice_BiosOff" xml:space="preserve">
+    <value>BIOS-asetukset on poistettu käytöstä Asetuksissa.</value>
+  </data>
+  <data name="Notice_BiosUnsupported" xml:space="preserve">
+    <value>Tämä BIOS ei tue sitä.</value>
+  </data>
+  <data name="Notice_BiosRejected" xml:space="preserve">
+    <value>BIOS ei hyväksynyt sitä.</value>
+  </data>
+  <data name="Notice_BiosLocked" xml:space="preserve">
+    <value>Liian monta väärää salasanaa. Yritä uudelleen käynnistämällä kannettava uudelleen.</value>
+  </data>
+  <data name="Notice_BiosFailed" xml:space="preserve">
+    <value>BIOS ei vastannut.</value>
   </data>
   <data name="Notice_GpuClocks_Title" xml:space="preserve">
     <value>GPU:n ylikellotus</value>
@@ -258,6 +287,13 @@
   </data>
   <data name="GpuSwitch_HybridMessage" xml:space="preserve">
     <value>Integroitu GPU ohjaa näyttöä, ja erillinen GPU käynnistyy vain tarvittaessa, mikä säästää akkua. Windows on käynnistettävä uudelleen, jotta muutos tulee voimaan.</value>
+  </data>
+  <data name="GpuSwitch_AutomaticTitle" xml:space="preserve">
+    <value>Vaihdetaanko automaattiseen grafiikan valintaan?</value>
+    <comment>Dialog title.</comment>
+  </data>
+  <data name="GpuSwitch_AutomaticMessage" xml:space="preserve">
+    <value>Kannettava valitsee itse, ohjaako näyttöä integroitu vai erillinen GPU. Windows on käynnistettävä uudelleen, jotta muutos tulee voimaan.</value>
   </data>
   <data name="GpuSwitch_RestartNow" xml:space="preserve">
     <value>Käynnistä uudelleen nyt</value>
@@ -1044,6 +1080,10 @@
     <value>Windows- ja valikkonäppäimet</value>
     <comment>The Windows logo key and the Menu (application) key.</comment>
   </data>
+  <data name="System_FnLock.Header" xml:space="preserve">
+    <value>Fn-lukitus</value>
+    <comment>Keyboard Fn lock toggle, shown only when the firmware reports support.</comment>
+  </data>
   <data name="System_WindowsKey.Description" xml:space="preserve">
     <value>Poista käytöstä, jotta Windows- ja valikkonäppäimet eivät keskeytä pelejä.</value>
   </data>
@@ -1100,6 +1140,10 @@
   <data name="System_GpuDiscrete.Content" xml:space="preserve">
     <value>Erillinen</value>
     <comment>GPU mode: only the NVIDIA graphics chip. Short: a segmented button.</comment>
+  </data>
+  <data name="System_GpuAutomatic.Content" xml:space="preserve">
+    <value>Automaattinen</value>
+    <comment>GPU mode: the laptop chooses which graphics chip drives the display (Acer: Automatic Selection). Short: a segmented button.</comment>
   </data>
   <data name="System_GpuRestart.Title" xml:space="preserve">
     <value>Vaihda GPU-tila käynnistämällä uudelleen</value>
@@ -1371,6 +1415,147 @@
     <value>Virta</value>
     <comment>Section title.</comment>
   </data>
+  <data name="System_Bios.Text" xml:space="preserve">
+    <value>BIOS</value>
+    <comment>Section header on the System page; BIOS is not translated.</comment>
+  </data>
+  <data name="System_BiosRestart.Title" xml:space="preserve">
+    <value>Käynnistä uudelleen ottaaksesi BIOS-muutokset käyttöön</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="System_BiosRestart.Message" xml:space="preserve">
+    <value>BIOS-muutokset tulevat voimaan, kun kannettava on käynnistetty uudelleen.</value>
+  </data>
+  <data name="System_BiosSettings.Header" xml:space="preserve">
+    <value>BIOS-asetukset</value>
+    <comment>Expander on the System page that opens to every BIOS setting.</comment>
+  </data>
+  <data name="Bios_SetPassword.Content" xml:space="preserve">
+    <value>Aseta…</value>
+    <comment>Button on a BIOS password setting; opens a dialog to type the new password.</comment>
+  </data>
+  <data name="Bios_RemovePassword.Content" xml:space="preserve">
+    <value>Poista…</value>
+    <comment>Button on a BIOS password setting; takes the password away after a question.</comment>
+  </data>
+  <data name="Bios_LoadDefaults.Content" xml:space="preserve">
+    <value>Lataa BIOSin oletusarvot</value>
+    <comment>Button under the BIOS settings: puts every BIOS setting back to Acer's defaults.</comment>
+  </data>
+  <data name="Bios_LoadUserDefaults.Content" xml:space="preserve">
+    <value>Lataa tallennetut oletusarvot</value>
+    <comment>Button under the BIOS settings: loads the defaults the user saved in the BIOS setup.</comment>
+  </data>
+  <data name="BiosSettings_Footer.Text" xml:space="preserve">
+    <value>Nimet ja arvot ovat BIOSin omia, englanniksi. Muutos tulee voimaan, kun kannettava on käynnistetty uudelleen.</value>
+    <comment>Under the list of BIOS settings.</comment>
+  </data>
+  <data name="Bios_StatusIdle" xml:space="preserve">
+    <value>Avaa lukeaksesi asetukset BIOSista.</value>
+    <comment>Under "BIOS settings" before it is opened.</comment>
+  </data>
+  <data name="Bios_StatusReading" xml:space="preserve">
+    <value>Luetaan BIOSia…</value>
+    <comment>Under "BIOS settings" while the BIOS is being read.</comment>
+  </data>
+  <data name="Bios_StatusCount" xml:space="preserve">
+    <value>Löytyneet asetukset: {0}</value>
+    <comment>{0} = how many settings the BIOS listed.</comment>
+  </data>
+  <data name="Bios_StatusNone" xml:space="preserve">
+    <value>Tämä BIOS ei näytä Windowsille yhtään asetusta.</value>
+    <comment>Under "BIOS settings" when the BIOS lists none.</comment>
+  </data>
+  <data name="Bios_Dangerous" xml:space="preserve">
+    <value>Vaarallinen: väärä arvo voi estää kannettavan käynnistymisen.</value>
+    <comment>Under a dangerous BIOS setting that can be changed.</comment>
+  </data>
+  <data name="Bios_DangerousLocked" xml:space="preserve">
+    <value>Vaarallinen. Muuttaaksesi tätä ota Asetuksissa käyttöön ”Ota vaaralliset BIOS-asetukset käyttöön”.</value>
+    <comment>Under a dangerous BIOS setting while dangerous BIOS settings are off in Settings; "Enable dangerous BIOS settings" is that setting's name.</comment>
+  </data>
+  <data name="BiosPassword_Title" xml:space="preserve">
+    <value>BIOSin salasana</value>
+    <comment>Dialog title asking for the BIOS supervisor password.</comment>
+  </data>
+  <data name="BiosPassword_Message" xml:space="preserve">
+    <value>BIOS pyytää valvojan salasanaa ennen kuin se sallii asetusten muuttamisen.</value>
+    <comment>In the dialog asking for the BIOS supervisor password.</comment>
+  </data>
+  <data name="BiosPassword_Wrong" xml:space="preserve">
+    <value>Salasana oli väärä. Yritä uudelleen.</value>
+    <comment>In the dialog asking for the BIOS supervisor password, after a wrong one.</comment>
+  </data>
+  <data name="BiosPassword_Continue" xml:space="preserve">
+    <value>Jatka</value>
+    <comment>Button of the dialog asking for the BIOS supervisor password.</comment>
+  </data>
+  <data name="BiosNewPassword_Title" xml:space="preserve">
+    <value>Uusi BIOSin salasana</value>
+    <comment>Dialog title for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosNewPassword_Message" xml:space="preserve">
+    <value>{0}: kirjoita uusi salasana kahdesti. BIOS hyväksyy vain englanninkielisen näppäimistön kirjaimet, numerot ja merkit.</value>
+    <comment>In the dialog for setting a BIOS password. {0} = the BIOS's name for the setting, in English (for example "Set Supervisor Password").</comment>
+  </data>
+  <data name="BiosNewPassword_First" xml:space="preserve">
+    <value>Uusi salasana</value>
+    <comment>Label of the first box in the dialog for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosNewPassword_Again" xml:space="preserve">
+    <value>Toista salasana</value>
+    <comment>Label of the second box in the dialog for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosNewPassword_Set" xml:space="preserve">
+    <value>Aseta salasana</value>
+    <comment>Button of the dialog for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosPasswordSave_Title" xml:space="preserve">
+    <value>Tallennetaanko BIOSin salasana?</value>
+    <comment>Dialog title before a BIOS password is saved.</comment>
+  </data>
+  <data name="BiosPasswordSave_Message" xml:space="preserve">
+    <value>{0}: BIOS käyttää tätä salasanaa seuraavasta käynnistyksestä alkaen. Jos unohdat sen, voit menettää pääsyn BIOSin asetusohjelmaan.</value>
+    <comment>Dialog text before a BIOS password is saved. {0} = the BIOS's name for the setting, in English (for example "Set Supervisor Password").</comment>
+  </data>
+  <data name="BiosPasswordSave_Save" xml:space="preserve">
+    <value>Tallenna salasana</value>
+    <comment>Button of the dialog that saves a BIOS password.</comment>
+  </data>
+  <data name="BiosDanger_Title" xml:space="preserve">
+    <value>Muutetaanko vaarallinen asetus?</value>
+    <comment>Dialog title before a dangerous BIOS setting changes.</comment>
+  </data>
+  <data name="BiosDanger_Message" xml:space="preserve">
+    <value>{0} asetetaan arvoon {1}, kun kannettava on käynnistetty uudelleen.
+
+Väärä arvo voi estää kannettavan käynnistymisen tai katkaista sen yhteyden näppäimistöön, asemaan tai portteihin. Jatka vain, jos tiedät, mitä se tekee.</value>
+    <comment>Dialog text before a dangerous BIOS setting changes. {0} = the setting's name, {1} = the new value, both as the BIOS gives them (English). Two line breaks.</comment>
+  </data>
+  <data name="BiosDanger_Change" xml:space="preserve">
+    <value>Muuta</value>
+    <comment>Button of the dialog that goes ahead with a dangerous BIOS setting change.</comment>
+  </data>
+  <data name="BiosDefaults_Title" xml:space="preserve">
+    <value>Ladataanko Acerin oletusarvot?</value>
+    <comment>Dialog title before Acer's BIOS defaults are loaded.</comment>
+  </data>
+  <data name="BiosDefaults_Message" xml:space="preserve">
+    <value>Kaikki BIOS-asetukset palautuvat Acerin oletusarvoihin, kun kannettava on käynnistetty uudelleen, myös ne, joita OpenSense ei näytä.</value>
+    <comment>Dialog text before Acer's BIOS defaults are loaded.</comment>
+  </data>
+  <data name="BiosUserDefaults_Title" xml:space="preserve">
+    <value>Ladataanko tallentamasi oletusarvot?</value>
+    <comment>Dialog title before the defaults the user saved in the BIOS setup are loaded.</comment>
+  </data>
+  <data name="BiosUserDefaults_Message" xml:space="preserve">
+    <value>Kaikki BIOS-asetukset palautuvat BIOSin asetusohjelmaan tallennettuihin oletusarvoihin, kun kannettava on käynnistetty uudelleen, myös ne, joita OpenSense ei näytä.</value>
+    <comment>Dialog text before the defaults the user saved in the BIOS setup are loaded.</comment>
+  </data>
+  <data name="BiosDefaults_Load" xml:space="preserve">
+    <value>Lataa</value>
+    <comment>Button of the dialogs that go ahead with loading BIOS defaults.</comment>
+  </data>
   <data name="System_PowerPlan.Header" xml:space="preserve">
     <value>Virrankäyttösuunnitelma</value>
     <comment>Windows power plan setting.</comment>
@@ -1579,6 +1764,46 @@ GPU: {1}</value>
     <value>Omat valot W-, A-, S- ja D-näppäinten alla, tunnistettu kannettavan mallinimestä. Vaihda, jos se ei pidä paikkaansa omassasi.</value>
     <comment>Under "MagForce key lights".</comment>
   </data>
+  <data name="Settings_BiosSettings.Header" xml:space="preserve">
+    <value>Ota BIOS-asetukset käyttöön</value>
+    <comment>Setting in "Your laptop": lets OpenSense show and change the BIOS's own settings.</comment>
+  </data>
+  <data name="Settings_BiosSettings.Description" xml:space="preserve">
+    <value>Näyttää BIOS-asetukset Järjestelmä-sivulla ja antaa OpenSensen muuttaa niitä. Muutos tulee voimaan, kun kannettava on käynnistetty uudelleen.</value>
+    <comment>Under "Enable BIOS settings".</comment>
+  </data>
+  <data name="Settings_DangerousBiosSettings.Header" xml:space="preserve">
+    <value>Ota vaaralliset BIOS-asetukset käyttöön</value>
+    <comment>Setting shown once BIOS settings are enabled: also allows the dangerous ones.</comment>
+  </data>
+  <data name="Settings_DangerousBiosSettings.Description" xml:space="preserve">
+    <value>Sallii myös asetukset, jotka voivat estää kannettavan käynnistymisen tai katkaista sen yhteyden näppäimistöön, asemaan tai portteihin. Vain niille, jotka tietävät, mitä ne tekevät.</value>
+    <comment>Under "Enable dangerous BIOS settings".</comment>
+  </data>
+  <data name="BiosDangerousEnable_Title" xml:space="preserve">
+    <value>Otetaanko vaaralliset BIOS-asetukset käyttöön?</value>
+    <comment>First dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousEnable_Message" xml:space="preserve">
+    <value>Nämä asetukset voivat estää kannettavan käynnistymisen, katkaista sen yhteyden näppäimistöön, asemaan tai portteihin tai olla peruuttamattomia. Väärä arvo voi jättää kannettavan korjattavaksi.</value>
+    <comment>Text of the first dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousEnable_Continue" xml:space="preserve">
+    <value>Jatka</value>
+    <comment>Button of the first dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousSure_Title" xml:space="preserve">
+    <value>Oletko varma?</value>
+    <comment>Title of the second dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousSure_Message" xml:space="preserve">
+    <value>Viimeinen tarkistus. Kun tämä on päällä, OpenSense voi muuttaa asetuksia, jotka voivat estää kannettavan käynnistymisen. Ota se käyttöön vain, jos tiedät, mitä ne tekevät.</value>
+    <comment>Text of the second dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousSure_Enable" xml:space="preserve">
+    <value>Ota käyttöön</value>
+    <comment>Button of the second dialog when "Enable dangerous BIOS settings" is switched on: goes ahead.</comment>
+  </data>
   <data name="Settings_OperatingModes_Supported" xml:space="preserve">
     <value>{0}, kuten Acerin ohjelmisto tarjoaa ne tässä mallissa. {1}</value>
     <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
@@ -1768,5 +1993,13 @@ Lisätietoja: {1}</value>
   <data name="GpuClocks_FollowFirmware.Description" xml:space="preserve">
     <value>Laiteohjelmiston kullekin tilalle asettama ylikellotus lisättynä alla oleviin siirtymiin.</value>
     <comment>Under "Acer's overclocking": the firmware's own overclock for each mode is added to the user's offsets set below it.</comment>
+  </data>
+  <data name="Navigation_FailedTitle" xml:space="preserve">
+    <value>Tätä sivua ei voitu avata</value>
+    <comment>Title when navigating to a page fails. The app remains open and offers a retry.</comment>
+  </data>
+  <data name="Navigation_Retry" xml:space="preserve">
+    <value>Yritä uudelleen</value>
+    <comment>Button to retry opening the page after a navigation failure.</comment>
   </data>
 </root>

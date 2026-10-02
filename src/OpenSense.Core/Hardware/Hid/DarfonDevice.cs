@@ -25,18 +25,27 @@ public sealed class DarfonDevice : IDisposable
     {
         sleep ??= Thread.Sleep;
         List<DarfonDevice> devices = [];
-        foreach (var info in bus.Enumerate().Where(Matches))
+        try
         {
-            if (devices.Any(d => d.Model.ProductId == info.ProductId))
-                continue;
-            var product = info.ProductId;
-            if (HidChannel.Open(bus, info, d => Matches(d) && d.ProductId == product) is not { } channel)
-                continue;
-            channel.Write(Hello());
-            sleep(ShortDelay);
-            devices.Add(new DarfonDevice(Find(info.VendorId, info.ProductId)!, channel, sleep));
+            foreach (var info in bus.Enumerate().Where(Matches))
+            {
+                if (devices.Any(d => d.Model.ProductId == info.ProductId))
+                    continue;
+                var product = info.ProductId;
+                if (HidChannel.Open(bus, info, d => Matches(d) && d.ProductId == product) is not { } channel)
+                    continue;
+                devices.Add(new DarfonDevice(Find(info.VendorId, info.ProductId)!, channel, sleep));
+                channel.Write(Hello());
+                sleep(ShortDelay);
+            }
+            return devices;
         }
-        return devices;
+        catch
+        {
+            foreach (var device in devices)
+                device.Dispose();
+            throw;
+        }
     }
 
     /// <summary>Sends reports <see cref="CommandDelay"/> apart.</summary>

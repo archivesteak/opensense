@@ -10,6 +10,7 @@ public sealed class HidChannel : IDisposable
     private readonly IHidBus _bus;
     private readonly Func<HidDeviceInfo, bool> _matches;
     private IHidDevice? _device;
+    private bool _disposed;
 
     private HidChannel(IHidBus bus, Func<HidDeviceInfo, bool> matches, IHidDevice device)
     {
@@ -61,6 +62,8 @@ public sealed class HidChannel : IDisposable
 
     private bool Call(Func<IHidDevice, bool> call)
     {
+        if (_disposed)
+            return false;
         var fresh = false;
         if (_device is null)
         {
@@ -77,6 +80,8 @@ public sealed class HidChannel : IDisposable
 
     private bool Reopen()
     {
+        if (_disposed)
+            return false;
         Drop();
         // The same interface where it is still listed, else another of its kind (a new path after re-enumeration).
         var candidates = _bus.Enumerate().Where(_matches)
@@ -100,5 +105,9 @@ public sealed class HidChannel : IDisposable
         _device = null;
     }
 
-    public void Dispose() => Drop();
+    public void Dispose()
+    {
+        _disposed = true;
+        Drop();
+    }
 }

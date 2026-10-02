@@ -265,6 +265,21 @@ public sealed class PredatorIpcTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task The_gpu_switch_stays_when_the_bios_lists_automatic_selection_too()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        // This BIOS answers 7, not 3: hybrid, discrete only and automatic selection. Reading only a 3 hid the whole switch.
+        var snapshot = await _service.GetSnapshotAsync(ct);
+        Assert.True(snapshot.Capabilities.GpuModeSwitch);
+        Assert.True(snapshot.Capabilities.GpuModeAutomatic);
+        Assert.Equal(GpuMode.Hybrid, snapshot.Firmware!.GpuMode);
+
+        Assert.True(await _service.SetGpuModeAsync(GpuMode.Automatic, ct));
+        Assert.Equal(GpuMode.Automatic, (await _service.GetSnapshotAsync(ct)).Firmware!.GpuMode);
+        Assert.False(await _service.SetGpuModeAsync((GpuMode)9, ct));
+    }
+
+    [Fact]
     public async Task Dust_defender_starts_over_the_wire_and_shows_in_telemetry()
     {
         var ct = TestContext.Current.CancellationToken;

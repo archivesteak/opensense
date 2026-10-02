@@ -28,6 +28,12 @@
                 Visibility="{x:Bind ViewModel.WindowsKeyAvailable, Mode=OneWay}">
                 <ToggleSwitch IsOn="{x:Bind ViewModel.WindowsKey, Mode=TwoWay}" />
             </toolkit:SettingsCard>
+            <toolkit:SettingsCard
+                x:Uid="System_FnLock"
+                HeaderIcon="{ui:FontIcon Glyph=&#xE72E;}"
+                Visibility="{x:Bind ViewModel.FnLockAvailable, Mode=OneWay}">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.FnLock, Mode=TwoWay}" />
+            </toolkit:SettingsCard>
             <!-- Shown once the laptop's Mode key has been pressed: nothing else tells that it has one -->
             <toolkit:SettingsCard
                 x:Uid="System_ModeKey"
@@ -62,6 +68,7 @@
                     <toolkit:Segmented SelectedIndex="{x:Bind ViewModel.GpuModeIndex, Mode=TwoWay}">
                         <toolkit:SegmentedItem x:Uid="System_GpuHybrid" />
                         <toolkit:SegmentedItem x:Uid="System_GpuDiscrete" />
+                        <toolkit:SegmentedItem x:Uid="System_GpuAutomatic" Visibility="{x:Bind ViewModel.GpuAutomaticAvailable, Mode=OneWay}" />
                     </toolkit:Segmented>
                 </toolkit:SettingsCard>
                 <InfoBar
@@ -237,6 +244,66 @@
                         ItemsSource="{x:Bind ViewModel.PowerPlans}"
                         SelectedItem="{x:Bind ViewModel.SelectedPowerPlan, Mode=TwoWay}" />
                 </toolkit:SettingsCard>
+            </StackPanel>
+
+            <!-- The BIOS's own settings, once the user allows them in Settings; read from the BIOS each time this opens -->
+            <StackPanel Spacing="4" Visibility="{x:Bind Bios.Available, Mode=OneWay}">
+                <TextBlock x:Uid="System_Bios" Style="{StaticResource SectionHeaderStyle}" />
+                <InfoBar
+                    x:Uid="System_BiosRestart"
+                    IsClosable="False"
+                    IsOpen="{x:Bind Bios.RestartPending, Mode=OneWay}"
+                    Severity="Informational">
+                    <InfoBar.ActionButton>
+                        <Button x:Uid="System_RestartNow" Command="{x:Bind Bios.RestartNowCommand}" />
+                    </InfoBar.ActionButton>
+                </InfoBar>
+                <toolkit:SettingsExpander
+                    x:Uid="System_BiosSettings"
+                    Description="{x:Bind Bios.Status, Mode=OneWay}"
+                    HeaderIcon="{ui:FontIcon Glyph=&#xE713;}"
+                    IsExpanded="{x:Bind Bios.Expanded, Mode=TwoWay}"
+                    ItemsSource="{x:Bind Bios.Rows}">
+                    <toolkit:SettingsExpander.ItemTemplate>
+                        <DataTemplate x:DataType="vm:BiosSettingViewModel">
+                            <toolkit:SettingsCard
+                                Description="{x:Bind Description, Mode=OneWay}"
+                                Header="{x:Bind Name}"
+                                IsEnabled="{x:Bind CanChange, Mode=OneWay}">
+                                <StackPanel Orientation="Horizontal">
+                                    <ToggleSwitch IsOn="{x:Bind IsOn, Mode=TwoWay}" Visibility="{x:Bind IsSwitch}" />
+                                    <ComboBox
+                                        MinWidth="200"
+                                        ItemsSource="{x:Bind Options}"
+                                        SelectedItem="{x:Bind SelectedOption, Mode=TwoWay}"
+                                        Visibility="{x:Bind IsChoice}" />
+                                    <StackPanel Orientation="Horizontal" Spacing="8" Visibility="{x:Bind IsPassword}">
+                                        <Button x:Uid="Bios_RemovePassword" Command="{x:Bind RemovePasswordCommand}" />
+                                        <Button x:Uid="Bios_SetPassword" Command="{x:Bind SetPasswordCommand}" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </toolkit:SettingsCard>
+                        </DataTemplate>
+                    </toolkit:SettingsExpander.ItemTemplate>
+                    <toolkit:SettingsExpander.ItemsFooter>
+                        <StackPanel Margin="16,8,16,12" Spacing="8">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Button
+                                    x:Uid="Bios_LoadDefaults"
+                                    Command="{x:Bind Bios.LoadDefaultsCommand}"
+                                    IsEnabled="{x:Bind Bios.DefaultsAvailable, Mode=OneWay}" />
+                                <Button
+                                    x:Uid="Bios_LoadUserDefaults"
+                                    Command="{x:Bind Bios.LoadUserDefaultsCommand}"
+                                    IsEnabled="{x:Bind Bios.DefaultsAvailable, Mode=OneWay}" />
+                            </StackPanel>
+                            <TextBlock
+                                x:Uid="BiosSettings_Footer"
+                                Style="{StaticResource CaptionMutedStyle}"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                    </toolkit:SettingsExpander.ItemsFooter>
+                </toolkit:SettingsExpander>
             </StackPanel>
         </StackPanel>
     </ScrollView>

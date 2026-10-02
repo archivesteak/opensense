@@ -23,17 +23,30 @@ public enum KeyboardDirection : byte
     Left = 2,
 }
 
+/// <summary>
+/// How Acer's software for the model lays out <c>SetGamingKBBacklight</c> (<see cref="KeyboardProtocol.BacklightPayload"/>).
+/// </summary>
+public enum KeyboardPayloadLayout
+{
+    /// <summary>NitroSense 3.01, on the Nitros whose own software it is (<see cref="AcerModelProfile.KeyboardLayout"/>).</summary>
+    NitroSense,
+
+    /// <summary>PredatorSense 5.1, the same on every model Acer's current software drives.</summary>
+    PredatorSense,
+}
+
 public readonly record struct RgbColor(byte R, byte G, byte B)
 {
     public static RgbColor White { get; } = new(255, 255, 255);
 
     public string ToHex() => $"#{R:X2}{G:X2}{B:X2}";
 
-    public static RgbColor FromHex(string hex)
+    /// <summary><c>#RRGGBB</c> (the # is optional); white for anything else, so a damaged saved colour can't stop the lighting.</summary>
+    public static RgbColor FromHex(string? hex)
     {
-        var s = hex.TrimStart('#');
-        return s.Length == 6
-            ? new RgbColor(Convert.ToByte(s[..2], 16), Convert.ToByte(s[2..4], 16), Convert.ToByte(s[4..], 16))
+        var s = (hex ?? "").TrimStart('#');
+        return s.Length == 6 && uint.TryParse(s, System.Globalization.NumberStyles.AllowHexSpecifier, System.Globalization.CultureInfo.InvariantCulture, out var rgb)
+            ? new RgbColor((byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb)
             : White;
     }
 }
@@ -54,6 +67,15 @@ public static class KeyboardProtocol
         KeyboardEffect.Meteor, KeyboardEffect.Twinkling,
     ];
 
+    /// <summary>
+    /// The effects of an embedded controller that has no Meteor or Twinkling (AN515-45 V1.13: its effect code handles 1–5,
+    /// and 6 or 7 leaves the keyboard dark), as NitroSense offers them.
+    /// </summary>
+    public static IReadOnlyList<KeyboardEffect> FiveZonedEffects { get; } =
+    [
+        KeyboardEffect.Breathing, KeyboardEffect.Neon, KeyboardEffect.Wave, KeyboardEffect.Shifting, KeyboardEffect.Zoom,
+    ];
+
     /// <summary>Neon and Wave are rainbow effects: the firmware draws its own colours.</summary>
     public static bool UsesColor(KeyboardEffect effect) => effect is not (KeyboardEffect.Static or KeyboardEffect.Neon or KeyboardEffect.Wave);
 
@@ -62,26 +84,34 @@ public static class KeyboardProtocol
     public static bool UsesSpeed(KeyboardEffect effect) => effect != KeyboardEffect.Static;
 
     /// <summary>
-    /// The 16-byte <c>SetGamingKBBacklight</c> payload: an 8-byte record, then what Acer's software that offers the
-    /// effect sends after it. NitroSense (effects 0-5) repeats the record with byte 9 set to 1; PredatorSense, the only
-    /// one with Meteor and Twinkling, sends <c>03 01</c> and zeros, and Twinkling stays dark without it (AN515-57).
+    /// The 16-byte <c>SetGamingKBBacklight</c> payload as Acer's software for the model sends it: an 8-byte record (effect,
+    /// speed, brightness, flags, direction, R, G, B), then more.
+    /// <list type="bullet">
+    /// <item>NitroSense repeats the record, with byte 9 set to 1, and flags Wave with <c>0x08</c> in byte 3. It has
+    /// effects 0-5; Meteor and Twinkling get PredatorSense's tail, without which Twinkling stays dark (AN515-57).</item>
+    /// <item>PredatorSense sends <c>03 01</c> and zeros after the record, nothing in byte 3, and the direction with
+    /// every effect but static.</item>
+    /// </list>
     /// </summary>
-    public static byte[] BacklightPayload(KeyboardEffect effect, int speed, int brightness, KeyboardDirection direction, RgbColor color)
+    public static byte[] BacklightPayload(KeyboardEffect effect, int speed, int brightness, KeyboardDirection direction, RgbColor color,
+        KeyboardPayloadLayout layout = KeyboardPayloadLayout.NitroSense)
     {
+        var predator = layout == KeyboardPayloadLayout.PredatorSense;
+        var directionByte = predator ? effect != KeyboardEffect.Static : UsesDirection(effect);
         Span<byte> record =
         [
             (byte)effect,
             (byte)(UsesSpeed(effect) ? Math.Clamp(speed, MinSpeed, MaxSpeed) : 0),
             (byte)Math.Clamp(brightness, 0, 100),
-            (byte)(effect == KeyboardEffect.Wave ? 0x08 : 0),
-            (byte)(UsesDirection(effect) ? direction : 0),
+            (byte)(effect == KeyboardEffect.Wave && !predator ? 0x08 : 0),
+            (byte)(directionByte ? direction : 0),
             UsesColor(effect) ? color.R : (byte)0,
             UsesColor(effect) ? color.G : (byte)0,
             UsesColor(effect) ? color.B : (byte)0,
         ];
         var payload = new byte[16];
         record.CopyTo(payload);
-        if (effect is KeyboardEffect.Meteor or KeyboardEffect.Twinkling)
+        if (predator || effect is KeyboardEffect.Meteor or KeyboardEffect.Twinkling)
         {
             payload[8] = 0x03;
         }
@@ -92,6 +122,14 @@ public static class KeyboardProtocol
         payload[9] = 1;
         return payload;
     }
+
+    /// <summary>
+    /// NitroSense's layout on the Nitros whose own software is NitroSense (<see cref="AcerModelProfile.KeyboardLayout"/>),
+    /// PredatorSense's on every other model, and NitroSense's when the model can't be read. What is installed on the
+    /// laptop plays no part.
+    /// </summary>
+    public static KeyboardPayloadLayout PayloadLayout(string? model) =>
+        model is null ? KeyboardPayloadLayout.NitroSense : AcerModelProfile.For(model).KeyboardLayout ?? KeyboardPayloadLayout.PredatorSense;
 
     /// <summary><c>SetGamingRgbKb</c>: zone 1..4 and its colour.</summary>
     public static ulong ZoneColorInput(int zone, RgbColor color) =>

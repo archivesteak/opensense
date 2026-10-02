@@ -183,6 +183,10 @@
   <data name="Notice_WindowsKeyRejected" xml:space="preserve">
     <value>फ़र्मवेयर ने Windows कुंजी परिवर्तन अस्वीकार कर दिया।</value>
   </data>
+  <data name="Notice_FnLockRejected" xml:space="preserve">
+    <value>फ़र्मवेयर ने Fn लॉक का बदलाव स्वीकार नहीं किया।</value>
+    <comment>The firmware rejected the requested Fn lock setting.</comment>
+  </data>
   <data name="Notice_LcdOverdriveRejected" xml:space="preserve">
     <value>डिस्प्ले ने overdrive परिवर्तन अस्वीकार कर दिया।</value>
     <comment>Overdrive = LCD overdrive, a screen setting that speeds up pixel response.</comment>
@@ -201,6 +205,31 @@
   </data>
   <data name="Notice_GpuModeRejected" xml:space="preserve">
     <value>फ़र्मवेयर ने GPU मोड परिवर्तन अस्वीकार कर दिया।</value>
+  </data>
+  <data name="Notice_Bios_Title" xml:space="preserve">
+    <value>BIOS सेटिंग्स</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="Notice_BiosPasswordSet" xml:space="preserve">
+    <value>BIOS पासवर्ड सहेजा गया। यह लैपटॉप के पुनः प्रारंभ होने के बाद लागू होगा।</value>
+  </data>
+  <data name="Notice_BiosPasswordRemoved" xml:space="preserve">
+    <value>BIOS पासवर्ड हटा दिया गया। यह लैपटॉप के पुनः प्रारंभ होने के बाद लागू होगा।</value>
+  </data>
+  <data name="Notice_BiosOff" xml:space="preserve">
+    <value>सेटिंग्स में BIOS सेटिंग्स बंद हैं।</value>
+  </data>
+  <data name="Notice_BiosUnsupported" xml:space="preserve">
+    <value>यह BIOS ऐसा नहीं करता।</value>
+  </data>
+  <data name="Notice_BiosRejected" xml:space="preserve">
+    <value>BIOS ने इसे स्वीकार नहीं किया।</value>
+  </data>
+  <data name="Notice_BiosLocked" xml:space="preserve">
+    <value>बहुत अधिक गलत पासवर्ड। फिर से प्रयास करने के लिए लैपटॉप को पुनः प्रारंभ करें।</value>
+  </data>
+  <data name="Notice_BiosFailed" xml:space="preserve">
+    <value>BIOS ने उत्तर नहीं दिया।</value>
   </data>
   <data name="Notice_GpuClocks_Title" xml:space="preserve">
     <value>GPU ओवरक्लॉक</value>
@@ -258,6 +287,13 @@
   </data>
   <data name="GpuSwitch_HybridMessage" xml:space="preserve">
     <value>एकीकृत GPU डिस्प्ले चलाएगा और अलग GPU केवल ज़रूरत पड़ने पर चालू होगा, जिससे बैटरी बचती है। इसे लागू करने के लिए Windows को पुनः प्रारंभ करना होगा।</value>
+  </data>
+  <data name="GpuSwitch_AutomaticTitle" xml:space="preserve">
+    <value>स्वचालित ग्राफ़िक्स चयन पर स्विच करें?</value>
+    <comment>Dialog title.</comment>
+  </data>
+  <data name="GpuSwitch_AutomaticMessage" xml:space="preserve">
+    <value>लैपटॉप खुद तय करेगा कि डिस्प्ले एकीकृत GPU चलाए या अलग GPU। इसे लागू करने के लिए Windows को पुनः प्रारंभ करना होगा।</value>
   </data>
   <data name="GpuSwitch_RestartNow" xml:space="preserve">
     <value>अभी पुनः प्रारंभ करें</value>
@@ -1044,6 +1080,10 @@
     <value>Windows और मेनू कुंजियाँ</value>
     <comment>The Windows logo key and the Menu (application) key.</comment>
   </data>
+  <data name="System_FnLock.Header" xml:space="preserve">
+    <value>Fn लॉक</value>
+    <comment>Keyboard Fn lock toggle, shown only when the firmware reports support.</comment>
+  </data>
   <data name="System_WindowsKey.Description" xml:space="preserve">
     <value>बंद करें ताकि Windows और मेनू कुंजियाँ गेम में बाधा न डालें।</value>
   </data>
@@ -1100,6 +1140,10 @@
   <data name="System_GpuDiscrete.Content" xml:space="preserve">
     <value>अलग</value>
     <comment>GPU mode: only the NVIDIA graphics chip. Short: a segmented button.</comment>
+  </data>
+  <data name="System_GpuAutomatic.Content" xml:space="preserve">
+    <value>स्वचालित</value>
+    <comment>GPU mode: the laptop chooses which graphics chip drives the display (Acer: Automatic Selection). Short: a segmented button.</comment>
   </data>
   <data name="System_GpuRestart.Title" xml:space="preserve">
     <value>GPU मोड बदलने के लिए पुनः प्रारंभ करें</value>
@@ -1371,6 +1415,147 @@
     <value>पावर</value>
     <comment>Section title.</comment>
   </data>
+  <data name="System_Bios.Text" xml:space="preserve">
+    <value>BIOS</value>
+    <comment>Section header on the System page; BIOS is not translated.</comment>
+  </data>
+  <data name="System_BiosRestart.Title" xml:space="preserve">
+    <value>BIOS बदलाव लागू करने के लिए पुनः प्रारंभ करें</value>
+    <comment>Banner title.</comment>
+  </data>
+  <data name="System_BiosRestart.Message" xml:space="preserve">
+    <value>BIOS बदलाव लैपटॉप के पुनः प्रारंभ होने के बाद लागू होंगे।</value>
+  </data>
+  <data name="System_BiosSettings.Header" xml:space="preserve">
+    <value>BIOS सेटिंग्स</value>
+    <comment>Expander on the System page that opens to every BIOS setting.</comment>
+  </data>
+  <data name="Bios_SetPassword.Content" xml:space="preserve">
+    <value>सेट करें…</value>
+    <comment>Button on a BIOS password setting; opens a dialog to type the new password.</comment>
+  </data>
+  <data name="Bios_RemovePassword.Content" xml:space="preserve">
+    <value>हटाएँ…</value>
+    <comment>Button on a BIOS password setting; takes the password away after a question.</comment>
+  </data>
+  <data name="Bios_LoadDefaults.Content" xml:space="preserve">
+    <value>BIOS डिफ़ॉल्ट लोड करें</value>
+    <comment>Button under the BIOS settings: puts every BIOS setting back to Acer's defaults.</comment>
+  </data>
+  <data name="Bios_LoadUserDefaults.Content" xml:space="preserve">
+    <value>सहेजे गए डिफ़ॉल्ट लोड करें</value>
+    <comment>Button under the BIOS settings: loads the defaults the user saved in the BIOS setup.</comment>
+  </data>
+  <data name="BiosSettings_Footer.Text" xml:space="preserve">
+    <value>नाम और मान BIOS के अपने हैं, अंग्रेज़ी में। बदलाव लैपटॉप के पुनः प्रारंभ होने के बाद लागू होता है।</value>
+    <comment>Under the list of BIOS settings.</comment>
+  </data>
+  <data name="Bios_StatusIdle" xml:space="preserve">
+    <value>BIOS से सेटिंग्स पढ़ने के लिए खोलें।</value>
+    <comment>Under "BIOS settings" before it is opened.</comment>
+  </data>
+  <data name="Bios_StatusReading" xml:space="preserve">
+    <value>BIOS पढ़ा जा रहा है…</value>
+    <comment>Under "BIOS settings" while the BIOS is being read.</comment>
+  </data>
+  <data name="Bios_StatusCount" xml:space="preserve">
+    <value>मिली सेटिंग्स: {0}</value>
+    <comment>{0} = how many settings the BIOS listed.</comment>
+  </data>
+  <data name="Bios_StatusNone" xml:space="preserve">
+    <value>यह BIOS Windows को कोई सेटिंग नहीं दिखाता।</value>
+    <comment>Under "BIOS settings" when the BIOS lists none.</comment>
+  </data>
+  <data name="Bios_Dangerous" xml:space="preserve">
+    <value>खतरनाक: गलत मान लैपटॉप को शुरू होने से रोक सकता है।</value>
+    <comment>Under a dangerous BIOS setting that can be changed.</comment>
+  </data>
+  <data name="Bios_DangerousLocked" xml:space="preserve">
+    <value>खतरनाक। इसे बदलने के लिए सेटिंग्स में “खतरनाक BIOS सेटिंग्स सक्षम करें” चालू करें।</value>
+    <comment>Under a dangerous BIOS setting while dangerous BIOS settings are off in Settings; "Enable dangerous BIOS settings" is that setting's name.</comment>
+  </data>
+  <data name="BiosPassword_Title" xml:space="preserve">
+    <value>BIOS पासवर्ड</value>
+    <comment>Dialog title asking for the BIOS supervisor password.</comment>
+  </data>
+  <data name="BiosPassword_Message" xml:space="preserve">
+    <value>सेटिंग्स बदलने देने से पहले BIOS अपना सुपरवाइज़र पासवर्ड माँगता है।</value>
+    <comment>In the dialog asking for the BIOS supervisor password.</comment>
+  </data>
+  <data name="BiosPassword_Wrong" xml:space="preserve">
+    <value>वह पासवर्ड गलत था। फिर से प्रयास करें।</value>
+    <comment>In the dialog asking for the BIOS supervisor password, after a wrong one.</comment>
+  </data>
+  <data name="BiosPassword_Continue" xml:space="preserve">
+    <value>जारी रखें</value>
+    <comment>Button of the dialog asking for the BIOS supervisor password.</comment>
+  </data>
+  <data name="BiosNewPassword_Title" xml:space="preserve">
+    <value>नया BIOS पासवर्ड</value>
+    <comment>Dialog title for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosNewPassword_Message" xml:space="preserve">
+    <value>{0}: नया पासवर्ड दो बार लिखें। BIOS केवल अंग्रेज़ी कीबोर्ड पर मिलने वाले अक्षर, अंक और चिह्न स्वीकार करता है।</value>
+    <comment>In the dialog for setting a BIOS password. {0} = the BIOS's name for the setting, in English (for example "Set Supervisor Password").</comment>
+  </data>
+  <data name="BiosNewPassword_First" xml:space="preserve">
+    <value>नया पासवर्ड</value>
+    <comment>Label of the first box in the dialog for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosNewPassword_Again" xml:space="preserve">
+    <value>पासवर्ड दोहराएँ</value>
+    <comment>Label of the second box in the dialog for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosNewPassword_Set" xml:space="preserve">
+    <value>पासवर्ड सेट करें</value>
+    <comment>Button of the dialog for setting a BIOS password.</comment>
+  </data>
+  <data name="BiosPasswordSave_Title" xml:space="preserve">
+    <value>BIOS पासवर्ड सहेजें?</value>
+    <comment>Dialog title before a BIOS password is saved.</comment>
+  </data>
+  <data name="BiosPasswordSave_Message" xml:space="preserve">
+    <value>{0}: BIOS अगली शुरुआत से यह पासवर्ड इस्तेमाल करेगा। अगर आप इसे भूल गए, तो आप BIOS सेटअप तक पहुँच खो सकते हैं।</value>
+    <comment>Dialog text before a BIOS password is saved. {0} = the BIOS's name for the setting, in English (for example "Set Supervisor Password").</comment>
+  </data>
+  <data name="BiosPasswordSave_Save" xml:space="preserve">
+    <value>पासवर्ड सहेजें</value>
+    <comment>Button of the dialog that saves a BIOS password.</comment>
+  </data>
+  <data name="BiosDanger_Title" xml:space="preserve">
+    <value>खतरनाक सेटिंग बदलें?</value>
+    <comment>Dialog title before a dangerous BIOS setting changes.</comment>
+  </data>
+  <data name="BiosDanger_Message" xml:space="preserve">
+    <value>लैपटॉप के पुनः प्रारंभ होने के बाद {0} को {1} पर सेट किया जाएगा।
+
+गलत मान लैपटॉप को शुरू होने से रोक सकता है या उसे उसके कीबोर्ड, ड्राइव या पोर्ट से काट सकता है। तभी आगे बढ़ें जब आप जानते हों कि यह क्या करता है।</value>
+    <comment>Dialog text before a dangerous BIOS setting changes. {0} = the setting's name, {1} = the new value, both as the BIOS gives them (English). Two line breaks.</comment>
+  </data>
+  <data name="BiosDanger_Change" xml:space="preserve">
+    <value>बदलें</value>
+    <comment>Button of the dialog that goes ahead with a dangerous BIOS setting change.</comment>
+  </data>
+  <data name="BiosDefaults_Title" xml:space="preserve">
+    <value>Acer के डिफ़ॉल्ट लोड करें?</value>
+    <comment>Dialog title before Acer's BIOS defaults are loaded.</comment>
+  </data>
+  <data name="BiosDefaults_Message" xml:space="preserve">
+    <value>लैपटॉप के पुनः प्रारंभ होने के बाद BIOS की हर सेटिंग Acer के डिफ़ॉल्ट पर लौट जाएगी, उन सेटिंग्स सहित जिन्हें OpenSense नहीं दिखाता।</value>
+    <comment>Dialog text before Acer's BIOS defaults are loaded.</comment>
+  </data>
+  <data name="BiosUserDefaults_Title" xml:space="preserve">
+    <value>आपके सहेजे गए डिफ़ॉल्ट लोड करें?</value>
+    <comment>Dialog title before the defaults the user saved in the BIOS setup are loaded.</comment>
+  </data>
+  <data name="BiosUserDefaults_Message" xml:space="preserve">
+    <value>लैपटॉप के पुनः प्रारंभ होने के बाद BIOS की हर सेटिंग BIOS सेटअप में सहेजे गए डिफ़ॉल्ट पर लौट जाएगी, उन सेटिंग्स सहित जिन्हें OpenSense नहीं दिखाता।</value>
+    <comment>Dialog text before the defaults the user saved in the BIOS setup are loaded.</comment>
+  </data>
+  <data name="BiosDefaults_Load" xml:space="preserve">
+    <value>लोड करें</value>
+    <comment>Button of the dialogs that go ahead with loading BIOS defaults.</comment>
+  </data>
   <data name="System_PowerPlan.Header" xml:space="preserve">
     <value>पावर योजना</value>
     <comment>Windows power plan setting.</comment>
@@ -1579,6 +1764,46 @@ GPU: {1}</value>
     <value>W, A, S और D के नीचे अपनी अलग लाइटें, जिनका पता लैपटॉप के मॉडल नाम से चलता है। अगर आपके लैपटॉप के लिए यह सही नहीं है तो इसे बदलें।</value>
     <comment>Under "MagForce key lights".</comment>
   </data>
+  <data name="Settings_BiosSettings.Header" xml:space="preserve">
+    <value>BIOS सेटिंग्स सक्षम करें</value>
+    <comment>Setting in "Your laptop": lets OpenSense show and change the BIOS's own settings.</comment>
+  </data>
+  <data name="Settings_BiosSettings.Description" xml:space="preserve">
+    <value>सिस्टम पेज पर BIOS सेटिंग्स दिखाता है और OpenSense को उन्हें बदलने देता है। बदलाव लैपटॉप के पुनः प्रारंभ होने के बाद लागू होता है।</value>
+    <comment>Under "Enable BIOS settings".</comment>
+  </data>
+  <data name="Settings_DangerousBiosSettings.Header" xml:space="preserve">
+    <value>खतरनाक BIOS सेटिंग्स सक्षम करें</value>
+    <comment>Setting shown once BIOS settings are enabled: also allows the dangerous ones.</comment>
+  </data>
+  <data name="Settings_DangerousBiosSettings.Description" xml:space="preserve">
+    <value>वे सेटिंग्स भी अनुमत करता है जो लैपटॉप को शुरू होने से रोक सकती हैं या उसे उसके कीबोर्ड, ड्राइव या पोर्ट से काट सकती हैं। केवल उन्हीं के लिए जो जानते हैं कि ये क्या करती हैं।</value>
+    <comment>Under "Enable dangerous BIOS settings".</comment>
+  </data>
+  <data name="BiosDangerousEnable_Title" xml:space="preserve">
+    <value>खतरनाक BIOS सेटिंग्स सक्षम करें?</value>
+    <comment>First dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousEnable_Message" xml:space="preserve">
+    <value>ये सेटिंग्स लैपटॉप को शुरू होने से रोक सकती हैं, उसे उसके कीबोर्ड, ड्राइव या पोर्ट से काट सकती हैं, या इन्हें पूर्ववत नहीं किया जा सकता। गलत मान के कारण लैपटॉप की मरम्मत करानी पड़ सकती है।</value>
+    <comment>Text of the first dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousEnable_Continue" xml:space="preserve">
+    <value>जारी रखें</value>
+    <comment>Button of the first dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousSure_Title" xml:space="preserve">
+    <value>क्या आप निश्चित हैं?</value>
+    <comment>Title of the second dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousSure_Message" xml:space="preserve">
+    <value>अंतिम जाँच। इसके चालू होने पर OpenSense वे सेटिंग्स बदल सकता है जो लैपटॉप को शुरू होने से रोक सकती हैं। इसे तभी चालू करें जब आप जानते हों कि वे क्या करती हैं।</value>
+    <comment>Text of the second dialog when "Enable dangerous BIOS settings" is switched on.</comment>
+  </data>
+  <data name="BiosDangerousSure_Enable" xml:space="preserve">
+    <value>सक्षम करें</value>
+    <comment>Button of the second dialog when "Enable dangerous BIOS settings" is switched on: goes ahead.</comment>
+  </data>
   <data name="Settings_OperatingModes_Supported" xml:space="preserve">
     <value>{0}, जैसा कि Acer का सॉफ़्टवेयर इस मॉडल पर देता है। {1}</value>
     <comment>{0} = a list of operating mode names; {1} = Settings_OperatingModes_CoolBoost or Settings_OperatingModes_Default.</comment>
@@ -1768,5 +1993,13 @@ GPU: {1}</value>
   <data name="GpuClocks_FollowFirmware.Description" xml:space="preserve">
     <value>फ़र्मवेयर हर मोड के लिए जो ओवरक्लॉक तय करता है, नीचे दिए ऑफ़सेट में जोड़ा गया।</value>
     <comment>Under "Acer's overclocking": the firmware's own overclock for each mode is added to the user's offsets set below it.</comment>
+  </data>
+  <data name="Navigation_FailedTitle" xml:space="preserve">
+    <value>यह पृष्ठ नहीं खोला जा सका</value>
+    <comment>Title when navigating to a page fails. The app remains open and offers a retry.</comment>
+  </data>
+  <data name="Navigation_Retry" xml:space="preserve">
+    <value>फिर से कोशिश करें</value>
+    <comment>Button to retry opening the page after a navigation failure.</comment>
   </data>
 </root>

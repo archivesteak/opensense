@@ -39,9 +39,10 @@ Help translate OpenSense and this page into your language: see [Translations](#t
 - **Safe by default.** Anti-throttle brings the fans up to full speed as the processor nears its throttling point, and the firmware takes over again if a sensor or OpenSense stops.
 - **Performance.** Operating modes, CoolBoost, GPU overclock for each mode and Windows power plans. The Mode key switches between the modes, and battery power has its own mode. On 2024 and later Predators, Acer's own GPU overclock for each mode is added on top.
 - **Lighting.** Static colours per keyboard zone, or Breathing, Neon, Wave, Shifting, Zoom, Meteor and Twinkling effects. Light bars, the Infinity Mirror, the InfiniteRing, the lid logo and the Turbo and Mode keys too, each with its own effects. Per-key keyboards and the MagForce keys take a colour for each key, and effects of their own.
-- **Keyboard and display.** Backlight auto-off, Windows-key lock, LCD overdrive and the GPU (MUX) switch.
+- **Keyboard and display.** Backlight auto-off, Windows-key lock, Fn lock, LCD overdrive and the GPU (MUX) switch.
 - **Battery.** Battery health (how much capacity is left, and charge cycles), stop charging at 80%, battery calibration and charging USB devices while the laptop is off.
 - **Startup.** The boot animation and sound, and your own boot logo on laptops that support it.
+- **BIOS settings.** On laptops whose BIOS offers them (the 2025 Predators), every BIOS setting can be changed on the **System** page once you allow it in **Settings**. Dangerous ones have a switch of their own.
 - **No admin prompts.** A small background service applies your settings from startup, and the NitroSense key opens the app.
 - **Your language.** 36 languages, following Windows or chosen in Settings.
 

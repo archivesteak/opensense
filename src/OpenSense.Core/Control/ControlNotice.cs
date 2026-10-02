@@ -54,6 +54,7 @@ public enum NoticeKind
     /// <see cref="ControlNotice.OperatingMode"/>.
     /// </summary>
     OperatingModeChangedByPower,
+    FnLockRejected,
 }
 
 /// <summary>Something the user should know about, e.g. the firmware rejected a change.</summary>

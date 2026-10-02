@@ -31,23 +31,35 @@ public class WmiValueTests
     {
         Assert.Throws<AcerWmiException>(() => WmiValues.ToCim(CimType.UInt8, false, 256));
         Assert.Throws<AcerWmiException>(() => WmiValues.ToCim(CimType.UInt8, true, 1));
-        Assert.Throws<AcerWmiException>(() => WmiValues.ToCim(CimType.String, false, "x"));
+        Assert.Throws<AcerWmiException>(() => WmiValues.ToCim(CimType.String, false, 1));
+        Assert.Throws<AcerWmiException>(() => WmiValues.ToCim(CimType.String, true, "x"));
+        Assert.Throws<AcerWmiException>(() => WmiValues.ToCim(CimType.Boolean, false, true));
     }
 
     [Fact]
-    public void Outputs_read_as_integers_and_byte_arrays()
+    public void Strings_go_in_as_they_are()
+    {
+        Assert.Equal("Set Supervisor Password", WmiValues.ToCim(CimType.String, false, "Set Supervisor Password"));
+    }
+
+    [Fact]
+    public void Outputs_read_as_integers_byte_arrays_and_strings()
     {
         Assert.Equal(3UL, WmiValues.FromCim((byte)3));
         Assert.Equal(0x6400UL, WmiValues.FromCim(0x6400u));
         Assert.Equal([1, 0], Assert.IsType<byte[]>(WmiValues.FromCim(new byte[] { 1, 0 })));
-        Assert.Null(WmiValues.FromCim("text"));
+        Assert.Equal("text", WmiValues.FromCim("text"));
+        Assert.Null(WmiValues.FromCim(true));
         Assert.Null(WmiValues.FromCim(null));
 
         var outputs = new WmiOutputs([KeyValuePair.Create<string, object>("uFunctionList", 3UL),
-            KeyValuePair.Create<string, object>("uReturn", new byte[] { 0, 0 })]);
+            KeyValuePair.Create<string, object>("uReturn", new byte[] { 0, 0 }),
+            KeyValuePair.Create<string, object>("Return", "0x00 - Success and no error")]);
         Assert.Equal(3UL, outputs.Value("ufunctionlist"));
         Assert.Equal([0, 0], outputs.Bytes("uReturn"));
+        Assert.Equal("0x00 - Success and no error", outputs.Text("return"));
         Assert.Null(outputs.Value("uReturn"));
+        Assert.Null(outputs.Text("uReturn"));
         Assert.Null(outputs.Bytes("missing"));
     }
 }

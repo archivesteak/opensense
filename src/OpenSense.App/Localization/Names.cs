@@ -12,6 +12,17 @@ public static class Names
     public static bool IsModeToast(NoticeKind kind) =>
         kind is NoticeKind.OperatingModeSwitchedByKey or NoticeKind.OperatingModeChangedByPower or NoticeKind.TurboUnavailable;
 
+    /// <summary>What a BIOS change that did not go through says; empty when the user's own answer explains it (they gave up at the password).</summary>
+    public static string BiosProblem(BiosChangeResult result) => result switch
+    {
+        BiosChangeResult.NotAllowed => Strings.Get("Notice_BiosOff"),
+        BiosChangeResult.Unsupported => Strings.Get("Notice_BiosUnsupported"),
+        BiosChangeResult.Rejected => Strings.Get("Notice_BiosRejected"),
+        BiosChangeResult.TooManyAttempts => Strings.Get("Notice_BiosLocked"),
+        BiosChangeResult.Unavailable or BiosChangeResult.Failed => Strings.Get("Notice_BiosFailed"),
+        _ => "",
+    };
+
     public static string FanMode(FanControlMode mode) => mode switch
     {
         FanControlMode.Max => Strings.Get("FanMode_Max"),
@@ -223,6 +234,7 @@ public static class Names
         },
         NoticeKind.BacklightTimeoutRejected => (Keyboard, Strings.Get("Notice_BacklightTimeoutRejected")),
         NoticeKind.WindowsKeyRejected => (Keyboard, Strings.Get("Notice_WindowsKeyRejected")),
+        NoticeKind.FnLockRejected => (Keyboard, Strings.Get("Notice_FnLockRejected")),
         NoticeKind.LcdOverdriveRejected => (Strings.Get("Notice_Display_Title"), Strings.Get("Notice_LcdOverdriveRejected")),
         NoticeKind.ChargeLimitRejected => (Battery, Strings.Get("Notice_ChargeLimitRejected")),
         NoticeKind.UsbChargingRejected => (Battery, Strings.Get("Notice_UsbChargingRejected")),

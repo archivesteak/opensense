@@ -323,7 +323,7 @@ public class LightBarBackendTests
     public void Detection_finds_the_predators_lights_and_none_on_an_an515_57()
     {
         var predator = new SimulatedMachine(SimulatedModel.Predator2024);
-        var caps = CapabilityProbe.Probe(new AcerDevice(predator.OpenFirmware()), predator.ReadHints(), predator.ReadSmbios());
+        var caps = CapabilityProbe.Probe(new AcerDevice(predator.OpenFirmware()), predator.ReadSmbios(), predator.Model);
 
         Assert.Equal([LightingLocation.Keyboard, LightingLocation.InfinityMirror, LightingLocation.Logo], caps.Lights.Select(l => l.Location));
         Assert.Equal([new LightBar(LightBarId.Rear, 7)], caps.LightBars);
@@ -331,7 +331,7 @@ public class LightBarBackendTests
         Assert.Contains("GetGamingLED(0x10) = status 0", caps.Diagnostics, StringComparison.Ordinal);
 
         var nitro = new SimulatedMachine(SimulatedModel.Nitro2021);
-        var nitroCaps = CapabilityProbe.Probe(new AcerDevice(nitro.OpenFirmware()), nitro.ReadHints(), nitro.ReadSmbios());
+        var nitroCaps = CapabilityProbe.Probe(new AcerDevice(nitro.OpenFirmware()), nitro.ReadSmbios(), nitro.Model);
         Assert.Equal([LightingLocation.Keyboard], nitroCaps.Lights.Select(l => l.Location));
         Assert.Empty(nitroCaps.LightBars);
         Assert.Contains("GetGamingLED(0x10) = status 2, no layout", nitroCaps.Diagnostics, StringComparison.Ordinal);
@@ -386,6 +386,27 @@ public sealed class PredatorLightingIpcTests : IAsyncLifetime
         if (Directory.Exists(_directory))
             Directory.Delete(_directory, recursive: true);
         return ValueTask.CompletedTask;
+    }
+}
+
+public class KeyboardZoneTests
+{
+    private static DeviceCapabilities Probe(params AcerSmbiosRecord[] records) =>
+        CapabilityProbe.Probe(new AcerDevice(new SimulatedTransport(SimulatedModel.Predator2024)), new AcerSmbios(2, 0x5B, records, []));
+
+    [Fact]
+    public void The_zone_count_is_the_one_the_bios_names()
+    {
+        // The firmware drops a fourth zone unless SMBIOS record 0x08 says 4, so a 3-zone keyboard must not show one.
+        Assert.Equal(3, Probe(new(0x08, 3), new(0x0A, 2)).Keyboard.Zones);
+        Assert.Equal(4, Probe(new(0x08, 4), new(0x0A, 2)).Keyboard.Zones);
+        Assert.Equal(1, Probe(new(0x08, 1), new(0x0A, 2)).Keyboard.Zones);
+        Assert.Equal(4, Probe(new AcerSmbiosRecord(0x0A, 2)).Keyboard.Zones);
+
+        // 0 is a per-key keyboard, which the zoned controls don't reach.
+        var perKey = Probe(new(0x08, 0), new(0x0A, 2));
+        Assert.False(perKey.Keyboard.RgbBacklight);
+        Assert.DoesNotContain(perKey.Lights, l => l.Backend == LightingBackendKind.EcKeyboard);
     }
 }
 

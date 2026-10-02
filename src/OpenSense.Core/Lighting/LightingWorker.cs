@@ -10,6 +10,9 @@ public sealed class LightingWorker : IDisposable
 {
     private readonly BlockingCollection<Action> _queue = [];
     private readonly Thread _thread;
+    private readonly TaskCompletionSource _completion = new(TaskCreationOptions.RunContinuationsAsynchronously);
+    private readonly object _gate = new();
+    private bool _stopping;
 
     public LightingWorker()
     {
@@ -31,28 +34,47 @@ public sealed class LightingWorker : IDisposable
                 result.SetException(ex);
             }
         }
-        try
+        lock (_gate)
         {
-            _queue.Add(Job);
-        }
-        catch (InvalidOperationException)
-        {
-            result.SetException(new ObjectDisposedException(nameof(LightingWorker)));
+            if (_stopping)
+                result.SetException(new ObjectDisposedException(nameof(LightingWorker)));
+            else
+                _queue.Add(Job);
         }
         return result.Task;
     }
 
     private void Run()
     {
-        foreach (var job in _queue.GetConsumingEnumerable())
-            job();
+        try
+        {
+            foreach (var job in _queue.GetConsumingEnumerable())
+                job();
+        }
+        finally
+        {
+            _queue.Dispose();
+            _completion.TrySetResult();
+        }
+    }
+
+    public Task StopAsync()
+    {
+        lock (_gate)
+        {
+            if (!_stopping)
+            {
+                _stopping = true;
+                _queue.CompleteAdding();
+            }
+            return _completion.Task;
+        }
     }
 
     /// <summary>Lets queued work finish (a few seconds at most), then ends the thread.</summary>
     public void Dispose()
     {
-        _queue.CompleteAdding();
-        if (_thread.Join(TimeSpan.FromSeconds(5)))
-            _queue.Dispose();
+        if (!StopAsync().Wait(TimeSpan.FromSeconds(5)))
+            throw new TimeoutException("The lighting worker is still stopping; its device resources remain in use.");
     }
 }

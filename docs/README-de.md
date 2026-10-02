@@ -39,9 +39,10 @@ Hilf mit, OpenSense und diese Seite in deine Sprache zu übersetzen: siehe [Übe
 - **Sicher von Haus aus.** Anti-Drosselung dreht die Lüfter bis zur vollen Drehzahl hoch, wenn sich der Prozessor der Drosselgrenze nähert, und die Firmware übernimmt wieder, wenn ein Sensor oder OpenSense ausfällt.
 - **Leistung.** Betriebsmodi, CoolBoost, GPU-Übertaktung je Modus und Windows-Energiesparpläne. Die Modustaste schaltet zwischen den Modi um, und für den Akkubetrieb gibt es einen eigenen Modus. Auf Predators ab 2024 kommt Acers eigene GPU-Übertaktung je Modus hinzu.
 - **Beleuchtung.** Feste Farben pro Tastaturzone oder die Effekte Atmen, Neon, Welle, Wandern, Zoom, Meteor und Funkeln. Dazu Lichtleisten, das Infinity Mirror, der InfiniteRing, das Logo sowie Turbo-Taste und Modustaste, jeweils mit eigenen Effekten. Tastaturen mit einzeln beleuchteten Tasten und die MagForce-Tasten bekommen eine Farbe pro Taste und eigene Effekte.
-- **Tastatur und Display.** Automatisches Ausschalten der Beleuchtung, Sperre der Windows-Taste, LCD-Overdrive und der GPU-Umschalter (MUX).
+- **Tastatur und Display.** Automatisches Ausschalten der Beleuchtung, Sperre der Windows-Taste, Fn-Sperre, LCD-Overdrive und der GPU-Umschalter (MUX).
 - **Akku.** Akkuzustand (verbliebene Kapazität und Ladezyklen), Laden bei 80 % beenden, Akku kalibrieren und USB-Geräte im ausgeschalteten Zustand laden.
 - **Systemstart.** Startanimation und -sound sowie ein eigenes Startlogo auf Laptops, die das unterstützen.
+- **BIOS-Einstellungen.** Auf Laptops, deren BIOS sie anbietet (die Predator-Modelle von 2025), lässt sich jede BIOS-Einstellung auf der Seite **System** ändern, sobald du es unter **Einstellungen** erlaubst. Gefährliche haben einen eigenen Schalter.
 - **Keine Administratorabfragen.** Ein kleiner Hintergrunddienst wendet deine Einstellungen ab dem Systemstart an, und die NitroSense-Taste öffnet die App.
 - **Deine Sprache.** 36 Sprachen, wie in Windows oder in den Einstellungen gewählt.
 
