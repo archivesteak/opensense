@@ -1990,6 +1990,14 @@ GPU: {1}</value>
     <value>끝내기</value>
     <comment>Menu item: quit OpenSense.</comment>
   </data>
+  <data name="Tray_Hint_Title" xml:space="preserve">
+    <value>OpenSense가 계속 실행 중입니다</value>
+    <comment>Title of the Windows notification shown once, the first time closing the window leaves OpenSense in the notification area.</comment>
+  </data>
+  <data name="Tray_Hint_Message" xml:space="preserve">
+    <value>알림 영역에 남아 있습니다. 아이콘을 클릭하면 창이 열리고, 종료하려면 아이콘 메뉴를 사용하세요.</value>
+    <comment>Body of that notification. Notification area = the Windows system tray; "its menu" is the icon's menu, where Exit is.</comment>
+  </data>
   <data name="GpuClocks_FollowFirmware.Description" xml:space="preserve">
     <value>펌웨어가 모드마다 정한 오버클럭을 아래 오프셋에 더합니다.</value>
     <comment>Under "Acer's overclocking": the firmware's own overclock for each mode is added to the user's offsets set below it.</comment>

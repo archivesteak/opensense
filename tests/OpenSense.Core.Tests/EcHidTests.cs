@@ -325,11 +325,14 @@ public sealed class EcHidControlTests : IDisposable
     [Fact]
     public void The_battery_boost_flag_comes_from_the_controller()
     {
-        _ec.Status[EcHidStatus.BatteryBoost] = 0;
         var service = Service(new ControlProfile { OperatingMode = OperatingMode.Performance });
-
         service.Tick();
-        Assert.Equal(PowerLimit.LowBattery, service.Latest!.PowerLimit);
+        Assert.Equal(PowerLimit.None, service.Latest!.PowerLimit); // on: a real flag
+
+        _ec.Status[EcHidStatus.BatteryBoost] = 0; // the WMI flag stays on
+        service.OnBatteryBoostEvent();
+        service.Tick();
+        Assert.Equal(PowerLimit.LowBattery, service.Latest.PowerLimit);
 
         _ec.Status[EcHidStatus.BatteryBoost] = 1;
         service.OnBatteryBoostEvent(); // the controller is read again

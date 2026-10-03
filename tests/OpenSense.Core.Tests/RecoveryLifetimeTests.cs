@@ -169,6 +169,15 @@ public class RecoveryLifetimeTests
     }
 
     [Fact]
+    public void A_register_read_of_all_ones_is_the_207_degrees_the_gate_discards()
+    {
+        // What the AMD sensor made of a failed read: the spikes to 207 °C that sent the fans to the top of their curve (issue 3).
+        Assert.Equal(206.875, AmdTctlSensor.Decode(0xFFFFFFFF));
+        Assert.Null(SensorReadings.Temperature(AmdTctlSensor.Decode(0xFFFFFFFF)));
+        Assert.Equal(66.5, AmdTctlSensor.Decode(532u << 21)); // 532 eighths of a degree, no offset bits
+    }
+
+    [Fact]
     public void Invalid_firmware_cpu_temperature_still_enters_the_existing_auto_failsafe()
     {
         var now = DateTime.UtcNow;

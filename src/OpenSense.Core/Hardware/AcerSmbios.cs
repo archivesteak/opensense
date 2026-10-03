@@ -4,8 +4,12 @@ using Windows.Win32.System.SystemInformation;
 
 namespace OpenSense.Core.Hardware;
 
-/// <summary>A 3-byte record in the Acer gaming SMBIOS structure (type 0xAC).</summary>
-public readonly record struct AcerSmbiosRecord(byte Id, ushort Value);
+/// <summary>A 3-byte record in the Acer gaming SMBIOS structure (type 0xAC), or a 4-byte one in the hotkey structure (0xAA).</summary>
+/// <param name="Flag">
+/// A hotkey record's byte 1: 2 in Acer's tables, which the BIOS turns to 1 while its setup's Function key behavior is
+/// Media Key (some records are 1 anyway). Nothing in the firmware reads it; kept for the diagnostics.
+/// </param>
+public readonly record struct AcerSmbiosRecord(byte Id, ushort Value, byte Flag = 0);
 
 /// <summary>Records of the gaming structure that describe hardware (ids as Acer's software reads them).</summary>
 public enum GamingRecord : byte
@@ -59,7 +63,11 @@ public sealed record AcerSmbios(
 
     public bool HasHotkeyFunction(byte function) => HotkeyFunctions.Any(r => r.Id == function);
 
-    /// <summary>The last backlight-function record, matching the firmware's hotkey table selection.</summary>
+    /// <summary>
+    /// The last backlight-function record, matching the firmware's hotkey table selection: a function in 0x81–0x9F whose
+    /// value is 8, the firmware's slot 3, which is the auto-off on every BIOS that has it (other values are other slots:
+    /// the NL16-71G's 0x84 is 0x1000, slot 12, which nothing handles).
+    /// </summary>
     public byte? BacklightHotkey => HotkeyFunctions
         .Where(r => r.Id is >= 0x81 and <= 0x9F && r.Value == 0x0008)
         .Select(r => (byte?)r.Id).LastOrDefault();
@@ -114,12 +122,10 @@ public sealed record AcerSmbios(
             }
             else if (type == 0xAA)
             {
-                // After a 14-byte header come 4-byte records: function, 0x02, u16 value.
+                // After a 14-byte header come 4-byte records: function, flag, u16 value. Every one counts, whatever its
+                // flag: the BIOS changes the flags with the setup's Fn key setting (the AN515-45's default drops none).
                 for (var i = 14; i + 4 <= formatted.Length; i += 4)
-                {
-                    if (formatted[i + 1] == 0x02)
-                        hotkeys.Add(new AcerSmbiosRecord(formatted[i], BinaryPrimitives.ReadUInt16LittleEndian(formatted[(i + 2)..])));
-                }
+                    hotkeys.Add(new AcerSmbiosRecord(formatted[i], BinaryPrimitives.ReadUInt16LittleEndian(formatted[(i + 2)..]), formatted[i + 1]));
             }
 
             // Skip the string set, which ends with a double NUL.

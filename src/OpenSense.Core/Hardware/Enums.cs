@@ -69,6 +69,19 @@ public enum DustDefenderStart
     Failed,
 }
 
+/// <summary>What <c>APGeAction</c> function 7 is on this firmware, as its sub-function 0 says (<see cref="AcerProtocol.ActionFunctionKind"/>).</summary>
+public enum ActionFunction
+{
+    /// <summary>Answers, but with neither marker (stubs answer all zeros).</summary>
+    Unknown,
+
+    /// <summary>CoolBoost (and Dust Defender's sub-functions): the AN515-45 and AN515-57.</summary>
+    CoolBoost,
+
+    /// <summary>The operating mode: the PHN16-73 and NL16-71G.</summary>
+    OperatingMode,
+}
+
 /// <summary>Power-off USB charging as the firmware has it: on or off, and the battery level it stops at (null: none set).</summary>
 public readonly record struct UsbChargingState(bool On, int? Floor);
 

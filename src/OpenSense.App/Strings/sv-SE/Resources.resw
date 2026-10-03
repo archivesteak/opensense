@@ -1990,6 +1990,14 @@ Information: {1}</value>
     <value>Avsluta</value>
     <comment>Menu item: quit OpenSense.</comment>
   </data>
+  <data name="Tray_Hint_Title" xml:space="preserve">
+    <value>OpenSense körs fortfarande</value>
+    <comment>Title of the Windows notification shown once, the first time closing the window leaves OpenSense in the notification area.</comment>
+  </data>
+  <data name="Tray_Hint_Message" xml:space="preserve">
+    <value>Det finns kvar i meddelandefältet. Klicka på ikonen för att öppna fönstret eller avsluta från dess meny.</value>
+    <comment>Body of that notification. Notification area = the Windows system tray; "its menu" is the icon's menu, where Exit is.</comment>
+  </data>
   <data name="GpuClocks_FollowFirmware.Description" xml:space="preserve">
     <value>Överklockningen som den inbyggda programvaran anger för varje läge, tillagd till förskjutningarna nedan.</value>
     <comment>Under "Acer's overclocking": the firmware's own overclock for each mode is added to the user's offsets set below it.</comment>

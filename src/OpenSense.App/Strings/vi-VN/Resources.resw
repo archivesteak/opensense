@@ -1990,6 +1990,14 @@ Chi tiết: {1}</value>
     <value>Thoát</value>
     <comment>Menu item: quit OpenSense.</comment>
   </data>
+  <data name="Tray_Hint_Title" xml:space="preserve">
+    <value>OpenSense vẫn đang chạy</value>
+    <comment>Title of the Windows notification shown once, the first time closing the window leaves OpenSense in the notification area.</comment>
+  </data>
+  <data name="Tray_Hint_Message" xml:space="preserve">
+    <value>Ứng dụng vẫn ở trong vùng thông báo. Bấm vào biểu tượng để mở cửa sổ, hoặc thoát từ menu của biểu tượng.</value>
+    <comment>Body of that notification. Notification area = the Windows system tray; "its menu" is the icon's menu, where Exit is.</comment>
+  </data>
   <data name="GpuClocks_FollowFirmware.Description" xml:space="preserve">
     <value>Mức ép xung firmware đặt cho từng chế độ, cộng thêm vào các độ lệch bên dưới.</value>
     <comment>Under "Acer's overclocking": the firmware's own overclock for each mode is added to the user's offsets set below it.</comment>

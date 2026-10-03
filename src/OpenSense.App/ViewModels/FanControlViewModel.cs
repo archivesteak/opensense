@@ -142,6 +142,13 @@ public sealed partial class FanControlViewModel : ObservableObject
     [ObservableProperty]
     public partial bool HasFans { get; set; }
 
+    /// <summary>
+    /// Something for the Fans page and the dashboard's cooling card: fans OpenSense drives, or the firmware's CoolBoost, fan
+    /// curve or Dust Defender. Not on laptops whose fans only follow the firmware (the NL16-71G: its operating mode).
+    /// </summary>
+    [ObservableProperty]
+    public partial bool CoolingAvailable { get; set; }
+
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsLocked))]
     public partial string? LockReason { get; set; }
@@ -255,6 +262,7 @@ public sealed partial class FanControlViewModel : ObservableObject
 
         RestoreAutoOnExit = profile.Safety.RestoreAutoOnExit;
         DustDefenderAvailable = caps.DustDefender;
+        CoolingAvailable = HasFans || CoolBoostAvailable || FanTableAvailable || DustDefenderAvailable;
         DustDefenderRunning = _session.Latest?.DustDefenderRunning == true;
         DustDefenderRefusal = null;
         ModeKeyAvailable = caps.ModeKey && caps.OperatingModes.Contains(OperatingMode.Turbo);

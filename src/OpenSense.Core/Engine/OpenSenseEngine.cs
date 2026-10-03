@@ -314,10 +314,12 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
     private void StartControl(AcerDevice device)
     {
         var settings = Current;
-        _controller = new FanControlService(device, _capabilities, _load!, _power!, settings.Profile, _sensors, knownGpuClocks: KnownGpuClocks());
+        _controller = new FanControlService(device, _capabilities, _load!, _power!, settings.Profile, _sensors, knownGpuClocks: KnownGpuClocks(),
+            batteryBoostSeen: Runtime.BatteryBoostSeen);
         _controller.TelemetryUpdated += OnTelemetry;
         _controller.Notice += OnNotice;
         _controller.GpuClockLimitsChanged += OnGpuClockLimits;
+        _controller.BatteryBoostSeen += OnBatteryBoostSeen;
         _controller.Start();
 
         StartKeyboard(_controller, settings.Keyboard);
@@ -347,6 +349,7 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
     {
         var latest = telemetry with { Battery = _powerService?.Telemetry() };
         _latest = latest;
+        NoteSensorGlitch();
         TelemetryUpdated?.Invoke(this, latest);
     }
 
@@ -478,6 +481,9 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
 
     [LoggerMessage(Level = LogLevel.Information, Message = "Temperature sources: CPU {Cpu}; GPU {Gpu}")]
     private partial void LogSensors(SensorStatus cpu, SensorStatus gpu);
+
+    [LoggerMessage(Level = LogLevel.Warning, Message = "CPU temperature sensor: {Note}")]
+    private partial void LogSensorGlitch(string note);
 
     [LoggerMessage(Level = LogLevel.Error, Message = "Engine failed to start")]
     private partial void LogStartFailed(Exception ex);

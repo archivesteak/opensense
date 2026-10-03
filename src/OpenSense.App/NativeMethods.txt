@@ -30,3 +30,12 @@ WM_HOTKEY
 MapVirtualKey
 GetKeyNameText
 GetAsyncKeyState
+
+// The sign-in task of a portable copy (Task Scheduler)
+ITaskService
+ITaskFolder
+IRegisteredTask
+TaskScheduler
+TASK_CREATION
+TASK_LOGON_TYPE
+SysFreeString

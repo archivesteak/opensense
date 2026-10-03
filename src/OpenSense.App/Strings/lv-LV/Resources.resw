@@ -1990,6 +1990,14 @@ Detalizēta informācija: {1}</value>
     <value>Iziet</value>
     <comment>Menu item: quit OpenSense.</comment>
   </data>
+  <data name="Tray_Hint_Title" xml:space="preserve">
+    <value>OpenSense joprojām darbojas</value>
+    <comment>Title of the Windows notification shown once, the first time closing the window leaves OpenSense in the notification area.</comment>
+  </data>
+  <data name="Tray_Hint_Message" xml:space="preserve">
+    <value>Tā paliek paziņojumu apgabalā. Noklikšķiniet uz ikonas, lai atvērtu logu, vai izejiet no tās izvēlnes.</value>
+    <comment>Body of that notification. Notification area = the Windows system tray; "its menu" is the icon's menu, where Exit is.</comment>
+  </data>
   <data name="GpuClocks_FollowFirmware.Description" xml:space="preserve">
     <value>Aparātprogrammatūras katram režīmam iestatītā virstaktēšana, pieskaitīta tālāk norādītajām nobīdēm.</value>
     <comment>Under "Acer's overclocking": the firmware's own overclock for each mode is added to the user's offsets set below it.</comment>

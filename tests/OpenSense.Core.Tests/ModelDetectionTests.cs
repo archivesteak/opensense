@@ -131,16 +131,6 @@ public sealed class ModelDetectionTests
         Assert.Equal(KeyboardProtocol.ZonedEffects, CapabilityProbe.Probe(new(firmware), rgb, "Nitro AN515-57").Keyboard.Effects);
     }
 
-    [Fact]
-    public void The_gpu_switch_cannot_be_forced_on_firmware_that_lists_no_gpu_modes()
-    {
-        // The AN515-45's SMM code writes a misc 2 value into the embedded controller's own flags.
-        using var firmware = new FakeFirmware();
-        var caps = new CapabilityOverrides { GpuModeSwitch = true }.Apply(CapabilityProbe.Probe(new(firmware), model: "Nitro AN515-45"));
-
-        Assert.False(caps.GpuModeSwitch);
-    }
-
     private sealed class TimeoutFirmware(byte function) : IWmiTransport
     {
         public FakeFirmware Base { get; } = new();

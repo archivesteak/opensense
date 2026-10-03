@@ -63,6 +63,21 @@ public sealed partial class OpenSenseEngine
         Rebuilt?.Invoke(this, rebuilt);
     }
 
+    /// <summary>
+    /// The battery-boost flag was seen on for the first time: it is a real flag, so from now on its 0 holds the
+    /// performance modes back from the start (a constant 0, as on the NL16-71G, never gets here).
+    /// </summary>
+    private void OnBatteryBoostSeen()
+    {
+        if (Runtime.BatteryBoostSeen)
+            return;
+        UpdateRuntime(r => r with { BatteryBoostSeen = true });
+        LogBatteryBoostSeen();
+    }
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "The battery-boost flag was seen on: it holds the performance modes back when off")]
+    private partial void LogBatteryBoostSeen();
+
     [LoggerMessage(Level = LogLevel.Information, Message = "Mode key: {Current} -> {Next} ({Limit})")]
     private partial void LogModeKey(OperatingMode? current, OperatingMode? next, PowerLimit limit);
 

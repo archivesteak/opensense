@@ -41,4 +41,8 @@ public sealed partial class DashboardPage : Page
         asleep ? Strings.Format("Dashboard_AsleepDetail", name) : LoadDetail(load, name);
 
     public static string PowerSource(bool onAc) => Strings.Get(onAc ? "PowerSource_PluggedIn" : "PowerSource_Battery");
+
+    public static int PerformanceColumn(bool cooling) => cooling ? 1 : 0;
+
+    public static int PerformanceSpan(bool cooling) => cooling ? 1 : 2;
 }

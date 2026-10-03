@@ -160,14 +160,14 @@
                 <!-- Then a tile per fan (FanTileTemplate) -->
             </controls:TileGrid>
 
-            <!-- Controls -->
+            <!-- Controls (Performance alone, across the page, where nothing drives the fans) -->
             <Grid ColumnSpacing="16">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Border Style="{StaticResource CardStyle}">
+                <Border Style="{StaticResource CardStyle}" Visibility="{x:Bind Fans.CoolingAvailable, Mode=OneWay}">
                     <StackPanel Spacing="12">
                         <TextBlock x:Uid="Dashboard_Cooling" Style="{StaticResource SubtitleTextBlockStyle}" />
                         <toolkit:Segmented
@@ -200,7 +200,10 @@
                     </StackPanel>
                 </Border>
 
-                <Border Grid.Column="1" Style="{StaticResource CardStyle}">
+                <Border
+                    Grid.Column="{x:Bind local:DashboardPage.PerformanceColumn(Fans.CoolingAvailable), Mode=OneWay}"
+                    Grid.ColumnSpan="{x:Bind local:DashboardPage.PerformanceSpan(Fans.CoolingAvailable), Mode=OneWay}"
+                    Style="{StaticResource CardStyle}">
                     <StackPanel Spacing="12">
                         <TextBlock x:Uid="Dashboard_Performance" Style="{StaticResource SubtitleTextBlockStyle}" />
 

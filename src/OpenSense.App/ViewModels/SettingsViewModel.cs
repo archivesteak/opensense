@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Security;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -17,7 +18,7 @@ namespace OpenSense.App.ViewModels;
 
 /// <summary>App preferences, capability overrides, diagnostics and about.</summary>
 public sealed partial class SettingsViewModel(SettingsService settings, DeviceSession session, NotificationService notifications, NitroSenseKey nitroSenseKey,
-    OpenShortcut openShortcut, BiosSettingsViewModel bios)
+    OpenShortcut openShortcut, BiosSettingsViewModel bios, AppCpuUse appCpu)
     : ObservableObject
 {
     private static readonly string AppLogDirectory =
@@ -176,7 +177,7 @@ public sealed partial class SettingsViewModel(SettingsService settings, DeviceSe
             else
                 AutostartService.Disable();
         }
-        catch (Exception ex) when (ex is UnauthorizedAccessException or SecurityException or IOException)
+        catch (Exception ex) when (ex is UnauthorizedAccessException or SecurityException or IOException or COMException)
         {
             notifications.Show(Strings.Get("Notice_Autostart_Title"), Strings.Format("Notice_AutostartFailed", ex.Message), InfoBarSeverity.Error);
         }
@@ -371,7 +372,7 @@ public sealed partial class SettingsViewModel(SettingsService settings, DeviceSe
     private async Task CopyDiagnosticsAsync()
     {
         var package = new DataPackage();
-        package.SetText(await session.GetDiagnosticsAsync());
+        package.SetText(appCpu.Describe() + await session.GetDiagnosticsAsync());
         Clipboard.SetContent(package);
 
         // Said on the button rather than with a notice.

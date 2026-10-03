@@ -176,6 +176,12 @@ public sealed class ReleasedSettingsTests : IDisposable
         ("0.2.0", "Keyboard.Lighting", "Lighting.Devices.Keyboard"), // settings version 2 keeps lighting per light
     ];
 
+    /// <summary>What today's settings no longer keep, on purpose.</summary>
+    private static readonly string[] Dropped =
+    [
+        "Overrides.CoolBoost", "Overrides.GpuModeSwitch", // overrides only settings.json could set, removed
+    ];
+
     private readonly string _directory = Path.Combine(Path.GetTempPath(), "OpenSense.Tests", Guid.NewGuid().ToString("N"));
 
     public static TheoryData<string, string> Files => new(Directory.GetDirectories(Fixtures)
@@ -199,7 +205,7 @@ public sealed class ReleasedSettingsTests : IDisposable
         Assert.False(File.Exists(path + ".bad"), "The file was taken for a corrupt one.");
         var now = Values(JsonSerializer.SerializeToNode(loaded, loaded.GetType(), SettingsJson.Options));
         var lost = new List<string>();
-        foreach (var (at, value) in Values(JsonNode.Parse(File.ReadAllText(path))).Where(v => v.Key != "Version")) // Upgrade raises it
+        foreach (var (at, value) in Values(JsonNode.Parse(File.ReadAllText(path))).Where(v => v.Key != "Version" && !Dropped.Contains(v.Key))) // Upgrade raises Version
         {
             var place = Moved.Where(m => m.Release == release && at.StartsWith(m.Then + ".", StringComparison.Ordinal))
                 .Select(m => m.Now + at[m.Then.Length..]).FirstOrDefault() ?? at;

@@ -118,11 +118,17 @@ public sealed record DeviceCapabilities(
     /// </summary>
     public IReadOnlyList<OperatingMode> FirmwareOperatingModes { get; init; } = [];
 
-    /// <summary>The firmware answers CoolBoost, whether or not it is offered (never together with operating modes).</summary>
+    /// <summary>
+    /// The firmware has CoolBoost, whether or not it is offered (never together with operating modes): it answers, function
+    /// 7 doesn't say it is the operating mode instead, and the model's reviewed BIOS has something behind it.
+    /// </summary>
     public bool FirmwareCoolBoost { get; init; }
 
-    /// <summary>The model's reviewed BIOS does nothing with WMI CoolBoost, whatever the method answers: no override turns it on.</summary>
-    public bool CoolBoostUnsupported { get; init; }
+    /// <summary>
+    /// The operating modes are <c>APGeAction</c> function 7's (<see cref="AcerProtocol.ActionModes"/>), where its own answer
+    /// says it is the operating mode and misc 0x0A/0x0B list none (the NL16-71G).
+    /// </summary>
+    public bool ActionOperatingModes { get; init; }
 
     /// <summary>
     /// The model's reviewed BIOS has no WMI operating modes and no EC HID interface sets them: no override turns them on.
@@ -131,12 +137,6 @@ public sealed record DeviceCapabilities(
 
     /// <summary>The GPU switch has a third mode, <see cref="GpuMode.Automatic"/> (the BIOS lists it in its answer for misc 9).</summary>
     public bool GpuModeAutomatic { get; init; }
-
-    /// <summary>
-    /// The firmware answers which GPU modes it has (misc 9). Where it doesn't, the switch can't be turned on by an
-    /// override: the AN515-45's SMM code writes a misc 2 value into the embedded controller's own flags.
-    /// </summary>
-    public bool GpuModeSupportAnswered { get; init; }
 
     public KeyboardCapabilities Keyboard { get; init; } = KeyboardCapabilities.None;
 
@@ -191,8 +191,9 @@ public sealed record DeviceCapabilities(
     public bool FanTable { get; init; }
 
     /// <summary>
-    /// The firmware reports whether the battery can help the adapter (<c>GetGamingSysInfo(0x02)</c>); with that off, the
-    /// performance modes wait (see <see cref="Control.PowerLimit.LowBattery"/>).
+    /// The firmware answers whether the battery can help the adapter (<c>GetGamingSysInfo(0x02)</c>, or the EC HID
+    /// interface). With that off the performance modes wait (see <see cref="Control.PowerLimit.LowBattery"/>), once the
+    /// flag has been seen on: the NL16-71G answers a constant 0.
     /// </summary>
     public bool BatteryBoostFlag { get; init; }
 
@@ -224,12 +225,10 @@ public sealed record DeviceCapabilities(
     public bool Has(SensorId sensor) => Sensors.Contains(sensor);
 }
 
-/// <summary>User overrides for detected capabilities (null = use detection).</summary>
+/// <summary>User overrides for detected capabilities, the Settings page's switches (null = use detection).</summary>
 public sealed record CapabilityOverrides
 {
-    public bool? CoolBoost { get; init; }
     public bool? OperatingModes { get; init; }
-    public bool? GpuModeSwitch { get; init; }
 
     /// <summary>The MagForce keys' light on a Sunrex keyboard, whatever the model name says.</summary>
     public bool? MagKey { get; init; }
@@ -258,11 +257,7 @@ public sealed record CapabilityOverrides
         {
             OperatingModes = modes,
             // As NitroSense does: CoolBoost where the firmware has it and operating modes are off.
-            CoolBoost = !caps.CoolBoostUnsupported && (CoolBoost ?? (OperatingModes is null
-                ? caps.CoolBoost
-                : modes.Count == 0 && caps.FirmwareCoolBoost)),
-            GpuModeSwitch = caps.GpuModeSupportAnswered && (GpuModeSwitch ?? caps.GpuModeSwitch),
-            GpuModeAutomatic = caps.GpuModeSupportAnswered && (GpuModeSwitch ?? caps.GpuModeSwitch) && caps.GpuModeAutomatic,
+            CoolBoost = OperatingModes is null ? caps.CoolBoost : modes.Count == 0 && caps.FirmwareCoolBoost,
             Lights = lights,
         };
     }
@@ -294,7 +289,7 @@ public static class CapabilityProbe
         Log($"Model catalog: {catalog.ModelCode ?? "not listed"}; firmware profile: {profile.ModelCode ?? "generic"}");
         Log($"SMBIOS 0xAC gaming interface: {smbios.GamingVersion?.ToString("0.00", CultureInfo.InvariantCulture) ?? "absent"}; records: " +
             string.Join(" ", smbios.GamingRecords.Select(r => $"{r.Id:X2}={r.Value:X}")));
-        Log("SMBIOS 0xAA hotkey functions: " + string.Join(" ", smbios.HotkeyFunctions.Select(r => $"{r.Id:X2}={r.Value:X}")));
+        Log("SMBIOS 0xAA hotkey functions (id/flag=value): " + string.Join(" ", smbios.HotkeyFunctions.Select(r => $"{r.Id:X2}/{r.Flag:X2}={r.Value:X}")));
         EcHidCapabilities? ecHid;
         try
         {
@@ -334,19 +329,27 @@ public static class CapabilityProbe
         // A fan is there when its RPM sensor is (as Acer's software counts them); system fans only report their speed.
         var fans = FanChannel.Known.Where(f => sensors.Contains(f.RpmSensor)).ToList();
 
-        // CoolBoost (APGeAction). NitroSense offers it only on models without operating modes. On the reviewed Nitro V 16s
-        // the method answers without anything behind it (a stub, or a register the EC never reads).
+        // APGeAction function 7 is CoolBoost on some firmware and the operating mode on others (where a CoolBoost or Dust
+        // Defender write would switch the mode); its sub-function 0 says which. Firmware with neither marker keeps the
+        // older rule, a CoolBoost that answers, until a BIOS of its kind is read: older Nitros' answers aren't known.
         var actionClass = device.Transport.IsClassAvailable(ActionClass);
+        var functionRaw = actionClass ? device.Raw(ActionClass, "GetFunction", ActionFunctionQuery) : null;
+        ActionFunction? actionFunction = functionRaw is { } fr && IsOk(fr) ? ActionFunctionKind(fr) : null;
+        Log($"APGeAction function 7 raw={Hex(functionRaw)} ({actionFunction?.ToString() ?? "no answer"})");
+        var modeFunction = actionFunction == ActionFunction.OperatingMode;
+
+        // CoolBoost. NitroSense offers it only on models without operating modes. On the reviewed Nitro V 16s the method
+        // answers without anything behind it (a stub, or a register the EC never reads).
         var coolRaw = actionClass ? device.Raw(ActionClass, "GetFunction", CoolBoostGetInput) : null;
         Log($"APGeAction CoolBoost raw={Hex(coolRaw)}");
-        var coolBoostUnsupported = profile.WmiCoolBoostSupported == false;
+        var coolBoostUnsupported = profile.WmiCoolBoostSupported == false || modeFunction;
         var firmwareCoolBoost = coolRaw is { } c && IsOk(c) && !coolBoostUnsupported;
 
         // Dust Defender (the same function, sub-function 1): every sub-function answers, byte 3 tells.
         var dustRaw = actionClass ? device.Raw(ActionClass, "GetFunction", DustDefenderQuery) : null;
         var dustStatusRaw = actionClass ? device.Raw(ActionClass, "GetFunction", DustDefenderStatusQuery) : null;
         Log($"APGeAction Dust Defender raw={Hex(dustRaw)} status raw={Hex(dustStatusRaw)}");
-        var dustDefender = dustRaw is { } dust && IsOk(dust) && DustDefenderValue(dust);
+        var dustDefender = !modeFunction && dustRaw is { } dust && IsOk(dust) && DustDefenderValue(dust);
 
         // The embedded controller's fan curves (Get/SetGamingFanTable): where the firmware answers the Get, on the models
         // Acer's software sets them on. The AN515-57's firmware answers, but nothing in it reads the value.
@@ -356,9 +359,10 @@ public static class CapabilityProbe
 
         // Operating modes. Firmware may list modes on models where Acer's software never uses them (the AN515-57 lists
         // Quiet/Balanced/Performance/Turbo: its firmware hands them to Intel DTT's CPU profiles and NVIDIA's Dynamic
-        // Boost, not to the power limit registers). Whether they are offered: the reviewed BIOS where it settles it, else
-        // the model catalog, else SMBIOS record 0x0F, else not where the firmware has CoolBoost instead. The user can
-        // still turn them on, except where the reviewed BIOS has none. Only modes the firmware answers are offered.
+        // Boost, not to the power limit registers). Whether they are offered: the reviewed BIOS, or function 7 saying it
+        // is the mode, where either settles it, else the model catalog, else SMBIOS record 0x0F, else not where the
+        // firmware has CoolBoost instead. The user can still turn them on, except where the reviewed BIOS has none. Only
+        // modes the firmware answers are offered.
         var maskRaw = device.Raw(GamingClass, "GetGamingMiscSetting", MiscGetInput(MiscSetting.SupportedOperatingModes));
         var modeRaw = device.Raw(GamingClass, "GetGamingMiscSetting", MiscGetInput(MiscSetting.OperatingMode));
         Log($"misc SupportedOperatingModes raw={Hex(maskRaw)}");
@@ -370,8 +374,19 @@ public static class CapabilityProbe
             firmwareModes = decoded;
         else if (modeRaw is { } cur && IsOk(cur) && Enum.IsDefined((OperatingMode)MiscValue(cur)))
             firmwareModes = DefaultOperatingModes;
+        // Where misc 0x0B has none and function 7 says it is the operating mode (the NL16-71G), its modes are the ones.
+        var actionModes = false;
+        if (firmwareModes.Count == 0 && modeFunction)
+        {
+            var actionModeRaw = device.Raw(ActionClass, "GetFunction", ActionModeQuery);
+            Log($"APGeAction operating mode raw={Hex(actionModeRaw)}");
+            actionModes = actionModeRaw is { } am && IsOk(am) && ActionModeValue(am) is not null;
+            if (actionModes)
+                firmwareModes = ActionModes;
+        }
         var smbiosModes = smbios.Gaming(GamingRecord.OperatingModes);
-        var modesWanted = profile.WmiOperatingModesSupported == true ? true
+        // The firmware's own word that function 7 is the mode settles it, as the reviewed BIOS's does for misc 0x0B.
+        var modesWanted = profile.WmiOperatingModesSupported == true || actionModes ? true
             : catalog.OperatingModes ?? (smbiosModes is { } sm ? sm == 1 : null);
         var modes = modesWanted switch
         {
@@ -381,16 +396,19 @@ public static class CapabilityProbe
         };
         // Where the embedded controller's HID interface sets the mode, its list is the one Acer's software offers.
         if (ecHid is { Modes.Count: > 0 })
+        {
             firmwareModes = modes = ecHid.Modes;
+            actionModes = false;
+        }
         var modesUnsupported = profile.WmiOperatingModesSupported == false && firmwareModes.Count == 0;
 
         // GPU MUX switch.
         var gpuSupportRaw = device.Raw(GamingClass, "GetGamingMiscSetting", MiscGetInput(MiscSetting.GpuModeSupport));
         Log($"misc GpuModeSupport raw={Hex(gpuSupportRaw)}");
         Log($"misc GpuMode raw={Hex(device.Raw(GamingClass, "GetGamingMiscSetting", MiscGetInput(MiscSetting.GpuMode)))}");
-        // A bit per mode: 1 hybrid, 2 discrete only, 4 automatic selection. The BIOSes seen answer 3 or 7.
-        var gpuSupportAnswered = gpuSupportRaw is { } g && IsOk(g);
-        var gpuModes = gpuSupportAnswered ? MiscValue(gpuSupportRaw!.Value) : 0;
+        // A bit per mode: 1 hybrid, 2 discrete only, 4 automatic selection. The BIOSes seen answer 3 or 7. Without an
+        // answer there is no switch: the AN515-45's SMM code writes a misc 2 value into the EC's own flags.
+        var gpuModes = gpuSupportRaw is { } g && IsOk(g) ? MiscValue(g) : 0;
         var gpuSwitch = (gpuModes & 3) == 3;
         var gpuAutomatic = gpuSwitch && (gpuModes & 4) != 0;
 
@@ -432,6 +450,8 @@ public static class CapabilityProbe
         var usbCharging = usbRaw is { } usb && IsOk(usb);
         var boostRaw = device.Raw(GamingClass, "GetGamingSysInfo", BatteryStatusQuery);
         Log($"GetGamingSysInfo(0x02) = {Hex(boostRaw)}");
+        // A flag that answers may still be a constant (the NL16-71G's 0): the control loop lets it hold the modes back
+        // only once it has been seen on.
         var wmiBatteryBoost = boostRaw is { } boost && IsOk(boost);
         var batteryBoostFlag = wmiBatteryBoost || ecHid?.BatteryBoost == true;
 
@@ -465,8 +485,12 @@ public static class CapabilityProbe
         Log($"=> fans: {string.Join(", ", fans.Select(f => f.Controllable ? f.Name : $"{f.Name} (speed only)"))}; Dust Defender: {dustDefender}; " +
             $"fan table: {fanTable}");
         Log($"=> operating modes: {(modes.Count == 0 ? "none" : string.Join(", ", modes))}" +
-            (firmwareModes.Count > 0 && modes.Count == 0 ? $" (firmware lists {string.Join(", ", firmwareModes)}; off by default on this model)" : ""));
-        Log($"=> CoolBoost: {coolBoost}{(coolBoostUnsupported ? " (nothing behind it on this model's BIOS)" : "")}, " +
+            (firmwareModes.Count == 0 ? ""
+                : ecHid is { Modes.Count: > 0 } ? " (EC HID)"
+                : actionModes ? " (APGeAction function 7)"
+                : " (misc 0x0B)") +
+            (firmwareModes.Count > 0 && modes.Count == 0 ? $"; firmware lists {string.Join(", ", firmwareModes)}, off by default on this model" : ""));
+        Log($"=> CoolBoost: {coolBoost}{(modeFunction ? " (function 7 is the operating mode here)" : coolBoostUnsupported ? " (nothing behind it on this model's BIOS)" : "")}, " +
             $"GPU mode switch: {gpuSwitch}{(gpuAutomatic ? " (with automatic selection)" : "")}");
         Log($"=> keyboard: rgb={keyboard.RgbBacklight} zones={keyboard.Zones} effects={string.Join(",", keyboard.Effects)} " +
             $"ledArray={keyboard.LedArrayLength} layout={keyboard.PayloadLayout} " +
@@ -476,7 +500,8 @@ public static class CapabilityProbe
         Log($"=> lights: {(lights.Count == 0 ? "none" : string.Join(", ", lights.Select(l => $"{l.Id} ({l.Zones} zones)")))}" +
             $"; light bars: {(lightBars.Count == 0 ? "none" : string.Join(", ", lightBars.Select(b => $"{b.Id} {b.Zones}")))}");
         Log($"=> battery: charge limit={battery.ChargeLimit} calibration={battery.Calibration}; USB charging when off: {usbCharging}; " +
-            $"battery-boost flag: {(ecHid?.BatteryBoost == true ? "EC HID" : wmiBatteryBoost ? BatteryBoostValue(boostRaw!.Value) ? "on" : "off" : "absent")}");
+            $"battery-boost flag: {(ecHid?.BatteryBoost == true ? "EC HID" : wmiBatteryBoost ? BatteryBoostValue(boostRaw!.Value) ? "on" : "off" : "absent")}" +
+            (batteryBoostFlag ? " (holds the modes back once seen on)" : ""));
         Log(ecHid is null
             ? "=> EC HID: none"
             : $"=> EC HID {ecHid.Version}: modes {(ecHid.Modes.Count == 0 ? "none" : string.Join(", ", ecHid.Modes))}; adapter={ecHid.Adapter}; " +
@@ -489,10 +514,9 @@ public static class CapabilityProbe
         {
             FirmwareOperatingModes = firmwareModes,
             FirmwareCoolBoost = firmwareCoolBoost,
-            CoolBoostUnsupported = coolBoostUnsupported,
+            ActionOperatingModes = actionModes,
             OperatingModesUnsupported = modesUnsupported,
             GpuModeAutomatic = gpuAutomatic,
-            GpuModeSupportAnswered = gpuSupportAnswered,
             Keyboard = keyboard,
             Lights = lights,
             LightBars = lightBars,

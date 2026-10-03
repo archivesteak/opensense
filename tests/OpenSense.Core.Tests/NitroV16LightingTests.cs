@@ -40,7 +40,7 @@ public sealed class NitroV16LightingTests
     public void Unsupported_wmi_controls_stay_disabled_even_with_smbios_rgb_and_overrides(string model)
     {
         var caps = CapabilityProbe.Probe(Device(new LightingFirmware(), model), new(null, null, [new(0x0A, 2), new(0x0F, 1)], []), model);
-        var forced = new CapabilityOverrides { CoolBoost = true, OperatingModes = true }.Apply(caps);
+        var forced = new CapabilityOverrides { OperatingModes = true }.Apply(caps);
 
         Assert.False(caps.Keyboard.RgbBacklight);
         Assert.False(forced.CoolBoost);
@@ -65,12 +65,13 @@ public sealed class NitroV16LightingTests
     [InlineData("ANV16-A31")]
     public void Modes_are_offered_and_the_coolboost_stub_is_not(string model)
     {
-        // Function 7 answers status 0 on these, but nothing acts on it; the modes work.
+        // Function 7 answers status 0 on these, but nothing acts on it; the modes work. CoolBoost doesn't come back when
+        // the user turns them off either.
         var caps = CapabilityProbe.Probe(Device(new LightingFirmware(), model), model: model);
-        var forced = new CapabilityOverrides { CoolBoost = true }.Apply(caps);
+        var modesOff = new CapabilityOverrides { OperatingModes = false }.Apply(caps);
 
         Assert.False(caps.CoolBoost);
-        Assert.False(forced.CoolBoost);
+        Assert.False(modesOff.CoolBoost);
         Assert.NotEmpty(caps.OperatingModes);
     }
 

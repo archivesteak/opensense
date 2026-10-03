@@ -121,6 +121,44 @@ public static class AcerProtocol
 
     public static bool CoolBoostValue(ulong output) => ((output >> 8) & 0xFF) == 1;
 
+    // --- APGeAction function 7: CoolBoost, or the operating mode ---------------------------
+
+    /// <summary>
+    /// Sub-function 0 says what function 7 is, in byte 2 of its answer: 1 where it is CoolBoost (AN515-45/57), 6 where it
+    /// is the operating mode (PHN16-73, NL16-71G); a constant in their code. Stubs answer zeros.
+    /// </summary>
+    public const uint ActionFunctionQuery = 0x0007;
+
+    public static ActionFunction ActionFunctionKind(ulong output) => (byte)(output >> 16) switch
+    {
+        1 => ActionFunction.CoolBoost,
+        6 => ActionFunction.OperatingMode,
+        _ => ActionFunction.Unknown,
+    };
+
+    /// <summary>
+    /// Where function 7 is the operating mode, sub-function 2 answers it in byte 1 (the PHN16-73 the last one set; the
+    /// NL16-71G's ACPI ignores the sub-function), and a set takes it in byte 2.
+    /// </summary>
+    public const uint ActionModeQuery = 0x0207;
+
+    /// <summary>The values there: Silent 2, Normal 0, Performance 3 in Acer's names, and Turbo 4 on the PHN16-73.</summary>
+    private static readonly (OperatingMode Mode, byte Value)[] ActionModeValues =
+        [(OperatingMode.Quiet, 2), (OperatingMode.Balanced, 0), (OperatingMode.Performance, 3), (OperatingMode.Turbo, 4)];
+
+    /// <summary>
+    /// The modes all such firmware has. Nothing there tells whether Turbo is one (the NL16-71G answers a write of it with
+    /// success and does nothing), so it comes only from another source, such as the EC HID interface's list.
+    /// </summary>
+    public static IReadOnlyList<OperatingMode> ActionModes { get; } = [OperatingMode.Quiet, OperatingMode.Balanced, OperatingMode.Performance];
+
+    /// <summary>Null for a mode function 7 has no value for.</summary>
+    public static ulong? ActionModeInput(OperatingMode mode) =>
+        ActionModeValues.Where(m => m.Mode == mode).Select(m => (ulong?)(0x07UL | ((ulong)m.Value << 16))).FirstOrDefault();
+
+    public static OperatingMode? ActionModeValue(ulong output) =>
+        ActionModeValues.Where(m => m.Value == (byte)(output >> 8)).Select(m => (OperatingMode?)m.Mode).FirstOrDefault();
+
     // --- Dust Defender (APGeAction function 7, sub-functions 1 and 3) ------------------------
 
     /// <summary>Answers, in byte 3, whether the model has Dust Defender (AN515-57: 0x10000, no).</summary>

@@ -28,10 +28,13 @@ public sealed record AcerFirmwareProfile
     /// <summary>The reviewed model the name matched; null for the generic profile.</summary>
     public string? ModelCode { get; init; }
 
-    /// <summary>False where <c>APGeAction</c> function 7 answers but nothing acts on it (the Nitro V 16s: a stub, or a register the EC never reads).</summary>
+    /// <summary>
+    /// False where <c>APGeAction</c> function 7 answers but isn't CoolBoost: nothing acts on it on the Nitro V 16s (a stub, or a
+    /// register the EC never reads), and it is the operating mode on the NL16-71G (which its own answer says too).
+    /// </summary>
     public bool? WmiCoolBoostSupported { get; init; }
 
-    /// <summary>False where misc 0x0A/0x0B are refused or do nothing (the modes then go through the EC HID interface).</summary>
+    /// <summary>False where misc 0x0A/0x0B are refused or do nothing (the modes then go through the EC HID interface or function 7).</summary>
     public bool? WmiOperatingModesSupported { get; init; }
 
     /// <summary>
@@ -68,6 +71,7 @@ public sealed record AcerFirmwareProfile
         ["ANV16-41"] = "1.16", ["ANV16-71"] = "1.11", ["ANV16-72"] = "1.50", ["ANV16-I31"] = "1.08",
         ["ANV16-42"] = "1.15", ["ANV16-61"] = "1.15", ["ANV16-A31"] = "1.04", ["ANV16-A71"] = "1.04",
         ["ANV16S-41"] = "1.14", ["ANV16S-61"] = "1.14", ["ANV16S-71"] = "1.06", ["PHN16-73"] = "1.28",
+        ["NL16-71G"] = "1.19",
     };
 
     public static AcerFirmwareProfile For(string? model, string? biosVersion = null)
@@ -79,8 +83,11 @@ public sealed record AcerFirmwareProfile
 
         var revision = biosVersion is null ? null : Regex.Match(biosVersion, @"(?<![\d.])(\d+\.\d+)(?![\d.])").Groups[1].Value;
         var predator = code == "PHN16-73";
-        // Misc 0x0A/0x0B and the keyboard methods are stubs in SMM; the modes go through the EC HID interface.
-        var noWmiModes = code is "ANV16-72" or "ANV16-I31";
+        // The Nitro Lite's whole gaming interface is stubs in SMM but the temperatures; its modes are function 7's, which
+        // says so itself, and its battery-boost flag is a constant 0, which never holds anything back.
+        var lite = code == "NL16-71G";
+        // Misc 0x0A/0x0B and the keyboard methods are stubs in SMM; the modes go through the EC HID interface or function 7.
+        var noWmiModes = lite || code is "ANV16-72" or "ANV16-I31";
         // The record is stored but the EC reads none of it: the 71's keyboard colour follows the operating mode, the
         // KH62 boards' keyboard is the EC's own I2C one.
         var unsupported = noWmiModes || code is "ANV16-71" or "ANV16-42" or "ANV16-61";

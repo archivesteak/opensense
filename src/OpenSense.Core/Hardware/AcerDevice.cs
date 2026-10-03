@@ -133,6 +133,13 @@ public sealed class AcerDevice(IWmiTransport transport)
             SetOperatingMode(mode);
     }
 
+    /// <summary>The mode where it is <c>APGeAction</c> function 7's (<see cref="DeviceCapabilities.ActionOperatingModes"/>).</summary>
+    public OperatingMode? GetActionOperatingMode() =>
+        Get(ActionClass, "GetFunction", ActionModeQuery) is { } output ? ActionModeValue(output) : null;
+
+    public bool SetActionOperatingMode(OperatingMode mode) =>
+        ActionModeInput(mode) is { } input && Set(ActionClass, "SetFunction", input);
+
     public GpuMode? GetGpuMode() =>
         GetMisc(MiscSetting.GpuMode) is { } v && Enum.IsDefined((GpuMode)v) ? (GpuMode)v : null;
 

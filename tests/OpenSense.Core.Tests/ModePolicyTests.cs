@@ -133,8 +133,11 @@ public class PowerLimitControlTests
     public void A_low_battery_on_ac_holds_performance_modes_back_until_it_charges()
     {
         var (service, fw, _, _) = Create(new ControlProfile { OperatingMode = Turbo });
-        fw.BatteryBoost = false;
+        service.Tick();
+        Assert.Equal(Turbo, fw.Mode); // the flag is on: a real one, whose 0 counts from now on
 
+        fw.BatteryBoost = false;
+        service.OnBatteryBoostEvent();
         service.Tick();
         Assert.Equal(Balanced, fw.Mode);
         Assert.Equal(PowerLimit.LowBattery, service.Latest!.PowerLimit);
@@ -145,6 +148,20 @@ public class PowerLimitControlTests
         service.Tick();
         Assert.Equal(Turbo, fw.Mode);
         Assert.Equal(PowerLimit.None, service.Latest.PowerLimit);
+    }
+
+    [Fact]
+    public void After_a_restart_a_flag_seen_on_before_counts_at_once()
+    {
+        var firmware = new FakeFirmware { SupportsModes = true, BatteryBoost = false };
+        var device = new AcerDevice(firmware);
+        var service = new FanControlService(device, CapabilityProbe.Probe(device), new FakeLoad(), new FakePower(),
+            new ControlProfile { OperatingMode = Turbo }, batteryBoostSeen: true);
+
+        service.Tick();
+
+        Assert.Equal(Balanced, firmware.Mode);
+        Assert.Equal(PowerLimit.LowBattery, service.Latest!.PowerLimit);
     }
 
     [Fact]

@@ -14,6 +14,12 @@ public sealed record RuntimeState
 
     /// <summary>The laptop's Mode key has been pressed once, so it has one (see <see cref="DeviceCapabilities.ModeKey"/>).</summary>
     public bool ModeKeySeen { get; init; }
+
+    /// <summary>
+    /// The firmware's battery-boost flag has been seen on once, so its 0 means something: from then on it holds the
+    /// performance modes back on AC from the start (see <see cref="DeviceCapabilities.BatteryBoostFlag"/>).
+    /// </summary>
+    public bool BatteryBoostSeen { get; init; }
 }
 
 /// <summary>What the discrete GPU's driver said about clock offsets when last asked (asking needs the GPU awake).</summary>

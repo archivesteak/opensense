@@ -32,6 +32,13 @@ internal sealed class FakeFirmware : IWmiTransport
     public Dictionary<int, FanBehavior> Behavior { get; } = new() { [0] = FanBehavior.Auto, [3] = FanBehavior.Auto, [4] = FanBehavior.Auto };
     public Dictionary<int, int> Speed { get; } = new();
 
+    /// <summary>
+    /// Answers APGeAction function 7 as the NL16-71G's ACPI does: the operating mode (0, 2 or 3) whatever the sub-function,
+    /// in Performance (3) as after a boot; other values are taken with success and change nothing.
+    /// </summary>
+    public bool SupportsActionModes { get; set; }
+    public byte ActionMode { get; set; } = 3;
+
     /// <summary>Has Dust Defender (APGeAction function 7, sub-functions 1 and 3).</summary>
     public bool SupportsDustDefender { get; set; }
     public bool DustDefenderRunning { get; set; }
@@ -144,6 +151,12 @@ internal sealed class FakeFirmware : IWmiTransport
                 return 0;
             case "GetGamingFanBehavior":
                 return Behavior.Where(b => (input & (1UL << b.Key)) != 0).Aggregate(0UL, (value, b) => value | ((ulong)b.Value << (2 * b.Key))) << 8;
+            case "GetFunction" when SupportsActionModes && (input & 0xFF) == 0x07:
+                return ((ulong)ActionMode << 8) | (6UL << 16);
+            case "SetFunction" when SupportsActionModes && (input & 0xFF) == 0x07:
+                if ((byte)(input >> 16) is 0 or 2 or 3)
+                    ActionMode = (byte)(input >> 16);
+                return 0;
             case "GetFunction" when input == AcerProtocol.DustDefenderQuery:
                 return (SupportsDustDefender ? 1UL << 24 : 0) | (1UL << 16);
             case "GetFunction" when input == AcerProtocol.DustDefenderStatusQuery:
@@ -162,8 +175,8 @@ internal sealed class FakeFirmware : IWmiTransport
             case "SetGamingMiscSetting" when SupportsModes && (input & 0xFF) == 0x0B:
                 Mode = (OperatingMode)(input >> 8);
                 return 0;
-            case "GetFunction" when SupportsCoolBoost && input == AcerProtocol.CoolBoostGetInput:
-                return (CoolBoost ? 1UL : 0UL) << 8;
+            case "GetFunction" when SupportsCoolBoost && input is AcerProtocol.CoolBoostGetInput or AcerProtocol.ActionFunctionQuery:
+                return ((CoolBoost ? 1UL : 0UL) << 8) | (1UL << 16); // byte 2 = 1: the AN515-45/57's mark for CoolBoost
             case "SetFunction" when (input & 0xFFFF) == 0x07:
                 CoolBoost = ((input >> 16) & 1) == 1;
                 return 0;

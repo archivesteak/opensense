@@ -12,6 +12,10 @@ namespace OpenSense.Core.Settings;
 public sealed record UiSettings
 {
     public bool CloseToTray { get; init; } = true;
+
+    /// <summary>The notification that says closing the window leaves OpenSense in the notification area has been shown once.</summary>
+    public bool TrayHintShown { get; init; }
+
     public bool UseFahrenheit { get; init; }
 
     /// <summary>The laptop's NitroSense key opens OpenSense, as it opened NitroSense.</summary>

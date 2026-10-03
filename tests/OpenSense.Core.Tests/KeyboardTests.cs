@@ -133,6 +133,21 @@ public class SmbiosTests
         Assert.True(smbios.HasHotkeyFunction(0x84));
     }
 
+    [Fact]
+    public void Hotkey_records_count_whatever_their_flag()
+    {
+        // The BIOS turns every hotkey record's flag to 1 while its setup's Fn keys are media keys (the AN515-45's
+        // default); nothing in the firmware reads the flag, and the backlight auto-off is still there.
+        var mediaKeys = (byte[])An515Tables.Clone();
+        for (var i = 14; i + 4 <= mediaKeys[1]; i += 4)
+            mediaKeys[i + 1] = 1;
+
+        var smbios = AcerSmbios.Parse(mediaKeys);
+
+        Assert.Contains(new AcerSmbiosRecord(0x84, 8, 1), smbios.HotkeyFunctions);
+        Assert.Equal((byte)0x84, smbios.BacklightHotkey);
+    }
+
     [Theory]
     [InlineData(2, 0x55, 8)]
     [InlineData(2, 0x56, 12)]

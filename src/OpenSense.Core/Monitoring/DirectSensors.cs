@@ -73,6 +73,9 @@ public sealed class DirectSensors : IDisposable
 
     public double? ReadGpu() => Read(Gpu, status => GpuStatus = status);
 
+    /// <summary>What the log should hear about a reading the CPU's sensor discarded since the last call, or null.</summary>
+    public string? TakeCpuGlitchNote() => Cpu?.TakeGlitchNote();
+
     private static double? Read(ITemperatureSensor? sensor, Action<SensorStatus> status)
     {
         if (sensor is null)

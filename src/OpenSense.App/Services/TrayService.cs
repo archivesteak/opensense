@@ -21,6 +21,7 @@ public sealed class TrayService(MonitorViewModel monitor, FanControlViewModel fa
 
     private TaskbarIcon? _icon;
     private readonly List<RadioMenuFlyoutItem> _modeItems = [];
+    private MenuFlyoutSubItem? _fanMenu;
     private MenuFlyoutSubItem? _operatingModeMenu;
 
     public void Initialize()
@@ -40,7 +41,8 @@ public sealed class TrayService(MonitorViewModel monitor, FanControlViewModel fa
         fans.PropertyChanged += (_, e) =>
         {
             if (e.PropertyName is nameof(FanControlViewModel.ModeIndex) or nameof(FanControlViewModel.OperatingModeIndex)
-                or nameof(FanControlViewModel.OperatingModesAvailable) or nameof(FanControlViewModel.OperatingModes))
+                or nameof(FanControlViewModel.OperatingModesAvailable) or nameof(FanControlViewModel.OperatingModes)
+                or nameof(FanControlViewModel.CoolingAvailable))
                 SyncMenu();
         };
     }
@@ -62,16 +64,16 @@ public sealed class TrayService(MonitorViewModel monitor, FanControlViewModel fa
         menu.Items.Add(Item(Strings.Get("Tray_Open"), () => App.Current.ShowMainWindow()));
         menu.Items.Add(new MenuFlyoutSeparator());
 
-        var fanMenu = new MenuFlyoutSubItem { Text = Strings.Get("Tray_FanMode") };
+        _fanMenu = new MenuFlyoutSubItem { Text = Strings.Get("Tray_FanMode") };
         for (var i = 0; i < FanControlViewModel.ModeNames.Count; i++)
         {
             var index = i;
             var item = new RadioMenuFlyoutItem { Text = FanControlViewModel.ModeNames[i], GroupName = "fanmode" };
             item.Click += (_, _) => fans.ModeIndex = index;
             _modeItems.Add(item);
-            fanMenu.Items.Add(item);
+            _fanMenu.Items.Add(item);
         }
-        menu.Items.Add(fanMenu);
+        menu.Items.Add(_fanMenu);
 
         _operatingModeMenu = new MenuFlyoutSubItem { Text = Strings.Get("Tray_OperatingMode") };
         menu.Items.Add(_operatingModeMenu);
@@ -92,6 +94,8 @@ public sealed class TrayService(MonitorViewModel monitor, FanControlViewModel fa
 
     private void SyncMenu()
     {
+        if (_fanMenu is not null)
+            _fanMenu.Visibility = fans.CoolingAvailable ? Visibility.Visible : Visibility.Collapsed;
         for (var i = 0; i < _modeItems.Count; i++)
             _modeItems[i].IsChecked = i == fans.ModeIndex;
 
@@ -116,8 +120,10 @@ public sealed class TrayService(MonitorViewModel monitor, FanControlViewModel fa
 
         var cpu = Names.Chip(FanChip.Cpu);
         var gpu = Names.Chip(FanChip.Gpu);
-        var header = $"OpenSense · {Names.FanMode(t.EffectiveMode)}\n{cpu} {monitor.CpuTemperatureText}  {gpu} {monitor.GpuTemperatureText}";
-        var tooltip = $"{header}\n{string.Join("  ", monitor.Fans.Select(f => $"{f.ShortName} {f.RpmText}"))}";
+        // The fan mode and the fans' speeds only where there are fans.
+        var title = fans.CoolingAvailable ? $"OpenSense · {Names.FanMode(t.EffectiveMode)}" : "OpenSense";
+        var header = $"{title}\n{cpu} {monitor.CpuTemperatureText}  {gpu} {monitor.GpuTemperatureText}";
+        var tooltip = monitor.Fans.Count == 0 ? header : $"{header}\n{string.Join("  ", monitor.Fans.Select(f => $"{f.ShortName} {f.RpmText}"))}";
         if (tooltip.Length > ToolTipLimit)
         {
             // Many fans: their speeds alone, in the order the window lists them.

@@ -40,8 +40,10 @@ public partial class App : Application
     {
         _host = BuildHost();
         await _host.StartAsync();
+        AutostartService.Refresh(); // a portable copy's sign-in task follows it when it was moved
 
         _window = Services.GetRequiredService<MainWindow>();
+        Services.GetRequiredService<AppCpuUse>().Watch(_window.AppWindow);
         Services.GetRequiredService<TrayService>().Initialize();
         Services.GetRequiredService<ToastService>().Initialize();
         _instance.Activated += () => _window.DispatcherQueue.TryEnqueue(ShowMainWindow);
@@ -79,6 +81,7 @@ public partial class App : Application
         builder.Services.AddSingleton<NotificationService>();
         builder.Services.AddSingleton<TrayService>();
         builder.Services.AddSingleton<ToastService>();
+        builder.Services.AddSingleton<AppCpuUse>();
         builder.Services.AddSingleton<NavigationService>();
         builder.Services.AddSingleton<NitroSenseKey>();
         builder.Services.AddSingleton<OpenShortcut>();

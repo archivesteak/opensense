@@ -18,6 +18,12 @@ public interface ITemperatureSensor : IDisposable
     /// hasn't been asked yet). Kept up to date by <see cref="Read"/>.
     /// </summary>
     int? Limit => null;
+
+    /// <summary>
+    /// What the log should hear about a reading the chip returned that cannot be a temperature (the caller discards it), or
+    /// null when there is nothing new. Each note is handed out once, on the thread that reads.
+    /// </summary>
+    string? TakeGlitchNote() => null;
 }
 
 /// <summary>
@@ -131,8 +137,18 @@ internal sealed class AmdTctlSensor : ITemperatureSensor
 {
     private const ulong ThmTconCurTmp = 0x00059800;
 
+    // Readings that cannot be temperatures are counted and told to the log (TakeGlitchNote): the first ones in full, then
+    // one in GlitchTellEvery, and always a raw value not seen before.
+    private const int GlitchesTold = 20;
+    private const int GlitchTellEvery = 50;
+    private const int GlitchValuesKept = 16;
+
     private readonly PawnIOModule _module;
     private readonly Mutex _pciLock;
+    private readonly HashSet<uint> _glitchValues = [];
+    private long _reads, _glitches;
+    private long? _lastGlitchAt;
+    private string? _glitchNote;
 
     private AmdTctlSensor(PawnIOModule module, Mutex pciLock)
     {
@@ -187,13 +203,12 @@ internal sealed class AmdTctlSensor : ITemperatureSensor
 
         try
         {
-            if (_module.Call("ioctl_read_smn", ThmTconCurTmp) is not { } value)
+            if (ReadRegister() is not { } raw)
                 return null;
-            var raw = (uint)value;
-            var celsius = (raw >> 21) * 0.125;
-            // Range select (bit 19), or both TJ select bits (17:16): the value carries a 49 °C offset.
-            if ((raw & (1u << 19)) != 0 || (raw & (3u << 16)) == 3u << 16)
-                celsius -= 49;
+            _reads++;
+            var celsius = Decode(raw);
+            if (celsius > 0 && SensorReadings.Temperature(celsius) is null)
+                NoteGlitch(raw);
             return celsius > 0 ? celsius : null;
         }
         finally
@@ -201,6 +216,48 @@ internal sealed class AmdTctlSensor : ITemperatureSensor
             _pciLock.ReleaseMutex();
         }
     }
+
+    public string? TakeGlitchNote()
+    {
+        var note = _glitchNote;
+        _glitchNote = null;
+        return note;
+    }
+
+    private uint? ReadRegister() => _module.Call("ioctl_read_smn", ThmTconCurTmp) is { } value ? (uint)value : null;
+
+    /// <summary>The register's temperature: eighths of a degree in bits 31:21.</summary>
+    internal static double Decode(uint raw)
+    {
+        var celsius = (raw >> 21) * 0.125;
+        // Range select (bit 19), or both TJ select bits (17:16): the value carries a 49 °C offset.
+        if ((raw & (1u << 19)) != 0 || (raw & (3u << 16)) == 3u << 16)
+            celsius -= 49;
+        return celsius;
+    }
+
+    /// <summary>
+    /// A bus read that gave back something that cannot be a temperature, e.g. all ones: 0xFFFFFFFF decodes to 206.9 °C.
+    /// Called with the PCI lock held, from <see cref="Read"/>.
+    /// </summary>
+    private void NoteGlitch(uint raw)
+    {
+        _glitches++;
+        var now = Environment.TickCount64;
+        var after = _lastGlitchAt is { } last ? ((now - last) / 1000).ToString(CultureInfo.InvariantCulture) : null;
+        _lastGlitchAt = now;
+        var unseen = _glitchValues.Count < GlitchValuesKept && _glitchValues.Add(raw);
+        if (_glitches > GlitchesTold && !unseen && _glitches % GlitchTellEvery != 0)
+            return;
+
+        // Asked again at once, is it still wrong? That tells a passing clash on the bus from a chip that isn't answering.
+        var again = ReadRegister() is { } second ? Describe(second) : "no answer";
+        var since = after is null ? "" : $", {after} s after the previous one";
+        _glitchNote = string.Create(CultureInfo.InvariantCulture,
+            $"Discarded {Describe(raw)}; read again at once: {again}; {_glitches} discarded of {_reads} readings{since}");
+    }
+
+    private static string Describe(uint raw) => string.Create(CultureInfo.InvariantCulture, $"0x{raw:X8} ({Decode(raw):0.#} °C)");
 
     public void Dispose()
     {

@@ -38,6 +38,9 @@ public sealed partial class ShellViewModel(
     [ObservableProperty]
     public partial bool LightingAvailable { get; set; }
 
+    [ObservableProperty]
+    public partial bool FansAvailable { get; set; }
+
     public bool IsReady => State == SessionState.Ready;
 
     public bool IsStarting => State == SessionState.Starting;
@@ -121,6 +124,7 @@ public sealed partial class ShellViewModel(
         bios.Attach();
         settings.Attach();
         LightingAvailable = lighting.Available;
+        FansAvailable = fans.CoolingAvailable;
     }
 
     [RelayCommand]

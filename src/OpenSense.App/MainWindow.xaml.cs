@@ -26,13 +26,16 @@ public sealed partial class MainWindow : Window
     };
 
     private readonly SettingsService _settings;
+    private readonly ToastService _toasts;
 
     public MainWindow(ShellViewModel shell, UpdateViewModel updates, SettingsService settings, SettingsViewModel settingsPage, SystemViewModel system,
-        BatteryViewModel battery, StartupViewModel startup, GpuClocksViewModel gpuClocks, BiosSettingsViewModel bios, NavigationService navigation)
+        BatteryViewModel battery, StartupViewModel startup, GpuClocksViewModel gpuClocks, BiosSettingsViewModel bios, NavigationService navigation,
+        ToastService toasts)
     {
         Shell = shell;
         Updates = updates;
         _settings = settings;
+        _toasts = toasts;
         InitializeComponent();
 
         RootGrid.Language = AppLanguage.Current;
@@ -119,6 +122,12 @@ public sealed partial class MainWindow : Window
         {
             args.Cancel = true;
             AppWindow.Hide();
+            // Once, so that a window that vanishes isn't a surprise.
+            if (!_settings.Current.Ui.TrayHintShown)
+            {
+                _settings.Update(s => s with { Ui = s.Ui with { TrayHintShown = true } });
+                _toasts.Show(Strings.Get("Tray_Hint_Title"), Strings.Get("Tray_Hint_Message"), "trayhint");
+            }
             return;
         }
         args.Cancel = true;

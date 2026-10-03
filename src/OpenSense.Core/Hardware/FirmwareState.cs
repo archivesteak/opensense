@@ -25,7 +25,7 @@ public sealed record FirmwareState(
     public static FirmwareState Read(AcerDevice device, DeviceCapabilities caps) => new(
         caps.ControllableFans.ToDictionary(f => f.Id, f => device.GetFanBehavior(f)),
         caps.ControllableFans.ToDictionary(f => f.Id, f => device.GetFanBoost(f)),
-        caps.HasOperatingModes ? ReadOperatingMode(device, caps) : null,
+        caps.HasOperatingModes ? IOperatingModeChannel.For(device, caps).Read() : null,
         caps.CoolBoost ? device.GetCoolBoost() : null,
         caps.GpuModeSwitch ? device.GetGpuMode() : null)
     {
@@ -34,11 +34,6 @@ public sealed record FirmwareState(
         BootAnimation = caps.BootAnimation ? device.GetBootAnimation() : null,
         FanTable = caps.FanTable ? device.GetFanTable() : null,
     };
-
-    private static OperatingMode? ReadOperatingMode(AcerDevice device, DeviceCapabilities caps) =>
-        device.EcHid is { } hid && caps.EcHid is { Modes.Count: > 0 } ec
-            ? new EcHidOperatingModeChannel(device, hid, ec.Modes).Read()
-            : device.GetOperatingMode();
 
     /// <summary>
     /// Adopts readable firmware settings. Unreadable custom fan boosts retain the configured profile
