@@ -382,6 +382,10 @@
   <data name="FanMode_Custom_Description" xml:space="preserve">
     <value>מהירות שמתווספת למהירות של הקושחה לכל מאוורר, קבועה או לפי עקומה. 0% משאיר את המאוורר לקושחה, 100% הוא מהירות מלאה.</value>
   </data>
+  <data name="FanMode_Custom_DescriptionFixed" xml:space="preserve">
+    <value>המהירות של כל מאוורר עצמו, קבועה או לפי עקומה, ומהירות מלאה כשהשבב שלו מתקרב לטמפרטורה שבה הוא מתחיל להאט את עצמו. 0% משאיר את המאוורר לקושחה.</value>
+    <comment>Fan mode description on laptops whose firmware takes each fan's speed as it is (not added on top of Auto). "Throttle" = a chip slowing itself down because it is too hot.</comment>
+  </data>
   <data name="FanBehavior_Auto" xml:space="preserve">
     <value>אוטומטי (קושחה)</value>
     <comment>What a fan is doing right now: controlled by the laptop's firmware.</comment>
@@ -561,9 +565,17 @@
     <value>מוסיף מהירות למהירות של הקושחה ככל שהשבבים מתחממים, ומגיע למהירות מלאה בטמפרטורה שבה המעבד מתחיל להאט את עצמו.</value>
     <comment>What the on/off setting does. "Throttle" = the processor slowing itself down because it is too hot.</comment>
   </data>
+  <data name="Fans_AutoBoostFixed" xml:space="preserve">
+    <value>מפעיל את המאווררים במהירות מלאה כשהשבבים מתקרבים לטמפרטורה שבה הם מתחילים להאט את עצמם.</value>
+    <comment>What the Anti-throttle on/off setting does on laptops where it can only switch the fans to full speed. "Throttle" = a chip slowing itself down because it is too hot.</comment>
+  </data>
   <data name="Fans_CoolBoost.Description" xml:space="preserve">
     <value>מעלה את מהירויות המאווררים של הקושחה עצמה, שבהן משתמש מצב "אוטומטי" ושאליהן מצב "מותאם אישית" מוסיף.</value>
     <comment>Under the header "CoolBoost" (an Acer feature name). Auto, Custom = FanMode_Auto, FanMode_Custom.</comment>
+  </data>
+  <data name="Fans_CoolBoostFixed" xml:space="preserve">
+    <value>מעלה את מהירויות המאווררים של הקושחה עצמה, שבהן משתמש מצב "אוטומטי".</value>
+    <comment>Under the header "CoolBoost" (an Acer feature name), on laptops where Custom sets each fan's speed itself. Auto = FanMode_Auto.</comment>
   </data>
   <data name="Fans_FanTable.Header" xml:space="preserve">
     <value>עקומת המאווררים</value>
@@ -591,6 +603,10 @@
   <data name="Fans_Boost.Header" xml:space="preserve">
     <value>מהירות נוספת</value>
     <comment>Slider label: speed added on top of the firmware's, from 0% (firmware only) to 100% (full speed).</comment>
+  </data>
+  <data name="Fans_SpeedFixed" xml:space="preserve">
+    <value>מהירות</value>
+    <comment>Slider label: a fan's own speed in Custom mode, from 0% (left to the firmware) to 100% (full speed). Short.</comment>
   </data>
   <data name="Fans_Presets.Content" xml:space="preserve">
     <value>הגדרות קבועות מראש</value>

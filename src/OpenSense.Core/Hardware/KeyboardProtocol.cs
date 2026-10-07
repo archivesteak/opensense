@@ -178,7 +178,8 @@ public static class KeyboardProtocol
 
     /// <summary>
     /// The brightness goes out as the nearest of <see cref="BrightnessLevels"/>: the firmware keeps four levels and off,
-    /// and turns any other value into 50 % (AN515-57 V1.17).
+    /// and turns any other value into 50 % (AN515-57 V1.17). Bit 3 of bytes 2–3 (the <c>0x80000</c>) is an on flag the
+    /// firmware keeps apart from the timeout; NitroSense always sets it too.
     /// </summary>
     public static ulong BacklightTimeoutInput(byte hotkey, int brightnessPercent, int timeoutSeconds) =>
         0x02UL | ((ulong)hotkey << 8) | 0x80000UL | ((ulong)(byte)NearestLevel(brightnessPercent) << 32) | ((ulong)(byte)timeoutSeconds << 40);

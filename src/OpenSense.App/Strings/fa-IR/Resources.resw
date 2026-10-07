@@ -382,6 +382,10 @@
   <data name="FanMode_Custom_Description" xml:space="preserve">
     <value>سرعتی که برای هر فن به سرعت سفت‌افزار افزوده می‌شود، ثابت یا مطابق یک منحنی. 0% فن را به سفت‌افزار می‌سپارد و 100% حداکثر سرعت است.</value>
   </data>
+  <data name="FanMode_Custom_DescriptionFixed" xml:space="preserve">
+    <value>سرعت خود هر فن، ثابت یا مطابق یک منحنی، و حداکثر سرعت وقتی تراشهٔ آن به دمایی نزدیک شود که در آن شروع به کاهش کارایی می‌کند. 0% فن را به سفت‌افزار می‌سپارد.</value>
+    <comment>Fan mode description on laptops whose firmware takes each fan's speed as it is (not added on top of Auto). "Throttle" = a chip slowing itself down because it is too hot.</comment>
+  </data>
   <data name="FanBehavior_Auto" xml:space="preserve">
     <value>خودکار (سفت‌افزار)</value>
     <comment>What a fan is doing right now: controlled by the laptop's firmware.</comment>
@@ -561,9 +565,17 @@
     <value>با داغ شدن تراشه‌ها به سرعت سفت‌افزار می‌افزاید و در دمایی که پردازنده شروع به کاهش کارایی می‌کند به حداکثر سرعت می‌رسد.</value>
     <comment>What the on/off setting does. "Throttle" = the processor slowing itself down because it is too hot.</comment>
   </data>
+  <data name="Fans_AutoBoostFixed" xml:space="preserve">
+    <value>وقتی تراشه‌ها به دمایی نزدیک شوند که در آن شروع به کاهش کارایی می‌کنند، فن‌ها را با حداکثر سرعت می‌چرخاند.</value>
+    <comment>What the Anti-throttle on/off setting does on laptops where it can only switch the fans to full speed. "Throttle" = a chip slowing itself down because it is too hot.</comment>
+  </data>
   <data name="Fans_CoolBoost.Description" xml:space="preserve">
     <value>سرعت‌های خود سفت‌افزار برای فن‌ها را بالا می‌برد؛ حالت «خودکار» از آن‌ها استفاده می‌کند و حالت «سفارشی» به آن‌ها می‌افزاید.</value>
     <comment>Under the header "CoolBoost" (an Acer feature name). Auto, Custom = FanMode_Auto, FanMode_Custom.</comment>
+  </data>
+  <data name="Fans_CoolBoostFixed" xml:space="preserve">
+    <value>سرعت‌های خود سفت‌افزار برای فن‌ها را بالا می‌برد که حالت «خودکار» از آن‌ها استفاده می‌کند.</value>
+    <comment>Under the header "CoolBoost" (an Acer feature name), on laptops where Custom sets each fan's speed itself. Auto = FanMode_Auto.</comment>
   </data>
   <data name="Fans_FanTable.Header" xml:space="preserve">
     <value>منحنی فن‌ها</value>
@@ -591,6 +603,10 @@
   <data name="Fans_Boost.Header" xml:space="preserve">
     <value>سرعت افزوده</value>
     <comment>Slider label: speed added on top of the firmware's, from 0% (firmware only) to 100% (full speed).</comment>
+  </data>
+  <data name="Fans_SpeedFixed" xml:space="preserve">
+    <value>سرعت</value>
+    <comment>Slider label: a fan's own speed in Custom mode, from 0% (left to the firmware) to 100% (full speed). Short.</comment>
   </data>
   <data name="Fans_Presets.Content" xml:space="preserve">
     <value>پیش‌تنظیم‌ها</value>

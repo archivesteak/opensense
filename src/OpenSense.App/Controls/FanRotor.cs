@@ -5,6 +5,7 @@ using Microsoft.UI.Composition;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Hosting;
+using OpenSense.App.Services;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.ViewManagement;
@@ -14,7 +15,7 @@ namespace OpenSense.App.Controls;
 /// <summary>
 /// A blower fan whose impeller spins at a speed derived from the RPM and smears as it speeds up,
 /// inside a ring that shows the boost OpenSense adds on top of the firmware's speed. The spin runs on the
-/// compositor thread; the canvases only redraw when the speed or boost changes.
+/// compositor thread; the canvases only redraw when the speed or boost changes. Nothing moves while the window is hidden.
 /// </summary>
 public sealed partial class FanRotor : CanvasElement
 {
@@ -56,11 +57,12 @@ public sealed partial class FanRotor : CanvasElement
 
         Loaded += (_, _) =>
         {
-            _animate = new UISettings().AnimationsEnabled;
-            SpinTo(TurnsPerSecond(Rpm), force: true);
+            App.Current.WindowVisibilityChanged += UpdateAnimation;
+            UpdateAnimation();
         };
         Unloaded += (_, _) =>
         {
+            App.Current.WindowVisibilityChanged -= UpdateAnimation;
             _generation++;
             _visual.StopAnimation(SpinProperty);
             _fromSpeed = _toSpeed = 0;
@@ -90,6 +92,22 @@ public sealed partial class FanRotor : CanvasElement
 
     private static double TurnsPerSecond(int rpm) => rpm <= 0 ? 0 : Math.Max(MinTurnsPerSecond, rpm / 60.0 * VisualScale);
 
+    /// <summary>
+    /// Animates while Windows' animation effects are on and the window is on screen: hidden in the notification area (or
+    /// never opened), a spin would keep the compositor working for nothing.
+    /// </summary>
+    private void UpdateAnimation()
+    {
+        _animate = new UISettings().AnimationsEnabled && App.Current.IsWindowVisible;
+        SpinTo(TurnsPerSecond(Rpm), force: true);
+        if (!_animate)
+        {
+            _boostTimer.Stop();
+            _shownBoost = Boost;
+            Invalidate();
+        }
+    }
+
     private void OnRpmChanged()
     {
         var speed = TurnsPerSecond(Rpm);
@@ -106,7 +124,11 @@ public sealed partial class FanRotor : CanvasElement
     {
         if (!_animate)
         {
-            _visual.StopAnimation(SpinProperty);
+            if (force)
+            {
+                _generation++; // a ramp under way must not go on to cruise
+                _visual.StopAnimation(SpinProperty);
+            }
             _fromSpeed = _toSpeed = target;
             return;
         }
@@ -137,6 +159,7 @@ public sealed partial class FanRotor : CanvasElement
         ramp.InsertExpressionKeyFrame(1, FormattableString.Invariant($"Mod(this.StartingValue, 360) + {degrees:0.###}"), easing);
         ramp.Duration = RampLength;
 
+        UiActivity.Count(UiWork.FanAnimations); // temporary diagnostics
         var batch = compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
         _visual.StartAnimation(SpinProperty, ramp);
         batch.End();
@@ -190,7 +213,8 @@ public sealed partial class FanRotor : CanvasElement
 
     private void StepBoost()
     {
-        var t = Math.Min(1, (DateTime.UtcNow - _boostStart) / BoostAnimationLength);
+        UiActivity.Count(UiWork.BoostFrames); // temporary diagnostics
+        var t =Math.Min(1, (DateTime.UtcNow - _boostStart) / BoostAnimationLength);
         _shownBoost = _boostFrom + (_boostTo - _boostFrom) * (1 - Math.Pow(1 - t, 3));
         if (t >= 1)
             _boostTimer.Stop();

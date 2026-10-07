@@ -382,6 +382,10 @@
   <data name="FanMode_Custom_Description" xml:space="preserve">
     <value>Скорость, добавляемая к скорости встроенного ПО для каждого вентилятора, фиксированная или по кривой. При 0 % вентилятором управляет встроенное ПО, при 100 % он работает на максимальной скорости.</value>
   </data>
+  <data name="FanMode_Custom_DescriptionFixed" xml:space="preserve">
+    <value>Собственная скорость каждого вентилятора, фиксированная или по кривой, и максимальная скорость, как только его чип приближается к температуре, на которой начинает сбрасывать частоты. При 0 % вентилятором управляет встроенное ПО.</value>
+    <comment>Fan mode description on laptops whose firmware takes each fan's speed as it is (not added on top of Auto). "Throttle" = a chip slowing itself down because it is too hot.</comment>
+  </data>
   <data name="FanBehavior_Auto" xml:space="preserve">
     <value>Авто (встроенное ПО)</value>
     <comment>What a fan is doing right now: controlled by the laptop's firmware.</comment>
@@ -561,9 +565,17 @@
     <value>Добавляет скорость к скорости встроенного ПО по мере нагрева чипов и выходит на максимальную скорость при температуре, на которой процессор начинает сбрасывать частоты.</value>
     <comment>What the on/off setting does. "Throttle" = the processor slowing itself down because it is too hot.</comment>
   </data>
+  <data name="Fans_AutoBoostFixed" xml:space="preserve">
+    <value>Включает вентиляторы на максимальную скорость, когда чипы приближаются к температуре, на которой начинают сбрасывать частоты.</value>
+    <comment>What the Anti-throttle on/off setting does on laptops where it can only switch the fans to full speed. "Throttle" = a chip slowing itself down because it is too hot.</comment>
+  </data>
   <data name="Fans_CoolBoost.Description" xml:space="preserve">
     <value>Повышает собственные скорости вентиляторов встроенного ПО, которые использует режим «Авто» и к которым режим «Вручную» добавляет скорость.</value>
     <comment>Under the header "CoolBoost" (an Acer feature name). Auto, Custom = FanMode_Auto, FanMode_Custom.</comment>
+  </data>
+  <data name="Fans_CoolBoostFixed" xml:space="preserve">
+    <value>Повышает собственные скорости вентиляторов встроенного ПО, которые использует режим «Авто».</value>
+    <comment>Under the header "CoolBoost" (an Acer feature name), on laptops where Custom sets each fan's speed itself. Auto = FanMode_Auto.</comment>
   </data>
   <data name="Fans_FanTable.Header" xml:space="preserve">
     <value>Кривая вентиляторов</value>
@@ -591,6 +603,10 @@
   <data name="Fans_Boost.Header" xml:space="preserve">
     <value>Добавочная скорость</value>
     <comment>Slider label: speed added on top of the firmware's, from 0% (firmware only) to 100% (full speed).</comment>
+  </data>
+  <data name="Fans_SpeedFixed" xml:space="preserve">
+    <value>Скорость</value>
+    <comment>Slider label: a fan's own speed in Custom mode, from 0% (left to the firmware) to 100% (full speed). Short.</comment>
   </data>
   <data name="Fans_Presets.Content" xml:space="preserve">
     <value>Предустановки</value>

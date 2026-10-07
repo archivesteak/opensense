@@ -132,7 +132,10 @@ public sealed class TrayService(MonitorViewModel monitor, FanControlViewModel fa
                 tooltip = tooltip[..ToolTipLimit];
         }
         if (_icon.ToolTipText != tooltip)
+        {
+            UiActivity.Count(UiWork.TooltipUpdates); // temporary diagnostics
             _icon.ToolTipText = tooltip;
+        }
     }
 
     public void Dispose()

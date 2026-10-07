@@ -382,6 +382,10 @@
   <data name="FanMode_Custom_Description" xml:space="preserve">
     <value>Otáčky přidané k otáčkám firmwaru pro každý ventilátor, pevně nebo podle křivky. 0 % nechá ventilátor na firmwaru, 100 % jsou plné otáčky.</value>
   </data>
+  <data name="FanMode_Custom_DescriptionFixed" xml:space="preserve">
+    <value>Vlastní otáčky každého ventilátoru, pevně nebo podle křivky, a plné otáčky, jakmile se jeho čip přiblíží teplotě, kdy začíná snižovat výkon. 0 % nechá ventilátor na firmwaru.</value>
+    <comment>Fan mode description on laptops whose firmware takes each fan's speed as it is (not added on top of Auto). "Throttle" = a chip slowing itself down because it is too hot.</comment>
+  </data>
   <data name="FanBehavior_Auto" xml:space="preserve">
     <value>Auto (firmware)</value>
     <comment>What a fan is doing right now: controlled by the laptop's firmware.</comment>
@@ -561,9 +565,17 @@
     <value>Přidává otáčky k otáčkám firmwaru, jak se čipy zahřívají, a plných otáček dosáhne při teplotě, kdy procesor začíná snižovat výkon.</value>
     <comment>What the on/off setting does. "Throttle" = the processor slowing itself down because it is too hot.</comment>
   </data>
+  <data name="Fans_AutoBoostFixed" xml:space="preserve">
+    <value>Roztočí ventilátory na plné otáčky, když se čipy přiblíží teplotě, kdy začínají snižovat výkon.</value>
+    <comment>What the Anti-throttle on/off setting does on laptops where it can only switch the fans to full speed. "Throttle" = a chip slowing itself down because it is too hot.</comment>
+  </data>
   <data name="Fans_CoolBoost.Description" xml:space="preserve">
     <value>Zvyšuje vlastní otáčky ventilátorů řízené firmwarem, které používá režim Auto a ke kterým režim Ruční přidává.</value>
     <comment>Under the header "CoolBoost" (an Acer feature name). Auto, Custom = FanMode_Auto, FanMode_Custom.</comment>
+  </data>
+  <data name="Fans_CoolBoostFixed" xml:space="preserve">
+    <value>Zvyšuje vlastní otáčky ventilátorů řízené firmwarem, které používá režim Auto.</value>
+    <comment>Under the header "CoolBoost" (an Acer feature name), on laptops where Custom sets each fan's speed itself. Auto = FanMode_Auto.</comment>
   </data>
   <data name="Fans_FanTable.Header" xml:space="preserve">
     <value>Křivka ventilátorů</value>
@@ -591,6 +603,10 @@
   <data name="Fans_Boost.Header" xml:space="preserve">
     <value>Přidané otáčky</value>
     <comment>Slider label: speed added on top of the firmware's, from 0% (firmware only) to 100% (full speed).</comment>
+  </data>
+  <data name="Fans_SpeedFixed" xml:space="preserve">
+    <value>Otáčky</value>
+    <comment>Slider label: a fan's own speed in Custom mode, from 0% (left to the firmware) to 100% (full speed). Short.</comment>
   </data>
   <data name="Fans_Presets.Content" xml:space="preserve">
     <value>Předvolby</value>

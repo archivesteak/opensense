@@ -382,6 +382,10 @@
   <data name="FanMode_Custom_Description" xml:space="preserve">
     <value>Tốc độ cộng thêm vào tốc độ của chương trình cơ sở cho từng quạt, cố định hoặc theo đường cong. 0% để quạt cho chương trình cơ sở, 100% là hết tốc độ.</value>
   </data>
+  <data name="FanMode_Custom_DescriptionFixed" xml:space="preserve">
+    <value>Tốc độ riêng của từng quạt, cố định hoặc theo đường cong, và hết tốc độ khi chip của quạt gần tới nhiệt độ mà nó bắt đầu tự giảm hiệu năng. 0% để quạt cho chương trình cơ sở.</value>
+    <comment>Fan mode description on laptops whose firmware takes each fan's speed as it is (not added on top of Auto). "Throttle" = a chip slowing itself down because it is too hot.</comment>
+  </data>
   <data name="FanBehavior_Auto" xml:space="preserve">
     <value>Tự động (chương trình cơ sở)</value>
     <comment>What a fan is doing right now: controlled by the laptop's firmware.</comment>
@@ -561,9 +565,17 @@
     <value>Cộng thêm tốc độ vào tốc độ của chương trình cơ sở khi chip nóng lên, và đạt hết tốc độ ở nhiệt độ mà bộ xử lý bắt đầu tự giảm hiệu năng.</value>
     <comment>What the on/off setting does. "Throttle" = the processor slowing itself down because it is too hot.</comment>
   </data>
+  <data name="Fans_AutoBoostFixed" xml:space="preserve">
+    <value>Cho quạt chạy hết tốc độ khi chip gần tới nhiệt độ mà chúng bắt đầu tự giảm hiệu năng.</value>
+    <comment>What the Anti-throttle on/off setting does on laptops where it can only switch the fans to full speed. "Throttle" = a chip slowing itself down because it is too hot.</comment>
+  </data>
   <data name="Fans_CoolBoost.Description" xml:space="preserve">
     <value>Tăng tốc độ quạt riêng của chương trình cơ sở, vốn được chế độ Tự động sử dụng và được chế độ Tùy chỉnh cộng thêm.</value>
     <comment>Under the header "CoolBoost" (an Acer feature name). Auto, Custom = FanMode_Auto, FanMode_Custom.</comment>
+  </data>
+  <data name="Fans_CoolBoostFixed" xml:space="preserve">
+    <value>Tăng tốc độ quạt riêng của chương trình cơ sở, vốn được chế độ Tự động sử dụng.</value>
+    <comment>Under the header "CoolBoost" (an Acer feature name), on laptops where Custom sets each fan's speed itself. Auto = FanMode_Auto.</comment>
   </data>
   <data name="Fans_FanTable.Header" xml:space="preserve">
     <value>Đường cong quạt</value>
@@ -591,6 +603,10 @@
   <data name="Fans_Boost.Header" xml:space="preserve">
     <value>Tốc độ cộng thêm</value>
     <comment>Slider label: speed added on top of the firmware's, from 0% (firmware only) to 100% (full speed).</comment>
+  </data>
+  <data name="Fans_SpeedFixed" xml:space="preserve">
+    <value>Tốc độ</value>
+    <comment>Slider label: a fan's own speed in Custom mode, from 0% (left to the firmware) to 100% (full speed). Short.</comment>
   </data>
   <data name="Fans_Presets.Content" xml:space="preserve">
     <value>Cài đặt sẵn</value>

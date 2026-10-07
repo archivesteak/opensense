@@ -11,7 +11,8 @@ namespace OpenSense.Core.Control;
 /// Owns the firmware: polls sensors, applies the user's <see cref="ControlProfile"/>, runs fan curves
 /// and enforces safety rules. All WMI traffic happens on its single worker thread.
 /// Fan speeds are boosts on top of the firmware's Auto (see <see cref="AcerProtocol.FanSpeedInput"/>), sent in the
-/// firmware's steps of <see cref="AcerProtocol.FanSpeedStep"/> %.
+/// firmware's steps of <see cref="AcerProtocol.FanSpeedStep"/> %. Where they are the fans' own speeds instead
+/// (<see cref="DeviceCapabilities.FixedFanSpeeds"/>), a fan goes to full speed wherever Anti-throttle would boost it.
 /// </summary>
 public sealed class FanControlService : IDeviceDispatcher, IDisposable
 {
@@ -45,6 +46,9 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
     private readonly TaskCompletionSource _completion = new(TaskCreationOptions.RunContinuationsAsynchronously);
     private bool _started;
     private readonly Dictionary<FanId, CurveFollower> _followers = new();
+
+    // Anti-throttle's curve in Custom, where speeds are the fans' own: past its start a fan runs at full speed.
+    private readonly Dictionary<FanId, CurveFollower> _limitFollowers = new();
     private readonly List<DateTime> _reapplyAt = [];
     private readonly object _gate = new();
 
@@ -115,7 +119,10 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
         _clock = clock ?? (() => DateTime.UtcNow);
         _controllable = capabilities.ControllableFans;
         foreach (var fan in _controllable)
+        {
             _followers[fan.Id] = new CurveFollower();
+            _limitFollowers[fan.Id] = new CurveFollower();
+        }
         if (_direct.GpuClocks is { } gpuClocks)
         {
             _gpuClocks = new GpuClockController(gpuClocks, knownGpuClocks);
@@ -295,6 +302,7 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
 
     private void Run()
     {
+        ProcessUsage.NameThisThread("control loop");
         Exception? failure = null;
         try
         {
@@ -329,6 +337,7 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
             }
             finally
             {
+                ProcessUsage.ForgetThisThread();
                 FinishStopping(failure);
             }
         }
@@ -610,7 +619,7 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
         // Curves step every CurveInterval, and at once when the profile or the mode changes.
         if (effective != _curveMode)
         {
-            foreach (var follower in _followers.Values)
+            foreach (var follower in _followers.Values.Concat(_limitFollowers.Values))
                 follower.Reset();
         }
         var curveStep = now - _lastCurveStep >= CurveInterval * 0.9 || effective != _curveMode || !ReferenceEquals(profile, _curveProfile);
@@ -624,18 +633,37 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
             _curveMode = effective;
         }
         var assert = reapply || (now - _lastAssert >= ReassertInterval && targets.Values.Any(t => t.Behavior == FanBehavior.Custom));
+        var behaviorDue = _appliedBehavior is null || assert || targets.Any(t => _appliedBehavior.GetValueOrDefault(t.Key) != t.Value.Behavior);
 
-        if (_appliedBehavior is null || assert || targets.Any(t => _appliedBehavior.GetValueOrDefault(t.Key) != t.Value.Behavior))
+        // Where speeds are the fans' own, Custom runs a fan at the last speed set (none after a start: stopped), and setting
+        // one acts at once: the speeds go first.
+        var fixedSpeeds = Capabilities.FixedFanSpeeds;
+        if (fixedSpeeds)
+            ApplyFanSpeeds(targets, behaviorDue);
+
+        if (behaviorDue)
         {
             if (_controllable.Count > 0 &&
                 _device.SetFanBehavior(_controllable.Select(f => (f, targets[f.Id].Behavior)).ToArray()))
             {
                 _appliedBehavior = targets.ToDictionary(t => t.Key, t => t.Value.Behavior);
-                _appliedPercent.Clear();
+                if (!fixedSpeeds)
+                    _appliedPercent.Clear();
                 _touchedFans = true;
             }
         }
 
+        if (!fixedSpeeds)
+            ApplyFanSpeeds(targets, assert);
+
+        if (assert)
+            _lastAssert = now;
+        return (effective, fanLock, boosting);
+    }
+
+    /// <summary>Sends each fan on Custom its speed, when it changed or <paramref name="force"/>.</summary>
+    private void ApplyFanSpeeds(Dictionary<FanId, (FanBehavior Behavior, int? Percent)> targets, bool force)
+    {
         foreach (var fan in _controllable)
         {
             var (behavior, percent) = targets[fan.Id];
@@ -644,15 +672,11 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
                 _appliedPercent.Remove(fan.Id);
                 continue;
             }
-            if (!assert && _appliedPercent.TryGetValue(fan.Id, out var sent) && sent == pct)
+            if (!force && _appliedPercent.TryGetValue(fan.Id, out var sent) && sent == pct)
                 continue;
             if (_device.SetFanSpeed(fan, pct))
                 _appliedPercent[fan.Id] = pct;
         }
-
-        if (assert)
-            _lastAssert = now;
-        return (effective, fanLock, boosting);
     }
 
     private (FanBehavior Behavior, int? Percent) Target(FanChannel fan, FanControlMode mode, bool boosting, ControlProfile profile, bool curveStep)
@@ -680,13 +704,19 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
         // The firmware only boosts in tens: send the nearest one it does, not one it would round down.
         percent = AcerProtocol.NearestFanSpeed(percent);
 
+        // Where speeds are the fans' own, a part of full speed could be slower than Auto: Anti-throttle goes to full speed
+        // instead, and so does Custom once the chip is as hot as Anti-throttle would boost at.
+        if (Capabilities.FixedFanSpeeds && (mode == FanControlMode.Auto ? percent
+                : AcerProtocol.NearestFanSpeed(FollowCurve(fan, AntiThrottle.For(fan.Chip, _limits), curveStep, _limitFollowers[fan.Id]))) > 0)
+            return (FanBehavior.Max, null);
+
         // A boost of 0 % is exactly Auto: leave the fan on the firmware's own behaviour then.
         return percent > 0 ? (FanBehavior.Custom, percent) : (FanBehavior.Auto, null);
     }
 
-    private int FollowCurve(FanChannel fan, FanCurve curve, bool curveStep)
+    private int FollowCurve(FanChannel fan, FanCurve curve, bool curveStep, CurveFollower? follower = null)
     {
-        var follower = _followers[fan.Id];
+        follower ??= _followers[fan.Id];
         if (!curveStep && follower.Current is { } held)
             return held;
         var temperature = _curveTemps.TryGetValue(fan.Id, out var sum) && sum.Count > 0 ? sum.Sum / sum.Count : CurveTemperature(fan.Chip);

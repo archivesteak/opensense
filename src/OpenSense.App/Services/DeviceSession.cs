@@ -73,6 +73,7 @@ public sealed partial class DeviceSession : IDisposable
         _loggers = loggers;
         _log = loggers.CreateLogger<DeviceSession>();
         _reconcileTimer = new Timer(_ => _ = ReconcileAsync(), null, Timeout.Infinite, Timeout.Infinite);
+        Changed += _ => UiActivity.Count(UiWork.SessionChanges); // temporary diagnostics
     }
 
     public SessionState State { get; private set; } = SessionState.Starting;

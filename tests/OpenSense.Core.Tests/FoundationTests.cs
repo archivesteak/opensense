@@ -76,7 +76,8 @@ public class FirmwareEventTests
         Assert.Equal(FirmwareEventKind.AcAdapter, unplugged.Kind);
         Assert.Equal(0, unplugged.Value);
         Assert.Equal(1, plugged.Value);
-        Assert.Equal(FirmwareEventKind.ModeKey, FirmwareEvent.Decode([0x07, 0x04])!.Kind);
+        Assert.True(FirmwareEvent.Decode([0x07, 0x04, 0x01])!.ModeKeyPressed);
+        Assert.False(FirmwareEvent.Decode([0x07, 0x01, 0x02])!.ModeKeyPressed); // the PH717-71's lighting profile key
         Assert.Null(FirmwareEvent.Decode([]));
         Assert.Null(FirmwareEvent.Decode(null));
     }

@@ -26,7 +26,7 @@ public sealed partial class OpenSenseEngine
         text.AppendLine(CultureInfo.InvariantCulture, $"Model: {_deviceName ?? "unknown"}");
         text.AppendLine(CultureInfo.InvariantCulture, $"BIOS: {_biosVersion ?? "unknown"}");
         var profile = AcerFirmwareProfile.For(_deviceName, _biosVersion);
-        text.AppendLine(CultureInfo.InvariantCulture, $"Firmware profile: {profile.ModelCode ?? "generic"}; mode reset={profile.RequiresBalancedModeReset}; reliable fan boost readback={profile.FanBoostReadbackReliable}");
+        text.AppendLine(CultureInfo.InvariantCulture, $"Firmware profile: {profile.ModelCode ?? "generic"}; mode reset={profile.RequiresBalancedModeReset}; reliable fan boost readback={profile.FanBoostReadbackReliable}; fixed fan speeds={profile.FixedFanSpeeds}");
         if (_capabilities.BatteryBoostFlag)
             text.AppendLine(CultureInfo.InvariantCulture, $"Battery-boost flag seen on: {Runtime.BatteryBoostSeen}");
         if (_firmware is { } firmware && firmware.FanBehaviors.Any(f => f.Value == FanBehavior.Custom && firmware.FanBoosts.GetValueOrDefault(f.Key) is null))
@@ -49,8 +49,11 @@ public sealed partial class OpenSenseEngine
                 text.AppendLine(CultureInfo.InvariantCulture, $"  {time:HH:mm:ss} {note}");
         }
         text.AppendLine(GpuClockDiagnostics());
-        var (cpu, running) = CpuUse.OfThisProcess();
-        text.AppendLine(CultureInfo.InvariantCulture, $"Engine process ({Path.GetFileName(Environment.ProcessPath)}): {CpuUse.Describe(cpu, running)}");
+        // Temporary, to find out what costs CPU in the background on some laptops.
+        var usage = ProcessUsage.Take();
+        text.AppendLine(CultureInfo.InvariantCulture, $"Engine process ({Path.GetFileName(Environment.ProcessPath)}), since it started:");
+        Usage.Between(null, usage).Describe(text, "  ");
+        text.AppendLine(CultureInfo.InvariantCulture, $"  now: {usage.State}");
         text.Append(_controller?.Timings.Describe() ?? "Control loop: not running" + Environment.NewLine);
         text.AppendLine("HID devices:");
         _sessionGate.Wait(cancellationToken);
@@ -95,15 +98,10 @@ public sealed partial class OpenSenseEngine
             NotifyPowerSourceChanged();
         if (firmwareEvent.DustDefenderRunning is { } dustDefender)
             _controller?.OnDustDefenderEvent(dustDefender);
-        switch (firmwareEvent.Kind)
-        {
-            case FirmwareEventKind.ModeKey:
-                ObserveWork(OnModeKeyAsync(), "mode key");
-                break;
-            case FirmwareEventKind.BatteryBoost:
-                _controller?.OnBatteryBoostEvent();
-                break;
-        }
+        if (firmwareEvent.ModeKeyPressed)
+            ObserveWork(OnModeKeyAsync(), "mode key");
+        if (firmwareEvent.Kind == FirmwareEventKind.BatteryBoost)
+            _controller?.OnBatteryBoostEvent();
         _powerService?.OnFirmwareEvent(firmwareEvent);
     }
 

@@ -46,9 +46,14 @@ public sealed class AcerDevice(IWmiTransport transport)
 
     // --- fan table -------------------------------------------------------------------------
 
-    /// <summary>The raw <c>GetGamingFanTable</c> answer (it takes no input), or null when the firmware lacks it.</summary>
+    /// <summary>
+    /// The raw <c>GetGamingFanTable</c> answer, or null when the firmware lacks it. Most BIOSes declare it without an
+    /// input; the PH717-71's and PH517-61's declare one (which their SMM code ignores), and a call without it failed on
+    /// a PH717-71 whose SMM getter can't fail.
+    /// </summary>
     public ulong? GetFanTableRaw() =>
-        Call(GamingClass, "GetGamingFanTable") is { } outputs && outputs.Value("gmOutput") is { } output ? output : null;
+        (Call(GamingClass, "GetGamingFanTable") ?? Call(GamingClass, "GetGamingFanTable", new WmiArgument("gmInput", 0u)))
+            is { } outputs && outputs.Value("gmOutput") is { } output ? output : null;
 
     /// <summary>The embedded controller's fan curve; null when none has been picked, or on an error.</summary>
     public FanTable? GetFanTable() => GetFanTableRaw() is { } output && IsOk(output) ? FanTableValue(output) : null;

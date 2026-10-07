@@ -145,7 +145,8 @@ public sealed class HidLights : IDisposable
     /// The embedded controller's capabilities with these lights: the lighting interface's keyboard (or a per-key USB
     /// keyboard) replaces the embedded controller's keyboard light (colours or brightness alone), any other light of the
     /// lighting interface its light bars and logo, as in Acer's software. A USB keyboard takes each of its settings it
-    /// answers: the Windows key, and backlight auto-off unless the embedded controller's HID interface keeps that.
+    /// answers: the Windows key, and backlight auto-off unless the embedded controller's HID interface keeps that. The
+    /// keyboard brightness that went out with the firmware's auto-off goes with it.
     /// </summary>
     public DeviceCapabilities Merge(DeviceCapabilities ec)
     {
@@ -161,7 +162,13 @@ public sealed class HidLights : IDisposable
         if (KeyboardWindowsKey)
             keyboard = keyboard with { WindowsKey = true, UsbWindowsKey = true };
         if (KeyboardAutoOff && !keyboard.EcHidBacklightTimeout)
+        {
             keyboard = keyboard with { UsbBacklightTimeout = true, BacklightHotkey = null };
+            // A brightness set with the auto-off function has nothing left to go through, and the USB keyboard keeps its
+            // own backlight (the PH717-71's BIOS ignores that brightness anyway): every change would be refused.
+            if (!keyboard.WmiBacklightBrightness)
+                lights.RemoveAll(l => l.Backend == LightingBackendKind.EcKeyboardBrightness);
+        }
         return ec with
         {
             Lights = lights,

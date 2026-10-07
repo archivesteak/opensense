@@ -20,7 +20,10 @@ public enum FirmwareEventKind : byte
     /// <summary>Value 1: Dust Defender started or ended (see <see cref="FirmwareEvent.DustDefenderRunning"/>).</summary>
     Thermal = 6,
 
-    /// <summary>The Mode (Turbo) key; the firmware leaves switching the mode to software.</summary>
+    /// <summary>
+    /// The Mode (Turbo) key when the value is 4 or 5 (see <see cref="FirmwareEvent.ModeKeyPressed"/>); the firmware leaves
+    /// switching the mode to software. Other keyboard keys use other values (PH717-71: 1 the lighting profile key, 2 others).
+    /// </summary>
     ModeKey = 7,
 
     /// <summary>Power source changed: 0 unplugged, 1 adapter, 4 another source class on newer firmware. Preserve the raw code.</summary>
@@ -50,6 +53,12 @@ public sealed record FirmwareEvent(FirmwareEventKind Kind, byte Value, byte[] De
     /// Null for any other event.
     /// </summary>
     public bool? DustDefenderRunning => Kind == FirmwareEventKind.Thermal && Value == 1 && Detail.Length > 2 ? Detail[2] == 1 : null;
+
+    /// <summary>
+    /// The Mode or Turbo key: event 7 with value 4 or 5 (the AN515-57 sends <c>07 04 01</c>, the PH717-71's Turbo key
+    /// <c>07 04 01</c> too). The PH717-71 sends <c>07 01</c> for its lighting profile key and <c>07 02</c> for other keys.
+    /// </summary>
+    public bool ModeKeyPressed => Kind == FirmwareEventKind.ModeKey && Value is 4 or 5;
 
     public override string ToString() => $"{Kind} {Convert.ToHexString(Detail)}";
 }

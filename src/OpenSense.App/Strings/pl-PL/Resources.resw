@@ -382,6 +382,10 @@
   <data name="FanMode_Custom_Description" xml:space="preserve">
     <value>Prędkość dodawana do prędkości oprogramowania układowego dla każdego wentylatora, stała lub według krzywej. 0% zostawia wentylator oprogramowaniu układowemu, 100% to pełna prędkość.</value>
   </data>
+  <data name="FanMode_Custom_DescriptionFixed" xml:space="preserve">
+    <value>Własna prędkość każdego wentylatora, stała lub według krzywej, i pełna prędkość, gdy jego układ zbliża się do temperatury, w której zaczyna dławić wydajność. 0% zostawia wentylator oprogramowaniu układowemu.</value>
+    <comment>Fan mode description on laptops whose firmware takes each fan's speed as it is (not added on top of Auto). "Throttle" = a chip slowing itself down because it is too hot.</comment>
+  </data>
   <data name="FanBehavior_Auto" xml:space="preserve">
     <value>Auto (oprogramowanie układowe)</value>
     <comment>What a fan is doing right now: controlled by the laptop's firmware.</comment>
@@ -561,9 +565,17 @@
     <value>Dodaje prędkość do prędkości oprogramowania układowego, gdy układy się nagrzewają, i osiąga pełną prędkość w temperaturze, w której procesor zaczyna dławić wydajność.</value>
     <comment>What the on/off setting does. "Throttle" = the processor slowing itself down because it is too hot.</comment>
   </data>
+  <data name="Fans_AutoBoostFixed" xml:space="preserve">
+    <value>Uruchamia wentylatory z pełną prędkością, gdy układy zbliżają się do temperatury, w której zaczynają dławić wydajność.</value>
+    <comment>What the Anti-throttle on/off setting does on laptops where it can only switch the fans to full speed. "Throttle" = a chip slowing itself down because it is too hot.</comment>
+  </data>
   <data name="Fans_CoolBoost.Description" xml:space="preserve">
     <value>Podnosi własne prędkości wentylatorów oprogramowania układowego, z których korzysta tryb Auto i do których tryb Ręczny dodaje prędkość.</value>
     <comment>Under the header "CoolBoost" (an Acer feature name). Auto, Custom = FanMode_Auto, FanMode_Custom.</comment>
+  </data>
+  <data name="Fans_CoolBoostFixed" xml:space="preserve">
+    <value>Podnosi własne prędkości wentylatorów oprogramowania układowego, z których korzysta tryb Auto.</value>
+    <comment>Under the header "CoolBoost" (an Acer feature name), on laptops where Custom sets each fan's speed itself. Auto = FanMode_Auto.</comment>
   </data>
   <data name="Fans_FanTable.Header" xml:space="preserve">
     <value>Krzywa wentylatorów</value>
@@ -591,6 +603,10 @@
   <data name="Fans_Boost.Header" xml:space="preserve">
     <value>Dodatkowa prędkość</value>
     <comment>Slider label: speed added on top of the firmware's, from 0% (firmware only) to 100% (full speed).</comment>
+  </data>
+  <data name="Fans_SpeedFixed" xml:space="preserve">
+    <value>Prędkość</value>
+    <comment>Slider label: a fan's own speed in Custom mode, from 0% (left to the firmware) to 100% (full speed). Short.</comment>
   </data>
   <data name="Fans_Presets.Content" xml:space="preserve">
     <value>Ustawienia wstępne</value>

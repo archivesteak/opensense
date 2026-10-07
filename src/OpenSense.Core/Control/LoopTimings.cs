@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Text;
+using OpenSense.Core.Monitoring;
 
 namespace OpenSense.Core.Control;
 
@@ -43,6 +44,19 @@ internal sealed class LoopTimings
     private readonly DateTime _since = DateTime.Now;
     private readonly Totals[] _parts = new Totals[Enum.GetValues<LoopPart>().Length];
     private Totals _steps;
+
+    // The WMI processes when the loop started, for what they have used since.
+    private Wmi? _wmi;
+    private bool _wmiRead;
+
+    /// <summary>
+    /// Acer's firmware methods run in a WMI provider host (WmiPrvSE.exe), called through the WMI service: their CPU is what
+    /// the firmware reads cost outside OpenSense's own processes (with any other program's use of WMI).
+    /// </summary>
+    private sealed record Wmi(DateTime At, Dictionary<(int Id, DateTime Started), TimeSpan> Hosts, Dictionary<(int Id, DateTime Started), TimeSpan> Service)
+    {
+        public static Wmi Now() => new(DateTime.UtcNow, ProcessUsage.ProcessesNamed("WmiPrvSE"), ProcessUsage.ServiceProcess("Winmgmt"));
+    }
 
     private struct Totals
     {
@@ -95,8 +109,17 @@ internal sealed class LoopTimings
     public void AddStep(long start)
     {
         var ticks = Stopwatch.GetTimestamp() - start;
+        Wmi? wmi = null;
+        if (!_wmiRead)
+        {
+            _wmiRead = true;
+            wmi = Wmi.Now();
+        }
         lock (_gate)
+        {
             _steps.Add(ticks);
+            _wmi ??= wmi;
+        }
     }
 
     /// <summary>A table of the parts: how often each runs per step, how long it takes, and how much of a step it is.</summary>
@@ -104,10 +127,12 @@ internal sealed class LoopTimings
     {
         Totals steps;
         Totals[] parts;
+        Wmi? wmi;
         lock (_gate)
         {
             steps = _steps;
             parts = [.. _parts];
+            wmi = _wmi;
         }
         var text = new StringBuilder();
         var perStep = Math.Max(1, steps.Count);
@@ -122,7 +147,26 @@ internal sealed class LoopTimings
             text.AppendLine(CultureInfo.InvariantCulture,
                 $"  {Name(part),-16}{(double)totals.Count / perStep,11:0.00}{Milliseconds(totals.Ticks) / totals.Count,10:0.00}{Milliseconds(totals.Longest),10:0.00}{Milliseconds(totals.Ticks) / perStep,9:0.00}");
         }
+        if (wmi is not null)
+        {
+            var now = Wmi.Now();
+            text.AppendLine(CultureInfo.InvariantCulture,
+                $"WMI since {wmi.At.ToLocalTime():HH:mm:ss} (Acer's firmware methods run in a provider host, called through the WMI service; other programs' use of WMI counts too):");
+            text.AppendLine(CultureInfo.InvariantCulture, $"  provider hosts (WmiPrvSE.exe): {Since(wmi.Hosts, now.Hosts, wmi.At, now.At)}");
+            text.AppendLine(CultureInfo.InvariantCulture, $"  WMI service: {Since(wmi.Service, now.Service, wmi.At, now.At)}");
+        }
         return text.ToString();
+    }
+
+    /// <summary>What the processes used from <paramref name="at"/> to <paramref name="until"/>.</summary>
+    private static string Since(Dictionary<(int Id, DateTime Started), TimeSpan> then, Dictionary<(int Id, DateTime Started), TimeSpan> now,
+        DateTime at, DateTime until)
+    {
+        if (then.Count == 0 && now.Count == 0)
+            return "not readable";
+        var (cpu, running, ended) = ProcessUsage.Since(then, at, now);
+        return string.Create(CultureInfo.InvariantCulture,
+            $"{ProcessUsage.Describe(cpu, until - at)} ({running} running{(ended > 0 ? $", {ended} ended since, their time is missing" : "")})");
     }
 
     private static string Name(LoopPart part) => part switch

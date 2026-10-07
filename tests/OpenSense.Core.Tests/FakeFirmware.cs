@@ -83,6 +83,9 @@ internal sealed class FakeFirmware : IWmiTransport
     /// <summary>The <c>GetGamingProfile(0)</c> answer, or none (an error).</summary>
     public ulong? Profile { get; set; }
 
+    /// <summary>The backlight auto-off function <c>0x84</c> answers (brightness and timeout 0).</summary>
+    public bool SupportsBacklightHotkey { get; set; }
+
     public List<(string Method, Dictionary<string, object> Inputs)> NamedCalls { get; } = [];
 
     public WmiOutputs InvokeNamed(string className, string method, IReadOnlyList<WmiArgument> inputs)
@@ -190,6 +193,8 @@ internal sealed class FakeFirmware : IWmiTransport
                 return 0;
             case "GetGamingProfile" when Profile is { } profile:
                 return profile;
+            case "GetFunction" when SupportsBacklightHotkey && input == KeyboardProtocol.BacklightTimeoutQuery(0x84):
+                return 0x80000;
             default:
                 return 1;
         }

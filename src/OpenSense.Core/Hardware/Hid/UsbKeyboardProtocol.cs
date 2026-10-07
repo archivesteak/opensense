@@ -165,7 +165,7 @@ public static class UsbKeyboardProtocol
         [0x0ABA] = KeyboardLayout.Ansi, [0x0ABB] = KeyboardLayout.Iso, [0x0ABC] = KeyboardLayout.Jis, [0x0ABD] = null,
         [0x6A0C] = KeyboardLayout.Ansi, [0x6A0D] = KeyboardLayout.Iso, [0x6666] = KeyboardLayout.Ansi,
         [0x9A1A] = KeyboardLayout.Ansi, [0x9A1B] = KeyboardLayout.Iso,
-        [0x7CB0] = KeyboardLayout.Ansi, [0x7CB1] = KeyboardLayout.Iso, [0x9CBB] = KeyboardLayout.Iso,
+        [0x7CB0] = KeyboardLayout.Ansi, [0x7CB1] = KeyboardLayout.Iso, [0x9CBA] = KeyboardLayout.Ansi, [0x9CBB] = KeyboardLayout.Iso,
         [0x0B9D] = KeyboardLayout.Ansi, [0x0B9E] = KeyboardLayout.Iso, [0x0B9F] = KeyboardLayout.Ansi, [0x0BA0] = KeyboardLayout.Iso,
     };
 

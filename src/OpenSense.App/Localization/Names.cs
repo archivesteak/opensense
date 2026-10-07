@@ -30,10 +30,11 @@ public static class Names
         _ => Strings.Get("FanMode_Auto"),
     };
 
-    public static string FanModeDescription(FanControlMode mode) => mode switch
+    /// <param name="fixedSpeeds">Custom speeds are the fans' own, not added to Auto (<see cref="Core.Hardware.DeviceCapabilities.FixedFanSpeeds"/>).</param>
+    public static string FanModeDescription(FanControlMode mode, bool fixedSpeeds = false) => mode switch
     {
         FanControlMode.Max => Strings.Get("FanMode_Max_Description"),
-        FanControlMode.Custom => Strings.Get("FanMode_Custom_Description"),
+        FanControlMode.Custom => Strings.Get(fixedSpeeds ? "FanMode_Custom_DescriptionFixed" : "FanMode_Custom_Description"),
         _ => Strings.Get("FanMode_Auto_Description"),
     };
 

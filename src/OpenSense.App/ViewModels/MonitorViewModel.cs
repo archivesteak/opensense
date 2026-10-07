@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Dispatching;
 using OpenSense.App.Helpers;
@@ -158,6 +159,7 @@ public sealed partial class MonitorViewModel : ObservableObject
 
     private void Apply(Telemetry t)
     {
+        var started = Stopwatch.GetTimestamp(); // temporary diagnostics
         Latest = t;
         OnAcPower = t.OnAcPower;
         GpuAsleep = t.GpuAsleep;
@@ -181,6 +183,8 @@ public sealed partial class MonitorViewModel : ObservableObject
             fan.BehaviorText = reading?.Behavior switch
             {
                 FanBehavior.Max => Strings.Get("FanBehavior_Max"),
+                // Where Custom speeds are the fans' own, nothing is added to Auto.
+                FanBehavior.Custom when reading.BoostPercent is { } speed && _session.Capabilities.FixedFanSpeeds => Units.Percent(speed),
                 FanBehavior.Custom when reading.BoostPercent is { } boost => Strings.Format("FanBehavior_Boost", Units.Percent(boost)),
                 _ => Strings.Get("FanBehavior_Auto"),
             };
@@ -188,5 +192,6 @@ public sealed partial class MonitorViewModel : ObservableObject
         }
 
         Revision++;
+        UiActivity.CountTelemetry(started);
     }
 }

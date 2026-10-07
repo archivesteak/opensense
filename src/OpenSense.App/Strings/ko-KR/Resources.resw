@@ -382,6 +382,10 @@
   <data name="FanMode_Custom_Description" xml:space="preserve">
     <value>팬마다 펌웨어 속도에 더하는 속도로, 고정하거나 곡선을 따릅니다. 0%는 팬을 펌웨어에 맡기고 100%는 최대 속도입니다.</value>
   </data>
+  <data name="FanMode_Custom_DescriptionFixed" xml:space="preserve">
+    <value>팬마다의 속도 자체로, 고정하거나 곡선을 따르며, 칩이 성능을 낮추기 시작하는 온도에 가까워지면 최대 속도가 됩니다. 0%는 팬을 펌웨어에 맡깁니다.</value>
+    <comment>Fan mode description on laptops whose firmware takes each fan's speed as it is (not added on top of Auto). "Throttle" = a chip slowing itself down because it is too hot.</comment>
+  </data>
   <data name="FanBehavior_Auto" xml:space="preserve">
     <value>자동(펌웨어)</value>
     <comment>What a fan is doing right now: controlled by the laptop's firmware.</comment>
@@ -561,9 +565,17 @@
     <value>칩이 뜨거워질수록 펌웨어 속도에 속도를 더하며, 프로세서가 성능을 낮추기 시작하는 온도에서 최대 속도에 도달합니다.</value>
     <comment>What the on/off setting does. "Throttle" = the processor slowing itself down because it is too hot.</comment>
   </data>
+  <data name="Fans_AutoBoostFixed" xml:space="preserve">
+    <value>칩이 성능을 낮추기 시작하는 온도에 가까워지면 팬을 최대 속도로 돌립니다.</value>
+    <comment>What the Anti-throttle on/off setting does on laptops where it can only switch the fans to full speed. "Throttle" = a chip slowing itself down because it is too hot.</comment>
+  </data>
   <data name="Fans_CoolBoost.Description" xml:space="preserve">
     <value>펌웨어 자체의 팬 속도를 높입니다. '자동' 모드는 이 속도를 사용하고 '사용자 지정' 모드는 여기에 속도를 더합니다.</value>
     <comment>Under the header "CoolBoost" (an Acer feature name). Auto, Custom = FanMode_Auto, FanMode_Custom.</comment>
+  </data>
+  <data name="Fans_CoolBoostFixed" xml:space="preserve">
+    <value>펌웨어 자체의 팬 속도를 높입니다. '자동' 모드는 이 속도를 사용합니다.</value>
+    <comment>Under the header "CoolBoost" (an Acer feature name), on laptops where Custom sets each fan's speed itself. Auto = FanMode_Auto.</comment>
   </data>
   <data name="Fans_FanTable.Header" xml:space="preserve">
     <value>팬 곡선</value>
@@ -591,6 +603,10 @@
   <data name="Fans_Boost.Header" xml:space="preserve">
     <value>추가 속도</value>
     <comment>Slider label: speed added on top of the firmware's, from 0% (firmware only) to 100% (full speed).</comment>
+  </data>
+  <data name="Fans_SpeedFixed" xml:space="preserve">
+    <value>속도</value>
+    <comment>Slider label: a fan's own speed in Custom mode, from 0% (left to the firmware) to 100% (full speed). Short.</comment>
   </data>
   <data name="Fans_Presets.Content" xml:space="preserve">
     <value>사전 설정</value>

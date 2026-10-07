@@ -93,17 +93,18 @@
                 Message="{x:Bind Fans.LockReason, Mode=OneWay}"
                 Severity="Informational" />
 
-            <!-- Auto: the firmware, boosted along a fixed curve when it gets hot -->
+            <!-- Auto: the firmware, boosted along a fixed curve when it gets hot (full speed where Custom speeds are the fans' own) -->
             <toolkit:SettingsCard
                 x:Uid="Fans_AutoBoost"
+                Description="{x:Bind Fans.AutoBoostDescription, Mode=OneWay}"
                 HeaderIcon="{ui:FontIcon Glyph=&#xEA18;}"
                 Visibility="{x:Bind Fans.IsAuto, Mode=OneWay}">
                 <ToggleSwitch IsOn="{x:Bind Fans.AutoBoostEnabled, Mode=TwoWay}" />
             </toolkit:SettingsCard>
 
-            <!-- CoolBoost raises the firmware's own speed: Auto uses it, Custom adds to it -->
+            <!-- CoolBoost raises the firmware's own speed: Auto uses it, Custom adds to it (unless Custom speeds are the fans' own) -->
             <toolkit:SettingsCard
-                x:Uid="Fans_CoolBoost"
+                Description="{x:Bind Fans.CoolBoostDescription, Mode=OneWay}"
                 Header="CoolBoost"
                 HeaderIcon="{ui:FontIcon Glyph=&#xE9CA;}"
                 Visibility="{x:Bind Fans.ShowCoolBoost, Mode=OneWay}">
@@ -172,7 +173,7 @@
                                 <StackPanel Spacing="12" Visibility="{x:Bind IsFixed, Mode=OneWay}">
                                     <TextBlock Style="{StaticResource BigNumberStyle}" Text="{x:Bind PercentText, Mode=OneWay}" />
                                     <Slider
-                                        x:Uid="Fans_Boost"
+                                        Header="{x:Bind PercentHeader}"
                                         Maximum="100"
                                         Minimum="0"
                                         SmallChange="10"

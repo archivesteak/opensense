@@ -6,6 +6,7 @@ using Microsoft.Graphics.Canvas.Geometry;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
+using OpenSense.App.Services;
 using OpenSense.App.ViewModels;
 using OpenSense.Core.Hardware;
 using OpenSense.Core.Lighting;
@@ -64,11 +65,13 @@ public sealed partial class KeyboardPreview : CanvasElement
     {
         Loaded += (_, _) =>
         {
+            App.Current.WindowVisibilityChanged += UpdateTicking;
             _loaded = true;
             Update();
         };
         Unloaded += (_, _) =>
         {
+            App.Current.WindowVisibilityChanged -= UpdateTicking;
             _loaded = false;
             _pendingAt = null;
             UpdateTicking();
@@ -97,7 +100,8 @@ public sealed partial class KeyboardPreview : CanvasElement
     /// <summary>The light is the embedded controller's keyboard, whose effects the preview plays.</summary>
     private bool Animated => Source is { Device.Backend: LightingBackendKind.EcKeyboard, IsKeyboard: true };
 
-    private bool Shown => _loaded && Visibility == Visibility.Visible;
+    // Not while the window is hidden in the notification area (or was never opened): nobody sees the frames.
+    private bool Shown => _loaded && Visibility == Visibility.Visible && App.Current.IsWindowVisible;
 
     /// <summary>
     /// A setting changed: shown after <see cref="HardwareDelay"/>, as the keyboard shows it. The wait is timed on the
@@ -163,6 +167,7 @@ public sealed partial class KeyboardPreview : CanvasElement
     /// </summary>
     private void OnRendering(object? sender, object e)
     {
+        UiActivity.Count(UiWork.PreviewFrames); // temporary diagnostics
         var now = Stopwatch.GetTimestamp();
         if (_pendingAt is { } at && now >= at)
         {

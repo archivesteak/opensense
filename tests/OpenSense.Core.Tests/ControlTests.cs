@@ -68,11 +68,11 @@ public class CurveTests
 public class FanControlServiceTests
 {
     private static (FanControlService Service, FakeFirmware Firmware, FakePower Power) Create(ControlProfile profile, bool modes = false,
-        Func<DateTime>? clock = null, DirectSensors? sensors = null)
+        Func<DateTime>? clock = null, DirectSensors? sensors = null, bool fixedSpeeds = false)
     {
         var firmware = new FakeFirmware { SupportsModes = modes };
         var device = new AcerDevice(firmware);
-        var caps = CapabilityProbe.Probe(device);
+        var caps = CapabilityProbe.Probe(device) with { FixedFanSpeeds = fixedSpeeds };
         var power = new FakePower();
         var service = new FanControlService(device, caps, new FakeLoad(), power, profile, sensors, clock);
         firmware.Calls.Clear();
@@ -280,6 +280,33 @@ public class FanControlServiceTests
         Assert.Equal(FanBehavior.Custom, fw.Behavior[0]);
         Assert.Equal(50, fw.Speed[1]);
         Assert.Equal(FanBehavior.Auto, fw.Behavior[3]); // the GPU fan follows the GPU, still cool
+    }
+
+    [Fact]
+    public void Where_speeds_are_the_fans_own_none_goes_out_slower_than_auto_near_the_limit()
+    {
+        // PH717-71: a Custom speed is the fan's duty and Custom writes the last speed set, so 50 % at 91 °C could be slower
+        // than Auto, and Custom before its speed would stop the fan for a moment.
+        var now = new DateTime(2026, 10, 3, 12, 0, 0, DateTimeKind.Utc);
+        var (service, fw, _) = Create(new ControlProfile(), clock: () => now, fixedSpeeds: true);
+        fw.CpuTemp = 91;
+        fw.GpuTemp = 50;
+        service.Tick();
+        Assert.Equal(FanBehavior.Max, fw.Behavior[0]);
+        Assert.Equal(FanBehavior.Auto, fw.Behavior[3]);
+
+        service.Update(new ControlProfile
+        {
+            Mode = FanControlMode.Custom,
+            Manual = new Dictionary<FanId, ManualFanSetting> { [FanId.Cpu] = new(30), [FanId.Gpu] = new(30) },
+        });
+        fw.Calls.Clear();
+        now += FanControlService.CurveInterval;
+        service.Tick();
+        Assert.Equal(FanBehavior.Max, fw.Behavior[0]); // the CPU is as hot as Anti-throttle boosts at
+        Assert.Equal(FanBehavior.Custom, fw.Behavior[3]);
+        Assert.Equal(30, fw.Speed[4]);
+        Assert.True(fw.Calls.FindIndex(c => c.Method == "SetGamingFanSpeed") < fw.Calls.FindIndex(c => c.Method == "SetGamingFanBehavior"));
     }
 
     [Fact]

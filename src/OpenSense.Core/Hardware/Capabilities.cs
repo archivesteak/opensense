@@ -191,6 +191,12 @@ public sealed record DeviceCapabilities(
     public bool FanTable { get; init; }
 
     /// <summary>
+    /// A fan's Custom speed is its own speed, not a boost over Auto (<see cref="AcerFirmwareProfile.FixedFanSpeeds"/>):
+    /// OpenSense then runs a fan at full speed where it would boost it near its chip's limit.
+    /// </summary>
+    public bool FixedFanSpeeds { get; init; }
+
+    /// <summary>
     /// The firmware answers whether the battery can help the adapter (<c>GetGamingSysInfo(0x02)</c>, or the EC HID
     /// interface). With that off the performance modes wait (see <see cref="Control.PowerLimit.LowBattery"/>), once the
     /// flag has been seen on: the NL16-71G answers a constant 0.
@@ -417,7 +423,7 @@ public static class CapabilityProbe
         var keyboard = ProbeKeyboard(device, smbios, catalog, model, actionClass, ecHid?.BacklightTimeout == true, Log);
         List<LightingDeviceInfo> lights = [];
         // Brightness alone: through the backlight record, or the auto-off function's brightness, except where the reviewed
-        // BIOS has nothing behind the keyboard's WMI methods (ANV16-72: auto-off works, its brightness byte is ignored).
+        // BIOS has nothing behind the keyboard's WMI methods (ANV16-72, PH717-71: auto-off works, its brightness byte is ignored).
         if (keyboard.RgbBacklight)
             lights.Add(EcKeyboardBackend.Describe(keyboard));
         else if (keyboard.WmiBacklightBrightness || (profile.KeyboardControl != EcKeyboardControl.Unsupported
@@ -483,7 +489,7 @@ public static class CapabilityProbe
 
         Log($"=> sensors: {string.Join(", ", sensors)}");
         Log($"=> fans: {string.Join(", ", fans.Select(f => f.Controllable ? f.Name : $"{f.Name} (speed only)"))}; Dust Defender: {dustDefender}; " +
-            $"fan table: {fanTable}");
+            $"fan table: {fanTable}{(profile.FixedFanSpeeds ? "; Custom speeds are the fans' own" : "")}");
         Log($"=> operating modes: {(modes.Count == 0 ? "none" : string.Join(", ", modes))}" +
             (firmwareModes.Count == 0 ? ""
                 : ecHid is { Modes.Count: > 0 } ? " (EC HID)"
@@ -528,6 +534,7 @@ public static class CapabilityProbe
             CustomBootLogoSwitch = customBootLogoSwitch,
             DustDefender = dustDefender,
             FanTable = fanTable,
+            FixedFanSpeeds = profile.FixedFanSpeeds,
             BatteryBoostFlag = batteryBoostFlag,
             EcHid = ecHid,
             Smbios = smbios,
@@ -620,9 +627,11 @@ public static class CapabilityProbe
         var brightness = firmware.KeyboardControl == EcKeyboardControl.BrightnessOnly && backlight is { Length: >= 9 };
 
         // Backlight auto-off: the hotkey function SMBIOS names for it, else the one measured for the model, as long as
-        // the firmware answers it.
+        // the firmware answers it and the reviewed BIOS has something behind it.
         byte? hotkey = null;
-        if (!ecHidBacklight && actionClass && (smbios.BacklightHotkey ?? catalog.KeyboardTimeoutHotkey) is { } h)
+        if (firmware.WmiBacklightTimeoutSupported == false)
+            log("backlight timeout: nothing behind the firmware's function on this BIOS");
+        else if (!ecHidBacklight && actionClass && (smbios.BacklightHotkey ?? catalog.KeyboardTimeoutHotkey) is { } h)
         {
             var timeout = device.GetBacklightTimeout(h);
             log($"backlight timeout (hotkey 0x{h:X2}) = {(timeout is { } t ? $"{t.Brightness}% / {t.TimeoutSeconds}s" : "error")}");
@@ -630,11 +639,14 @@ public static class CapabilityProbe
                 hotkey = h;
         }
 
-        // Overdrive depends on the panel, so the firmware's answer counts, whatever the model.
+        // Overdrive depends on the panel, so the firmware's answer counts, whatever the model, unless the reviewed BIOS has
+        // nothing behind it.
         var profile = device.GetGamingProfile();
         log($"GetGamingProfile(0) = {(profile is { } p ? $"0x{p:X}" : "error")}");
-        var windowsKey = catalog.WindowsKeyLock != false && profile is { } wp && KeyboardProtocol.WindowsKeyValue(wp) is not null;
-        var overdrive = catalog.LcdOverdrive != false && profile is { } op && KeyboardProtocol.LcdOverdriveSupported(op);
+        var windowsKey = catalog.WindowsKeyLock != false && firmware.WmiWindowsKeySupported != false
+            && profile is { } wp && KeyboardProtocol.WindowsKeyValue(wp) is not null;
+        var overdrive = catalog.LcdOverdrive != false && firmware.WmiLcdOverdriveSupported != false
+            && profile is { } op && KeyboardProtocol.LcdOverdriveSupported(op);
 
         // Which zones are lit, each zone's colour (their raw answers, for keyboards whose zones misbehave), and Fn lock:
         // asked only where they are used.

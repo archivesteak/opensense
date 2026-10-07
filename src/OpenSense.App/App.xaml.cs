@@ -8,6 +8,7 @@ using Microsoft.UI.Xaml;
 using OpenSense.App.Services;
 using OpenSense.App.Startup;
 using OpenSense.App.ViewModels;
+using OpenSense.Core.Monitoring;
 using OpenSense.Core.Settings;
 using OpenSense.Core.Updates;
 using Serilog;
@@ -43,7 +44,14 @@ public partial class App : Application
         AutostartService.Refresh(); // a portable copy's sign-in task follows it when it was moved
 
         _window = Services.GetRequiredService<MainWindow>();
-        Services.GetRequiredService<AppCpuUse>().Watch(_window.AppWindow);
+        _window.AppWindow.Changed += (_, e) =>
+        {
+            if (e.DidVisibilityChange)
+                WindowVisibilityChanged?.Invoke();
+        };
+        ProcessUsage.NameThisThread("UI thread");
+        var window = _window;
+        Services.GetRequiredService<TrayUsage>().Watch(window.AppWindow, () => window.CurrentPage, startsHidden: _options.Autostart);
         Services.GetRequiredService<TrayService>().Initialize();
         Services.GetRequiredService<ToastService>().Initialize();
         _instance.Activated += () => _window.DispatcherQueue.TryEnqueue(ShowMainWindow);
@@ -81,7 +89,7 @@ public partial class App : Application
         builder.Services.AddSingleton<NotificationService>();
         builder.Services.AddSingleton<TrayService>();
         builder.Services.AddSingleton<ToastService>();
-        builder.Services.AddSingleton<AppCpuUse>();
+        builder.Services.AddSingleton<TrayUsage>();
         builder.Services.AddSingleton<NavigationService>();
         builder.Services.AddSingleton<NitroSenseKey>();
         builder.Services.AddSingleton<OpenShortcut>();
@@ -173,6 +181,9 @@ public partial class App : Application
 
     /// <summary>The main window is on screen (not hidden to the notification area).</summary>
     public bool IsWindowVisible => _window?.AppWindow.IsVisible == true;
+
+    /// <summary>The main window was shown or hidden (<see cref="IsWindowVisible"/>).</summary>
+    public event Action? WindowVisibilityChanged;
 
     /// <summary>This build's version, and the GitHub repository (from RepositoryUrl in Directory.Build.props) to update from.</summary>
     private static UpdaterOptions UpdaterOptions()

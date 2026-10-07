@@ -329,6 +329,25 @@ public sealed class HidLightsTests
     }
 
     [Fact]
+    public void A_usb_keyboard_that_takes_auto_off_takes_the_brightness_that_went_with_it()
+    {
+        // PH717-71 (issue #8): its Darfon keyboard answered auto-off, which left the firmware's brightness light nothing to
+        // go through, so every change was "rejected".
+        var bus = new FakeHidBus();
+        bus.Devices.Add(new FakeUsbKeyboard(0x0D62, 0x9A1A));
+        using var lights = Open(bus, "Predator PH717-71");
+
+        var caps = lights.Merge(DeviceCapabilities.None with
+        {
+            Lights = [EcKeyboardBrightnessBackend.Describe()],
+            Keyboard = new KeyboardCapabilities { BacklightHotkey = 0x84 },
+        });
+
+        Assert.Empty(caps.Lights);
+        Assert.True(caps.Keyboard.UsbBacklightTimeout);
+    }
+
+    [Fact]
     public async Task MagForce_keys_come_with_the_models_that_have_them_or_when_turned_on()
     {
         var keyboard = new FakeUsbKeyboard(0x05AF, 0x667A);

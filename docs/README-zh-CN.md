@@ -6,8 +6,10 @@
 NitroSense 和 PredatorSense 的开源替代品。
 
 [![Build](https://github.com/archivesteak/opensense/actions/workflows/build.yml/badge.svg)](https://github.com/archivesteak/opensense/actions/workflows/build.yml)
-[![Release](https://img.shields.io/github/v/release/archivesteak/opensense?label=Release&color=E4473C)](https://github.com/archivesteak/opensense/releases/latest)
-[![License](https://img.shields.io/github/license/archivesteak/opensense?label=License&logo=gnu&color=C4282D)](../LICENSE)
+[![Release](https://img.shields.io/github/v/release/archivesteak/opensense?label=Release&color=blue)](https://github.com/archivesteak/opensense/releases/latest)
+[![License](https://img.shields.io/github/license/archivesteak/opensense?label=License&color=C4282D)](../LICENSE)
+[![Downloads](https://img.shields.io/github/downloads/archivesteak/opensense/total?label=Downloads)](https://github.com/archivesteak/opensense/releases)
+[![Stars](https://img.shields.io/github/stars/archivesteak/opensense?label=Stars&style=flat&color=yellow)](https://github.com/archivesteak/opensense/stargazers)
 
 [**下载**](https://github.com/archivesteak/opensense/releases/latest) •
 [功能](#功能) •

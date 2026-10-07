@@ -46,6 +46,12 @@ public sealed record AcerFirmwareProfile
     /// <summary><c>GetGamingFanSpeed</c> echoes what was set (the ANV16S-61's answers the CPU fan's value for the GPU and fails for the CPU).</summary>
     public bool FanBoostReadbackReliable { get; init; } = true;
 
+    /// <summary>
+    /// A fan's Custom speed is its duty, not a boost over Auto: <c>SetGamingFanSpeed</c> writes 255 × percent / 100 to the
+    /// fan's PWM register at once, and Custom stops the EC's own curve for that fan and writes the last speed set (PH717-71).
+    /// </summary>
+    public bool FixedFanSpeeds { get; init; }
+
     /// <summary>Misc 0x0F switches the firmware's Fn lock (1 locked, 2 unlocked); elsewhere it is refused or does nothing.</summary>
     public bool SupportsFnLockProbe { get; init; }
 
@@ -61,6 +67,24 @@ public sealed record AcerFirmwareProfile
     public bool ResetsBlackStaticColors { get; init; }
 
     /// <summary>
+    /// False where <c>GetGamingProfile</c> answers LCD overdrive as 0 but nothing handles it (the PH717-71's setter takes the
+    /// Windows key and the lighting profile only).
+    /// </summary>
+    public bool? WmiLcdOverdriveSupported { get; init; }
+
+    /// <summary>
+    /// False where the Windows key lock the EC keeps reaches no keyboard: the PH717-71's EC applies it on its PS/2 path, and
+    /// its keyboard is a USB one (whose own lock goes through the keyboard when it answers).
+    /// </summary>
+    public bool? WmiWindowsKeySupported { get; init; }
+
+    /// <summary>
+    /// False where the backlight auto-off function answers but nothing acts on what it keeps: the PH717-71's is a flag only
+    /// its EC's own Fn-key handler flips and nothing reads (its keyboard, a USB one, has its own auto-off).
+    /// </summary>
+    public bool? WmiBacklightTimeoutSupported { get; init; }
+
+    /// <summary>
     /// The longest BIOS password that can be typed at the next start: 16 unless the reviewed BIOS's password check takes
     /// 128 (a longer one set through WMI would be cut short, or refused when asked for).
     /// </summary>
@@ -71,7 +95,7 @@ public sealed record AcerFirmwareProfile
         ["ANV16-41"] = "1.16", ["ANV16-71"] = "1.11", ["ANV16-72"] = "1.50", ["ANV16-I31"] = "1.08",
         ["ANV16-42"] = "1.15", ["ANV16-61"] = "1.15", ["ANV16-A31"] = "1.04", ["ANV16-A71"] = "1.04",
         ["ANV16S-41"] = "1.14", ["ANV16S-61"] = "1.14", ["ANV16S-71"] = "1.06", ["PHN16-73"] = "1.28",
-        ["NL16-71G"] = "1.19",
+        ["NL16-71G"] = "1.19", ["PH717-71"] = "1.10",
     };
 
     public static AcerFirmwareProfile For(string? model, string? biosVersion = null)
@@ -86,8 +110,12 @@ public sealed record AcerFirmwareProfile
         // The Nitro Lite's whole gaming interface is stubs in SMM but the temperatures; its modes are function 7's, which
         // says so itself, and its battery-boost flag is a constant 0, which never holds anything back.
         var lite = code == "NL16-71G";
-        // Misc 0x0A/0x0B and the keyboard methods are stubs in SMM; the modes go through the EC HID interface or function 7.
-        var noWmiModes = lite || code is "ANV16-72" or "ANV16-I31";
+        // The Helios 700 has CoolBoost and no modes; its fan speeds are duties, its keyboard is a USB one, and overdrive, the
+        // EC's Windows key lock and the auto-off function have nothing behind them.
+        var helios700 = code == "PH717-71";
+        // Misc 0x0A/0x0B and the keyboard methods are stubs in SMM (refused on the PH717-71); the modes, where there are any,
+        // go through the EC HID interface or function 7.
+        var noWmiModes = lite || helios700 || code is "ANV16-72" or "ANV16-I31";
         // The record is stored but the EC reads none of it: the 71's keyboard colour follows the operating mode, the
         // KH62 boards' keyboard is the EC's own I2C one.
         var unsupported = noWmiModes || code is "ANV16-71" or "ANV16-42" or "ANV16-61";
@@ -98,17 +126,22 @@ public sealed record AcerFirmwareProfile
         return new()
         {
             ModelCode = code,
-            WmiCoolBoostSupported = predator ? null : false,
+            WmiCoolBoostSupported = predator || helios700 ? null : false,
             WmiOperatingModesSupported = predator ? null : !noWmiModes,
             RequiresBalancedModeReset = predator,
             FanBoostReadbackReliable = code != "ANV16S-61",
+            FixedFanSpeeds = helios700,
             SupportsFnLockProbe = code is "ANV16-71" or "ANV16S-71",
             KeyboardControl = unsupported ? EcKeyboardControl.Unsupported
                 : brightnessOnly ? EcKeyboardControl.BrightnessOnly
                 : EcKeyboardControl.Rgb,
-            // A stub on the 41, 72 and I31; elsewhere the EC never reads the mask it stores.
+            // A stub on the 41, 72 and I31; elsewhere the EC never reads the mask it stores (the PH717-71's method sets
+            // indicator lights).
             KeyboardZoneSwitches = false,
             ResetsBlackStaticColors = code == "ANV16-41",
+            WmiLcdOverdriveSupported = helios700 ? false : null,
+            WmiWindowsKeySupported = helios700 ? false : null,
+            WmiBacklightTimeoutSupported = helios700 ? false : null,
             BiosPasswordMaxLength = longPassword ? 128 : 16,
         };
     }

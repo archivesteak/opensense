@@ -18,7 +18,7 @@ namespace OpenSense.App.ViewModels;
 
 /// <summary>App preferences, capability overrides, diagnostics and about.</summary>
 public sealed partial class SettingsViewModel(SettingsService settings, DeviceSession session, NotificationService notifications, NitroSenseKey nitroSenseKey,
-    OpenShortcut openShortcut, BiosSettingsViewModel bios, AppCpuUse appCpu)
+    OpenShortcut openShortcut, BiosSettingsViewModel bios, TrayUsage trayUsage)
     : ObservableObject
 {
     private static readonly string AppLogDirectory =
@@ -372,7 +372,7 @@ public sealed partial class SettingsViewModel(SettingsService settings, DeviceSe
     private async Task CopyDiagnosticsAsync()
     {
         var package = new DataPackage();
-        package.SetText(appCpu.Describe() + await session.GetDiagnosticsAsync());
+        package.SetText(trayUsage.Describe() + await session.GetDiagnosticsAsync());
         Clipboard.SetContent(package);
 
         // Said on the button rather than with a notice.

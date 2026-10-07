@@ -21,6 +21,9 @@ public sealed partial class ManualFanViewModel(FanId id, string name, CurveFanVi
 
     public CurveFanViewModel Curve { get; } = curve;
 
+    /// <summary>The fixed speed's label: added speed, or the fan's own where Custom speeds are (<see cref="DeviceCapabilities.FixedFanSpeeds"/>).</summary>
+    public string PercentHeader { get; init; } = "";
+
     /// <summary>0 = fixed boost, 1 = curve (the order of the segmented control).</summary>
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(UseCurve), nameof(IsFixed))]
@@ -133,11 +136,23 @@ public sealed partial class FanControlViewModel : ObservableObject
 
     public bool IsCustom => Mode == FanControlMode.Custom;
 
-    public string ModeDescription => Names.FanModeDescription(Mode);
+    public string ModeDescription => Names.FanModeDescription(Mode, FixedSpeeds);
+
+    /// <summary>
+    /// Custom speeds are the fans' own, not added to Auto (<see cref="DeviceCapabilities.FixedFanSpeeds"/>): the engine runs a
+    /// fan at full speed where Anti-throttle would boost it, and CoolBoost only changes Auto.
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ModeDescription), nameof(AutoBoostDescription), nameof(CoolBoostDescription))]
+    public partial bool FixedSpeeds { get; set; }
 
     /// <summary>Auto boosts the fans near the chips' limits (<see cref="AntiThrottle"/>).</summary>
     [ObservableProperty]
     public partial bool AutoBoostEnabled { get; set; } = true;
+
+    public string AutoBoostDescription => Strings.Get(FixedSpeeds ? "Fans_AutoBoostFixed" : "Fans_AutoBoost/Description");
+
+    public string CoolBoostDescription => Strings.Get(FixedSpeeds ? "Fans_CoolBoostFixed" : "Fans_CoolBoost/Description");
 
     [ObservableProperty]
     public partial bool HasFans { get; set; }
@@ -229,10 +244,12 @@ public sealed partial class FanControlViewModel : ObservableObject
         var profile = _session.Settings.Profile;
 
         HasFans = caps.ControllableFans.Count > 0;
+        FixedSpeeds = caps.FixedFanSpeeds;
         ModeIndex = (int)profile.Mode;
         AutoBoostEnabled = profile.AutoBoost;
 
         ManualFans.Clear();
+        var percentHeader = Strings.Get(caps.FixedFanSpeeds ? "Fans_SpeedFixed" : "Fans_Boost/Header");
         foreach (var fan in caps.ControllableFans)
         {
             var manual = profile.ManualFor(fan.Id);
@@ -241,6 +258,7 @@ public sealed partial class FanControlViewModel : ObservableObject
             {
                 KindIndex = manual.UseCurve ? 1 : 0,
                 Percent = manual.Percent,
+                PercentHeader = percentHeader,
             };
             custom.PropertyChanged += (_, e) =>
             {
