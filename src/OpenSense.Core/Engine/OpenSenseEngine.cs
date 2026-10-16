@@ -100,7 +100,7 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
             _ecHid = OpenOptional(() => EcHidDevice.Open(_hid), "the embedded controller's HID interface", _ => null);
             var device = Device();
 
-            _probed = DetectBootLogo(CapabilityProbe.Probe(device, _machine.ReadSmbios(), _deviceName)) with
+            _probed = DetectBootLogo(CapabilityProbe.Probe(device, _machine.ReadSmbios(), _deviceName, _machine.ReadAcpiTables())) with
             {
                 ModeKey = Runtime.ModeKeySeen,
             };
@@ -244,7 +244,8 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
     /// The firmware through both of its interfaces (WMI, and the embedded controller's HID one where there is one), with
     /// what the model's reviewed BIOS is known to do.
     /// </summary>
-    private AcerDevice Device() => new(_transport!) { EcHid = _ecHid, FirmwareProfile = AcerFirmwareProfile.For(_deviceName, _biosVersion) };
+    private AcerDevice Device() =>
+        new(_transport!) { EcHid = _ecHid, FirmwareProfile = AcerFirmwareProfile.For(_deviceName, _biosVersion, _ecHid is not null) };
 
     /// <summary>Opens a part the engine can do without; on a failure, logs it and goes on with <paramref name="fallback"/>.</summary>
     private T OpenOptional<T>(Func<T> open, string what, Func<Exception, T> fallback)

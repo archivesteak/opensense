@@ -86,6 +86,10 @@ internal sealed class FakeFirmware : IWmiTransport
     /// <summary>The backlight auto-off function <c>0x84</c> answers (brightness and timeout 0).</summary>
     public bool SupportsBacklightHotkey { get; set; }
 
+    /// <summary>What misc 9 answers (the GPU modes, a bit per mode); with it, misc 2 answers <see cref="GpuMode"/>. Neither by default.</summary>
+    public byte? GpuModes { get; set; }
+    public byte GpuMode { get; set; } = 1;
+
     public List<(string Method, Dictionary<string, object> Inputs)> NamedCalls { get; } = [];
 
     public WmiOutputs InvokeNamed(string className, string method, IReadOnlyList<WmiArgument> inputs)
@@ -178,6 +182,10 @@ internal sealed class FakeFirmware : IWmiTransport
             case "SetGamingMiscSetting" when SupportsModes && (input & 0xFF) == 0x0B:
                 Mode = (OperatingMode)(input >> 8);
                 return 0;
+            case "GetGamingMiscSetting" when GpuModes is { } gpuModes && input == 0x09:
+                return (ulong)gpuModes << 8;
+            case "GetGamingMiscSetting" when GpuModes is not null && input == 0x02:
+                return (ulong)GpuMode << 8;
             case "GetFunction" when SupportsCoolBoost && input is AcerProtocol.CoolBoostGetInput or AcerProtocol.ActionFunctionQuery:
                 return ((CoolBoost ? 1UL : 0UL) << 8) | (1UL << 16); // byte 2 = 1: the AN515-45/57's mark for CoolBoost
             case "SetFunction" when (input & 0xFFFF) == 0x07:

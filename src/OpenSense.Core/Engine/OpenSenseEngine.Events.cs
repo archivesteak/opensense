@@ -25,8 +25,8 @@ public sealed partial class OpenSenseEngine
         text.AppendLine(CultureInfo.InvariantCulture, $"OS: {System.Runtime.InteropServices.RuntimeInformation.OSDescription}");
         text.AppendLine(CultureInfo.InvariantCulture, $"Model: {_deviceName ?? "unknown"}");
         text.AppendLine(CultureInfo.InvariantCulture, $"BIOS: {_biosVersion ?? "unknown"}");
-        var profile = AcerFirmwareProfile.For(_deviceName, _biosVersion);
-        text.AppendLine(CultureInfo.InvariantCulture, $"Firmware profile: {profile.ModelCode ?? "generic"}; mode reset={profile.RequiresBalancedModeReset}; reliable fan boost readback={profile.FanBoostReadbackReliable}; fixed fan speeds={profile.FixedFanSpeeds}");
+        var profile = AcerFirmwareProfile.For(_deviceName, _biosVersion, _ecHid is not null);
+        text.AppendLine(CultureInfo.InvariantCulture, $"Firmware profile: {profile.ModelCode ?? "generic"}{(profile.Board is { } board ? $" ({board} board)" : "")}; mode reset={profile.RequiresBalancedModeReset}; reliable fan boost readback={profile.FanBoostReadbackReliable}; fixed fan speeds={profile.FixedFanSpeeds}");
         if (_capabilities.BatteryBoostFlag)
             text.AppendLine(CultureInfo.InvariantCulture, $"Battery-boost flag seen on: {Runtime.BatteryBoostSeen}");
         if (_firmware is { } firmware && firmware.FanBehaviors.Any(f => f.Value == FanBehavior.Custom && firmware.FanBoosts.GetValueOrDefault(f.Key) is null))

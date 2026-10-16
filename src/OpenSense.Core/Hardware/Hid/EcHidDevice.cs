@@ -26,6 +26,9 @@ public sealed class EcHidDevice : IDisposable
     private IHidDevice? _device;
     private bool _disposed;
 
+    /// <summary>The keyboard brightness last written, and what the controller reported for it right after.</summary>
+    private (int Written, int Reported)? _brightness;
+
     private EcHidDevice(IHidBus bus, IHidDevice device, Mutex? machineLock, Action<TimeSpan> sleep)
     {
         _bus = bus;
@@ -76,11 +79,27 @@ public sealed class EcHidDevice : IDisposable
     public ClockOffsets? ReadOverclockProfile(byte index) =>
         Exchange(OverclockProfileRequest(index)) is { } reply ? DecodeOverclockProfile(reply) : null;
 
-    public (int Brightness, int TimeoutSeconds)? ReadBacklightTimeout() =>
-        Exchange(BacklightTimeoutRequest()) is { } reply ? DecodeBacklightTimeout(reply) : null;
+    /// <summary>
+    /// The keyboard brightness and auto-off. The controller may report its level rather than the brightness written (the
+    /// ANV15-51 ZYQ's reports 25 % as 50 % and 50–75 % as 100 %): while it reports what it did right after the last write,
+    /// that brightness still holds; anything else is a change made with the Fn keys.
+    /// </summary>
+    public (int Brightness, int TimeoutSeconds)? ReadBacklightTimeout()
+    {
+        if (Exchange(BacklightTimeoutRequest()) is not { } reply || DecodeBacklightTimeout(reply) is not { } state)
+            return null;
+        return _brightness is { } last && last.Reported == state.Brightness ? (last.Written, state.TimeoutSeconds) : state;
+    }
 
-    public bool WriteBacklightTimeout(int brightness, int timeoutSeconds) =>
-        Exchange(SetBacklightTimeoutRequest(brightness, timeoutSeconds)) is { } reply && Accepted(reply, EcHidCommand.Device);
+    public bool WriteBacklightTimeout(int brightness, int timeoutSeconds)
+    {
+        if (Exchange(SetBacklightTimeoutRequest(brightness, timeoutSeconds)) is not { } reply || !Accepted(reply, EcHidCommand.Device))
+            return false;
+        _brightness = Exchange(BacklightTimeoutRequest()) is { } after && DecodeBacklightTimeout(after) is { } state
+            ? (brightness, state.Brightness)
+            : null;
+        return true;
+    }
 
     /// <summary>
     /// Sends <paramref name="request"/> and reads the answer 20 ms later; asks again (up to five times) while there is

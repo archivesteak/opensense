@@ -31,6 +31,24 @@ public sealed class OperatingModeTests
         Assert.False(caps.CoolBoost);
     }
 
+    /// <summary>
+    /// The AN515-58's BIOS lists Turbo where only one board's code acts on it (issue: Turbo runs like Quiet or Balanced).
+    /// The tables (<c>Fixtures/Acpi/*.asl</c>) are written in the shapes of three BIOSes' mode code.
+    /// </summary>
+    [Theory]
+    [InlineData("turbo-one-board", false)]
+    [InlineData("turbo-refused", false)]
+    [InlineData("turbo-every-board", true)]
+    public void A_listed_mode_the_ACPI_code_does_not_act_on_everywhere_is_not_offered(string table, bool turbo)
+    {
+        var aml = File.ReadAllBytes(Path.Combine(SourceTree.Tests, "Fixtures", "Acpi", table + ".aml"));
+
+        var caps = CapabilityProbe.Probe(new AcerDevice(new FakeFirmware { SupportsModes = true }), acpiTables: [new AcpiTable("SSDT", aml)]);
+
+        Assert.Equal(turbo ? Listed : Listed[..^1], caps.OperatingModes);
+        Assert.Equal(caps.OperatingModes, new CapabilityOverrides { OperatingModes = true }.Apply(caps with { OperatingModes = [] }).OperatingModes);
+    }
+
     [Fact]
     public void Modes_can_be_turned_on_and_off_and_CoolBoost_follows()
     {

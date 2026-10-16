@@ -36,6 +36,9 @@ public interface IMachine
 
     AcerSmbios ReadSmbios();
 
+    /// <summary>The firmware's ACPI tables; empty where Windows doesn't give them.</summary>
+    IReadOnlyList<AcpiTable> ReadAcpiTables();
+
     ILoadMonitor OpenLoadMonitor();
 
     /// <summary>The CPU's and GPU's own temperature sensors, where available.</summary>
@@ -70,6 +73,8 @@ public sealed class WindowsMachine : IMachine
     public IHidBus OpenHid() => new WindowsHidBus();
 
     public AcerSmbios ReadSmbios() => AcerSmbios.Read();
+
+    public IReadOnlyList<AcpiTable> ReadAcpiTables() => AcpiTable.ReadAll();
 
     public ILoadMonitor OpenLoadMonitor() => new LoadMonitor();
 

@@ -42,6 +42,9 @@ internal sealed class FakeEcHid : IHidDevice
 
     public (int Brightness, int TimeoutSeconds) Backlight { get; set; } = (100, 30);
 
+    /// <summary>Reports the backlight's level as the ANV15-51 ZYQ's controller does: 25 % as 50, 50–100 % as 100.</summary>
+    public bool ReportsLevels { get; set; }
+
     /// <summary>Answers this many requests with status 0 (neither done nor refused) first.</summary>
     public int Busy { get; set; }
 
@@ -133,7 +136,8 @@ internal sealed class FakeEcHid : IHidDevice
                     data[5] = EcHidProtocol.KeyboardBacklight;
                     if (function == EcHidProtocol.Set)
                         Backlight = (BinaryPrimitives.ReadUInt16LittleEndian(request[9..]), BinaryPrimitives.ReadUInt16LittleEndian(request[11..]));
-                    BinaryPrimitives.WriteUInt16LittleEndian(data[8..], (ushort)Backlight.Brightness);
+                    var brightness = !ReportsLevels ? Backlight.Brightness : Backlight.Brightness switch { 0 => 0, <= 25 => 50, _ => 100 };
+                    BinaryPrimitives.WriteUInt16LittleEndian(data[8..], (ushort)brightness);
                     BinaryPrimitives.WriteUInt16LittleEndian(data[10..], (ushort)Backlight.TimeoutSeconds);
                     break;
                 default:

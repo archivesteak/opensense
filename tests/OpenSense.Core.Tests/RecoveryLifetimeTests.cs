@@ -364,6 +364,7 @@ public class RecoveryLifetimeTests
         public BatteryHealth? ReadBatteryHealth() => _inner.ReadBatteryHealth();
         public IHidBus OpenHid() => FailOptionalFactories ? throw new InvalidOperationException("HID failed.") : HidOverride ?? new TrackedHid(() => HidDisposed = true);
         public AcerSmbios ReadSmbios() => _inner.ReadSmbios();
+        public IReadOnlyList<AcpiTable> ReadAcpiTables() => _inner.ReadAcpiTables();
         public ILoadMonitor OpenLoadMonitor() => FailOptionalFactories ? throw new InvalidOperationException("Counters failed.") : new TrackedLoad(() => LoadDisposed = true);
         public DirectSensors OpenSensors() => FailOptionalFactories ? throw new InvalidOperationException("Direct sensors failed.") : DirectSensors.None;
         public IBootLogoStore? OpenBootLogo(Action<string> log) => null;

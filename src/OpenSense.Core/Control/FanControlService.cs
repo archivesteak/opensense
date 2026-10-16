@@ -710,6 +710,10 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
                 : AcerProtocol.NearestFanSpeed(FollowCurve(fan, AntiThrottle.For(fan.Chip, _limits), curveStep, _limitFollowers[fan.Id]))) > 0)
             return (FanBehavior.Max, null);
 
+        // A lower duty could leave a fan stopped, and nothing in such firmware speeds it up again.
+        if (Capabilities.FixedFanSpeeds && percent > 0)
+            percent = Math.Max(percent, Capabilities.MinimumFixedFanSpeed);
+
         // A boost of 0 % is exactly Auto: leave the fan on the firmware's own behaviour then.
         return percent > 0 ? (FanBehavior.Custom, percent) : (FanBehavior.Auto, null);
     }

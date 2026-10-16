@@ -745,6 +745,8 @@ public sealed class SimulatedMachine(SimulatedModel model) : IMachine
 
     internal static AcerSmbios NitroSmbios { get; } = new(2, 0x53, [new(0x08, 4), new(0x0A, 2), new(0x0F, 1)], [new(0x84, 8)]);
 
+    public IReadOnlyList<AcpiTable> ReadAcpiTables() => [];
+
     public ILoadMonitor OpenLoadMonitor() => new SimulatedLoadMonitor(_loads ?? throw new InvalidOperationException("Open the firmware first."));
 
     public DirectSensors OpenSensors() => GpuClocks is { } clocks
