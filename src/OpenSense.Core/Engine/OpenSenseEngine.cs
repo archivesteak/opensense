@@ -314,12 +314,15 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
 
     private void StartControl(AcerDevice device)
     {
+        if (Runtime.GpuOverclockApplied)
+            SwitchOffGpuOverclockAfterCrash();
         var settings = Current;
         _controller = new FanControlService(device, _capabilities, _load!, _power!, settings.Profile, _sensors, knownGpuClocks: KnownGpuClocks(),
             batteryBoostSeen: Runtime.BatteryBoostSeen);
         _controller.TelemetryUpdated += OnTelemetry;
         _controller.Notice += OnNotice;
         _controller.GpuClockLimitsChanged += OnGpuClockLimits;
+        _controller.GpuOverclockApplied += OnGpuOverclockApplied;
         _controller.BatteryBoostSeen += OnBatteryBoostSeen;
         _controller.Start();
 
@@ -342,6 +345,7 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
             controller.Notice -= OnNotice;
             controller.GpuClockLimitsChanged -= OnGpuClockLimits;
             controller.Dispose(); // hands the fans back to the firmware if configured, and resets the GPU's clocks
+            controller.GpuOverclockApplied -= OnGpuOverclockApplied; // after: resetting the clocks clears it in state.json
         }
         _controller = null;
     }

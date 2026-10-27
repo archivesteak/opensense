@@ -23,6 +23,28 @@ public sealed partial class OpenSenseEngine
             LogGpuClockLimits(clocks.Device, clocks.DriverVersion, limits);
     }
 
+    /// <summary>Kept on disk at once, so a crash while overclocked is found at the next start.</summary>
+    private void OnGpuOverclockApplied(bool applied) => UpdateRuntime(r => r with { GpuOverclockApplied = applied });
+
+    /// <summary>
+    /// The last run never stopped while OpenSense's offsets were in the driver: Windows crashed, froze or lost power,
+    /// maybe because of them. Applied again at every start they could keep the laptop from ever staying up, so
+    /// overclocking (and the firmware's) is switched off until the user switches it on again.
+    /// </summary>
+    private void SwitchOffGpuOverclockAfterCrash()
+    {
+        LogGpuOverclockOffAfterCrash();
+        UpdateSettings(s => s with
+        {
+            Profile = s.Profile with
+            {
+                GpuClocks = s.Profile.GpuClocks with { Enabled = false, FollowFirmware = false, TurnedOffAfterCrash = true },
+            },
+        });
+        Flush();
+        UpdateRuntime(r => r with { GpuOverclockApplied = false });
+    }
+
     private string GpuClockDiagnostics()
     {
         if (_sensors.GpuClocks is not { } clocks)
@@ -39,4 +61,7 @@ public sealed partial class OpenSenseEngine
 
     [LoggerMessage(Level = LogLevel.Information, Message = "GPU {Device}, driver {Driver}: no clock offsets")]
     private partial void LogNoGpuClocks(string device, string? driver);
+
+    [LoggerMessage(Level = LogLevel.Warning, Message = "The last run ended without stopping while the GPU was overclocked; overclocking switched off")]
+    private partial void LogGpuOverclockOffAfterCrash();
 }

@@ -128,6 +128,7 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
             _gpuClocks = new GpuClockController(gpuClocks, knownGpuClocks);
             _gpuClocks.LimitsChanged += limits => GpuClockLimitsChanged?.Invoke(limits);
             _gpuClocks.Refused += () => Notice?.Invoke(new ControlNotice(NoticeKind.GpuClocksRejected));
+            _gpuClocks.OwnedChanged += applied => GpuOverclockApplied?.Invoke(applied);
         }
         _thread = new Thread(Run) { IsBackground = true, Name = "OpenSense control loop" };
     }
@@ -150,6 +151,12 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
 
     /// <summary>Raised on the control thread when the GPU's driver reports new clock offset limits (null: it has none).</summary>
     public event Action<GpuClockLimits?>? GpuClockLimitsChanged;
+
+    /// <summary>
+    /// Raised on the control thread when OpenSense's GPU clock offsets go into the driver (true) or are put back to 0
+    /// (false, also when the loop stops), for state.json to remember.
+    /// </summary>
+    public event Action<bool>? GpuOverclockApplied;
 
     /// <summary>Raised on the control thread the first time the battery-boost flag is seen on, for state.json to remember.</summary>
     public event Action? BatteryBoostSeen;

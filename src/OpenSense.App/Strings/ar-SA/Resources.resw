@@ -2018,6 +2018,20 @@ GPU: {1}</value>
     <value>رفع التردد الذي تضبطه البرامج الثابتة لكل وضع، مضافًا إلى الإزاحات أدناه.</value>
     <comment>Under "Acer's overclocking": the firmware's own overclock for each mode is added to the user's offsets set below it.</comment>
   </data>
+  <data name="GpuClocks_Enabled.Header" xml:space="preserve">
+    <value>السماح برفع التردد</value>
+    <comment>Switch in the GPU overclock section; the warning dialog appears when it is turned on.</comment>
+  </data>
+  <data name="GpuClocks_Enabled.Description" xml:space="preserve">
+    <value>لا تُطبَّق الإزاحات أدناه إلا عندما يكون هذا الخيار قيد التشغيل.</value>
+  </data>
+  <data name="GpuClocks_TurnedOffAfterCrash.Title" xml:space="preserve">
+    <value>تم إيقاف رفع التردد</value>
+    <comment>Warning bar above the overclocking switch, shown after OpenSense switched overclocking off at start.</comment>
+  </data>
+  <data name="GpuClocks_TurnedOffAfterCrash.Message" xml:space="preserve">
+    <value>توقّف Windows دون إيقاف تشغيل عادي أثناء رفع تردد GPU، لذلك لم تُطبَّق الإزاحات مرة أخرى. خفّضها قبل أن تسمح برفع التردد من جديد.</value>
+  </data>
   <data name="Navigation_FailedTitle" xml:space="preserve">
     <value>تعذّر فتح هذه الصفحة</value>
     <comment>Title when navigating to a page fails. The app remains open and offers a retry.</comment>

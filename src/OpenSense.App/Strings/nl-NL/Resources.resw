@@ -2018,6 +2018,20 @@ Details: {1}</value>
     <value>De overklok die de firmware voor elke modus instelt, opgeteld bij de offsets hieronder.</value>
     <comment>Under "Acer's overclocking": the firmware's own overclock for each mode is added to the user's offsets set below it.</comment>
   </data>
+  <data name="GpuClocks_Enabled.Header" xml:space="preserve">
+    <value>Overklokken toestaan</value>
+    <comment>Switch in the GPU overclock section; the warning dialog appears when it is turned on.</comment>
+  </data>
+  <data name="GpuClocks_Enabled.Description" xml:space="preserve">
+    <value>De offsets hieronder gelden alleen zolang dit aan staat.</value>
+  </data>
+  <data name="GpuClocks_TurnedOffAfterCrash.Title" xml:space="preserve">
+    <value>Overklokken is uitgeschakeld</value>
+    <comment>Warning bar above the overclocking switch, shown after OpenSense switched overclocking off at start.</comment>
+  </data>
+  <data name="GpuClocks_TurnedOffAfterCrash.Message" xml:space="preserve">
+    <value>Windows stopte zonder normaal af te sluiten terwijl de GPU overgeklokt was, dus de offsets zijn niet opnieuw toegepast. Verlaag ze voordat je overklokken weer toestaat.</value>
+  </data>
   <data name="Navigation_FailedTitle" xml:space="preserve">
     <value>Deze pagina kon niet worden geopend</value>
     <comment>Title when navigating to a page fails. The app remains open and offers a retry.</comment>

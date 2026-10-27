@@ -2018,6 +2018,20 @@ Détails : {1}</value>
     <value>L’overclocking que le micrologiciel fixe pour chaque mode, ajouté aux décalages ci-dessous.</value>
     <comment>Under "Acer's overclocking": the firmware's own overclock for each mode is added to the user's offsets set below it.</comment>
   </data>
+  <data name="GpuClocks_Enabled.Header" xml:space="preserve">
+    <value>Autoriser l’overclocking</value>
+    <comment>Switch in the GPU overclock section; the warning dialog appears when it is turned on.</comment>
+  </data>
+  <data name="GpuClocks_Enabled.Description" xml:space="preserve">
+    <value>Les décalages ci-dessous ne s’appliquent que lorsque cette option est activée.</value>
+  </data>
+  <data name="GpuClocks_TurnedOffAfterCrash.Title" xml:space="preserve">
+    <value>L’overclocking a été désactivé</value>
+    <comment>Warning bar above the overclocking switch, shown after OpenSense switched overclocking off at start.</comment>
+  </data>
+  <data name="GpuClocks_TurnedOffAfterCrash.Message" xml:space="preserve">
+    <value>Windows s’est arrêté sans s’éteindre normalement alors que le GPU était overclocké, les décalages n’ont donc pas été réappliqués. Réduisez-les avant d’autoriser à nouveau l’overclocking.</value>
+  </data>
   <data name="Navigation_FailedTitle" xml:space="preserve">
     <value>Impossible d’ouvrir cette page</value>
     <comment>Title when navigating to a page fails. The app remains open and offers a retry.</comment>

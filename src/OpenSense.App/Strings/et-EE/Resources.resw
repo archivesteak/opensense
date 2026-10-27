@@ -2018,6 +2018,20 @@ GPU: {1}</value>
     <value>Püsivara määratud ülekiirendus iga režiimi jaoks, liidetuna allolevatele nihetele.</value>
     <comment>Under "Acer's overclocking": the firmware's own overclock for each mode is added to the user's offsets set below it.</comment>
   </data>
+  <data name="GpuClocks_Enabled.Header" xml:space="preserve">
+    <value>Luba ülekiirendamine</value>
+    <comment>Switch in the GPU overclock section; the warning dialog appears when it is turned on.</comment>
+  </data>
+  <data name="GpuClocks_Enabled.Description" xml:space="preserve">
+    <value>Allolevad nihked kehtivad ainult siis, kui see on sisse lülitatud.</value>
+  </data>
+  <data name="GpuClocks_TurnedOffAfterCrash.Title" xml:space="preserve">
+    <value>Ülekiirendamine lülitati välja</value>
+    <comment>Warning bar above the overclocking switch, shown after OpenSense switched overclocking off at start.</comment>
+  </data>
+  <data name="GpuClocks_TurnedOffAfterCrash.Message" xml:space="preserve">
+    <value>Windows peatus tavapäraselt välja lülitumata, kui GPU oli ülekiirendatud, seega nihkeid uuesti ei rakendatud. Vähendage neid, enne kui ülekiirendamise uuesti lubate.</value>
+  </data>
   <data name="Navigation_FailedTitle" xml:space="preserve">
     <value>Seda lehte ei saanud avada</value>
     <comment>Title when navigating to a page fails. The app remains open and offers a retry.</comment>

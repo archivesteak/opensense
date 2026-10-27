@@ -91,11 +91,23 @@
                         x:Uid="GpuClocks_Reset"
                         Command="{x:Bind GpuClocks.ResetCommand}"
                         IsEnabled="{x:Bind GpuClocks.Overclocked, Mode=OneWay}" />
-                    <!-- The firmware's own overclock per mode (2024+ Predators), added to the offsets below -->
                     <toolkit:SettingsExpander.ItemsHeader>
-                        <toolkit:SettingsCard x:Uid="GpuClocks_FollowFirmware" Visibility="{x:Bind GpuClocks.FirmwareOverclock, Mode=OneWay}">
-                            <ToggleSwitch IsOn="{x:Bind GpuClocks.FollowFirmware, Mode=TwoWay}" />
-                        </toolkit:SettingsCard>
+                        <StackPanel>
+                            <!-- Switched off by the engine after Windows stopped while the GPU was overclocked -->
+                            <InfoBar
+                                x:Uid="GpuClocks_TurnedOffAfterCrash"
+                                IsClosable="False"
+                                IsOpen="{x:Bind GpuClocks.TurnedOffAfterCrash, Mode=OneWay}"
+                                Severity="Warning" />
+                            <!-- The warning is asked here, never from an offset's spin button (issue #17) -->
+                            <toolkit:SettingsCard x:Uid="GpuClocks_Enabled">
+                                <ToggleSwitch IsOn="{x:Bind GpuClocks.Enabled, Mode=TwoWay}" />
+                            </toolkit:SettingsCard>
+                            <!-- The firmware's own overclock per mode (2024+ Predators), added to the offsets below -->
+                            <toolkit:SettingsCard x:Uid="GpuClocks_FollowFirmware" Visibility="{x:Bind GpuClocks.FirmwareOverclock, Mode=OneWay}">
+                                <ToggleSwitch IsOn="{x:Bind GpuClocks.FollowFirmware, Mode=TwoWay}" />
+                            </toolkit:SettingsCard>
+                        </StackPanel>
                     </toolkit:SettingsExpander.ItemsHeader>
                     <toolkit:SettingsExpander.ItemTemplate>
                         <DataTemplate x:DataType="vm:GpuClockRowViewModel">
@@ -104,7 +116,7 @@
                                     <NumberBox
                                         x:Uid="GpuClocks_Core"
                                         MinWidth="140"
-                                        IsEnabled="{x:Bind LimitsKnown, Mode=OneWay}"
+                                        IsEnabled="{x:Bind Editable, Mode=OneWay}"
                                         LargeChange="100"
                                         Maximum="{x:Bind CoreMaximum, Mode=OneWay}"
                                         Minimum="{x:Bind CoreMinimum, Mode=OneWay}"
@@ -114,7 +126,7 @@
                                     <NumberBox
                                         x:Uid="GpuClocks_Memory"
                                         MinWidth="140"
-                                        IsEnabled="{x:Bind LimitsKnown, Mode=OneWay}"
+                                        IsEnabled="{x:Bind Editable, Mode=OneWay}"
                                         LargeChange="500"
                                         Maximum="{x:Bind MemoryMaximum, Mode=OneWay}"
                                         Minimum="{x:Bind MemoryMinimum, Mode=OneWay}"

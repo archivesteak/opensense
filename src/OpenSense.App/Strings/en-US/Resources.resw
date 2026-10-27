@@ -2018,6 +2018,20 @@ Details: {1}</value>
     <value>The overclock the firmware sets for each mode, added to the offsets below.</value>
     <comment>Under "Acer's overclocking": the firmware's own overclock for each mode is added to the user's offsets set below it.</comment>
   </data>
+  <data name="GpuClocks_Enabled.Header" xml:space="preserve">
+    <value>Allow overclocking</value>
+    <comment>Switch in the GPU overclock section; the warning dialog appears when it is turned on.</comment>
+  </data>
+  <data name="GpuClocks_Enabled.Description" xml:space="preserve">
+    <value>The offsets below apply only while this is on.</value>
+  </data>
+  <data name="GpuClocks_TurnedOffAfterCrash.Title" xml:space="preserve">
+    <value>Overclocking was switched off</value>
+    <comment>Warning bar above the overclocking switch, shown after OpenSense switched overclocking off at start.</comment>
+  </data>
+  <data name="GpuClocks_TurnedOffAfterCrash.Message" xml:space="preserve">
+    <value>Windows stopped without shutting down while the GPU was overclocked, so the offsets weren't applied again. Lower them before you allow overclocking again.</value>
+  </data>
   <data name="Navigation_FailedTitle" xml:space="preserve">
     <value>This page could not be opened</value>
     <comment>Title when navigating to a page fails. The app remains open and offers a retry.</comment>

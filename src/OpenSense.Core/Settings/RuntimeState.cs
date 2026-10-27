@@ -12,6 +12,12 @@ public sealed record RuntimeState
 
     public GpuClockRecord? GpuClocks { get; init; }
 
+    /// <summary>
+    /// OpenSense's GPU clock offsets are in the driver. Still set when the engine starts, the last run never stopped
+    /// while they were (Windows crashed, froze or lost power), so overclocking is switched off instead of applied again.
+    /// </summary>
+    public bool GpuOverclockApplied { get; init; }
+
     /// <summary>The laptop's Mode key has been pressed once, so it has one (see <see cref="DeviceCapabilities.ModeKey"/>).</summary>
     public bool ModeKeySeen { get; init; }
 

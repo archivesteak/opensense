@@ -2018,6 +2018,20 @@ Detaljer: {1}</value>
     <value>Overklokkingen fastvaren setter for hver modus, lagt til forskyvningene nedenfor.</value>
     <comment>Under "Acer's overclocking": the firmware's own overclock for each mode is added to the user's offsets set below it.</comment>
   </data>
+  <data name="GpuClocks_Enabled.Header" xml:space="preserve">
+    <value>Tillat overklokking</value>
+    <comment>Switch in the GPU overclock section; the warning dialog appears when it is turned on.</comment>
+  </data>
+  <data name="GpuClocks_Enabled.Description" xml:space="preserve">
+    <value>Forskyvningene nedenfor brukes bare mens dette er på.</value>
+  </data>
+  <data name="GpuClocks_TurnedOffAfterCrash.Title" xml:space="preserve">
+    <value>Overklokking ble slått av</value>
+    <comment>Warning bar above the overclocking switch, shown after OpenSense switched overclocking off at start.</comment>
+  </data>
+  <data name="GpuClocks_TurnedOffAfterCrash.Message" xml:space="preserve">
+    <value>Windows stoppet uten å slå seg av normalt mens GPU-en var overklokket, så forskyvningene ble ikke brukt på nytt. Senk dem før du tillater overklokking igjen.</value>
+  </data>
   <data name="Navigation_FailedTitle" xml:space="preserve">
     <value>Denne siden kunne ikke åpnes</value>
     <comment>Title when navigating to a page fails. The app remains open and offers a retry.</comment>

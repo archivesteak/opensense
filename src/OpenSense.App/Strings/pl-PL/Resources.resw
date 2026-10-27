@@ -2018,6 +2018,20 @@ Szczegóły: {1}</value>
     <value>Podkręcenie, które oprogramowanie układowe ustawia dla każdego trybu, dodane do przesunięć poniżej.</value>
     <comment>Under "Acer's overclocking": the firmware's own overclock for each mode is added to the user's offsets set below it.</comment>
   </data>
+  <data name="GpuClocks_Enabled.Header" xml:space="preserve">
+    <value>Zezwalaj na podkręcanie</value>
+    <comment>Switch in the GPU overclock section; the warning dialog appears when it is turned on.</comment>
+  </data>
+  <data name="GpuClocks_Enabled.Description" xml:space="preserve">
+    <value>Przesunięcia poniżej działają tylko wtedy, gdy ta opcja jest włączona.</value>
+  </data>
+  <data name="GpuClocks_TurnedOffAfterCrash.Title" xml:space="preserve">
+    <value>Podkręcanie zostało wyłączone</value>
+    <comment>Warning bar above the overclocking switch, shown after OpenSense switched overclocking off at start.</comment>
+  </data>
+  <data name="GpuClocks_TurnedOffAfterCrash.Message" xml:space="preserve">
+    <value>System Windows zatrzymał się bez prawidłowego zamknięcia, gdy GPU był podkręcony, więc przesunięcia nie zostały ponownie zastosowane. Zmniejsz je, zanim znowu zezwolisz na podkręcanie.</value>
+  </data>
   <data name="Navigation_FailedTitle" xml:space="preserve">
     <value>Nie udało się otworzyć tej strony</value>
     <comment>Title when navigating to a page fails. The app remains open and offers a retry.</comment>

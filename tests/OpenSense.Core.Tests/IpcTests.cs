@@ -7,6 +7,7 @@ using OpenSense.Core.Hardware.Boot;
 using OpenSense.Core.Ipc;
 using OpenSense.Core.Lighting;
 using OpenSense.Core.Monitoring;
+using OpenSense.Core.Settings;
 
 namespace OpenSense.Core.Tests;
 
@@ -107,7 +108,7 @@ public sealed class IpcTests : IAsyncLifetime
         var profile = new ControlProfile
         {
             OperatingMode = OperatingMode.Performance,
-            GpuClocks = new GpuClockSettings { Modes = new Dictionary<OperatingMode, ClockOffsets> { [OperatingMode.Performance] = new(150, 500) } },
+            GpuClocks = new GpuClockSettings { Enabled = true, Modes = new Dictionary<OperatingMode, ClockOffsets> { [OperatingMode.Performance] = new(150, 500) } },
         };
 
         await _service.SetProfileAsync(profile, TestContext.Current.CancellationToken);
@@ -119,6 +120,59 @@ public sealed class IpcTests : IAsyncLifetime
         // The limits are remembered for next time, when the GPU may be asleep.
         Assert.Contains("610.62", await _service.GetDiagnosticsAsync(TestContext.Current.CancellationToken), StringComparison.Ordinal);
         Assert.Contains("\"CoreMax\": 1000", await File.ReadAllTextAsync(Path.Combine(_directory, "state.json"), TestContext.Current.CancellationToken), StringComparison.Ordinal);
+    }
+
+    /// <summary>
+    /// Issue #17: an overclock that crashes Windows was applied again at every start, so the laptop never stayed up.
+    /// Found still applied when the engine starts, it is switched off instead.
+    /// </summary>
+    [Fact]
+    public async Task An_overclock_a_crash_left_applied_is_switched_off_at_the_next_start()
+    {
+        var profile = new ControlProfile
+        {
+            OperatingMode = OperatingMode.Performance,
+            GpuClocks = new GpuClockSettings { Enabled = true, Modes = new Dictionary<OperatingMode, ClockOffsets> { [OperatingMode.Performance] = new(150, 500) } },
+        };
+        var applied = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        _service.TelemetryUpdated += (_, t) =>
+        {
+            if (t.GpuClocks?.Applied is { CoreMhz: 150 })
+                applied.TrySetResult();
+        };
+        await _service.SetProfileAsync(profile, TestContext.Current.CancellationToken);
+        await applied.Task.WaitAsync(Timeout, TestContext.Current.CancellationToken);
+        var state = new SettingsStore<RuntimeState>(Path.Combine(_directory, "state.json"));
+        Assert.True(state.Load().GpuOverclockApplied); // on disk at once, for a crash to leave behind
+
+        // Windows crashes with these files on disk and starts again, the driver's offsets back to 0.
+        var restarted = Path.Combine(_directory, "restarted");
+        Directory.CreateDirectory(restarted);
+        new SettingsStore<MachineSettings>(Path.Combine(restarted, "settings.json")).Save(new MachineSettings { Profile = profile });
+        new SettingsStore<RuntimeState>(Path.Combine(restarted, "state.json")).Save(state.Load());
+        var driver = new FakeGpuClocks();
+        using var engine = new OpenSenseEngine(new SimulatedMachine(SimulatedModel.Nitro2022) { GpuClocks = driver },
+            Path.Combine(restarted, "settings.json"), NullLogger<OpenSenseEngine>.Instance);
+        var ticked = new TaskCompletionSource<Telemetry>(TaskCreationOptions.RunContinuationsAsynchronously);
+        engine.TelemetryUpdated += (_, t) =>
+        {
+            if (t.GpuClocks is not null)
+                ticked.TrySetResult(t);
+        };
+        engine.Start();
+        var telemetry = await ticked.Task.WaitAsync(Timeout, TestContext.Current.CancellationToken);
+
+        Assert.Null(telemetry.GpuClocks!.Target);
+        Assert.Empty(driver.Writes);
+        var clocks = (await engine.GetSnapshotAsync(TestContext.Current.CancellationToken)).Settings.Profile.GpuClocks;
+        Assert.False(clocks.Enabled);
+        Assert.True(clocks.TurnedOffAfterCrash);
+        Assert.Equal(new ClockOffsets(150, 500), clocks.Modes[OperatingMode.Performance]); // kept, to be lowered
+        Assert.False(new SettingsStore<RuntimeState>(Path.Combine(restarted, "state.json")).Load().GpuOverclockApplied);
+
+        // A normal stop puts the offsets back to 0 and leaves nothing to find.
+        _engine.Dispose();
+        Assert.False(state.Load().GpuOverclockApplied);
     }
 
     [Fact]

@@ -206,6 +206,7 @@ public sealed class GpuClockControlLoopTests
             OperatingMode = OperatingMode.Turbo,
             GpuClocks = new GpuClockSettings
             {
+                Enabled = true,
                 Modes = new Dictionary<OperatingMode, ClockOffsets> { [OperatingMode.Turbo] = new(150, 500) },
                 Fixed = new ClockOffsets(45, 0), // for laptops without modes: not used here
             },
@@ -230,7 +231,7 @@ public sealed class GpuClockControlLoopTests
         var gpu = new FakeGpuSensor();
         var sensors = new DirectSensors(null, gpu, new FakeGpuPowerState { On = true }, SensorStatus.NotUsed, gpu.Status, driver);
         var device = new AcerDevice(new FakeFirmware());
-        var profile = new ControlProfile { GpuClocks = new GpuClockSettings { Fixed = new ClockOffsets(45, 200) } };
+        var profile = new ControlProfile { GpuClocks = new GpuClockSettings { Enabled = true, Fixed = new ClockOffsets(45, 200) } };
         var service = new FanControlService(device, CapabilityProbe.Probe(device), new FakeLoad(), new FakePower(), profile, sensors);
 
         service.Tick();
@@ -245,7 +246,7 @@ public sealed class GpuClockControlLoopTests
         var gpu = new FakeGpuSensor();
         var sensors = new DirectSensors(null, gpu, new FakeGpuPowerState { On = false }, SensorStatus.NotUsed, gpu.Status, driver);
         var device = new AcerDevice(new FakeFirmware());
-        var profile = new ControlProfile { GpuClocks = new GpuClockSettings { Fixed = new ClockOffsets(45, 200) } };
+        var profile = new ControlProfile { GpuClocks = new GpuClockSettings { Enabled = true, Fixed = new ClockOffsets(45, 200) } };
         var service = new FanControlService(device, CapabilityProbe.Probe(device), new FakeLoad(), new FakePower(), profile, sensors);
 
         service.Tick();

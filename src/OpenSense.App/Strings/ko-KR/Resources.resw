@@ -2018,6 +2018,20 @@ GPU: {1}</value>
     <value>펌웨어가 모드마다 정한 오버클럭을 아래 오프셋에 더합니다.</value>
     <comment>Under "Acer's overclocking": the firmware's own overclock for each mode is added to the user's offsets set below it.</comment>
   </data>
+  <data name="GpuClocks_Enabled.Header" xml:space="preserve">
+    <value>오버클럭 허용</value>
+    <comment>Switch in the GPU overclock section; the warning dialog appears when it is turned on.</comment>
+  </data>
+  <data name="GpuClocks_Enabled.Description" xml:space="preserve">
+    <value>아래 오프셋은 이 옵션이 켜져 있을 때만 적용됩니다.</value>
+  </data>
+  <data name="GpuClocks_TurnedOffAfterCrash.Title" xml:space="preserve">
+    <value>오버클럭이 꺼졌습니다</value>
+    <comment>Warning bar above the overclocking switch, shown after OpenSense switched overclocking off at start.</comment>
+  </data>
+  <data name="GpuClocks_TurnedOffAfterCrash.Message" xml:space="preserve">
+    <value>GPU가 오버클럭된 상태에서 Windows가 정상적으로 종료되지 않고 멈췄기 때문에 오프셋을 다시 적용하지 않았습니다. 오버클럭을 다시 허용하기 전에 오프셋을 낮추세요.</value>
+  </data>
   <data name="Navigation_FailedTitle" xml:space="preserve">
     <value>이 페이지를 열 수 없습니다</value>
     <comment>Title when navigating to a page fails. The app remains open and offers a retry.</comment>

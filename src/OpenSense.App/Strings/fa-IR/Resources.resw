@@ -2018,6 +2018,20 @@ GPU: {1}</value>
     <value>اورکلاکی که میان‌افزار برای هر حالت تعیین می‌کند، به‌علاوهٔ آفست‌های زیر.</value>
     <comment>Under "Acer's overclocking": the firmware's own overclock for each mode is added to the user's offsets set below it.</comment>
   </data>
+  <data name="GpuClocks_Enabled.Header" xml:space="preserve">
+    <value>اجازهٔ اورکلاک</value>
+    <comment>Switch in the GPU overclock section; the warning dialog appears when it is turned on.</comment>
+  </data>
+  <data name="GpuClocks_Enabled.Description" xml:space="preserve">
+    <value>آفست‌های زیر فقط وقتی این گزینه روشن است اعمال می‌شوند.</value>
+  </data>
+  <data name="GpuClocks_TurnedOffAfterCrash.Title" xml:space="preserve">
+    <value>اورکلاک خاموش شد</value>
+    <comment>Warning bar above the overclocking switch, shown after OpenSense switched overclocking off at start.</comment>
+  </data>
+  <data name="GpuClocks_TurnedOffAfterCrash.Message" xml:space="preserve">
+    <value>Windows در حالی که GPU اورکلاک بود بدون خاموش شدن عادی متوقف شد، بنابراین آفست‌ها دوباره اعمال نشدند. پیش از اینکه دوباره اجازهٔ اورکلاک بدهید، آن‌ها را کم کنید.</value>
+  </data>
   <data name="Navigation_FailedTitle" xml:space="preserve">
     <value>این صفحه باز نشد</value>
     <comment>Title when navigating to a page fails. The app remains open and offers a retry.</comment>

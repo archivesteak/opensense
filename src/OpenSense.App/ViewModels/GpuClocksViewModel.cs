@@ -38,9 +38,18 @@ public sealed partial class GpuClockRowViewModel(OperatingMode? mode, string nam
     [ObservableProperty]
     public partial double MemoryMaximum { get; set; } = Unbounded;
 
-    /// <summary>The offsets can be edited once the driver's limits are known.</summary>
+    /// <summary>The driver's limits are known.</summary>
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(Editable))]
     public partial bool LimitsKnown { get; set; }
+
+    /// <summary>Overclocking is switched on.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(Editable))]
+    public partial bool Unlocked { get; set; }
+
+    /// <summary>The offsets can be edited: overclocking is on and the driver's limits are known.</summary>
+    public bool Editable => LimitsKnown && Unlocked;
 
     /// <summary>The firmware's overclock for the mode, where it is followed, and "In use now" on the mode in force.</summary>
     [ObservableProperty]
@@ -124,7 +133,18 @@ public sealed partial class GpuClocksViewModel : ObservableObject
     [ObservableProperty]
     public partial bool FollowFirmware { get; set; }
 
-    /// <summary>Asked before the first offsets are set; true to go ahead.</summary>
+    /// <summary>Overclocking is switched on: the offsets set here apply, and can be edited.</summary>
+    [ObservableProperty]
+    public partial bool Enabled { get; set; }
+
+    /// <summary>The engine switched overclocking off because Windows stopped while it was on.</summary>
+    [ObservableProperty]
+    public partial bool TurnedOffAfterCrash { get; set; }
+
+    /// <summary>
+    /// Asked when overclocking is switched on; true to go ahead. Only the switch asks: a dialog opened by an offset's
+    /// spin button leaves the button pressed, and it then steps on its own whenever the pointer is over it (issue #17).
+    /// </summary>
     public Func<Task<bool>>? ConfirmOverclock { get; set; }
 
     /// <summary>Called on the UI thread once the device session is ready, and whenever it changes.</summary>
@@ -137,6 +157,8 @@ public sealed partial class GpuClocksViewModel : ObservableObject
         _firmware = _perMode ? caps.EcHid?.GpuOffsets : null;
         FirmwareOverclock = _firmware is { Count: > 0 };
         FollowFirmware = settings.FollowFirmware;
+        Enabled = settings.Enabled;
+        TurnedOffAfterCrash = settings.TurnedOffAfterCrash;
         Rows.Clear();
         if (_perMode)
         {
@@ -160,6 +182,39 @@ public sealed partial class GpuClocksViewModel : ObservableObject
         ShowFirmware();
         Show(_session.Latest);
         Push();
+    }
+
+    partial void OnEnabledChanged(bool value)
+    {
+        if (_loading)
+            return;
+        if (value)
+        {
+            _ = SwitchOnAsync();
+            return;
+        }
+        Unlock(false);
+        Push();
+    }
+
+    /// <summary>Only after the warning do the offsets unlock and reach the engine; otherwise the switch goes back off.</summary>
+    private async Task SwitchOnAsync()
+    {
+        if (ConfirmOverclock is not { } confirm || await confirm())
+        {
+            Unlock(true);
+            Push();
+            return;
+        }
+        _loading = true;
+        Enabled = false;
+        _loading = false;
+    }
+
+    private void Unlock(bool unlocked)
+    {
+        foreach (var row in Rows)
+            row.Unlocked = unlocked;
     }
 
     /// <summary>Each mode's own overclock from the firmware, while it is followed.</summary>
@@ -188,27 +243,13 @@ public sealed partial class GpuClocksViewModel : ObservableObject
     }
 
     private GpuClockRowViewModel Row(OperatingMode? mode, string name, ClockOffsets offsets) =>
-        new(mode, name, OnRowChanged) { Core = offsets.CoreMhz, Memory = offsets.MemoryMhz };
+        new(mode, name, OnRowChanged) { Core = offsets.CoreMhz, Memory = offsets.MemoryMhz, Unlocked = Enabled };
 
     private void OnRowChanged(GpuClockRowViewModel row)
     {
-        if (!_loading)
-            _ = ChangeAsync(row);
-    }
-
-    private async Task ChangeAsync(GpuClockRowViewModel row)
-    {
-        var overclocked = Rows.Any(r => !r.Offsets.IsNone);
-        if (!Overclocked && overclocked && ConfirmOverclock is { } confirm && !await confirm())
-        {
-            // Nothing was set before, so this row goes back to none.
-            _loading = true;
-            row.Core = 0;
-            row.Memory = 0;
-            _loading = false;
+        if (_loading)
             return;
-        }
-        Overclocked = overclocked;
+        Overclocked = Rows.Any(r => !r.Offsets.IsNone);
         Push();
     }
 
@@ -235,7 +276,12 @@ public sealed partial class GpuClocksViewModel : ObservableObject
         {
             clocks = clocks with { Fixed = Rows[0].Offsets };
         }
-        _ = _session.SetProfileAsync(profile with { GpuClocks = clocks with { FollowFirmware = FollowFirmware } });
+        // Switching either back on answers the warning about the crash.
+        TurnedOffAfterCrash &= !Enabled && !FollowFirmware;
+        _ = _session.SetProfileAsync(profile with
+        {
+            GpuClocks = clocks with { Enabled = Enabled, FollowFirmware = FollowFirmware, TurnedOffAfterCrash = TurnedOffAfterCrash },
+        });
     }
 
     private void Show(Telemetry? telemetry)

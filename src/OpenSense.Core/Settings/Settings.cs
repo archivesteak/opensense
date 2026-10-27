@@ -61,9 +61,12 @@ public sealed record UserSettings
 public sealed record MachineSettings
 {
     /// <summary>What <see cref="Upgrade"/> brings settings to.</summary>
-    public const int CurrentVersion = 2;
+    public const int CurrentVersion = 3;
 
-    /// <summary>2: lighting per light in <see cref="Lighting"/> (version 1 kept the keyboard's in <see cref="Keyboard"/>).</summary>
+    /// <summary>
+    /// 2: lighting per light in <see cref="Lighting"/> (version 1 kept the keyboard's in <see cref="Keyboard"/>).
+    /// 3: GPU offsets apply only while overclocking is switched on (<see cref="GpuClockSettings.Enabled"/>).
+    /// </summary>
     public int Version { get; init; } = CurrentVersion;
     public ControlProfile Profile { get; init; } = new();
     public KeyboardSettings Keyboard { get; init; } = new();
@@ -89,6 +92,13 @@ public sealed record MachineSettings
                     ? settings.Lighting.With(EcKeyboardBackend.Id, keyboard)
                     : settings.Lighting,
             };
+        }
+        if (settings.Version < 3)
+        {
+            // Offsets set then were applied (the user had confirmed the warning), so overclocking stays on with them.
+            var clocks = settings.Profile.GpuClocks;
+            var set = !clocks.Fixed.IsNone || clocks.Modes.Values.Any(o => !o.IsNone);
+            settings = settings with { Profile = settings.Profile with { GpuClocks = clocks with { Enabled = set } } };
         }
         return settings with { Version = CurrentVersion };
     }

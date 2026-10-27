@@ -350,7 +350,7 @@ public sealed class EcHidControlTests : IDisposable
         var profile = new ControlProfile
         {
             OperatingMode = OperatingMode.Turbo,
-            GpuClocks = new GpuClockSettings { Modes = new Dictionary<OperatingMode, ClockOffsets> { [OperatingMode.Turbo] = new(15, 100) } },
+            GpuClocks = new GpuClockSettings { Enabled = true, Modes = new Dictionary<OperatingMode, ClockOffsets> { [OperatingMode.Turbo] = new(15, 100) } },
         };
         var service = Service(profile, sensors);
 
@@ -438,10 +438,11 @@ public sealed class EcHidModePolicyTests
     public void The_firmwares_offsets_add_to_the_users_while_followed()
     {
         var firmware = new Dictionary<OperatingMode, ClockOffsets> { [OperatingMode.Turbo] = new(150, 200) };
-        var clocks = new GpuClockSettings { Modes = new Dictionary<OperatingMode, ClockOffsets> { [OperatingMode.Turbo] = new(-30, 0) } };
+        var clocks = new GpuClockSettings { Enabled = true, Modes = new Dictionary<OperatingMode, ClockOffsets> { [OperatingMode.Turbo] = new(-30, 0) } };
 
         Assert.Equal(new ClockOffsets(120, 200), clocks.For(true, OperatingMode.Turbo, firmware));
         Assert.Equal(new ClockOffsets(-30, 0), (clocks with { FollowFirmware = false }).For(true, OperatingMode.Turbo, firmware));
+        Assert.Equal(new ClockOffsets(150, 200), (clocks with { Enabled = false }).For(true, OperatingMode.Turbo, firmware)); // the user's switched off
         Assert.Equal(ClockOffsets.None, clocks.For(true, OperatingMode.Quiet, firmware));
         Assert.Equal(ClockOffsets.None, clocks.For(false, OperatingMode.Turbo, firmware)); // without modes: the fixed ones
     }

@@ -9,6 +9,18 @@ namespace OpenSense.Core.Control;
 /// </summary>
 public sealed record GpuClockSettings
 {
+    /// <summary>
+    /// Overclocking is switched on (after a warning): the offsets below apply only while it is. Settings version 2
+    /// applied any offsets set (see <see cref="MachineSettings.Upgrade"/>).
+    /// </summary>
+    public bool Enabled { get; init; }
+
+    /// <summary>
+    /// The engine switched overclocking off at start because the last run never stopped while its offsets were in the
+    /// driver (Windows crashed, froze or lost power); cleared when the user switches it on again.
+    /// </summary>
+    public bool TurnedOffAfterCrash { get; init; }
+
     /// <summary>Offsets per operating mode; a mode without an entry runs at the driver's clocks.</summary>
     public IReadOnlyDictionary<OperatingMode, ClockOffsets> Modes { get; init; } = new Dictionary<OperatingMode, ClockOffsets>();
 
@@ -23,16 +35,16 @@ public sealed record GpuClockSettings
 
     /// <summary>
     /// What applies in <paramref name="mode"/>: its own offsets with operating modes (plus the firmware's for it, when
-    /// followed), else <see cref="Fixed"/>.
+    /// followed), else <see cref="Fixed"/>; the offsets set here only while <see cref="Enabled"/>.
     /// </summary>
     /// <param name="firmware">The firmware's offsets per mode, where it has them.</param>
     public ClockOffsets For(bool operatingModes, OperatingMode? mode, IReadOnlyDictionary<OperatingMode, ClockOffsets>? firmware = null)
     {
         if (!operatingModes)
-            return Fixed;
+            return Enabled ? Fixed : ClockOffsets.None;
         if (mode is not { } m)
             return ClockOffsets.None;
-        var own = Modes.GetValueOrDefault(m) ?? ClockOffsets.None;
+        var own = Enabled ? Modes.GetValueOrDefault(m) ?? ClockOffsets.None : ClockOffsets.None;
         return FollowFirmware && firmware?.GetValueOrDefault(m) is { } acer ? own.Add(acer) : own;
     }
 }
@@ -61,6 +73,9 @@ internal sealed class GpuClockController(IGpuClockControl clocks, GpuClockRecord
     /// <summary>The driver refused offsets it had reported it accepts.</summary>
     public event Action? Refused;
 
+    /// <summary>OpenSense's offsets went into the driver (true), or it put them back to 0 (false).</summary>
+    public event Action<bool>? OwnedChanged;
+
     /// <param name="wanted">What the settings ask for in the operating mode in force.</param>
     /// <param name="gpuOn">Whether the GPU is on; null when that can't be told, which counts as off.</param>
     /// <param name="reread">Read the driver again (after a resume, when another program may have changed it).</param>
@@ -88,7 +103,7 @@ internal sealed class GpuClockController(IGpuClockControl clocks, GpuClockRecord
         if (goal is not null && _inDriver is { } current && _limits is not null && goal != current && goal != _refused)
             Write(goal, current);
         if (goal is not null && _inDriver == goal)
-            _owned = !goal.IsNone;
+            Own(!goal.IsNone);
         return new GpuClockTelemetry(_limits, on ? _inDriver : null, target);
     }
 
@@ -97,10 +112,24 @@ internal sealed class GpuClockController(IGpuClockControl clocks, GpuClockRecord
     {
         if (!_owned)
             return;
-        // Even with the GPU off: waking it for a moment beats leaving it overclocked without OpenSense.
-        clocks.Write(GpuClock.Core, 0);
-        clocks.Write(GpuClock.Memory, 0);
-        _owned = false;
+        try
+        {
+            // Even with the GPU off: waking it for a moment beats leaving it overclocked without OpenSense.
+            clocks.Write(GpuClock.Core, 0);
+            clocks.Write(GpuClock.Memory, 0);
+        }
+        finally
+        {
+            Own(false); // the engine stopped normally either way
+        }
+    }
+
+    private void Own(bool owned)
+    {
+        if (owned == _owned)
+            return;
+        _owned = owned;
+        OwnedChanged?.Invoke(owned);
     }
 
     private void Read()
@@ -130,7 +159,7 @@ internal sealed class GpuClockController(IGpuClockControl clocks, GpuClockRecord
         var memory = goal.MemoryMhz == current.MemoryMhz || clocks.Write(GpuClock.Memory, goal.MemoryMhz);
         _inDriver = new ClockOffsets(core ? goal.CoreMhz : current.CoreMhz, memory ? goal.MemoryMhz : current.MemoryMhz);
         if (!_inDriver.IsNone)
-            _owned = true;
+            Own(true);
         if (core && memory)
             return;
         _refused = goal; // not again until the goal changes or the GPU comes back
