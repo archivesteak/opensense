@@ -140,9 +140,6 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
 
     public Telemetry? Latest { get; private set; }
 
-    /// <summary>Where the loop's time goes, for the diagnostics.</summary>
-    internal LoopTimings Timings { get; } = new();
-
     /// <summary>Raised on the control thread after every sample.</summary>
     public event Action<Telemetry>? TelemetryUpdated;
 
@@ -309,7 +306,6 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
 
     private void Run()
     {
-        ProcessUsage.NameThisThread("control loop");
         Exception? failure = null;
         try
         {
@@ -344,7 +340,6 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
             }
             finally
             {
-                ProcessUsage.ForgetThisThread();
                 FinishStopping(failure);
             }
         }
@@ -358,12 +353,11 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
             if (_stopping)
                 job.Reject();
             else
-                Timings.Time(LoopPart.Requests, job.Run);
+                job.Run();
         }
         if (_stopping)
             return;
 
-        var step = Stopwatch.GetTimestamp();
         var now = _clock();
         var reapply = false;
         lock (_reapplyAt)
@@ -382,7 +376,6 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
             Sample();
             _lastSample = now;
         }
-        var control = Stopwatch.GetTimestamp();
         var onAc = _power.Read().OnAc;
         _limit = ReadPowerLimit(now, onAc);
 
@@ -394,7 +387,6 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
             _gpuOn, reapply);
         TrackDustDefender(now);
         var (effective, fanLock, boosting) = ApplyFans(profile, now, reapply);
-        Timings.Add(LoopPart.Control, control);
 
         var telemetry = new Telemetry
         {
@@ -426,14 +418,13 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
             DustDefenderRunning = Capabilities.DustDefender ? _dustSince is not null : null,
         };
         Latest = telemetry;
-        Timings.Time(LoopPart.Telemetry, () => TelemetryUpdated?.Invoke(telemetry));
-        Timings.AddStep(step);
+        TelemetryUpdated?.Invoke(telemetry);
     }
 
     private void Sample()
     {
         // Prefer the chips' own sensors; the embedded controller's copy lags and is rounded.
-        var cpu = Timings.Time(LoopPart.CpuSensor, _direct.ReadCpu);
+        var cpu = _direct.ReadCpu();
         _cpuOrigin = cpu is null ? TemperatureOrigin.Firmware : TemperatureOrigin.Processor;
         _cpuTemp = cpu ?? SensorReadings.Temperature(Capabilities.Has(SensorId.CpuTemperature) ? ReadFirmwareSensor(SensorId.CpuTemperature) : null);
 
@@ -444,10 +435,10 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
             var g = SensorReadings.Temperature(rawGpu);
             // Is the discrete GPU on? Windows knows where it powers the GPU down itself. The firmware reads 0 while
             // the GPU is off, but after a resume from sleep it can go on reading 0 with the GPU back on (AN515-57).
-            var on = Timings.Time(LoopPart.GpuPowerState, _direct.ReadGpuPower) ?? (g is not null ? true : rawGpu == 0 ? false : (bool?)null);
+            var on = _direct.ReadGpuPower() ?? (g is not null ? true : rawGpu == 0 ? false : (bool?)null);
             _gpuOn = on;
             // Asking the driver while the GPU is off could wake it.
-            var gpu = on == true ? Timings.Time(LoopPart.GpuDriver, _direct.ReadGpu) : null;
+            var gpu = on == true ? _direct.ReadGpu() : null;
             _gpuOrigin = gpu is null ? TemperatureOrigin.Firmware : TemperatureOrigin.GpuDriver;
             _gpuTemp = gpu ?? (g > 0 ? g : null);
             _gpuAsleep = on == false && _gpuTemp is null;
@@ -472,7 +463,7 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
 
         try
         {
-            (_cpuLoad, _gpuLoad) = Timings.Time(LoopPart.LoadCounters, _load.Sample);
+            (_cpuLoad, _gpuLoad) = _load.Sample();
         }
         catch (Exception ex) when (ex is not OutOfMemoryException)
         {
@@ -481,7 +472,7 @@ public sealed class FanControlService : IDeviceDispatcher, IDisposable
     }
 
     /// <summary>One of the firmware's sensors, over Acer's WMI interface.</summary>
-    private int? ReadFirmwareSensor(SensorId id) => Timings.Time(LoopPart.FirmwareSensors, () => _device.ReadSensor(id));
+    private int? ReadFirmwareSensor(SensorId id) => _device.ReadSensor(id);
 
     /// <summary>
     /// What the power supply allows. The battery-boost flag, and the adapter where the embedded controller reports it,

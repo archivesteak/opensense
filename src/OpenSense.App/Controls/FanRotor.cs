@@ -159,7 +159,6 @@ public sealed partial class FanRotor : CanvasElement
         ramp.InsertExpressionKeyFrame(1, FormattableString.Invariant($"Mod(this.StartingValue, 360) + {degrees:0.###}"), easing);
         ramp.Duration = RampLength;
 
-        UiActivity.Count(UiWork.FanAnimations); // temporary diagnostics
         var batch = compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
         _visual.StartAnimation(SpinProperty, ramp);
         batch.End();
@@ -213,7 +212,6 @@ public sealed partial class FanRotor : CanvasElement
 
     private void StepBoost()
     {
-        UiActivity.Count(UiWork.BoostFrames); // temporary diagnostics
         var t =Math.Min(1, (DateTime.UtcNow - _boostStart) / BoostAnimationLength);
         _shownBoost = _boostFrom + (_boostTo - _boostFrom) * (1 - Math.Pow(1 - t, 3));
         if (t >= 1)

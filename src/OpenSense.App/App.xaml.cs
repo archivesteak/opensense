@@ -8,7 +8,6 @@ using Microsoft.UI.Xaml;
 using OpenSense.App.Services;
 using OpenSense.App.Startup;
 using OpenSense.App.ViewModels;
-using OpenSense.Core.Monitoring;
 using OpenSense.Core.Settings;
 using OpenSense.Core.Updates;
 using Serilog;
@@ -49,9 +48,6 @@ public partial class App : Application
             if (e.DidVisibilityChange)
                 WindowVisibilityChanged?.Invoke();
         };
-        ProcessUsage.NameThisThread("UI thread");
-        var window = _window;
-        Services.GetRequiredService<TrayUsage>().Watch(window.AppWindow, () => window.CurrentPage, startsHidden: _options.Autostart);
         Services.GetRequiredService<TrayService>().Initialize();
         Services.GetRequiredService<ToastService>().Initialize();
         _instance.Activated += () => _window.DispatcherQueue.TryEnqueue(ShowMainWindow);
@@ -89,7 +85,6 @@ public partial class App : Application
         builder.Services.AddSingleton<NotificationService>();
         builder.Services.AddSingleton<TrayService>();
         builder.Services.AddSingleton<ToastService>();
-        builder.Services.AddSingleton<TrayUsage>();
         builder.Services.AddSingleton<NavigationService>();
         builder.Services.AddSingleton<NitroSenseKey>();
         builder.Services.AddSingleton<OpenShortcut>();

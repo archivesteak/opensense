@@ -46,29 +46,6 @@ internal sealed class PdhQuery : IDisposable
         return result;
     }
 
-    /// <summary>The raw first value of every instance of a wildcard counter, e.g. a running total such as GPU engine time.</summary>
-    public static unsafe List<(string Instance, long Value)> RawValues(PDH_HCOUNTER counter)
-    {
-        var result = new List<(string, long)>();
-        uint size = 0, count = 0;
-        if (PInvoke.PdhGetRawCounterArray(counter, &size, &count, null) != PInvoke.PDH_MORE_DATA || size == 0)
-            return result;
-
-        var buffer = new byte[size];
-        fixed (byte* raw = buffer)
-        {
-            var items = (PDH_RAW_COUNTER_ITEM_W*)raw;
-            if (PInvoke.PdhGetRawCounterArray(counter, &size, &count, items) != 0)
-                return result;
-            for (var i = 0; i < count; i++)
-            {
-                if (IsValid(items[i].RawValue.CStatus))
-                    result.Add((items[i].szName.ToString(), items[i].RawValue.FirstValue));
-            }
-        }
-        return result;
-    }
-
     // PDH_CSTATUS_VALID_DATA (0) or PDH_CSTATUS_NEW_DATA (1).
     private static bool IsValid(uint status) => status <= 1;
 

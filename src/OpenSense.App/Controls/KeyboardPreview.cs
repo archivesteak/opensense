@@ -167,7 +167,6 @@ public sealed partial class KeyboardPreview : CanvasElement
     /// </summary>
     private void OnRendering(object? sender, object e)
     {
-        UiActivity.Count(UiWork.PreviewFrames); // temporary diagnostics
         var now = Stopwatch.GetTimestamp();
         if (_pendingAt is { } at && now >= at)
         {

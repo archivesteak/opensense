@@ -61,7 +61,6 @@ public sealed partial class MainWindow : Window
         bios.ConfirmDefaults = ConfirmBiosDefaultsAsync;
 
         AppWindow.Closing += OnClosing;
-        RootGrid.LayoutUpdated += (_, _) => UiActivity.Count(UiWork.LayoutPasses); // temporary diagnostics
         navigation.Requested += NavigateTo;
         ContentFrame.NavigationFailed += (_, e) =>
         {
@@ -85,9 +84,6 @@ public sealed partial class MainWindow : Window
     public ShellViewModel Shell { get; }
 
     public UpdateViewModel Updates { get; }
-
-    /// <summary>The page on screen ("Dashboard", "Fans"…), for the diagnostics.</summary>
-    public string CurrentPage => ContentFrame.CurrentSourcePageType?.Name.Replace("Page", "", StringComparison.Ordinal) ?? "none";
 
     /// <summary>Right to left for Arabic, Hebrew and Persian.</summary>
     private static FlowDirection LayoutDirection => AppLanguage.IsRightToLeft ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;

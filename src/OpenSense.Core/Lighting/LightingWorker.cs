@@ -47,7 +47,6 @@ public sealed class LightingWorker : IDisposable
 
     private void Run()
     {
-        ProcessUsage.NameThisThread("lighting");
         try
         {
             foreach (var job in _queue.GetConsumingEnumerable())
@@ -55,7 +54,6 @@ public sealed class LightingWorker : IDisposable
         }
         finally
         {
-            ProcessUsage.ForgetThisThread();
             _queue.Dispose();
             _completion.TrySetResult();
         }

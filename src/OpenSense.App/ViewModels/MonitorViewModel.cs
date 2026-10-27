@@ -1,5 +1,4 @@
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Dispatching;
 using OpenSense.App.Helpers;
@@ -159,7 +158,6 @@ public sealed partial class MonitorViewModel : ObservableObject
 
     private void Apply(Telemetry t)
     {
-        var started = Stopwatch.GetTimestamp(); // temporary diagnostics
         Latest = t;
         OnAcPower = t.OnAcPower;
         GpuAsleep = t.GpuAsleep;
@@ -192,6 +190,5 @@ public sealed partial class MonitorViewModel : ObservableObject
         }
 
         Revision++;
-        UiActivity.CountTelemetry(started);
     }
 }

@@ -52,11 +52,7 @@ public abstract partial class CanvasElement : UserControl
             return;
         UiSettings.ColorValuesChanged += OnColorValuesChanged;
         _canvas = new CanvasControl { ClearColor = Colors.Transparent };
-        _canvas.Draw += (s, args) =>
-        {
-            UiActivity.Count(UiWork.CanvasDraws); // temporary diagnostics
-            OnDraw(args.DrawingSession, s.Size);
-        };
+        _canvas.Draw += (s, args) => OnDraw(args.DrawingSession, s.Size);
         AttachInput(_canvas);
         _root.Children.Insert(0, _canvas);
     }

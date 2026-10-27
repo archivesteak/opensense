@@ -49,12 +49,6 @@ public sealed partial class OpenSenseEngine
                 text.AppendLine(CultureInfo.InvariantCulture, $"  {time:HH:mm:ss} {note}");
         }
         text.AppendLine(GpuClockDiagnostics());
-        // Temporary, to find out what costs CPU in the background on some laptops.
-        var usage = ProcessUsage.Take();
-        text.AppendLine(CultureInfo.InvariantCulture, $"Engine process ({Path.GetFileName(Environment.ProcessPath)}), since it started:");
-        Usage.Between(null, usage).Describe(text, "  ");
-        text.AppendLine(CultureInfo.InvariantCulture, $"  now: {usage.State}");
-        text.Append(_controller?.Timings.Describe() ?? "Control loop: not running" + Environment.NewLine);
         text.AppendLine("HID devices:");
         _sessionGate.Wait(cancellationToken);
         try

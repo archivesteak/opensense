@@ -102,16 +102,3 @@ IOCTL_BATTERY_QUERY_INFORMATION
 BATTERY_QUERY_INFORMATION
 BATTERY_INFORMATION
 BATTERY_CAPACITY_RELATIVE
-
-// Diagnostics (temporary): CPU time by thread (its name, or the module it started in), the WMI service's process, GPU time
-GetCurrentThreadId
-OpenThread
-GetThreadDescription
-NtQueryInformationThread
-OpenSCManager
-OpenService
-QueryServiceStatusEx
-SERVICE_STATUS_PROCESS
-SC_MANAGER_CONNECT
-SERVICE_QUERY_STATUS
-PdhGetRawCounterArray
