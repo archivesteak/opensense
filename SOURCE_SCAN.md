@@ -11,8 +11,8 @@
 
 | Thành phần | Công nghệ / Cấu hình |
 |---|---|
-| Ngôn ngữ & Runtime | C# (`LangVersion=latest`), .NET 10 (`net10.0-windows10.0.19041.0`), .NET SDK `10.0.401` ([global.json](file:///D:/opensense/global.json)) |
-| Phân tích tĩnh & An toàn bộ nhớ | `Nullable=enable`, `ImplicitUsings=enable`, `AnalysisLevel=latest-recommended`, `EnforceCodeStyleInBuild=true`, `AllowUnsafeBlocks` tại `OpenSense.Core` |
+| Ngôn ngữ & Runtime | C# (`LangVersion=latest`), .NET 10 (`net10.0-windows10.0.19041.0`), .NET SDK tối thiểu `10.0.401` (`rollForward: latestFeature`, [global.json](file:///D:/opensense/global.json); máy cục bộ đã cài `10.0.404`) |
+| Phân tích tĩnh & An toàn bộ nhớ | `Nullable=enable`, `ImplicitUsings=enable`, `AnalysisLevel=latest-recommended`, `EnforceCodeStyleInBuild=true`, `AllowUnsafeBlocks` tại `OpenSense.Core` & `OpenSense.App` |
 | UI Framework | WinUI 3 unpackaged self-contained (`WindowsPackageType=None`, `WindowsAppSDKSelfContained=true`, WindowsAppSDK `2.5.1`), Win2D (`1.4.0`), `CommunityToolkit.Mvvm` (`8.4.2`), `CommunityToolkit.WinUI.Controls.{Segmented,SettingsControls}` (`8.2.251219`), `H.NotifyIcon.WinUI` (`2.4.1`) |
 | IPC & Hosting | `StreamJsonRpc` (`2.25.29`, `SystemTextJsonFormatter`, `HeaderDelimitedMessageHandler`), `Microsoft.Extensions.*` (`10.0.12`), `Serilog` (`4.4.0`) |
 | Win32 P/Invoke & WMI | `Microsoft.Windows.CsWin32` (`0.3.335`), `System.Management` (`10.0.12`), kernel driver nhúng PawnIO (`AMDFamily17.bin`, `IntelMSR.bin`, LGPL-2.1) |
@@ -37,7 +37,7 @@ flowchart TB
     subgraph UI["OpenSense.App (WinUI 3 + Win2D, asInvoker)"]
         Views["5 Pages (Dashboard, Fans, Lighting, System, Settings)"]
         VMs["11 ViewModels + Win2D Custom Controls"]
-        AppSvc["App Services (Tray, Toast, NitroSenseKey, OpenShortcut, UpdateInstaller)"]
+        AppSvc["App Services (Tray, Toast, NitroSenseKey/Tracker, OpenShortcut, UpdateInstaller)"]
         Session["DeviceSession"]
         Views --> VMs --> Session
         AppSvc --> Session
@@ -97,15 +97,19 @@ Windows Service nhẹ gồm 3 file nguồn chính:
 
 ### 3.3. `OpenSense.App` ([OpenSense.App.csproj](file:///D:/opensense/src/OpenSense.App/OpenSense.App.csproj))
 
-Ứng dụng WinUI 3 đóng gói unpackaged (`AssemblyName=OpenSense`, hỗ trợ `x64;ARM64`, tắt `DISABLE_XAML_GENERATED_MAIN` để dùng `Program.cs` tùy chỉnh, và chứa MSBuild target `AddWindowsAppRuntimeVersionInfo` giải nén `Microsoft.WindowsAppRuntime.Insights.Resource.dll` nhằm khắc phục lỗi WindowsAppSDK #6071/#6725).
+Ứng dụng WinUI 3 đóng gói unpackaged (`AssemblyName=OpenSense`, hỗ trợ `x64;ARM64`, bật `DISABLE_XAML_GENERATED_MAIN` để dùng `Program.cs` tùy chỉnh, và chứa MSBuild target `AddWindowsAppRuntimeVersionInfo` giải nén `Microsoft.WindowsAppRuntime.Insights.Resource.dll` nhằm khắc phục lỗi WindowsAppSDK #6071/#6725).
 
+- **Vòng đời khởi động & Kích hoạt cửa sổ ([App.xaml.cs](file:///D:/opensense/src/OpenSense.App/App.xaml.cs)):**
+  - `OnLaunched` đăng ký `NitroSenseKey`, `OpenShortcut` và hook `_instance.Activated` / `ExitRequested` qua `DispatcherQueue` **trước** khi tạo `MainWindow`, `TrayService` và `ToastService`; đẩy `AutostartService.Refresh()` sang `Task.Run` (await lại trước `ShellViewModel.InitializeAsync()`) và giữ cờ `_showPending` nếu phím được bấm lúc cửa sổ đang khởi tạo.
+  - `ShowMainWindow()` phục hồi cửa sổ đang minimize (`OverlappedPresenter.Restore()`), gọi `AppWindow.Show()` + `_window.Activate()`, sau đó dùng `BringToForeground` (`AttachThreadInput` + `BringWindowToTop` + `SetForegroundWindow`, kèm fallback đảo `HWND_TOPMOST`/`HWND_NOTOPMOST`) để vượt qua foreground lock khi mở từ background raw input lúc chạy nền (`--autostart`).
+  - Lắng nghe `SystemEvents.SessionEnded` để gọi `SettingsService.Flush()` khi Windows tắt/khởi động lại.
 - **Khởi động & Một thực thể (`Startup/`):**
   - `LaunchOptions.cs`: Phân tích tham số CLI (`Exit`, `EnableAutostart`, `DisableAutostart`, `StartService`, `ApplyUpdate`).
-  - `SingleInstance.cs`: Dùng sự kiện đặt tên `Local\OpenSense.Activate` & `Local\OpenSense.Exit` với `EventWaitHandleAcl` cấp quyền `Modify | Synchronize` cho `AuthenticatedUserSid` (người dùng hiện tại giữ `FullControl`), cho phép tiến trình không nâng quyền đánh thức thực thể Portable đang nâng quyền UAC (điều mà `AppInstance` mặc định của WinAppSDK không làm được).
+  - [SingleInstance.cs](file:///D:/opensense/src/OpenSense.App/Startup/SingleInstance.cs): Dùng sự kiện đặt tên `Local\OpenSense.Activate` & `Local\OpenSense.Exit` với `EventWaitHandleAcl` cấp quyền `Modify | Synchronize` cho `AuthenticatedUserSid` (người dùng hiện tại giữ `FullControl`), cho phép tiến trình không nâng quyền đánh thức thực thể Portable đang nâng quyền UAC (điều mà `AppInstance` mặc định của WinAppSDK không làm được). Gọi `AllowSetForegroundWindow(uint.MaxValue)` trước khi signal `Activate` trong `SignalExisting()` và trường hợp race tại `Claim()`.
 - **Dịch vụ ứng dụng (`Services/`):**
   - [DeviceSession.cs](file:///D:/opensense/src/OpenSense.App/Services/DeviceSession.cs): Quản lý kết nối Pipe (`ConnectTimeout=3s`, `StartupWait=30s`, vòng lặp tự kết nối lại `RetryDelay=2s`), đối chiếu `snapshot.ProtocolVersion != OpenSensePipe.ProtocolVersion`, hòa giải cấu hình từ xa với trễ ổn định `LocalChangeSettle=2s` (`OnSettingsChanged` / `ReconcileAsync`).
   - `AutostartService.cs`, `AutostartTask.cs`, `ScheduledTasks.cs`: Mode Installed ghi `HKCU\...\Run\OpenSense`; mode Portable tạo tác vụ Task Scheduler `"OpenSense autostart ({Environment.UserName})"` (`RunLevel=HighestAvailable`, `DisallowStartIfOnBatteries=false`, `StopIfGoingOnBatteries=false`, `ExecutionTimeLimit=PT0S`) qua COM `ITaskService` để tự chạy khi đăng nhập không cần UAC.
-  - `NitroSenseKey.cs`, `OpenShortcut.cs`, `MessageWindow.cs`: Tạo cửa sổ ẩn `HWND_MESSAGE` (không cần quyền admin); bắt phím cứng NitroSense/PredatorSense qua `RegisterRawInputDevices` (`RIDEV_INPUTSINK`) cho scan code `E0 75` (`0x01:0x06`) và Acer vendor HID (`0x88:0x01`, report `81 FF`), cùng phím tắt mở nhanh qua `RegisterHotKey` (`MOD_NOREPEAT`).
+  - [NitroSenseKey.cs](file:///D:/opensense/src/OpenSense.App/Services/NitroSenseKey.cs), [NitroSenseKeyTracker.cs](file:///D:/opensense/src/OpenSense.App/Services/NitroSenseKeyTracker.cs), `OpenShortcut.cs`, `MessageWindow.cs`: Tạo cửa sổ ẩn `HWND_MESSAGE` (không cần quyền admin); bắt phím cứng NitroSense/PredatorSense qua `RegisterRawInputDevices` (`RIDEV_INPUTSINK`) cho scan code `E0 75` (`0x01:0x06`) và Acer vendor HID (`0x88:0x01`, report `[1] == 0x81 && [2] == 0xFF`, giữ con trỏ `RAWHID*` trực tiếp vào buffer và duyệt đủ `dwCount` report). Có fallback đăng ký từng thiết bị (`RegisterSingle`), retry giới hạn theo backoff (`1s, 2s, 4s, 8s, 15s`) qua `NitroSenseKeyTracker` khi khởi động sớm lỗi, và hook `SystemEvents.SessionSwitch` / `PowerModeChanged` để reset phím kẹt và làm mới đăng ký; cùng phím tắt mở nhanh qua `RegisterHotKey` (`MOD_NOREPEAT`).
   - `TrayService.cs`, `ToastService.cs`, `NotificationService.cs`: Tray icon (`H.NotifyIcon`) với tooltip giới hạn `ToolTipLimit = 127` ký tự, menu chọn fan/mode; thông báo dùng `AppNotificationManager` ở chế độ Installed và tray balloon ở chế độ Portable/elevated.
   - `UpdateInstaller.cs`: Xác định `InstallKind` bằng so khớp `InstallLocation == AppDirectory` trong HKLM 64-bit; chạy bộ cài `/S /Relaunch` (`runas`) cho bản Installed, hoặc giải nén sang `%TEMP%\OpenSense-update` và gọi trực tiếp `OpenSense.exe --apply-update <dir> --wait <pid>` (`UseShellExecute=false`) giữ nguyên quyền nâng cao cho bản Portable.
 - **Custom Controls Win2D (`Controls/`):**
@@ -162,14 +166,17 @@ OpenSense thể hiện tư duy phòng thủ theo chiều sâu rất rõ ràng ch
 
 ### 6.1. Phạm vi bộ test (`tests/OpenSense.Core.Tests/`)
 
-Qua thống kê, `tests/OpenSense.Core.Tests/` có **376** test case đánh dấu `[Fact]` / `[Theory]`, sử dụng kiến trúc giả lập phần cứng phong phú mà không cần laptop Acer thật:
+Qua thống kê, `tests/OpenSense.Core.Tests/` có **388** method đánh dấu `[Fact]` / `[Theory]` (mở rộng thành **638** test case khi thực thi), đồng thời link trực tiếp 3 helper/logic thuần từ `OpenSense.App` (`CurveLabelPlacement.cs`, `AutostartTask.cs`, [NitroSenseKeyTracker.cs](file:///D:/opensense/src/OpenSense.App/Services/NitroSenseKeyTracker.cs)) để kiểm thử mà không phụ thuộc WinUI/Win32:
 - **Test harnesses:** `SimulatedLaptop`, `FakeFirmware`, `FakeHid` (mô phỏng WMI/EC/HID/BIOS/SMBIOS), `SourceTree`, kèm các fixture thật cho ACPI (`Fixtures/Acpi/`) và migration cấu hình (`SettingsTests`).
-- **Nhóm kiểm thử chính đã ghi nhận:** `PipeTests`, `IpcTests` (kiểm tra ACL/pipe security), `FoundationTests`, `SettingsTests`, `ModelDetectionTests`, `ControlTests`, `CoolingTests`, `EcHidTests`, `BatteryTests`, `BootTests`, `BiosSettingsTests`, `GpuClockTests`, `RecoveryLifetimeTests` (gồm giả lập glitch AMD Tctl và vòng đời khôi phục), `UpdaterTests`, và `LocalizationTests` (dùng regex quét toàn bộ lời gọi `Strings.Get` / `Strings.Format` trong mã nguồn đối chiếu với 36 ngôn ngữ).
+- **Nhóm kiểm thử chính đã ghi nhận:** `PipeTests`, `IpcTests` (kiểm tra ACL/pipe security), `FoundationTests`, `SettingsTests`, `ModelDetectionTests`, `ControlTests`, `CoolingTests`, `EcHidTests`, `BatteryTests`, `BootTests`, `BiosSettingsTests`, `GpuClockTests`, `RecoveryLifetimeTests` (gồm giả lập glitch AMD Tctl và vòng đời khôi phục), `UpdaterTests`, `AutostartTaskTests`, `CurveLabelTests`, [NitroSenseKeyTests.cs](file:///D:/opensense/tests/OpenSense.Core.Tests/NitroSenseKeyTests.cs) (9 test cho `E0 75`, `ResetKeyState()`, khớp HID nhiều report và retry theo `FakeTimeProvider`), và `LocalizationTests` (dùng regex quét toàn bộ lời gọi `Strings.Get` / `Strings.Format` trong mã nguồn đối chiếu với 36 ngôn ngữ).
 
-### 6.2. Trạng thái thực thi kiểm thử khi scan
+### 6.2. Trạng thái thực thi kiểm thử & Build
 
-- Lệnh kiểm tra đã chạy: `dotnet test --project tests/OpenSense.Core.Tests --no-restore` → thoát với mã lỗi `1` (`The term 'dotnet' is not recognized`) và `Test-Path 'C:\Program Files\dotnet\dotnet.exe'` trả về `False`.
-- **Kết luận:** Môi trường hiện tại không cài đặt .NET SDK / CLI `dotnet`, do đó quá trình build giải pháp và chạy 376 unit test **chưa thể thực thi cục bộ** trong phiên scan này.
+- **Unit tests (`.NET SDK 10.0.404`):** `dotnet test --project tests\OpenSense.Core.Tests\OpenSense.Core.Tests.csproj` (chạy ngoài sandbox để kết nối IPC test host) → **Passed 638/638** (`failed: 0`, `skipped: 0`).
+- **Build & Publish:**
+  - `dotnet build src\OpenSense.App\OpenSense.App.csproj` → Thành công (`0 Error`, `4 Warning` `NU1902` có sẵn từ package `MessagePack 2.5.302`).
+  - `dotnet publish` bản `Release` (`win-x64`, `--self-contained`, `PublishReadyToRun=true`, `-p:Version=0.3.6`) cho cả `OpenSense.App` và `OpenSense.Service` vào [artifacts/publish/OpenSense](file:///D:/opensense/artifacts/publish/OpenSense) (`576` file).
+- **Chưa kiểm chứng tự động:** Phần Win32/WinUI tích hợp trong `NitroSenseKey.cs` và `App.xaml.cs` chưa chạy E2E tự động sau khi restart Windows thật (cần chép đè bản publish vào `C:\Program Files\OpenSense` bằng quyền Admin để kiểm thử thực tế).
 
 ---
 
@@ -184,3 +191,4 @@ Tổng thể mã nguồn sạch, cấu trúc tách lớp rõ ràng, nhất quán
 5. **Phím tắt toàn cục không bắt buộc modifier:** [SettingsViewModel.cs](file:///D:/opensense/src/OpenSense.App/ViewModels/SettingsViewModel.cs#L232-L244) và [SettingsPage.xaml.cs](file:///D:/opensense/src/OpenSense.App/Views/SettingsPage.xaml.cs#L38) cho phép ghi một phím đơn bất kỳ cho phím tắt mở app (có ghi chú thiết kế là có chủ ý theo XML doc `"any key, alone or with modifiers"`), dựa vào `RegisterHotKey(..., MOD_NOREPEAT, ...)` — nếu hệ điều hành chấp nhận một phím đơn không có modifier thì phím đó sẽ bị chiếm toàn cục.
 6. **Gắn event lại khi `DeviceSession` tự kết nối lại:** Tại [DeviceSession.cs](file:///D:/opensense/src/OpenSense.App/Services/DeviceSession.cs#L524) (gọi từ `ConnectAsync` dòng 403), khi khôi phục kết nối sau lúc service khởi động lại, phiên mới đăng ký handler trên `_service` mới mà không gỡ handler khỏi đối tượng cũ đã dispose (hành vi vô hại vì connection cũ đã đóng).
 7. **Tham chiếu tài liệu chưa có trong repo:** Một số chú thích trong [FakeHid.cs](file:///D:/opensense/tests/OpenSense.Core.Tests/FakeHid.cs#L8) và [EcHidTests.cs](file:///D:/opensense/tests/OpenSense.Core.Tests/EcHidTests.cs#L11) nhắc tới `docs/PROTOCOL.md`, tuy nhiên thư mục `docs/` hiện tại chỉ chứa 12 file `README-*.md` dịch từ README gốc.
+8. **Độ phức tạp & hành vi phòng hờ ở luồng NitroSense key ([App.xaml.cs](file:///D:/opensense/src/OpenSense.App/App.xaml.cs#L159-L187), [NitroSenseKey.cs](file:///D:/opensense/src/OpenSense.App/Services/NitroSenseKey.cs#L228-L240)):** `BringToForeground` dùng `AttachThreadInput` kèm bật/tắt `HWND_TOPMOST`/`HWND_NOTOPMOST` (có thể chững thoáng qua nếu thread cửa sổ foreground đang treo), và `RecoverAfterDesktopTransition` khi retry lại sau unlock/resume không gọi `RIDEV_REMOVE` trước khi đóng `_window` nếu đăng ký mới thất bại hoàn toàn (đăng ký cũ trỏ vào `HWND` đã huỷ cho tới lần retry thành công).
