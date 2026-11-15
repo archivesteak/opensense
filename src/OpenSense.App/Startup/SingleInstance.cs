@@ -1,5 +1,6 @@
 using System.Security.AccessControl;
 using System.Security.Principal;
+using Windows.Win32;
 
 namespace OpenSense.App.Startup;
 
@@ -33,7 +34,7 @@ public sealed class SingleInstance : IDisposable
     private static string EventName(string purpose) => @"Local\OpenSense." + purpose;
 
     /// <summary>Signals an already running instance. Returns false if there is none.</summary>
-    public static bool SignalExisting() => Signal(EventName("Activate"));
+    public static bool SignalExisting() => Signal(EventName("Activate"), allowForeground: true);
 
     /// <summary>Asks the running instance to quit and waits (up to <paramref name="timeout"/>) until it has.</summary>
     public static bool RequestExit(TimeSpan timeout)
@@ -51,10 +52,12 @@ public sealed class SingleInstance : IDisposable
         return false;
     }
 
-    private static bool Signal(string name)
+    private static bool Signal(string name, bool allowForeground = false)
     {
         if (!EventWaitHandleAcl.TryOpenExisting(name, EventWaitHandleRights.Modify, out var existing))
             return false;
+        if (allowForeground)
+            PInvoke.AllowSetForegroundWindow(uint.MaxValue);
         using (existing)
             existing.Set();
         return true;
@@ -67,6 +70,7 @@ public sealed class SingleInstance : IDisposable
         var handle = EventWaitHandleAcl.Create(false, EventResetMode.AutoReset, EventName("Activate"), out var createdNew, security);
         if (!createdNew)
         {
+            PInvoke.AllowSetForegroundWindow(uint.MaxValue);
             using (handle)
                 handle.Set();
             return null;

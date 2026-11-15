@@ -4,13 +4,18 @@ using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Dispatching;
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+using Microsoft.Win32;
 using OpenSense.App.Services;
 using OpenSense.App.Startup;
 using OpenSense.App.ViewModels;
 using OpenSense.Core.Settings;
 using OpenSense.Core.Updates;
 using Serilog;
+using Windows.Win32;
+using Windows.Win32.Foundation;
+using Windows.Win32.UI.WindowsAndMessaging;
 
 namespace OpenSense.App;
 
@@ -21,6 +26,8 @@ public partial class App : Application
     private IHost? _host;
     private MainWindow? _window;
     private bool _exiting;
+    private bool _showPending;
+    private bool _sessionEndedHooked;
 
     public App(LaunchOptions options, SingleInstance instance)
     {
@@ -40,7 +47,22 @@ public partial class App : Application
     {
         _host = BuildHost();
         await _host.StartAsync();
-        AutostartService.Refresh(); // a portable copy's sign-in task follows it when it was moved
+        HookSessionEnded();
+        var autostartRefresh = Task.Run(AutostartService.Refresh); // a portable copy's sign-in task follows it when it was moved
+
+        // Start key/shortcut listeners before slow window, tray, and notification COM setup at Windows sign-in.
+        var settings = Services.GetRequiredService<SettingsService>().Current;
+        var dispatcher = Services.GetRequiredService<DispatcherQueue>();
+        _instance.Activated += () => dispatcher.TryEnqueue(RequestShowMainWindow);
+        _instance.ExitRequested += () => dispatcher.TryEnqueue(Quit);
+
+        var nitroSenseKey = Services.GetRequiredService<NitroSenseKey>();
+        nitroSenseKey.Pressed += RequestShowMainWindow;
+        if (settings.Ui.OpenWithNitroSenseKey)
+            nitroSenseKey.Start();
+        var shortcut = Services.GetRequiredService<OpenShortcut>();
+        shortcut.Pressed += RequestShowMainWindow;
+        shortcut.Set(settings.Ui.OpenShortcut);
 
         _window = Services.GetRequiredService<MainWindow>();
         _window.AppWindow.Changed += (_, e) =>
@@ -48,23 +70,18 @@ public partial class App : Application
             if (e.DidVisibilityChange)
                 WindowVisibilityChanged?.Invoke();
         };
-        Services.GetRequiredService<TrayService>().Initialize();
-        Services.GetRequiredService<ToastService>().Initialize();
-        _instance.Activated += () => _window.DispatcherQueue.TryEnqueue(ShowMainWindow);
-        _instance.ExitRequested += () => _window.DispatcherQueue.TryEnqueue(Quit);
-
-        var settings = Services.GetRequiredService<SettingsService>().Current;
-        if (!_options.Autostart)
+        if (_showPending)
+        {
+            _showPending = false;
+            ShowMainWindow();
+        }
+        else if (!_options.Autostart)
             _window.Activate();
 
+        Services.GetRequiredService<TrayService>().Initialize();
+        Services.GetRequiredService<ToastService>().Initialize();
         Services.GetRequiredService<UpdateViewModel>().Start();
-        var nitroSenseKey = Services.GetRequiredService<NitroSenseKey>();
-        nitroSenseKey.Pressed += ShowMainWindow;
-        if (settings.Ui.OpenWithNitroSenseKey)
-            nitroSenseKey.Start();
-        var shortcut = Services.GetRequiredService<OpenShortcut>();
-        shortcut.Pressed += ShowMainWindow;
-        shortcut.Set(settings.Ui.OpenShortcut);
+        await autostartRefresh;
         await Services.GetRequiredService<ShellViewModel>().InitializeAsync();
     }
 
@@ -114,12 +131,88 @@ public partial class App : Application
         return builder.Build();
     }
 
+    private void RequestShowMainWindow()
+    {
+        if (_exiting)
+            return;
+        if (_window is null)
+        {
+            _showPending = true;
+            return;
+        }
+        ShowMainWindow();
+    }
+
     public void ShowMainWindow()
     {
-        if (_window is null)
+        if (_window is null || _exiting)
             return;
+
+        if (_window.AppWindow.Presenter is OverlappedPresenter presenter && presenter.State == OverlappedPresenterState.Minimized)
+            presenter.Restore();
+
         _window.AppWindow.Show();
         _window.Activate();
+        BringToForeground(new HWND(WinRT.Interop.WindowNative.GetWindowHandle(_window)));
+    }
+
+    private static unsafe void BringToForeground(HWND hwnd)
+    {
+        var foreground = PInvoke.GetForegroundWindow();
+        if (foreground == hwnd)
+            return;
+
+        var currentThread = PInvoke.GetCurrentThreadId();
+        var foregroundThread = foreground == HWND.Null ? 0 : PInvoke.GetWindowThreadProcessId(foreground, null);
+        var attached = foregroundThread != 0 && foregroundThread != currentThread
+            && PInvoke.AttachThreadInput(foregroundThread, currentThread, true);
+        try
+        {
+            PInvoke.BringWindowToTop(hwnd);
+            if (!PInvoke.SetForegroundWindow(hwnd))
+            {
+                // Background raw input (RIDEV_INPUTSINK) has no foreground lock grant when another window owns
+                // focus; briefly toggling TOPMOST lifts the window without leaving it pinned on top.
+                const SET_WINDOW_POS_FLAGS flags = SET_WINDOW_POS_FLAGS.SWP_NOMOVE | SET_WINDOW_POS_FLAGS.SWP_NOSIZE | SET_WINDOW_POS_FLAGS.SWP_SHOWWINDOW;
+                PInvoke.SetWindowPos(hwnd, new HWND(-1), 0, 0, 0, 0, flags);
+                PInvoke.SetWindowPos(hwnd, new HWND(-2), 0, 0, 0, 0, flags);
+                PInvoke.SetForegroundWindow(hwnd);
+            }
+        }
+        finally
+        {
+            if (attached)
+                PInvoke.AttachThreadInput(foregroundThread, currentThread, false);
+        }
+    }
+
+    private void HookSessionEnded()
+    {
+        if (_sessionEndedHooked)
+            return;
+        SystemEvents.SessionEnded += OnSessionEnded;
+        _sessionEndedHooked = true;
+    }
+
+    private void UnhookSessionEnded()
+    {
+        if (!_sessionEndedHooked)
+            return;
+        SystemEvents.SessionEnded -= OnSessionEnded;
+        _sessionEndedHooked = false;
+    }
+
+    private void OnSessionEnded(object? sender, SessionEndedEventArgs e)
+    {
+        if (_exiting || _host is not { } host)
+            return;
+        try
+        {
+            host.Services.GetRequiredService<SettingsService>().Flush();
+        }
+        catch (ObjectDisposedException)
+        {
+        }
     }
 
     /// <summary>Retry elevation from the "administrator rights needed" screen (portable copy).</summary>
@@ -145,6 +238,7 @@ public partial class App : Application
         if (_exiting)
             return;
         _exiting = true;
+        UnhookSessionEnded();
         if (_host is { } host)
         {
             // Each part closes whatever the one before did: a hosted engine must still hand the fans back.

@@ -39,3 +39,13 @@ TaskScheduler
 TASK_CREATION
 TASK_LOGON_TYPE
 SysFreeString
+
+// Bringing OpenSense to the foreground reliably on NitroSense key, hotkey, or single-instance launch
+AllowSetForegroundWindow
+AttachThreadInput
+BringWindowToTop
+GetCurrentThreadId
+GetForegroundWindow
+GetWindowThreadProcessId
+SetForegroundWindow
+SetWindowPos
