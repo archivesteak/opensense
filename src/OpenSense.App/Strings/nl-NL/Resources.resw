@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Voor het ingebouwde scherm van de laptop (niet voor externe monitors): snellere pixelreactie voor minder bewegingsonscherpte in games. Werkt het best bij de hoogste vernieuwingsfrequentie van het scherm; schakel dit uit als je halo's achter bewegende objecten ziet.</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz op accu</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Verlaag de verversingssnelheid naar 60 Hz op de accu en herstel de hoogste snelheid wanneer de oplader is aangesloten.</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Graphics</value>
     <comment>Section title.</comment>

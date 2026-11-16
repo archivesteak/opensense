@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Για την ενσωματωμένη οθόνη του φορητού (όχι για εξωτερικές οθόνες): ταχύτερη απόκριση pixel για λιγότερο θάμπωμα κίνησης στα παιχνίδια. Λειτουργεί καλύτερα στον υψηλότερο ρυθμό ανανέωσης της οθόνης. Απενεργοποιήστε το αν βλέπετε φωτοστέφανα πίσω από κινούμενα αντικείμενα.</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz με μπαταρία</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Μείωση του ρυθμού ανανέωσης οθόνης στα 60 Hz κατά τη χρήση μπαταρίας και επαναφορά στον υψηλότερο ρυθμό με τροφοδοσία.</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Γραφικά</value>
     <comment>Section title.</comment>

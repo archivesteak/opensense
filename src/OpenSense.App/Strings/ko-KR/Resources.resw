@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>노트북의 내장 화면용입니다(외부 모니터에는 적용되지 않음). 픽셀 응답 속도가 빨라져 게임에서 모션 블러가 줄어듭니다. 화면의 최고 재생률에서 가장 효과적이며, 움직이는 물체 뒤에 후광이 보이면 끄세요.</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>배터리 사용 시 60Hz</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>배터리로 실행할 때 화면 주사율을 60Hz로 낮추고 전원이 연결되면 최고 주사율로 복원합니다.</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>그래픽</value>
     <comment>Section title.</comment>

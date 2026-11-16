@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>За уграђени екран лаптопа (не за спољне мониторе): бржи одзив пиксела и мање замућења покрета у играма. Најбоље ради при највишој брзини освежавања екрана; искључите ако видите ореоле иза покретних објеката.</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz на батерији</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Смањи стопу освежавања екрана на 60 Hz на батерији и врати највишу стопу када је прикључен пуњач.</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Графика</value>
     <comment>Section title.</comment>

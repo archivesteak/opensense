@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Pre vstavanú obrazovku notebooku (nie pre externé monitory): rýchlejšia odozva pixelov a menšie rozmazanie pohybu v hrách. Najlepšie funguje pri najvyššej obnovovacej frekvencii obrazovky; vypnite, ak za pohybujúcimi sa objektmi vidíte svätožiary.</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz na batériu</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Znížiť obnovovaciu frekvenciu obrazovky na 60 Hz pri napájaní z batérie a obnoviť najvyššiu po pripojení k sieti.</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Grafika</value>
     <comment>Section title.</comment>

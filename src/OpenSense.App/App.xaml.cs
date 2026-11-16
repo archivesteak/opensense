@@ -10,6 +10,7 @@ using Microsoft.Win32;
 using OpenSense.App.Services;
 using OpenSense.App.Startup;
 using OpenSense.App.ViewModels;
+using OpenSense.Core.Hardware;
 using OpenSense.Core.Settings;
 using OpenSense.Core.Updates;
 using Serilog;
@@ -80,6 +81,7 @@ public partial class App : Application
 
         Services.GetRequiredService<TrayService>().Initialize();
         Services.GetRequiredService<ToastService>().Initialize();
+        Services.GetRequiredService<DisplayRefreshService>().Start();
         Services.GetRequiredService<UpdateViewModel>().Start();
         await autostartRefresh;
         await Services.GetRequiredService<ShellViewModel>().InitializeAsync();
@@ -105,6 +107,10 @@ public partial class App : Application
         builder.Services.AddSingleton<NavigationService>();
         builder.Services.AddSingleton<NitroSenseKey>();
         builder.Services.AddSingleton<OpenShortcut>();
+        builder.Services.AddSingleton<IDisplayRefreshBackend, WindowsDisplayRefreshBackend>();
+        builder.Services.AddSingleton<IPowerSource, SystemPowerSource>();
+        builder.Services.AddSingleton<DisplayRefreshController>();
+        builder.Services.AddSingleton<DisplayRefreshService>();
         builder.Services.AddSingleton(UpdaterOptions());
         builder.Services.AddHttpClient<GitHubUpdater>(client =>
         {
@@ -242,6 +248,7 @@ public partial class App : Application
         if (_host is { } host)
         {
             // Each part closes whatever the one before did: a hosted engine must still hand the fans back.
+            Close(Services.GetRequiredService<DisplayRefreshService>);
             Close(Services.GetRequiredService<NitroSenseKey>);
             Close(Services.GetRequiredService<OpenShortcut>);
             Close(Services.GetRequiredService<ToastService>);

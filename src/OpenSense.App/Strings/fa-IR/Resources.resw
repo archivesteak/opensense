@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>برای صفحهٔ داخلی لپ‌تاپ (نه نمایشگرهای خارجی): پاسخ سریع‌تر پیکسل‌ها برای تاری حرکتی کمتر در بازی‌ها. در بالاترین نرخ تازه‌سازی صفحه بهترین عملکرد را دارد؛ اگر پشت اشیای متحرک هاله می‌بینید، آن را خاموش کنید.</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>۶۰ هرتز روی باتری</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>کاهش نرخ نوسازی نمایشگر به ۶۰ هرتز هنگام کار با باتری و بازگرداندن بالاترین نرخ هنگام اتصال به برق.</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>گرافیک</value>
     <comment>Section title.</comment>

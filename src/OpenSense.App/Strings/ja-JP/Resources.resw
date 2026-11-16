@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>ノート PC の内蔵画面用です（外部モニターには効きません）。ピクセルの応答が速くなり、ゲームでの動きのぼやけが減ります。画面の最高リフレッシュ レートで最も効果的です。動く物体の後ろにハローが見える場合はオフにしてください。</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>バッテリー駆動時は 60 Hz</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>バッテリー駆動時は画面のリフレッシュ レートを 60 Hz に下げ、電源接続時は最高レートに戻します。</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>グラフィックス</value>
     <comment>Section title.</comment>

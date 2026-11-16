@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Pro vestavěný displej notebooku (ne pro externí monitory): rychlejší odezva pixelů a menší rozmazání pohybu ve hrách. Nejlépe funguje při nejvyšší obnovovací frekvenci displeje; vypněte, pokud za pohybujícími se objekty vidíte svatozáře.</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz na baterii</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Snížit obnovovací frekvenci displeje na 60 Hz při provozu na baterii a obnovit nejvyšší frekvenci při připojení k síti.</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Grafika</value>
     <comment>Section title.</comment>

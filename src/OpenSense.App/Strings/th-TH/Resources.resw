@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>สำหรับหน้าจอในตัวของแล็ปท็อป (ไม่ใช่จอภายนอก): การตอบสนองของพิกเซลเร็วขึ้นเพื่อลดภาพเบลอขณะเคลื่อนไหวในเกม ทำงานได้ดีที่สุดที่อัตรารีเฟรชสูงสุดของหน้าจอ ปิดหากเห็นเงาเรืองรอบวัตถุที่กำลังเคลื่อนที่</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz เมื่อใช้แบตเตอรี่</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>ลดอัตรารีเฟรชหน้าจอเป็น 60 Hz เมื่อใช้แบตเตอรี่ และคืนค่าเป็นอัตราสูงสุดเมื่อเสียบปลั๊ก</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>กราฟิก</value>
     <comment>Section title.</comment>

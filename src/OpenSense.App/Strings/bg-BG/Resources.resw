@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>За вградения екран на лаптопа (не за външни монитори): по-бърза реакция на пикселите и по-малко размазване при движение в игрите. Работи най-добре при най-високата честота на опресняване на екрана; изключете, ако виждате ореоли зад движещите се обекти.</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz на батерия</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Намаляване на честотата на опресняване на екрана до 60 Hz на батерия и възстановяване на най-високата честота при включено захранване.</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Графика</value>
     <comment>Section title.</comment>

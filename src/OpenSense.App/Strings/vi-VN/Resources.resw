@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Dành cho màn hình tích hợp của máy tính xách tay (không phải màn hình ngoài): điểm ảnh phản hồi nhanh hơn để giảm nhòe chuyển động khi chơi game. Hoạt động tốt nhất ở tốc độ làm mới cao nhất của màn hình; hãy tắt nếu bạn thấy quầng sáng phía sau các vật thể đang chuyển động.</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz khi dùng pin</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Hạ tần số quét màn hình xuống 60 Hz khi dùng pin và khôi phục mức cao nhất khi cắm sạc.</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Đồ họa</value>
     <comment>Section title.</comment>

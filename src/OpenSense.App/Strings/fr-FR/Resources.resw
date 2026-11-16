@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Pour l’écran intégré de l’ordinateur portable (pas les moniteurs externes) : réponse plus rapide des pixels pour moins de flou de mouvement en jeu. Fonctionne mieux à la fréquence d’actualisation la plus élevée de l’écran ; désactivez-le si vous voyez des halos derrière les objets en mouvement.</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz sur batterie</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Réduire la fréquence de rafraîchissement de l&apos;écran à 60 Hz sur batterie et rétablir la plus élevée sur secteur.</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Graphiques</value>
     <comment>Section title.</comment>

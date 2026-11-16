@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Para a tela integrada do notebook (não monitores externos): resposta mais rápida dos pixels e menos desfoque de movimento nos jogos. Funciona melhor na taxa de atualização mais alta da tela; desative se aparecerem halos atrás de objetos em movimento.</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz na bateria</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Reduz a taxa de atualização da tela para 60 Hz na bateria e restaura a taxa mais alta quando conectado à tomada.</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Gráficos</value>
     <comment>Section title.</comment>

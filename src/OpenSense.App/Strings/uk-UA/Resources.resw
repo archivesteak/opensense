@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Для вбудованого екрана ноутбука (не для зовнішніх моніторів): швидший відгук пікселів і менше розмиття в русі в іграх. Найкраще працює з найвищою частотою оновлення екрана; вимкніть, якщо бачите ореоли за рухомими об'єктами.</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Гц від батареї</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Знижувати частоту оновлення екрана до 60 Гц під час роботи від батареї та повертати найвищу частоту при підключенні живлення.</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Графіка</value>
     <comment>Section title.</comment>

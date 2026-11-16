@@ -1137,6 +1137,13 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>For the laptop's built-in screen (not external monitors): faster pixel response for less motion blur in games. Works best at the screen's highest refresh rate; turn off if you see halos behind moving objects.</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz on battery</value>
+    <comment>System page, Display section: lowers display refresh rate to 60 Hz on battery and restores the highest rate on AC power.</comment>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Lower the screen refresh rate to 60 Hz when running on battery, and restore the highest rate when plugged in.</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Graphics</value>
     <comment>Section title.</comment>

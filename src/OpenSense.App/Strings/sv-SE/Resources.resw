@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>För den bärbara datorns inbyggda skärm (inte externa bildskärmar): snabbare pixelrespons och mindre rörelseoskärpa i spel. Fungerar bäst med skärmens högsta uppdateringsfrekvens; stäng av om du ser halor bakom föremål som rör sig.</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz på batteri</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Sänk skärmens uppdateringsfrekvens till 60 Hz på batteri och återställ till högsta frekvens vid nätström.</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Grafik</value>
     <comment>Section title.</comment>

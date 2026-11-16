@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>用于笔记本电脑的内置屏幕（不适用于外接显示器）：更快的像素响应，减少游戏中的动态模糊。在屏幕的最高刷新率下效果最佳；如果在移动的物体后面看到光晕，请将其关闭。</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>使用电池时设为 60 Hz</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>使用电池供电时将屏幕刷新率降至 60 Hz，接通电源时恢复最高刷新率。</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>显卡</value>
     <comment>Section title.</comment>

@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Para la pantalla integrada del portátil (no para monitores externos): respuesta de píxeles más rápida y menos desenfoque de movimiento en los juegos. Funciona mejor con la frecuencia de actualización más alta de la pantalla; desactívalo si ves halos detrás de los objetos en movimiento.</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz con batería</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Reduce la frecuencia de actualización de la pantalla a 60 Hz al usar la batería y restaura la más alta al conectar el cargador.</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Gráficos</value>
     <comment>Section title.</comment>

@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>A laptop beépített képernyőjéhez (külső monitorokhoz nem): gyorsabb képpontválasz, kevesebb mozgási elmosódás a játékokban. A képernyő legmagasabb frissítési gyakoriságán működik a legjobban; kapcsolja ki, ha fényudvart lát a mozgó tárgyak mögött.</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz akkumulátoron</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Akkumulátoros használatkor csökkenti a kijelző frissítési gyakoriságát 60 Hz-re, töltőre csatlakoztatva pedig visszaállítja a legmagasabbra.</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Grafika</value>
     <comment>Section title.</comment>

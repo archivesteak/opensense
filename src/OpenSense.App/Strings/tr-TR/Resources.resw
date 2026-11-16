@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Dizüstü bilgisayarın yerleşik ekranı için (harici monitörler için değil): oyunlarda daha az hareket bulanıklığı için daha hızlı piksel yanıtı. En iyi, ekranın en yüksek yenileme hızında çalışır; hareketli nesnelerin arkasında hale görürseniz kapatın.</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>Pilde 60 Hz</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Pil gücünde ekran yenileme hızını 60 Hz&apos;e düşürün ve prize takıldığında en yüksek hıza geri döndürün.</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Grafik</value>
     <comment>Section title.</comment>

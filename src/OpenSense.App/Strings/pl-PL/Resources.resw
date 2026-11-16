@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Dla wbudowanego ekranu laptopa (nie dla monitorów zewnętrznych): szybsza reakcja pikseli i mniej rozmycia ruchu w grach. Działa najlepiej przy najwyższej częstotliwości odświeżania ekranu; wyłącz, jeśli widzisz poświatę za ruchomymi obiektami.</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz na baterii</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Obniż częstotliwość odświeżania ekranu do 60 Hz na baterii i przywróć najwyższą po podłączeniu zasilania.</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Grafika</value>
     <comment>Section title.</comment>

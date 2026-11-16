@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Per lo schermo integrato del portatile (non per i monitor esterni): risposta dei pixel più rapida e meno sfocatura di movimento nei giochi. Funziona meglio alla frequenza di aggiornamento più alta dello schermo; disattivalo se vedi aloni dietro gli oggetti in movimento.</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz a batteria</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Riduci la frequenza di aggiornamento dello schermo a 60 Hz a batteria e ripristina la frequenza massima quando è collegato.</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Grafica</value>
     <comment>Section title.</comment>

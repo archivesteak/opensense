@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>For den innebygde skjermen på PC-en (ikke eksterne skjermer): raskere pikselrespons og mindre bevegelsesuskarphet i spill. Fungerer best med skjermens høyeste oppdateringsfrekvens. Slå av hvis du ser glorier bak objekter i bevegelse.</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz på batteri</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Senk skjermens oppdateringsfrekvens til 60 Hz på batteri, og gjenopprett høyeste frekvens når laderen er koblet til.</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Grafikk</value>
     <comment>Section title.</comment>

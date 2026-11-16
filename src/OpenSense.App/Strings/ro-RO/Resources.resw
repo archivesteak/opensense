@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Pentru ecranul încorporat al laptopului (nu pentru monitoarele externe): răspuns mai rapid al pixelilor și mai puțină neclaritate la mișcare în jocuri. Funcționează cel mai bine la cea mai mare rată de reîmprospătare a ecranului; dezactivați-l dacă vedeți halouri în urma obiectelor în mișcare.</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz pe baterie</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Redu rata de reîmprospătare a ecranului la 60 Hz pe baterie și revino la cea mai mare rată la conectarea la priză.</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Grafică</value>
     <comment>Section title.</comment>

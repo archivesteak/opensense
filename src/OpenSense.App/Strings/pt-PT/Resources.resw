@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Para o ecrã integrado do portátil (não para monitores externos): resposta mais rápida dos píxeis e menos desfocagem de movimento nos jogos. Funciona melhor com a taxa de atualização mais alta do ecrã; desative-o se vir halos atrás de objetos em movimento.</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz em bateria</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Reduz a taxa de atualização do ecrã para 60 Hz em bateria e repõe a mais elevada quando ligado à corrente.</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Gráficos</value>
     <comment>Section title.</comment>

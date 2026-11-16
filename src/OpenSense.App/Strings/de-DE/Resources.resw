@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Für den eingebauten Bildschirm des Laptops (nicht für externe Monitore): schnellere Pixelreaktion für weniger Bewegungsunschärfe in Spielen. Funktioniert am besten mit der höchsten Bildwiederholfrequenz des Bildschirms. Schalten Sie die Funktion aus, wenn Sie Schlieren hinter bewegten Objekten sehen.</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz im Akkubetrieb</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Bildwiederholfrequenz im Akkubetrieb auf 60 Hz senken und bei angeschlossenem Netzteil auf die höchste Frequenz zurücksetzen.</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Grafik</value>
     <comment>Section title.</comment>

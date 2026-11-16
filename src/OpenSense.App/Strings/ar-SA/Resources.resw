@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>للشاشة المدمجة في الكمبيوتر المحمول (وليس الشاشات الخارجية): استجابة أسرع للبكسلات لتقليل تشويش الحركة في الألعاب. تعمل بأفضل شكل عند أعلى معدل تحديث للشاشة؛ أوقف تشغيلها إذا رأيت هالات خلف الأجسام المتحركة.</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 هرتز على البطارية</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>خفض معدل تحديث الشاشة إلى 60 هرتز عند العمل على البطارية، واستعادة أعلى معدل عند توصيل الشاحن.</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>الرسومات</value>
     <comment>Section title.</comment>

@@ -1137,6 +1137,12 @@
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Kannettavan sisäiselle näytölle (ei ulkoisille näytöille): nopeampi pikselien vasteaika ja vähemmän liike-epätarkkuutta peleissä. Toimii parhaiten näytön suurimmalla virkistystaajuudella. Poista käytöstä, jos näet haamukuvia liikkuvien kohteiden takana.</value>
   </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz akkukäytössä</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Laske näytön virkistystaajuus 60 Hz:iin akkukäytössä ja palauta korkein taajuus verkkovirrassa.</value>
+  </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Grafiikka</value>
     <comment>Section title.</comment>
