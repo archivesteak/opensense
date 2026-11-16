@@ -250,6 +250,14 @@
     <value>Plugged in: {0}</value>
     <comment>Toast text: the adapter was plugged in, so operating mode {0} runs again (e.g. "Turbo").</comment>
   </data>
+  <data name="Notice_RefreshRateOnBattery" xml:space="preserve">
+    <value>On battery: {0} Hz</value>
+    <comment>Toast text: display refresh rate lowered to {0} Hz on battery.</comment>
+  </data>
+  <data name="Notice_RefreshRatePluggedIn" xml:space="preserve">
+    <value>Plugged in: {0} Hz</value>
+    <comment>Toast text: AC power plugged in, display refresh rate restored to {0} Hz.</comment>
+  </data>
   <data name="Notice_ModeLowBattery" xml:space="preserve">
     <value>Battery low: {0} until it charges</value>
     <comment>Toast text: on AC, but the battery is too low to help the adapter, so operating mode {0} (Balanced or Quiet) runs until it charges.</comment>

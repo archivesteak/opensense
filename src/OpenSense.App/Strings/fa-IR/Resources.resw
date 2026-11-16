@@ -250,6 +250,12 @@
     <value>شارژر وصل است: {0}</value>
     <comment>Toast text: the adapter was plugged in, so operating mode {0} runs again (e.g. "Turbo").</comment>
   </data>
+  <data name="Notice_RefreshRateOnBattery" xml:space="preserve">
+    <value>با باتری: {0} هرتز</value>
+  </data>
+  <data name="Notice_RefreshRatePluggedIn" xml:space="preserve">
+    <value>شارژر وصل است: {0} هرتز</value>
+  </data>
   <data name="Notice_ModeLowBattery" xml:space="preserve">
     <value>باتری ضعیف: {0} تا زمان شارژ شدن</value>
     <comment>Toast text: on AC, but the battery is too low to help the adapter, so operating mode {0} (Balanced or Quiet) runs until it charges.</comment>
