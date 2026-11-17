@@ -94,6 +94,11 @@ public sealed partial class OpenSenseEngine
             _controller?.OnDustDefenderEvent(dustDefender);
         if (firmwareEvent.ModeKeyPressed)
             ObserveWork(OnModeKeyAsync(), "mode key");
+        if (firmwareEvent.Kind is FirmwareEventKind.Hotkey or FirmwareEventKind.HotkeyReleased or FirmwareEventKind.Brightness
+            || (firmwareEvent.Kind == FirmwareEventKind.ModeKey && !firmwareEvent.ModeKeyPressed))
+        {
+            ScheduleHotkeyLightingSync();
+        }
         if (firmwareEvent.Kind == FirmwareEventKind.BatteryBoost)
             _controller?.OnBatteryBoostEvent();
         _powerService?.OnFirmwareEvent(firmwareEvent);

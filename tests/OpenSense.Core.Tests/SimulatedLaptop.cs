@@ -301,6 +301,23 @@ public sealed class SimulatedTransport : IWmiTransport
             _backlight = [.. payload];
     }
 
+    /// <summary>The EC's hotkey backlight brightness (<c>APGeAction 0x84</c>).</summary>
+    public int BacklightTimeoutBrightness
+    {
+        get
+        {
+            lock (_gate)
+                return _backlightBrightness;
+        }
+    }
+
+    /// <summary>Simulates an Fn key changing only the EC's hotkey backlight brightness (<c>APGeAction 0x84</c>).</summary>
+    public void OverwriteBacklightTimeoutBrightness(int brightness)
+    {
+        lock (_gate)
+            _backlightBrightness = brightness;
+    }
+
     public ulong Invoke(string className, string method, ulong input)
     {
         lock (_gate)

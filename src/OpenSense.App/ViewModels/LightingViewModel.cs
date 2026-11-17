@@ -345,9 +345,13 @@ public sealed partial class LightingViewModel : ObservableObject
         var shown = Device?.Id;
         _loading = true;
         _applyTimer.Stop();
-        Devices.Clear();
-        foreach (var light in _session.Capabilities.Lights)
-            Devices.Add(new LightingDeviceViewModel(light, _session.Capabilities.Lights));
+        var lights = _session.Capabilities.Lights;
+        if (!Devices.Select(d => d.Info).SequenceEqual(lights))
+        {
+            Devices.Clear();
+            foreach (var light in lights)
+                Devices.Add(new LightingDeviceViewModel(light, lights));
+        }
         Available = Devices.Count > 0;
         HasSeveralDevices = Devices.Count > 1;
         var index = Devices.ToList().FindIndex(d => d.Info.Id == shown);
@@ -392,12 +396,19 @@ public sealed partial class LightingViewModel : ObservableObject
         HasEffects = effects.Count > 0;
         HasPerKey = device.Offers(LightingEffect.PerKey);
         HasZones = device.Zones > 1 || device.ZoneSwitches;
-        BrightnessNames = [.. device.BrightnessLevels.Select(l => l == 0 ? Strings.Get("Brightness_Off") : Units.Percent(l))];
+        var brightnessNames = device.BrightnessLevels.Select(l => l == 0 ? Strings.Get("Brightness_Off") : Units.Percent(l)).ToList();
+        if (!BrightnessNames.SequenceEqual(brightnessNames))
+            BrightnessNames = brightnessNames;
         BrightnessIndex = Math.Max(0, device.BrightnessLevels.ToList().IndexOf(NearestLevel(device, lighting.Brightness)));
 
-        DirectionValues = [.. effects.SelectMany(e => e.Directions).Distinct().Order()];
-        Directions = [.. DirectionValues.Select(Names.Direction)];
-        Effects = [.. effects.Select(t => new EffectOption(t, Names.Effect(t.Effect), Names.EffectDescription(t, device.Backend)))];
+        var directionValues = effects.SelectMany(e => e.Directions).Distinct().Order().ToList();
+        if (!DirectionValues.SequenceEqual(directionValues))
+        {
+            DirectionValues = directionValues;
+            Directions = [.. directionValues.Select(Names.Direction)];
+        }
+        if (!Effects.Select(e => e.Effect).SequenceEqual(effects.Select(t => t.Effect)))
+            Effects = [.. effects.Select(t => new EffectOption(t, Names.Effect(t.Effect), Names.EffectDescription(t, device.Backend)))];
         ModeIndex = lighting.Effect switch
         {
             LightingEffect.PerKey when HasPerKey => 2,
@@ -417,18 +428,32 @@ public sealed partial class LightingViewModel : ObservableObject
         HasSelection = false;
         LayoutIndex = Math.Max(0, LayoutValues.ToList().IndexOf(lighting.Layout ?? device.Layout ?? KeyboardLayout.Ansi));
 
-        Zones.Clear();
-        for (var i = 0; i < device.Zones; i++)
+        if (Zones.Count == device.Zones && Zones.All(z => z.Switchable == device.ZoneSwitches))
         {
-            var setting = lighting.Zone(i);
-            var color = ColorHex.To(setting.Color);
-            var zone = new ZoneViewModel(i) { On = setting.On || !device.ZoneSwitches, Color = color, ShownColor = color, Switchable = device.ZoneSwitches };
-            zone.PropertyChanged += (_, e) =>
+            for (var i = 0; i < device.Zones; i++)
             {
-                if (e.PropertyName != nameof(ZoneViewModel.ShownColor))
-                    Changed();
-            };
-            Zones.Add(zone);
+                var setting = lighting.Zone(i);
+                var color = ColorHex.To(setting.Color);
+                Zones[i].On = setting.On || !device.ZoneSwitches;
+                Zones[i].Color = color;
+                Zones[i].ShownColor = color;
+            }
+        }
+        else
+        {
+            Zones.Clear();
+            for (var i = 0; i < device.Zones; i++)
+            {
+                var setting = lighting.Zone(i);
+                var color = ColorHex.To(setting.Color);
+                var zone = new ZoneViewModel(i) { On = setting.On || !device.ZoneSwitches, Color = color, ShownColor = color, Switchable = device.ZoneSwitches };
+                zone.PropertyChanged += (_, e) =>
+                {
+                    if (e.PropertyName != nameof(ZoneViewModel.ShownColor))
+                        Changed();
+                };
+                Zones.Add(zone);
+            }
         }
         AllZonesColor = Zones.FirstOrDefault()?.Color ?? AllZonesColor;
         // A rebuilt session can replace a backend without changing DeviceIndex.

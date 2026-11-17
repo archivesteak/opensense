@@ -98,6 +98,9 @@ public sealed record LightingSettings
 
     public ZoneSetting Zone(int index) => index < Zones.Count ? Zones[index] : new ZoneSetting(true, DefaultColor);
 
+    /// <summary>Brightness sent to hardware: 0 when every static zone is switched off, otherwise <see cref="Brightness"/>.</summary>
+    internal int EffectiveBrightness() => Effect == LightingEffect.Static && Zones.Count > 0 && Zones.All(z => !z.On) ? 0 : Brightness;
+
     /// <summary>A key's colour in <see cref="LightingEffect.PerKey"/>; null when it is dark.</summary>
     public string? KeyColor(string key) => KeyColors.GetValueOrDefault(key);
 

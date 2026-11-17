@@ -166,7 +166,8 @@ public sealed partial class OpenSenseEngine
 
     private void StartKeyboard(IDeviceDispatcher dispatcher, KeyboardSettings settings)
     {
-        _keyboard = new KeyboardService(dispatcher, _capabilities.Keyboard, _hidLights.KeyboardSettings ? _hidLights.Keyboard : null);
+        _keyboard = new KeyboardService(dispatcher, _capabilities.Keyboard, _hidLights.KeyboardSettings ? _hidLights.Keyboard : null,
+            _time, ConfiguredKeyboardBrightness);
         _keyboard.Notice += OnNotice;
         ObserveWork(_keyboard.ApplyAsync(settings), "keyboard settings");
     }
