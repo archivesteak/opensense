@@ -50,12 +50,19 @@
                 <ToggleSwitch IsOn="{x:Bind ViewModel.StickyKeysOn, Mode=TwoWay}" />
             </toolkit:SettingsCard>
 
-            <StackPanel Spacing="4" Visibility="{x:Bind ViewModel.LcdOverdriveAvailable, Mode=OneWay}">
+            <StackPanel Spacing="4" Visibility="{x:Bind views:SystemPage.Either(ViewModel.LcdOverdriveAvailable, ViewModel.RefreshRateOnBatteryAvailable), Mode=OneWay}">
                 <TextBlock x:Uid="System_Display" Style="{StaticResource SectionHeaderStyle}" />
                 <toolkit:SettingsCard
                     x:Uid="System_LcdOverdrive"
-                    HeaderIcon="{ui:FontIcon Glyph=&#xE7F4;}">
+                    HeaderIcon="{ui:FontIcon Glyph=&#xE7F4;}"
+                    Visibility="{x:Bind ViewModel.LcdOverdriveAvailable, Mode=OneWay}">
                     <ToggleSwitch IsOn="{x:Bind ViewModel.LcdOverdrive, Mode=TwoWay}" />
+                </toolkit:SettingsCard>
+                <toolkit:SettingsCard
+                    x:Uid="System_RefreshRateOnBattery"
+                    HeaderIcon="{ui:FontIcon Glyph=&#xEC4A;}"
+                    Visibility="{x:Bind ViewModel.RefreshRateOnBatteryAvailable, Mode=OneWay}">
+                    <ToggleSwitch IsOn="{x:Bind ViewModel.RefreshRateOnBattery, Mode=TwoWay}" />
                 </toolkit:SettingsCard>
             </StackPanel>
 

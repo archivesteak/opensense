@@ -355,7 +355,13 @@ public sealed partial class DeviceSession : IDisposable
     /// Windows ends this process next (shutdown, restart, sign-out): stop the engine as Quit does, so the GPU's offsets
     /// are reset and the next start doesn't take this for a crash while overclocked.
     /// </summary>
-    private void OnSessionEnded(object? sender, SessionEndedEventArgs e) => _engine?.Dispose();
+    private void OnSessionEnded(object? sender, SessionEndedEventArgs e)
+    {
+        if (e.Reason == SessionEndReasons.SystemShutdown)
+            _engine?.PrepareShutdown();
+        else
+            _engine?.Dispose();
+    }
 
     private void OnPowerModeChanged(object? sender, PowerModeChangedEventArgs e)
     {

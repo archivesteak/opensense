@@ -250,6 +250,12 @@
     <value>เสียบที่ชาร์จแล้ว: {0}</value>
     <comment>Toast text: the adapter was plugged in, so operating mode {0} runs again (e.g. "Turbo").</comment>
   </data>
+  <data name="Notice_RefreshRateOnBattery" xml:space="preserve">
+    <value>ใช้แบตเตอรี่: {0} Hz</value>
+  </data>
+  <data name="Notice_RefreshRatePluggedIn" xml:space="preserve">
+    <value>เสียบที่ชาร์จแล้ว: {0} Hz</value>
+  </data>
   <data name="Notice_ModeLowBattery" xml:space="preserve">
     <value>แบตเตอรี่ต่ำ: {0} จนกว่าจะชาร์จ</value>
     <comment>Toast text: on AC, but the battery is too low to help the adapter, so operating mode {0} (Balanced or Quiet) runs until it charges.</comment>
@@ -1136,6 +1142,12 @@
   </data>
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>สำหรับหน้าจอในตัวของแล็ปท็อป (ไม่ใช่จอภายนอก): การตอบสนองของพิกเซลเร็วขึ้นเพื่อลดภาพเบลอขณะเคลื่อนไหวในเกม ทำงานได้ดีที่สุดที่อัตรารีเฟรชสูงสุดของหน้าจอ ปิดหากเห็นเงาเรืองรอบวัตถุที่กำลังเคลื่อนที่</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz เมื่อใช้แบตเตอรี่</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>ลดอัตรารีเฟรชหน้าจอเป็น 60 Hz เมื่อใช้แบตเตอรี่ และคืนค่าเป็นอัตราสูงสุดเมื่อเสียบปลั๊ก</value>
   </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>กราฟิก</value>

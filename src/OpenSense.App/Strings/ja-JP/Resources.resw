@@ -250,6 +250,12 @@
     <value>電源に接続: {0}</value>
     <comment>Toast text: the adapter was plugged in, so operating mode {0} runs again (e.g. "Turbo").</comment>
   </data>
+  <data name="Notice_RefreshRateOnBattery" xml:space="preserve">
+    <value>バッテリー駆動: {0} Hz</value>
+  </data>
+  <data name="Notice_RefreshRatePluggedIn" xml:space="preserve">
+    <value>電源に接続: {0} Hz</value>
+  </data>
   <data name="Notice_ModeLowBattery" xml:space="preserve">
     <value>バッテリー残量低下: 充電されるまで {0}</value>
     <comment>Toast text: on AC, but the battery is too low to help the adapter, so operating mode {0} (Balanced or Quiet) runs until it charges.</comment>
@@ -1136,6 +1142,12 @@
   </data>
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>ノート PC の内蔵画面用です（外部モニターには効きません）。ピクセルの応答が速くなり、ゲームでの動きのぼやけが減ります。画面の最高リフレッシュ レートで最も効果的です。動く物体の後ろにハローが見える場合はオフにしてください。</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>バッテリー駆動時は 60 Hz</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>バッテリー駆動時は画面のリフレッシュ レートを 60 Hz に下げ、電源接続時は最高レートに戻します。</value>
   </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>グラフィックス</value>

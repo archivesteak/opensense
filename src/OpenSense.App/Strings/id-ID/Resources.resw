@@ -250,6 +250,12 @@
     <value>Pengisi daya tercolok: {0}</value>
     <comment>Toast text: the adapter was plugged in, so operating mode {0} runs again (e.g. "Turbo").</comment>
   </data>
+  <data name="Notice_RefreshRateOnBattery" xml:space="preserve">
+    <value>Dengan baterai: {0} Hz</value>
+  </data>
+  <data name="Notice_RefreshRatePluggedIn" xml:space="preserve">
+    <value>Pengisi daya tercolok: {0} Hz</value>
+  </data>
   <data name="Notice_ModeLowBattery" xml:space="preserve">
     <value>Baterai lemah: {0} sampai terisi</value>
     <comment>Toast text: on AC, but the battery is too low to help the adapter, so operating mode {0} (Balanced or Quiet) runs until it charges.</comment>
@@ -1136,6 +1142,12 @@
   </data>
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Untuk layar internal laptop (bukan monitor eksternal): respons piksel lebih cepat untuk mengurangi keburaman gerakan dalam game. Bekerja paling baik pada kecepatan refresh tertinggi layar; nonaktifkan jika Anda melihat lingkaran cahaya di belakang objek yang bergerak.</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz saat baterai</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Turunkan refresh rate layar ke 60 Hz saat memakai baterai, dan kembalikan ke tingkat tertinggi saat tersambung ke listrik.</value>
   </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Grafis</value>

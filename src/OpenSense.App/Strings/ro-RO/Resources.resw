@@ -250,6 +250,12 @@
     <value>Încărcător conectat: {0}</value>
     <comment>Toast text: the adapter was plugged in, so operating mode {0} runs again (e.g. "Turbo").</comment>
   </data>
+  <data name="Notice_RefreshRateOnBattery" xml:space="preserve">
+    <value>Pe baterie: {0} Hz</value>
+  </data>
+  <data name="Notice_RefreshRatePluggedIn" xml:space="preserve">
+    <value>Încărcător conectat: {0} Hz</value>
+  </data>
   <data name="Notice_ModeLowBattery" xml:space="preserve">
     <value>Baterie descărcată: {0} până se încarcă</value>
     <comment>Toast text: on AC, but the battery is too low to help the adapter, so operating mode {0} (Balanced or Quiet) runs until it charges.</comment>
@@ -1136,6 +1142,12 @@
   </data>
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Pentru ecranul încorporat al laptopului (nu pentru monitoarele externe): răspuns mai rapid al pixelilor și mai puțină neclaritate la mișcare în jocuri. Funcționează cel mai bine la cea mai mare rată de reîmprospătare a ecranului; dezactivați-l dacă vedeți halouri în urma obiectelor în mișcare.</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz pe baterie</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Redu rata de reîmprospătare a ecranului la 60 Hz pe baterie și revino la cea mai mare rată la conectarea la priză.</value>
   </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Grafică</value>

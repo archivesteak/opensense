@@ -250,6 +250,14 @@
     <value>Plugged in: {0}</value>
     <comment>Toast text: the adapter was plugged in, so operating mode {0} runs again (e.g. "Turbo").</comment>
   </data>
+  <data name="Notice_RefreshRateOnBattery" xml:space="preserve">
+    <value>On battery: {0} Hz</value>
+    <comment>Toast text: display refresh rate lowered to {0} Hz on battery.</comment>
+  </data>
+  <data name="Notice_RefreshRatePluggedIn" xml:space="preserve">
+    <value>Plugged in: {0} Hz</value>
+    <comment>Toast text: AC power plugged in, display refresh rate restored to {0} Hz.</comment>
+  </data>
   <data name="Notice_ModeLowBattery" xml:space="preserve">
     <value>Battery low: {0} until it charges</value>
     <comment>Toast text: on AC, but the battery is too low to help the adapter, so operating mode {0} (Balanced or Quiet) runs until it charges.</comment>
@@ -1136,6 +1144,13 @@
   </data>
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>For the laptop's built-in screen (not external monitors): faster pixel response for less motion blur in games. Works best at the screen's highest refresh rate; turn off if you see halos behind moving objects.</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz on battery</value>
+    <comment>System page, Display section: lowers display refresh rate to 60 Hz on battery and restores the highest rate on AC power.</comment>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Lower the screen refresh rate to 60 Hz when running on battery, and restore the highest rate when plugged in.</value>
   </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Graphics</value>

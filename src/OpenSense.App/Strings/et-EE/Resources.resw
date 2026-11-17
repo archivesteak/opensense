@@ -250,6 +250,12 @@
     <value>Laadija ühendatud: {0}</value>
     <comment>Toast text: the adapter was plugged in, so operating mode {0} runs again (e.g. "Turbo").</comment>
   </data>
+  <data name="Notice_RefreshRateOnBattery" xml:space="preserve">
+    <value>Akutoitel: {0} Hz</value>
+  </data>
+  <data name="Notice_RefreshRatePluggedIn" xml:space="preserve">
+    <value>Laadija ühendatud: {0} Hz</value>
+  </data>
   <data name="Notice_ModeLowBattery" xml:space="preserve">
     <value>Aku tühjeneb: {0}, kuni see laeb</value>
     <comment>Toast text: on AC, but the battery is too low to help the adapter, so operating mode {0} (Balanced or Quiet) runs until it charges.</comment>
@@ -1136,6 +1142,12 @@
   </data>
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Sülearvuti sisseehitatud ekraanile (mitte välistele monitoridele): kiirem pikslite reaktsioon ja vähem liikumishägu mängudes. Töötab kõige paremini ekraani suurima värskendussagedusega; lülitage välja, kui näete liikuvate objektide taga halosid.</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz akutoitel</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Vähendab akutoitel ekraani värskendussageduse 60 Hz-ni ja taastab vooluvõrku ühendamisel kõrgeima sageduse.</value>
   </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Graafika</value>

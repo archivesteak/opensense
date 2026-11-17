@@ -250,6 +250,12 @@
     <value>Με τον φορτιστή: {0}</value>
     <comment>Toast text: the adapter was plugged in, so operating mode {0} runs again (e.g. "Turbo").</comment>
   </data>
+  <data name="Notice_RefreshRateOnBattery" xml:space="preserve">
+    <value>Με μπαταρία: {0} Hz</value>
+  </data>
+  <data name="Notice_RefreshRatePluggedIn" xml:space="preserve">
+    <value>Με τον φορτιστή: {0} Hz</value>
+  </data>
   <data name="Notice_ModeLowBattery" xml:space="preserve">
     <value>Χαμηλή μπαταρία: {0} μέχρι να φορτιστεί</value>
     <comment>Toast text: on AC, but the battery is too low to help the adapter, so operating mode {0} (Balanced or Quiet) runs until it charges.</comment>
@@ -1136,6 +1142,12 @@
   </data>
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Για την ενσωματωμένη οθόνη του φορητού (όχι για εξωτερικές οθόνες): ταχύτερη απόκριση pixel για λιγότερο θάμπωμα κίνησης στα παιχνίδια. Λειτουργεί καλύτερα στον υψηλότερο ρυθμό ανανέωσης της οθόνης. Απενεργοποιήστε το αν βλέπετε φωτοστέφανα πίσω από κινούμενα αντικείμενα.</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz με μπαταρία</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Μείωση του ρυθμού ανανέωσης οθόνης στα 60 Hz κατά τη χρήση μπαταρίας και επαναφορά στον υψηλότερο ρυθμό με τροφοδοσία.</value>
   </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Γραφικά</value>

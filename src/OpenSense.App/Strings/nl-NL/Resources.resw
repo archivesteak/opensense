@@ -250,6 +250,12 @@
     <value>Lader aangesloten: {0}</value>
     <comment>Toast text: the adapter was plugged in, so operating mode {0} runs again (e.g. "Turbo").</comment>
   </data>
+  <data name="Notice_RefreshRateOnBattery" xml:space="preserve">
+    <value>Op de accu: {0} Hz</value>
+  </data>
+  <data name="Notice_RefreshRatePluggedIn" xml:space="preserve">
+    <value>Lader aangesloten: {0} Hz</value>
+  </data>
   <data name="Notice_ModeLowBattery" xml:space="preserve">
     <value>Accu bijna leeg: {0} tot hij is opgeladen</value>
     <comment>Toast text: on AC, but the battery is too low to help the adapter, so operating mode {0} (Balanced or Quiet) runs until it charges.</comment>
@@ -1136,6 +1142,12 @@
   </data>
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Voor het ingebouwde scherm van de laptop (niet voor externe monitors): snellere pixelreactie voor minder bewegingsonscherpte in games. Werkt het best bij de hoogste vernieuwingsfrequentie van het scherm; schakel dit uit als je halo's achter bewegende objecten ziet.</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz op accu</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Verlaag de verversingssnelheid naar 60 Hz op de accu en herstel de hoogste snelheid wanneer de oplader is aangesloten.</value>
   </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Graphics</value>

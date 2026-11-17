@@ -250,6 +250,12 @@
     <value>Зарядний пристрій підключено: {0}</value>
     <comment>Toast text: the adapter was plugged in, so operating mode {0} runs again (e.g. "Turbo").</comment>
   </data>
+  <data name="Notice_RefreshRateOnBattery" xml:space="preserve">
+    <value>Від акумулятора: {0} Гц</value>
+  </data>
+  <data name="Notice_RefreshRatePluggedIn" xml:space="preserve">
+    <value>Зарядний пристрій підключено: {0} Гц</value>
+  </data>
   <data name="Notice_ModeLowBattery" xml:space="preserve">
     <value>Низький заряд: {0}, доки акумулятор не зарядиться</value>
     <comment>Toast text: on AC, but the battery is too low to help the adapter, so operating mode {0} (Balanced or Quiet) runs until it charges.</comment>
@@ -1136,6 +1142,12 @@
   </data>
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Для вбудованого екрана ноутбука (не для зовнішніх моніторів): швидший відгук пікселів і менше розмиття в русі в іграх. Найкраще працює з найвищою частотою оновлення екрана; вимкніть, якщо бачите ореоли за рухомими об'єктами.</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Гц від батареї</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Знижувати частоту оновлення екрана до 60 Гц під час роботи від батареї та повертати найвищу частоту при підключенні живлення.</value>
   </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Графіка</value>

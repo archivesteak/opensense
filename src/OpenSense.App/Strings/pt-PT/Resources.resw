@@ -250,6 +250,12 @@
     <value>Carregador ligado: {0}</value>
     <comment>Toast text: the adapter was plugged in, so operating mode {0} runs again (e.g. "Turbo").</comment>
   </data>
+  <data name="Notice_RefreshRateOnBattery" xml:space="preserve">
+    <value>Com bateria: {0} Hz</value>
+  </data>
+  <data name="Notice_RefreshRatePluggedIn" xml:space="preserve">
+    <value>Carregador ligado: {0} Hz</value>
+  </data>
   <data name="Notice_ModeLowBattery" xml:space="preserve">
     <value>Bateria fraca: {0} até carregar</value>
     <comment>Toast text: on AC, but the battery is too low to help the adapter, so operating mode {0} (Balanced or Quiet) runs until it charges.</comment>
@@ -1136,6 +1142,12 @@
   </data>
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Para o ecrã integrado do portátil (não para monitores externos): resposta mais rápida dos píxeis e menos desfocagem de movimento nos jogos. Funciona melhor com a taxa de atualização mais alta do ecrã; desative-o se vir halos atrás de objetos em movimento.</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz em bateria</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Reduz a taxa de atualização do ecrã para 60 Hz em bateria e repõe a mais elevada quando ligado à corrente.</value>
   </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Gráficos</value>

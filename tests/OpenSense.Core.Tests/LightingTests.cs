@@ -3,8 +3,12 @@ using Microsoft.Extensions.Time.Testing;
 using OpenSense.Core.Control;
 using OpenSense.Core.Engine;
 using OpenSense.Core.Hardware;
+using OpenSense.Core.Hardware.Boot;
+using OpenSense.Core.Hardware.Hid;
 using OpenSense.Core.Ipc;
 using OpenSense.Core.Lighting;
+using OpenSense.Core.Monitoring;
+using OpenSense.Core.Settings;
 
 namespace OpenSense.Core.Tests;
 
@@ -463,5 +467,286 @@ public class LightingSettingsTests
         Assert.NotEqual(a, b); // records compare lists by reference
         Assert.True(a.SameAs(b));
         Assert.False(a.SameAs(b with { Zones = [new(false, "#000000")] }));
+    }
+}
+
+public sealed class KeyboardLightingPersistenceTests
+{
+    private static readonly TimeSpan Timeout = TimeSpan.FromSeconds(10);
+
+    private static OpenSenseEngine StartEngine(SimulatedMachine machine, string settingsPath, FakeTimeProvider? time = null)
+    {
+        var engine = new OpenSenseEngine(machine, settingsPath, NullLogger<OpenSenseEngine>.Instance, time);
+        engine.Start();
+        return engine;
+    }
+
+    private static async Task WaitForConditionAsync(Func<bool> predicate, CancellationToken ct)
+    {
+        var deadline = DateTime.UtcNow + Timeout;
+        while (!predicate())
+        {
+            if (DateTime.UtcNow >= deadline)
+                throw new TimeoutException("Condition was not met before the timeout.");
+            await Task.Delay(20, ct);
+        }
+    }
+
+    [Fact]
+    public async Task First_run_adopts_firmware_keyboard_lighting_without_overwriting_hardware()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var directory = Path.Combine(Path.GetTempPath(), "OpenSense.Tests", Guid.NewGuid().ToString("N"));
+        var settingsPath = Path.Combine(directory, "settings.json");
+        try
+        {
+            // Seed pre-existing NitroSense/BIOS state before OpenSense's very first start.
+            var firmware = new SimulatedMachine(SimulatedModel.Nitro2022);
+            using var engine = new OpenSenseEngine(new SeededKeyboardMachine(firmware,
+                KeyboardProtocol.BacklightPayload(KeyboardEffect.Wave, 6, 75, KeyboardDirection.Left, default), timeoutBrightness: 75),
+                settingsPath, NullLogger<OpenSenseEngine>.Instance);
+            engine.Start();
+            await engine.LightingStartupTask.WaitAsync(Timeout, ct);
+
+            var snapshot = await engine.GetSnapshotAsync(ct);
+            var saved = snapshot.Settings.Lighting.For(EcKeyboardBackend.Id);
+            Assert.NotNull(saved);
+            Assert.Equal(LightingEffect.Wave, saved.Effect);
+            Assert.Equal(75, saved.Brightness);
+            Assert.Equal(LightingDirection.Left, saved.Direction);
+            Assert.Equal(75, new SettingsStore<MachineSettings>(settingsPath).Load().Lighting.For(EcKeyboardBackend.Id)!.Brightness);
+        }
+        finally
+        {
+            if (Directory.Exists(directory))
+                Directory.Delete(directory, recursive: true);
+        }
+    }
+
+    [Fact]
+    public async Task Turning_off_backlight_via_fn_hotkey_persists_across_cold_boot()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var directory = Path.Combine(Path.GetTempPath(), "OpenSense.Tests", Guid.NewGuid().ToString("N"));
+        var settingsPath = Path.Combine(directory, "settings.json");
+        try
+        {
+            var time = new FakeTimeProvider();
+            var machine1 = new SimulatedMachine(SimulatedModel.Nitro2022);
+            using (var engine1 = StartEngine(machine1, settingsPath, time))
+            {
+                await engine1.LightingStartupTask.WaitAsync(Timeout, ct);
+                await engine1.SetKeyboardAsync(new KeyboardSettings { BacklightAutoOff = true }, ct);
+                await engine1.SetLightingAsync(new LightingConfig().With(EcKeyboardBackend.Id,
+                    new LightingSettings { Effect = LightingEffect.Wave, Speed = 4, Brightness = 100, Direction = LightingDirection.Left }), ct);
+
+                var turnedOff = new TaskCompletionSource<MachineSettings>(TaskCreationOptions.RunContinuationsAsynchronously);
+                engine1.SettingsChanged += (_, s) =>
+                {
+                    if (s.Lighting.For(EcKeyboardBackend.Id)?.Brightness == 0)
+                        turnedOff.TrySetResult(s);
+                };
+
+                // Simulate Fn+F9 updating APGeAction 0x84 brightness even when GetKeyboardBacklight stays stale.
+                machine1.Laptop!.OverwriteBacklightTimeoutBrightness(0);
+                machine1.Events.Raise(1, 0x84, 0, 0);
+                time.Advance(TimeSpan.FromMilliseconds(200));
+
+                var updated = await turnedOff.Task.WaitAsync(Timeout, ct);
+                var saved = updated.Lighting.For(EcKeyboardBackend.Id)!;
+                Assert.Equal(0, saved.Brightness);
+                Assert.Equal(LightingEffect.Wave, saved.Effect);
+                Assert.Equal(LightingDirection.Left, saved.Direction);
+            }
+
+            // Simulate a full shutdown & cold boot where BIOS resets keyboard lighting back to 100% Static.
+            var resumeTime = new FakeTimeProvider();
+            var machine2 = new SimulatedMachine(SimulatedModel.Nitro2022);
+            using var engine2 = StartEngine(machine2, settingsPath, resumeTime);
+            await engine2.LightingStartupTask.WaitAsync(Timeout, ct);
+            await WaitForConditionAsync(() => machine2.Laptop!.Backlight[2] == 0 && machine2.Laptop.BacklightTimeoutBrightness == 0, ct);
+
+            Assert.Equal((byte)KeyboardEffect.Wave, machine2.Laptop!.Backlight[0]);
+            Assert.Equal(0, machine2.Laptop.Backlight[2]);
+            Assert.Equal(0, machine2.Laptop.BacklightTimeoutBrightness);
+
+            // Suspend and wake while Off must also remain Off (even if Acer's agent briefly restores 100%).
+            engine2.NotifySuspend();
+            engine2.NotifyResume();
+            machine2.Laptop.OverwriteBacklight(KeyboardProtocol.BacklightPayload(KeyboardEffect.Neon, 5, 100, KeyboardDirection.Right, default));
+            machine2.Laptop.OverwriteBacklightTimeoutBrightness(100);
+            resumeTime.Advance(TimeSpan.FromSeconds(6));
+            await engine2.ResumeLightingTask.WaitAsync(Timeout, ct);
+            Assert.Equal((byte)KeyboardEffect.Wave, machine2.Laptop.Backlight[0]);
+            Assert.Equal(0, machine2.Laptop.Backlight[2]);
+            Assert.Equal(0, machine2.Laptop.BacklightTimeoutBrightness);
+        }
+        finally
+        {
+            if (Directory.Exists(directory))
+                Directory.Delete(directory, recursive: true);
+        }
+    }
+
+    [Fact]
+    public async Task Switching_mode_and_brightness_externally_memorizes_and_syncs_at_next_boot()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var directory = Path.Combine(Path.GetTempPath(), "OpenSense.Tests", Guid.NewGuid().ToString("N"));
+        var settingsPath = Path.Combine(directory, "settings.json");
+        try
+        {
+            var time = new FakeTimeProvider();
+            var machine1 = new SimulatedMachine(SimulatedModel.Nitro2022);
+            using (var engine1 = StartEngine(machine1, settingsPath, time))
+            {
+                await engine1.LightingStartupTask.WaitAsync(Timeout, ct);
+                await engine1.SetLightingAsync(new LightingConfig().With(EcKeyboardBackend.Id,
+                    new LightingSettings { Effect = LightingEffect.Static, Brightness = 0 }), ct);
+
+                var changed = new TaskCompletionSource<MachineSettings>(TaskCreationOptions.RunContinuationsAsynchronously);
+                engine1.SettingsChanged += (_, s) =>
+                {
+                    if (s.Lighting.For(EcKeyboardBackend.Id) is { Effect: LightingEffect.Breathing, Brightness: 50 })
+                        changed.TrySetResult(s);
+                };
+
+                // Simulate EC changing both effect and brightness without emitting APGeEvent (caught by fallback poll).
+                machine1.Laptop!.OverwriteBacklight(KeyboardProtocol.BacklightPayload(
+                    KeyboardEffect.Breathing, 7, 50, KeyboardDirection.Right, new RgbColor(0x00, 0xFF, 0x88)));
+                machine1.Laptop.OverwriteBacklightTimeoutBrightness(50);
+                time.Advance(TimeSpan.FromSeconds(2));
+
+                var updated = await changed.Task.WaitAsync(Timeout, ct);
+                var saved = updated.Lighting.For(EcKeyboardBackend.Id)!;
+                Assert.Equal(LightingEffect.Breathing, saved.Effect);
+                Assert.Equal(50, saved.Brightness);
+                Assert.Equal(7, saved.Speed);
+                Assert.Equal("#00FF88", saved.EffectColor);
+            }
+
+            // Cold boot into a freshly reset simulated laptop and ensure Breathing 50% is synced back.
+            var machine2 = new SimulatedMachine(SimulatedModel.Nitro2022);
+            using var engine2 = StartEngine(machine2, settingsPath);
+            await engine2.LightingStartupTask.WaitAsync(Timeout, ct);
+
+            Assert.Equal((byte)KeyboardEffect.Breathing, machine2.Laptop!.Backlight[0]);
+            Assert.Equal(50, machine2.Laptop.Backlight[2]);
+            Assert.Equal(50, machine2.Laptop.BacklightTimeoutBrightness);
+        }
+        finally
+        {
+            if (Directory.Exists(directory))
+                Directory.Delete(directory, recursive: true);
+        }
+    }
+
+    [Fact]
+    public async Task PrepareShutdown_and_Suspend_sync_changes_dim_hardware_and_restore_saved_settings_on_wake()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var directory = Path.Combine(Path.GetTempPath(), "OpenSense.Tests", Guid.NewGuid().ToString("N"));
+        var settingsPath = Path.Combine(directory, "settings.json");
+        try
+        {
+            var time = new FakeTimeProvider();
+            var machine = new SimulatedMachine(SimulatedModel.Nitro2022);
+            using var engine = StartEngine(machine, settingsPath, time);
+            await engine.LightingStartupTask.WaitAsync(Timeout, ct);
+            await engine.SetLightingAsync(new LightingConfig().With(EcKeyboardBackend.Id,
+                new LightingSettings { Effect = LightingEffect.Wave, Brightness = 75, Direction = LightingDirection.Right }), ct);
+
+            // Suspend turns hardware off while preserving Wave 75% in settings.
+            engine.NotifySuspend();
+            Assert.Equal(0, machine.Laptop!.Backlight[2]);
+            Assert.Equal(0, machine.Laptop.BacklightTimeoutBrightness);
+            Assert.Equal(75, (await engine.GetSnapshotAsync(ct)).Settings.Lighting.For(EcKeyboardBackend.Id)!.Brightness);
+
+            // Resume holds external sync while Acer's agent briefly overwrites, then restores Wave 75%.
+            engine.NotifyResume();
+            machine.Laptop.OverwriteBacklight(KeyboardProtocol.BacklightPayload(KeyboardEffect.Neon, 5, 100, KeyboardDirection.Right, default));
+            machine.Laptop.OverwriteBacklightTimeoutBrightness(100);
+            time.Advance(TimeSpan.FromSeconds(2));
+            await engine.SyncKeyboardLightingAsync(); // Ignored during resume hold
+            Assert.Equal(LightingEffect.Wave, (await engine.GetSnapshotAsync(ct)).Settings.Lighting.For(EcKeyboardBackend.Id)!.Effect);
+
+            time.Advance(TimeSpan.FromSeconds(4));
+            await engine.ResumeLightingTask.WaitAsync(Timeout, ct);
+            Assert.Equal((byte)KeyboardEffect.Wave, machine.Laptop.Backlight[0]);
+            Assert.Equal(75, machine.Laptop.Backlight[2]);
+            Assert.Equal(75, machine.Laptop.BacklightTimeoutBrightness);
+
+            // Fn+F9 down to 25% right before Windows OS shutdown is saved to disk while hardware turns off for shutdown.
+            machine.Laptop.OverwriteBacklightTimeoutBrightness(25);
+            engine.PrepareShutdown();
+
+            var disk = new SettingsStore<MachineSettings>(settingsPath).Load().Lighting.For(EcKeyboardBackend.Id)!;
+            Assert.Equal(LightingEffect.Wave, disk.Effect);
+            Assert.Equal(25, disk.Brightness);
+            Assert.Equal(0, machine.Laptop.Backlight[2]);
+            Assert.Equal(0, machine.Laptop.BacklightTimeoutBrightness);
+        }
+        finally
+        {
+            if (Directory.Exists(directory))
+                Directory.Delete(directory, recursive: true);
+        }
+    }
+
+    [Fact]
+    public async Task All_static_zones_off_sends_zero_brightness_without_clobbering_ui_brightness()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var directory = Path.Combine(Path.GetTempPath(), "OpenSense.Tests", Guid.NewGuid().ToString("N"));
+        var settingsPath = Path.Combine(directory, "settings.json");
+        try
+        {
+            var time = new FakeTimeProvider();
+            var machine = new SimulatedMachine(SimulatedModel.Nitro2022);
+            using var engine = StartEngine(machine, settingsPath, time);
+            await engine.LightingStartupTask.WaitAsync(Timeout, ct);
+
+            var allZonesOff = Enumerable.Repeat(new ZoneSetting(false, "#FF3B30"), 4).ToList();
+            await engine.SetLightingAsync(new LightingConfig().With(EcKeyboardBackend.Id,
+                new LightingSettings { Effect = LightingEffect.Static, Brightness = 100, Zones = allZonesOff }), ct);
+
+            Assert.Equal(0, machine.Laptop!.Backlight[2]);
+            Assert.Equal(0, machine.Laptop.BacklightTimeoutBrightness);
+
+            // Fallback poll matches the post-apply baseline and must not overwrite saved Brightness = 100.
+            time.Advance(TimeSpan.FromSeconds(2));
+            await engine.SyncKeyboardLightingAsync();
+            Assert.Equal(100, (await engine.GetSnapshotAsync(ct)).Settings.Lighting.For(EcKeyboardBackend.Id)!.Brightness);
+        }
+        finally
+        {
+            if (Directory.Exists(directory))
+                Directory.Delete(directory, recursive: true);
+        }
+    }
+
+    private sealed class SeededKeyboardMachine(SimulatedMachine inner, byte[] initialBacklight, int timeoutBrightness) : IMachine
+    {
+        public string? Model => inner.Model;
+        public string? BiosVersion => inner.BiosVersion;
+        public string? SerialNumber => inner.SerialNumber;
+        public IWmiTransport OpenFirmware()
+        {
+            var laptop = (SimulatedTransport)inner.OpenFirmware();
+            laptop.OverwriteBacklight(initialBacklight);
+            laptop.OverwriteBacklightTimeoutBrightness(timeoutBrightness);
+            return laptop;
+        }
+        public IFirmwareEvents OpenFirmwareEvents() => inner.OpenFirmwareEvents();
+        public IPowerSource OpenPowerSource() => inner.OpenPowerSource();
+        public ISystemPower OpenSystemPower() => inner.OpenSystemPower();
+        public BatteryHealth? ReadBatteryHealth() => inner.ReadBatteryHealth();
+        public IHidBus OpenHid() => inner.OpenHid();
+        public AcerSmbios ReadSmbios() => inner.ReadSmbios();
+        public IReadOnlyList<AcpiTable> ReadAcpiTables() => inner.ReadAcpiTables();
+        public ILoadMonitor OpenLoadMonitor() => inner.OpenLoadMonitor();
+        public DirectSensors OpenSensors() => inner.OpenSensors();
+        public IBootLogoStore? OpenBootLogo(Action<string> log) => inner.OpenBootLogo(log);
+        public PixelSize? ReadInternalScreen() => inner.ReadInternalScreen();
     }
 }

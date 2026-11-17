@@ -250,6 +250,12 @@
     <value>Lādētājs pievienots: {0}</value>
     <comment>Toast text: the adapter was plugged in, so operating mode {0} runs again (e.g. "Turbo").</comment>
   </data>
+  <data name="Notice_RefreshRateOnBattery" xml:space="preserve">
+    <value>Ar akumulatoru: {0} Hz</value>
+  </data>
+  <data name="Notice_RefreshRatePluggedIn" xml:space="preserve">
+    <value>Lādētājs pievienots: {0} Hz</value>
+  </data>
   <data name="Notice_ModeLowBattery" xml:space="preserve">
     <value>Zems akumulatora līmenis: {0}, līdz tas uzlādēsies</value>
     <comment>Toast text: on AC, but the battery is too low to help the adapter, so operating mode {0} (Balanced or Quiet) runs until it charges.</comment>
@@ -1136,6 +1142,12 @@
   </data>
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Klēpjdatora iebūvētajam ekrānam (ne ārējiem monitoriem): ātrāka pikseļu reakcija un mazāk kustības izplūšanas spēlēs. Vislabāk darbojas ar ekrāna augstāko atsvaidzes intensitāti; izslēdziet, ja aiz kustīgiem objektiem redzat oreolus.</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz no akumulatora</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Darbojoties ar akumulatoru, samazina ekrāna atsvaidzes intensitāti līdz 60 Hz un pieslēdzot strāvai atjauno augstāko.</value>
   </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Grafika</value>

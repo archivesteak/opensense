@@ -250,6 +250,12 @@
     <value>Đã cắm sạc: {0}</value>
     <comment>Toast text: the adapter was plugged in, so operating mode {0} runs again (e.g. "Turbo").</comment>
   </data>
+  <data name="Notice_RefreshRateOnBattery" xml:space="preserve">
+    <value>Dùng pin: {0} Hz</value>
+  </data>
+  <data name="Notice_RefreshRatePluggedIn" xml:space="preserve">
+    <value>Đã cắm sạc: {0} Hz</value>
+  </data>
   <data name="Notice_ModeLowBattery" xml:space="preserve">
     <value>Pin yếu: {0} cho đến khi sạc xong</value>
     <comment>Toast text: on AC, but the battery is too low to help the adapter, so operating mode {0} (Balanced or Quiet) runs until it charges.</comment>
@@ -1136,6 +1142,12 @@
   </data>
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Dành cho màn hình tích hợp của máy tính xách tay (không phải màn hình ngoài): điểm ảnh phản hồi nhanh hơn để giảm nhòe chuyển động khi chơi game. Hoạt động tốt nhất ở tốc độ làm mới cao nhất của màn hình; hãy tắt nếu bạn thấy quầng sáng phía sau các vật thể đang chuyển động.</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz khi dùng pin</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Hạ tần số quét màn hình xuống 60 Hz khi dùng pin và khôi phục mức cao nhất khi cắm sạc.</value>
   </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Đồ họa</value>

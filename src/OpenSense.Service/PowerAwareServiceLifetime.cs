@@ -26,6 +26,7 @@ internal sealed class PowerAwareServiceLifetime : WindowsServiceLifetime
     {
         _engine = engine;
         CanHandlePowerEvent = true;
+        CanShutdown = true;
     }
 
     protected override bool OnPowerEvent(PowerBroadcastStatus powerStatus)
@@ -44,5 +45,11 @@ internal sealed class PowerAwareServiceLifetime : WindowsServiceLifetime
                 break;
         }
         return base.OnPowerEvent(powerStatus);
+    }
+
+    protected override void OnShutdown()
+    {
+        _engine.PrepareShutdown();
+        base.OnShutdown();
     }
 }

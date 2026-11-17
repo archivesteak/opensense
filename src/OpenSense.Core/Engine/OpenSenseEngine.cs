@@ -25,6 +25,7 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
 
     private readonly IMachine _machine;
     private readonly ILogger<OpenSenseEngine> _log;
+    private readonly TimeProvider _time;
     private readonly SettingsStore<MachineSettings> _store;
     private readonly SettingsStore<RuntimeState> _runtimeStore;
     private readonly Timer _saveTimer;
@@ -52,13 +53,20 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
     private FirmwareState? _firmware;
     private KeyboardState? _keyboardAtStart;
     private volatile Telemetry? _latest;
+    private int _powerOffOnShutdown;
     private int _disposed;
 
     /// <param name="settingsPath">Where the machine settings live (<see cref="SettingsPaths.Machine"/>).</param>
     public OpenSenseEngine(IMachine machine, string settingsPath, ILogger<OpenSenseEngine> log)
+        : this(machine, settingsPath, log, null)
+    {
+    }
+
+    internal OpenSenseEngine(IMachine machine, string settingsPath, ILogger<OpenSenseEngine> log, TimeProvider? time)
     {
         _machine = machine;
         _log = log;
+        _time = time ?? TimeProvider.System;
         _store = new SettingsStore<MachineSettings>(settingsPath);
         _settings = _store.Load().Upgrade();
         _runtimeStore = new SettingsStore<RuntimeState>(Path.Combine(Path.GetDirectoryName(settingsPath)!, "state.json"));
@@ -123,6 +131,7 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
             StartControl(device);
             StartFirmwareEvents();
             WatchHid();
+            StartLightingSync();
             _state = EngineState.Ready;
         }
         catch (Exception ex) when (ex is not OutOfMemoryException)
@@ -139,15 +148,30 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
     }
 
     /// <summary>The machine is going to sleep. (Services do not get SystemEvents; the host forwards power events.)</summary>
-    public void NotifySuspend() => _powerService?.OnSuspend();
+    public void NotifySuspend()
+    {
+        _powerService?.OnSuspend();
+        SuspendLighting();
+    }
 
     /// <summary>The machine woke from sleep.</summary>
     public void NotifyResume()
     {
+        var holdGeneration = BeginResumeLightingHold();
         _controller?.OnResume();
-        _ = _keyboard?.OnResume();
-        _ = _lighting?.OnResume();
+        var keyboardResume = _keyboard?.OnResume() ?? Task.CompletedTask;
+        var lightingResume = _lighting?.OnResume() ?? Task.CompletedTask;
         _ = _powerService?.OnResume();
+        var resumeTask = CompleteResumeLightingAsync(keyboardResume, lightingResume, holdGeneration);
+        ResumeLightingTask = resumeTask;
+        ObserveWork(resumeTask, "resume lighting baseline");
+    }
+
+    /// <summary>Windows is shutting down: persist any hardware lighting changes and turn active lights off before stopping.</summary>
+    public void PrepareShutdown()
+    {
+        Interlocked.Exchange(ref _powerOffOnShutdown, 1);
+        Dispose();
     }
 
     /// <summary>AC power was connected or removed.</summary>
@@ -427,6 +451,7 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
             _sessionGate.Release();
         }
         _sessionGate.Dispose();
+        _lightingSyncGate.Dispose();
     }
 
     /// <summary>
@@ -436,6 +461,7 @@ public sealed partial class OpenSenseEngine : IOpenSenseService, IDisposable
     private void Shutdown()
     {
         Step(StopFirmwareEvents);
+        Step(StopLightingSyncAndPreparePowerOff);
         Step(StopControl);
         Step(() =>
         {

@@ -250,6 +250,12 @@
     <value>चार्जर लगा है: {0}</value>
     <comment>Toast text: the adapter was plugged in, so operating mode {0} runs again (e.g. "Turbo").</comment>
   </data>
+  <data name="Notice_RefreshRateOnBattery" xml:space="preserve">
+    <value>बैटरी पर: {0} Hz</value>
+  </data>
+  <data name="Notice_RefreshRatePluggedIn" xml:space="preserve">
+    <value>चार्जर लगा है: {0} Hz</value>
+  </data>
   <data name="Notice_ModeLowBattery" xml:space="preserve">
     <value>बैटरी कम: चार्ज होने तक {0}</value>
     <comment>Toast text: on AC, but the battery is too low to help the adapter, so operating mode {0} (Balanced or Quiet) runs until it charges.</comment>
@@ -1136,6 +1142,12 @@
   </data>
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>लैपटॉप की अंतर्निहित स्क्रीन के लिए (बाहरी मॉनिटर के लिए नहीं): गेम में कम मोशन ब्लर के लिए तेज़ पिक्सेल प्रतिक्रिया। स्क्रीन की उच्चतम रीफ़्रेश दर पर सबसे अच्छा काम करता है; यदि चलती वस्तुओं के पीछे प्रभामंडल दिखें तो इसे बंद करें।</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>बैटरी पर 60 Hz</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>बैटरी पर चलते समय स्क्रीन की रिफ्रेश दर 60 Hz करें और चार्जर लगने पर उच्चतम दर बहाल करें।</value>
   </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>ग्राफ़िक्स</value>

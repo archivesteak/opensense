@@ -250,6 +250,12 @@
     <value>Включено захранване: {0}</value>
     <comment>Toast text: the adapter was plugged in, so operating mode {0} runs again (e.g. "Turbo").</comment>
   </data>
+  <data name="Notice_RefreshRateOnBattery" xml:space="preserve">
+    <value>На батерия: {0} Hz</value>
+  </data>
+  <data name="Notice_RefreshRatePluggedIn" xml:space="preserve">
+    <value>Включено захранване: {0} Hz</value>
+  </data>
   <data name="Notice_ModeLowBattery" xml:space="preserve">
     <value>Ниска батерия: {0}, докато се зареди</value>
     <comment>Toast text: on AC, but the battery is too low to help the adapter, so operating mode {0} (Balanced or Quiet) runs until it charges.</comment>
@@ -1136,6 +1142,12 @@
   </data>
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>За вградения екран на лаптопа (не за външни монитори): по-бърза реакция на пикселите и по-малко размазване при движение в игрите. Работи най-добре при най-високата честота на опресняване на екрана; изключете, ако виждате ореоли зад движещите се обекти.</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz на батерия</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Намаляване на честотата на опресняване на екрана до 60 Hz на батерия и възстановяване на най-високата честота при включено захранване.</value>
   </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Графика</value>

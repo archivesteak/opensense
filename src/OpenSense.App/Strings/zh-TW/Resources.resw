@@ -250,6 +250,12 @@
     <value>已接上電源：{0}</value>
     <comment>Toast text: the adapter was plugged in, so operating mode {0} runs again (e.g. "Turbo").</comment>
   </data>
+  <data name="Notice_RefreshRateOnBattery" xml:space="preserve">
+    <value>使用電池：{0} Hz</value>
+  </data>
+  <data name="Notice_RefreshRatePluggedIn" xml:space="preserve">
+    <value>已接上電源：{0} Hz</value>
+  </data>
   <data name="Notice_ModeLowBattery" xml:space="preserve">
     <value>電量低：{0}，直到充上電</value>
     <comment>Toast text: on AC, but the battery is too low to help the adapter, so operating mode {0} (Balanced or Quiet) runs until it charges.</comment>
@@ -1136,6 +1142,12 @@
   </data>
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>適用於筆記型電腦的內建螢幕（不適用於外接螢幕）：更快的像素回應速度，減少遊戲中的動態模糊。在螢幕的最高重新整理頻率下效果最佳；如果在移動的物體後方看到光暈，請將其關閉。</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>使用電池時設為 60 Hz</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>使用電池供電時將螢幕更新率降為 60 Hz，接上電源時恢復最高更新率。</value>
   </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>顯示卡</value>

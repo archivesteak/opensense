@@ -250,6 +250,12 @@
     <value>Netzteil angeschlossen: {0}</value>
     <comment>Toast text: the adapter was plugged in, so operating mode {0} runs again (e.g. "Turbo").</comment>
   </data>
+  <data name="Notice_RefreshRateOnBattery" xml:space="preserve">
+    <value>Akkubetrieb: {0} Hz</value>
+  </data>
+  <data name="Notice_RefreshRatePluggedIn" xml:space="preserve">
+    <value>Netzteil angeschlossen: {0} Hz</value>
+  </data>
   <data name="Notice_ModeLowBattery" xml:space="preserve">
     <value>Akku schwach: {0}, bis er geladen ist</value>
     <comment>Toast text: on AC, but the battery is too low to help the adapter, so operating mode {0} (Balanced or Quiet) runs until it charges.</comment>
@@ -1136,6 +1142,12 @@
   </data>
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>Für den eingebauten Bildschirm des Laptops (nicht für externe Monitore): schnellere Pixelreaktion für weniger Bewegungsunschärfe in Spielen. Funktioniert am besten mit der höchsten Bildwiederholfrequenz des Bildschirms. Schalten Sie die Funktion aus, wenn Sie Schlieren hinter bewegten Objekten sehen.</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 Hz im Akkubetrieb</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>Bildwiederholfrequenz im Akkubetrieb auf 60 Hz senken und bei angeschlossenem Netzteil auf die höchste Frequenz zurücksetzen.</value>
   </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>Grafik</value>

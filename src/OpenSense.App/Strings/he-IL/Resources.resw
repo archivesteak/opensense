@@ -250,6 +250,12 @@
     <value>המטען מחובר: {0}</value>
     <comment>Toast text: the adapter was plugged in, so operating mode {0} runs again (e.g. "Turbo").</comment>
   </data>
+  <data name="Notice_RefreshRateOnBattery" xml:space="preserve">
+    <value>בסוללה: {0} Hz</value>
+  </data>
+  <data name="Notice_RefreshRatePluggedIn" xml:space="preserve">
+    <value>המטען מחובר: {0} Hz</value>
+  </data>
   <data name="Notice_ModeLowBattery" xml:space="preserve">
     <value>סוללה חלשה: {0} עד שתיטען</value>
     <comment>Toast text: on AC, but the battery is too low to help the adapter, so operating mode {0} (Balanced or Quiet) runs until it charges.</comment>
@@ -1136,6 +1142,12 @@
   </data>
   <data name="System_LcdOverdrive.Description" xml:space="preserve">
     <value>למסך המובנה של המחשב הנייד (לא לצגים חיצוניים): תגובת פיקסלים מהירה יותר ופחות טשטוש תנועה במשחקים. עובד הכי טוב בקצב הרענון הגבוה ביותר של המסך; כבה אם אתה רואה הילות מאחורי עצמים בתנועה.</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Header" xml:space="preserve">
+    <value>60 הרץ בסוללה</value>
+  </data>
+  <data name="System_RefreshRateOnBattery.Description" xml:space="preserve">
+    <value>הורד את קצב הרענון של המסך ל-60 הרץ בעת עבודה על סוללה, ושחזר את הקצב הגבוה ביותר בחיבור לחשמל.</value>
   </data>
   <data name="System_Graphics.Text" xml:space="preserve">
     <value>גרפיקה</value>

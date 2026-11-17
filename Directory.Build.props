@@ -7,12 +7,12 @@
     <LangVersion>latest</LangVersion>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <Version>0.3.6</Version>
+    <Version>0.3.8</Version>
     <Authors>OpenSense contributors</Authors>
     <Product>OpenSense</Product>
     <Copyright>OpenSense contributors</Copyright>
     <!-- Also where the app looks for updates (GitHub Releases). -->
-    <RepositoryUrl>https://github.com/archivesteak/opensense</RepositoryUrl>
+    <RepositoryUrl>https://github.com/alfghahoound09/opensense</RepositoryUrl>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
 </Project>

@@ -10,7 +10,12 @@ using OpenSense.Core.Hardware;
 namespace OpenSense.App.ViewModels;
 
 /// <summary>Keyboard and display switches, power plans and the GPU (MUX) switch.</summary>
-public sealed partial class SystemViewModel(DispatcherQueue dispatcher, DeviceSession session, NotificationService notifications)
+public sealed partial class SystemViewModel(
+    DispatcherQueue dispatcher,
+    DeviceSession session,
+    NotificationService notifications,
+    SettingsService settings,
+    DisplayRefreshService displayRefresh)
     : ObservableObject
 {
     private bool _loading;
@@ -40,6 +45,12 @@ public sealed partial class SystemViewModel(DispatcherQueue dispatcher, DeviceSe
 
     [ObservableProperty]
     public partial bool LcdOverdrive { get; set; }
+
+    [ObservableProperty]
+    public partial bool RefreshRateOnBatteryAvailable { get; set; }
+
+    [ObservableProperty]
+    public partial bool RefreshRateOnBattery { get; set; }
 
     [ObservableProperty]
     public partial bool StickyKeysOn { get; set; }
@@ -85,6 +96,8 @@ public sealed partial class SystemViewModel(DispatcherQueue dispatcher, DeviceSe
         FnLock = kb.FnLock ?? state?.FnLock ?? false;
         LcdOverdriveAvailable = caps.Keyboard.LcdOverdrive;
         LcdOverdrive = kb.LcdOverdrive ?? state?.LcdOverdrive ?? false;
+        RefreshRateOnBatteryAvailable = displayRefresh.IsSwitchAvailable;
+        RefreshRateOnBattery = settings.Current.Ui.RefreshRateOnBattery;
         StickyKeysOn = StickyKeys.IsEnabled() ?? false;
         OnPropertyChanged(nameof(AnyKeyboardSetting));
 
@@ -117,6 +130,14 @@ public sealed partial class SystemViewModel(DispatcherQueue dispatcher, DeviceSe
     partial void OnFnLockChanged(bool value) => ApplyKeyboard(k => k with { FnLock = value });
 
     partial void OnLcdOverdriveChanged(bool value) => ApplyKeyboard(k => k with { LcdOverdrive = value });
+
+    partial void OnRefreshRateOnBatteryChanged(bool value)
+    {
+        if (_loading)
+            return;
+        settings.Update(s => s with { Ui = s.Ui with { RefreshRateOnBattery = value } });
+        displayRefresh.SetEnabled(value);
+    }
 
     partial void OnStickyKeysOnChanged(bool value)
     {

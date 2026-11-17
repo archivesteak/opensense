@@ -21,6 +21,9 @@ public sealed record UiSettings
     /// <summary>The laptop's NitroSense key opens OpenSense, as it opened NitroSense.</summary>
     public bool OpenWithNitroSenseKey { get; init; } = true;
 
+    /// <summary>Lower display refresh rate to 60 Hz on battery and restore the highest rate on AC power.</summary>
+    public bool RefreshRateOnBattery { get; init; } = true;
+
     /// <summary>Another key or combination that opens OpenSense from anywhere; null for none.</summary>
     public KeyShortcut? OpenShortcut { get; init; }
 

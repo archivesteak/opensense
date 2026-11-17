@@ -49,14 +49,22 @@ public sealed class EcKeyboardBackend(IDeviceDispatcher dispatcher, KeyboardCapa
         if (!Device.Offers(lighting.Effect) || Backlight(lighting) is not { } backlight)
             return false;
         if (backlight.Effect != KeyboardEffect.Static)
+        {
+            SyncBacklightTimeout(device, lighting.Brightness);
             return SetBacklight(device, backlight.Effect, backlight.Speed, lighting.Brightness, backlight.Direction, Adjust(backlight.Color));
+        }
 
         var zones = Enumerable.Range(0, caps.Zones).Select(lighting.Zone).ToList();
         // Firmware that puts its default colours back over an all-black keyboard gets dark as brightness 0, its colours untouched.
         if (caps.ResetsBlackStaticColors && zones.All(z => !z.On || RgbColor.FromHex(z.Color) == default))
+        {
+            SyncBacklightTimeout(device, 0);
             return SetBacklight(device, KeyboardEffect.Static, 0, 0, backlight.Direction, default);
+        }
+        var effectiveBrightness = zones.All(z => !z.On) ? 0 : lighting.Brightness;
+        SyncBacklightTimeout(device, effectiveBrightness);
         var ok = !caps.ZoneSwitches || device.SetZonesEnabled([.. zones.Select(z => z.On)], caps.LedArrayLength);
-        ok &= SetBacklight(device, KeyboardEffect.Static, backlight.Speed, lighting.Brightness, backlight.Direction, backlight.Color);
+        ok &= SetBacklight(device, KeyboardEffect.Static, backlight.Speed, effectiveBrightness, backlight.Direction, backlight.Color);
         for (var i = 0; i < zones.Count; i++)
         {
             if (zones[i].On)
@@ -65,6 +73,15 @@ public sealed class EcKeyboardBackend(IDeviceDispatcher dispatcher, KeyboardCapa
                 ok &= device.SetZoneColor(i + 1, default);
         }
         return ok;
+    }
+
+    private void SyncBacklightTimeout(AcerDevice device, int brightness)
+    {
+        if (caps.EcHidBacklightTimeout || caps.UsbBacklightTimeout || caps.BacklightHotkey is null)
+            return;
+        var level = NearestBrightness(brightness);
+        if (device.GetBacklightTimeout(caps) is { } state && state.Brightness != level)
+            device.SetBacklightTimeout(caps, level, state.TimeoutSeconds);
     }
 
     private bool SetBacklight(AcerDevice device, KeyboardEffect effect, int speed, int brightness, KeyboardDirection direction, RgbColor color) =>

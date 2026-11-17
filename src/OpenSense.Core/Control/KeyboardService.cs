@@ -22,6 +22,7 @@ public sealed class KeyboardService : IDisposable
     private readonly KeyboardCapabilities _caps;
     private readonly UsbKeyboardDevice? _usb;
     private readonly TimeProvider _time;
+    private readonly Func<int?>? _keyboardBrightness;
     private readonly object _gate = new();
     private readonly ServiceLifetime _lifetime = new();
 
@@ -33,13 +34,15 @@ public sealed class KeyboardService : IDisposable
     private bool? _appliedAutoOff, _appliedWindowsKey, _appliedOverdrive, _appliedFnLock;
 
     /// <param name="usb">A USB keyboard that keeps the Windows key or auto-off itself (<see cref="KeyboardCapabilities.UsbWindowsKey"/>).</param>
+    /// <param name="keyboardBrightness">Optional provider for the configured keyboard brightness, keeping firmware timeout brightness aligned at boot and resume.</param>
     public KeyboardService(IDeviceDispatcher dispatcher, KeyboardCapabilities capabilities, UsbKeyboardDevice? usb = null,
-        TimeProvider? time = null)
+        TimeProvider? time = null, Func<int?>? keyboardBrightness = null)
     {
         _dispatcher = dispatcher;
         _caps = capabilities;
         _usb = usb;
         _time = time ?? TimeProvider.System;
+        _keyboardBrightness = keyboardBrightness;
     }
 
     public KeyboardSettings Current { get; private set; } = new();
@@ -137,8 +140,8 @@ public sealed class KeyboardService : IDisposable
             }
             else
             {
-                // Only the timeout changes: the brightness goes back as it is.
-                var brightness = device.GetBacklightTimeout(_caps)?.Brightness ?? 100;
+                // Keep the user's configured keyboard brightness if present; otherwise preserve the firmware's own brightness.
+                var brightness = _keyboardBrightness?.Invoke() ?? device.GetBacklightTimeout(_caps)?.Brightness ?? 100;
                 ok = device.SetBacklightTimeout(_caps, brightness, autoOff ? KeyboardProtocol.AutoOffSeconds : 0);
             }
             if (ok)

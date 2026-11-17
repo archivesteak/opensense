@@ -102,3 +102,8 @@ IOCTL_BATTERY_QUERY_INFORMATION
 BATTERY_QUERY_INFORMATION
 BATTERY_INFORMATION
 BATTERY_CAPACITY_RELATIVE
+
+// Display refresh rate (set 60 Hz on battery, restore highest rate on AC)
+EnumDisplayDevices
+EnumDisplaySettings
+ChangeDisplaySettingsEx
